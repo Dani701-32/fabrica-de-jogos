@@ -13,3 +13,17 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
+### Laravel ###
+/vendor/
+node_modules/
+storage/*.key
+/.vagrant
+### react ###
+.DS_*
+*.log
+logs
+**/*.backup.*
+**/*.back.*
+
+node_modules
+bower_components
