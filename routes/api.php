@@ -2,6 +2,13 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\RegisterController;
+use App\Http\Controllers\API\QuizController;
+use App\Http\Controllers\API\CruzadinhaController;
+use App\Http\Controllers\API\MatchUpController;
+use App\Http\Controllers\API\AnagramController;
+use App\Http\Controllers\API\TrueOrFalseController;
+use App\Http\Controllers\API\WordSearchController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +21,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::post('register', [RegisterController::class, 'register'])->name('register');
+Route::post('login', [RegisterController::class, 'login'])->name('login');
+
+Route::middleware('auth:api')->group( function () {
+    Route::resource('quiz', QuizController::class);
+    Route::resource('cruzadinha', CruzadinhaController::class);
+    Route::resource('matchup', MatchUpController::class);
+    Route::resource('anagram', AnagramController::class);
+    Route::resource('trueorfalse', TrueOrFalseController::class);
+    Route::resource('wordsearch', WordSearchController::class);
 });
