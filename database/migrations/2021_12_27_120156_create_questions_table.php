@@ -17,7 +17,6 @@ class CreateQuestionsTable extends Migration
             $table->id();
             $table->foreignId('quiz_id')->constrained();
             $table->string('title');
-            $table->integer('n_answers');
             $table->string('answers');
             $table->timestamps();
         });

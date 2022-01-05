@@ -17,7 +17,9 @@ class WordSearch extends JsonResource
         return [
             "name" => $this->name,
             "layout" => $this->layout,
-            "words" => explode("/", $this->words)
+            "words" => explode("/", $this->words),
+            'created_at' => $this->created_at->format('d/m/Y'),
+            'updated_at' => $this->updated_at->format('d/m/Y'),
         ];
     }
 }

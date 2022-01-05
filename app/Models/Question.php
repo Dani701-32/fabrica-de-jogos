@@ -14,7 +14,7 @@ class Question extends Model
      * @var array
      */
     protected $fillable = [
-      'title', 'n_answers', 'answers'
+      'title', 'answers'
     ];
 
     public function Quiz() {

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Validator;
 use App\Models\MatchUp;
 use App\Http\Resources\MatchUp as MatchUpResource;
+use Cviebrock\EloquentSluggable\Services\SlugService;
 
 class MatchUpController extends BaseController
 {
@@ -45,6 +46,7 @@ class MatchUpController extends BaseController
 
         $matchup = new MatchUp();
         $matchup->name = $request->name;
+        $matchup->slug = SlugService::createSlug(MatchUp::class, 'slug', $request->name);
         $matchup->layout = $request->layout;
         $matchup->words = implode("/", $request->words);
         $matchup->meanings = implode("/", $request->meanings);

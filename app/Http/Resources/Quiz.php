@@ -20,10 +20,12 @@ class Quiz extends JsonResource
             $questions[] = new QuestionResource($question);
         }
         return [
-            'id' => $this->id,
+            'slug' => $this->slug,
             'name' => $this->name,
             'layout' => $this->layout,
             'questions' => $questions,
+            'created_at' => $this->created_at->format('d/m/Y'),
+            'updated_at' => $this->updated_at->format('d/m/Y'),
         ];
     }
 }
