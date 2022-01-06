@@ -16,6 +16,7 @@ class CreateTrueOrFalsesTable extends Migration
         Schema::create('true_or_falses', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('slug')->unique();
             $table->integer('layout');
             $table->string('questions');
             $table->string('answers');

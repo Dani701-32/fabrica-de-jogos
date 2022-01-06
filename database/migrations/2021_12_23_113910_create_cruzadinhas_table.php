@@ -16,7 +16,7 @@ class CreateCruzadinhasTable extends Migration
         Schema::create('cruzadinhas', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('slug');
+            $table->string('slug')->unique();
             $table->integer('layout');
             $table->string('words', 88);
             $table->boolean('image_tips');

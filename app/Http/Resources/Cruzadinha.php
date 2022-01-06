@@ -26,8 +26,8 @@ class Cruzadinha extends JsonResource
             $fully_splited_words[] = str_split(strtr( $word, $unwanted_array ));
         }
         return [
-            'id' => $this->id,
             'name' => $this->name,
+            'slug' => $this->slug,
             'layout' => $this->layout,
             'words' => $fully_splited_words,
             'tips' => explode('/', $this->tips),

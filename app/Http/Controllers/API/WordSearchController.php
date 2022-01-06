@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use Cviebrock\EloquentSluggable\Services\SlugService;
 use Illuminate\Http\Request;
 use Validator;
 use App\Models\WordSearch;
@@ -44,6 +45,7 @@ class WordSearchController extends BaseController
 
         $word_search = new WordSearch();
         $word_search->name = $request->name;
+        $word_search->slug = SlugService::createSlug(WordSearch::class, 'slug', $request->name);
         $word_search->layout = $request->layout;
         $word_search->words = implode('/', $request->words);
         $word_search->save();

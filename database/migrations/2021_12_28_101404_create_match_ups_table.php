@@ -16,6 +16,7 @@ class CreateMatchUpsTable extends Migration
         Schema::create('match_ups', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('slug')->unique();
             $table->integer('layout');
             $table->string('words', 108);
             $table->string('meanings', 324);

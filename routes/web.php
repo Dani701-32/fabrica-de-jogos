@@ -14,8 +14,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
 });
-Route::get('/wordsearch', function () {
-    return view('wordsearch');
+Route::get('/wordsearch/{slug}', function () {
+    return view('index');
+});
+Route::get('/quiz/{slug}', function () {
+    return view('index');
+});
+Route::get('/anagram/{slug}', function () {
+    return view('index');
 });

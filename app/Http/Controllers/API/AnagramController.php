@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use Cviebrock\EloquentSluggable\Services\SlugService;
 use Illuminate\Http\Request;
 use Validator;
 use App\Models\Anagram;
@@ -43,6 +44,7 @@ class AnagramController extends BaseController
 
         $anagram = new Anagram();
         $anagram->name = $request->name;
+        $anagram->slug = SlugService::createSlug(Anagram::class, 'slug', $request->name);
         $anagram->layout = $request->layout;
         $anagram->words = implode('/', $request->words);
         $anagram->save();

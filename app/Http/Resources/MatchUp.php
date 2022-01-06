@@ -15,8 +15,8 @@ class MatchUp extends JsonResource
     public function toArray($request)
     {
         return [
-            'slug' => $this->slug,
             'name' => $this->name,
+            'slug' => $this->slug,
             'layout' => $this->layout,
             'words' => explode('/', $this->words),
             'meanings' => explode('/', $this->meanings),

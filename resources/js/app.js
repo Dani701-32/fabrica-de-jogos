@@ -6,10 +6,13 @@
 
 require('./bootstrap');
 
-/**
- * Next, we will create a fresh React component instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
+import React from "react";
+import ReactDOM from "react-dom";
+import Index from "./components/index";
 
-require('./components/Example');
+ReactDOM.render(
+    <React.StrictMode>
+            <Index />
+    </React.StrictMode>,
+    document.getElementById("app")
+);

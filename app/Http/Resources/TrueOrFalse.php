@@ -23,6 +23,7 @@ class TrueOrFalse extends JsonResource
         }
         return [
             'name' => $this->name,
+            'slug' => $this->slug,
             'layout' => $this->layout,
             'questions' => $full_response,
             'created_at' => $this->created_at->format('d/m/Y'),

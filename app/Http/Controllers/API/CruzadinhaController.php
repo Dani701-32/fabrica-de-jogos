@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use Cviebrock\EloquentSluggable\Services\SlugService;
 use Illuminate\Http\Request;
 use App\Models\Cruzadinha;
 use App\Http\Resources\Cruzadinha as CruzadinhaResource;
@@ -45,7 +46,7 @@ class CruzadinhaController extends BaseController
 
         $cruzadinha = new Cruzadinha();
         $cruzadinha->name = $request->name;
-        $cruzadinha->slug = \Str::slug($request->name);
+        $cruzadinha->slug = SlugService::createSlug(Cruzadinha::class, 'slug', $request->name);
         $cruzadinha->layout = $request->layout;
         $cruzadinha->words = implode('/', $request->words);
         $cruzadinha->tips = implode('/', $request->tips);

@@ -16,6 +16,7 @@ class CreateWordSearchesTable extends Migration
         Schema::create('word_searches', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('slug')->unique();
             $table->integer('layout');
             $table->string('words');
             $table->timestamps();

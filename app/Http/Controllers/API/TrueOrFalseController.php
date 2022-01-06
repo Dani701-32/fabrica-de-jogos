@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use Cviebrock\EloquentSluggable\Services\SlugService;
 use Illuminate\Http\Request;
 use Validator;
 use App\Models\TrueOrFalse;
@@ -46,6 +47,7 @@ class TrueOrFalseController extends BaseController
 
         $true_or_false = new TrueOrFalse();
         $true_or_false->name = $request->name;
+        $true_or_false->slug = SlugService::createSlug(TrueOrFalse::class, 'slug', $request->name);
         $true_or_false->layout = $request->layout;
         $true_or_false->questions = implode('/', $request->questions);
         $answers = $request->answers;

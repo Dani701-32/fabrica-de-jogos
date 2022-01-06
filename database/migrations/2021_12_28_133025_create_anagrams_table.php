@@ -16,6 +16,7 @@ class CreateAnagramsTable extends Migration
         Schema::create('anagrams', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('slug')->unique();
             $table->integer('layout');
             $table->string('words', 132);
             $table->timestamps();
