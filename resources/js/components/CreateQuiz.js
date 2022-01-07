@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
     Button,
     TextField,
     Typography,
     Grid,
-    Input,
     Container,
     Box,
     CssBaseline,
@@ -15,12 +14,17 @@ import AddIcon from "@mui/icons-material/Add";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Header from "./Header";
 import axios from "axios";
-import { Redirect } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const theme = createTheme();
 
 export default function CreateQuiz() {
-    const [questions, setQuestions] = useState([]);
+    const navigate = useNavigate();
+    const questionObj = {
+        title: "",
+        answers: ["", ""],
+    };
+    const [questions, setQuestions] = useState([questionObj]);
     const handleCreateQuestion = () => {
         setQuestions([...questions, questionObj]);
     };
@@ -28,10 +32,6 @@ export default function CreateQuiz() {
         let q = [...questions];
         q.splice(index, 1);
         setQuestions(q);
-    };
-    const questionObj = {
-        title: "",
-        answers: [],
     };
     const handleCreateAnswer = (index) => {
         let q = [...questions];
@@ -74,14 +74,14 @@ export default function CreateQuiz() {
         });
         const config = {
             headers: {
-                "Content-Type": "multipart/form-data",
+                "Content-Type": "application/json",
                 Authorization:
                     "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiODVkMjg0N2FjMDQ0ZWFmMTVlM2NmYTIxN2Y2YjJlMjk2ZTI1Mzc0ODI1MjA3ODRjYmI2MmMwNDQ3ZmM4MDBmZDIzY2I4ZTNiNTM0MDljNjciLCJpYXQiOjE2NDE1NjU0MzAuOTkwMTcsIm5iZiI6MTY0MTU2NTQzMC45OTAxNzQsImV4cCI6MTY3MzEwMTQzMC44NTYzODksInN1YiI6IjEiLCJzY29wZXMiOltdfQ.GYIjvpZIYkzCoM094Ie9Tu0oQwgkc7WIC3-rjIXfYVGgB9CulBAsA9Kd5hpRaGkokqYkxOdRl01xq2V67D4QzZD47cNsm0Lwiyxy0Jg0WGmjs1SAT3sF43Doac44Z684G5SYPESGVzIFioelGMzGjnMgw_zgS1mMr2tTK7N8KG0Yja1sC5jp-zIzOlJvzsOG40GoW3YBqs1F6cU8X8SMgvRjgemUAexBN2Hs98pfhopTSNvrZmkLlRwyLReZZVEur7B54q6s2o4uHj-eCobo3GzsjSE13p0ieMMs6v0wmUl5RGXn8OmdVxhdJGQgquT50OKc-c6XAiXi8Vzll-XabDVNtxkD3AxSBVnHap56o6sgZ-rhNra3XA7VMWYBjVlSgWsroAutxx5vZvLyuRrS8BK-LKb5vZmhTr9u_MoWhByXGs1VMbT_P_oD26tXfYnldgcuZV7Z8Rvpbvfar8AE1sSiQEuOB5pqQQzOjNO447rv3g_RQ8eBc5fuvVv7rpkPljxfbQg7wT0k5iBx82auMevfVxE_CyFTKE2qHv1G2veNeZaWurVW0sOE3VHZ5vpnGdY6f_FQXsOjAhpXCyQJZwWVmaOINMRDdCDmRtOXXGj_2_c6RdepEj-53WFYAQbwKLmop8YdgPOHR8i_AJjlDaEuwulYaEFDDG7KXqlQ8Z8",
             },
         };
         axios.post("/api/quiz", body, config).then((response) => {
             if (response.data.success === true) {
-                return <Redirect to={`/quiz/${response.data.data.slug}`} />;
+                navigate(`/quiz/${response.data.data.slug}`);
             }
         });
     };
@@ -123,7 +123,7 @@ export default function CreateQuiz() {
                                 defaultValue={1}
                                 variant="outlined"
                                 name="layout"
-                                InputProps={{ inputProps: { min: 0, max: 5 } }}
+                                InputProps={{ inputProps: { min: 1, max: 3 } }}
                             />
                         </Grid>
                         <Grid item align="center" xs={12}>
@@ -199,26 +199,29 @@ export default function CreateQuiz() {
                                                                         xs={12}
                                                                         key={i}
                                                                     >
-                                                                        <Grid
-                                                                            container
-                                                                            align="center"
-                                                                            spacing={
-                                                                                2
-                                                                            }
-                                                                        >
+                                                                        {i ===
+                                                                        0 ? (
                                                                             <Grid
-                                                                                item
-                                                                                xs={
-                                                                                    10
+                                                                                container
+                                                                                align="center"
+                                                                                spacing={
+                                                                                    2
                                                                                 }
                                                                             >
-                                                                                {i ===
-                                                                                0 ? (
+                                                                                <Grid
+                                                                                    item
+                                                                                    xs={
+                                                                                        10
+                                                                                    }
+                                                                                >
                                                                                     <TextField
                                                                                         variant="outlined"
                                                                                         label="Text"
                                                                                         size="small"
                                                                                         helperText="This is the right answer!"
+                                                                                        inputProps={{
+                                                                                            maxLength: 31,
+                                                                                        }}
                                                                                         onChange={(
                                                                                             event
                                                                                         ) =>
@@ -229,11 +232,29 @@ export default function CreateQuiz() {
                                                                                             )
                                                                                         }
                                                                                     />
-                                                                                ) : (
+                                                                                </Grid>
+                                                                            </Grid>
+                                                                        ) : (
+                                                                            <Grid
+                                                                                container
+                                                                                align="center"
+                                                                                spacing={
+                                                                                    2
+                                                                                }
+                                                                            >
+                                                                                <Grid
+                                                                                    item
+                                                                                    xs={
+                                                                                        10
+                                                                                    }
+                                                                                >
                                                                                     <TextField
                                                                                         variant="outlined"
                                                                                         label="Text"
                                                                                         size="small"
+                                                                                        inputProps={{
+                                                                                            maxLength: 31,
+                                                                                        }}
                                                                                         onChange={(
                                                                                             event
                                                                                         ) =>
@@ -244,26 +265,26 @@ export default function CreateQuiz() {
                                                                                             )
                                                                                         }
                                                                                     />
-                                                                                )}
-                                                                            </Grid>
-                                                                            <Grid
-                                                                                item
-                                                                                xs={
-                                                                                    2
-                                                                                }
-                                                                            >
-                                                                                <IconButton
-                                                                                    onClick={() => {
-                                                                                        handleRemoveAnswer(
-                                                                                            index,
-                                                                                            i
-                                                                                        );
-                                                                                    }}
+                                                                                </Grid>
+                                                                                <Grid
+                                                                                    item
+                                                                                    xs={
+                                                                                        2
+                                                                                    }
                                                                                 >
-                                                                                    <DeleteIcon fontSize="small" />
-                                                                                </IconButton>
+                                                                                    <IconButton
+                                                                                        onClick={() => {
+                                                                                            handleRemoveAnswer(
+                                                                                                index,
+                                                                                                i
+                                                                                            );
+                                                                                        }}
+                                                                                    >
+                                                                                        <DeleteIcon fontSize="small" />
+                                                                                    </IconButton>
+                                                                                </Grid>
                                                                             </Grid>
-                                                                        </Grid>
+                                                                        )}
                                                                     </Grid>
                                                                 );
                                                             }
@@ -283,6 +304,16 @@ export default function CreateQuiz() {
                         </Grid>
                     </Grid>
                 </Box>
+                <br />
+                <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    align="center"
+                >
+                    {"Copyright © "}
+                    WordWall {new Date().getFullYear()}
+                    {"."}
+                </Typography>
             </Container>
         </ThemeProvider>
     );
