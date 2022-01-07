@@ -25,3 +25,6 @@ Route::get('/quiz/{slug}', function () {
 Route::get('/anagram/{slug}', function () {
     return view('index');
 });
+Route::get('/create/quiz', function () {
+    return view('index');
+});
