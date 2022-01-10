@@ -26812,8 +26812,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/Typography/Typography.js");
 /* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/TextField/TextField.js");
 /* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/IconButton/IconButton.js");
-/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/Button/Button.js");
-/* harmony import */ var _mui_icons_material_Delete__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @mui/icons-material/Delete */ "./node_modules/@mui/icons-material/Delete.js");
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/Paper/Paper.js");
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/Button/Button.js");
+/* harmony import */ var _mui_icons_material_Delete__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @mui/icons-material/Delete */ "./node_modules/@mui/icons-material/Delete.js");
 /* harmony import */ var _mui_icons_material_Add__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @mui/icons-material/Add */ "./node_modules/@mui/icons-material/Add.js");
 /* harmony import */ var _mui_material_styles__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @mui/material/styles */ "./node_modules/@mui/material/styles/createTheme.js");
 /* harmony import */ var _mui_material_styles__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @mui/material/styles */ "./node_modules/@mui/system/esm/ThemeProvider/ThemeProvider.js");
@@ -26860,7 +26861,10 @@ function CreateQuiz() {
     answers: ["", ""]
   };
 
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([questionObj]),
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([{
+    title: "",
+    answers: ["", ""]
+  }]),
       _useState2 = _slicedToArray(_useState, 2),
       questions = _useState2[0],
       setQuestions = _useState2[1];
@@ -26880,6 +26884,11 @@ function CreateQuiz() {
     var q = _toConsumableArray(questions);
 
     var question = questions[index];
+
+    if (question.answers.length === 5) {
+      return;
+    }
+
     question.answers.push("");
     q.splice(index, 1, question);
     setQuestions(q);
@@ -26939,13 +26948,12 @@ function CreateQuiz() {
     theme: theme,
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_Header__WEBPACK_IMPORTED_MODULE_1__["default"], {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], {
       component: "main",
-      maxWidth: "xs",
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_9__["default"], {
         sx: {
           marginTop: 8,
           display: "flex",
-          flexDirection: "column",
-          alignItems: "center"
+          justifyContent: "center",
+          flexDirection: "row"
         },
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], {
           container: true,
@@ -26962,20 +26970,15 @@ function CreateQuiz() {
               color: "primary",
               children: "Create Quiz"
             })
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], {
             item: true,
             align: "center",
             xs: 12,
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_12__["default"], {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_12__["default"], {
               label: "Name",
               name: "name",
               variant: "outlined"
-            })
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], {
-            item: true,
-            align: "center",
-            xs: 12,
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_12__["default"], {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_12__["default"], {
               type: "number",
               defaultValue: 1,
               variant: "outlined",
@@ -26986,7 +26989,7 @@ function CreateQuiz() {
                   max: 3
                 }
               }
-            })
+            })]
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], {
             item: true,
             align: "center",
@@ -27003,122 +27006,121 @@ function CreateQuiz() {
             })]
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], {
             item: true,
-            xs: 12,
+            lg: 12,
             children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], {
               container: true,
               align: "center",
+              alignItems: "flex-start",
+              justifyContent: "center",
               spacing: 5,
               children: questions.map(function (item, index) {
                 return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], {
                   item: true,
                   xs: 12,
-                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], {
-                    container: true,
-                    align: "center",
-                    spacing: 2,
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], {
-                      item: true,
-                      xs: 10,
-                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_12__["default"], {
-                        variant: "filled",
-                        label: "Title",
-                        name: "Title",
-                        onChange: function onChange(event) {
-                          return handleQuestionTitleChange(event, index);
-                        }
-                      })
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], {
-                      item: true,
-                      xs: 2,
-                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_13__["default"], {
-                        onClick: function onClick() {
-                          handleRemoveQuestion(index);
-                        },
-                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_icons_material_Delete__WEBPACK_IMPORTED_MODULE_15__["default"], {
-                          fontSize: "small"
+                  md: 6,
+                  lg: 3,
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_15__["default"], {
+                    elevation: 5,
+                    sx: {
+                      padding: "15px"
+                    },
+                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], {
+                      container: true,
+                      align: "center",
+                      spacing: 2,
+                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], {
+                        item: true,
+                        xs: 12,
+                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_mui_material__WEBPACK_IMPORTED_MODULE_11__["default"], {
+                          variant: "subtitle1",
+                          children: ["Question", " ", (index + 1).toString()]
                         })
-                      })
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], {
-                      item: true,
-                      xs: 12,
-                      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_11__["default"], {
-                        variant: "p",
-                        fontSize: "small",
-                        children: "Add Answer"
-                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_13__["default"], {
-                        onClick: function onClick() {
-                          handleCreateAnswer(index);
-                        },
-                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_icons_material_Add__WEBPACK_IMPORTED_MODULE_14__["default"], {
-                          fontSize: "small"
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], {
+                        item: true,
+                        xs: 10,
+                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_12__["default"], {
+                          variant: "filled",
+                          label: "Title",
+                          name: "Title",
+                          value: questions[index].title,
+                          onChange: function onChange(event) {
+                            return handleQuestionTitleChange(event, index);
+                          }
                         })
-                      })]
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], {
-                      item: true,
-                      xs: 12,
-                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], {
-                        container: true,
-                        align: "center",
-                        spacing: 2,
-                        children: item.answers.map(function (answer, i) {
-                          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], {
-                            item: true,
-                            xs: 12,
-                            children: i === 0 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], {
-                              container: true,
-                              align: "center",
-                              spacing: 2,
-                              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], {
-                                item: true,
-                                xs: 10,
-                                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_12__["default"], {
-                                  variant: "outlined",
-                                  label: "Text",
-                                  size: "small",
-                                  helperText: "This is the right answer!",
-                                  inputProps: {
-                                    maxLength: 31
-                                  },
-                                  onChange: function onChange(event) {
-                                    return handleAnswerChange(event, index, i);
-                                  }
-                                })
-                              })
-                            }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], {
-                              container: true,
-                              align: "center",
-                              spacing: 2,
-                              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], {
-                                item: true,
-                                xs: 10,
-                                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_12__["default"], {
-                                  variant: "outlined",
-                                  label: "Text",
-                                  size: "small",
-                                  inputProps: {
-                                    maxLength: 31
-                                  },
-                                  onChange: function onChange(event) {
-                                    return handleAnswerChange(event, index, i);
-                                  }
-                                })
-                              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], {
-                                item: true,
-                                xs: 2,
-                                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_13__["default"], {
-                                  onClick: function onClick() {
-                                    handleRemoveAnswer(index, i);
-                                  },
-                                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_icons_material_Delete__WEBPACK_IMPORTED_MODULE_15__["default"], {
-                                    fontSize: "small"
+                      }), index > 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], {
+                        item: true,
+                        xs: 2,
+                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_13__["default"], {
+                          onClick: function onClick() {
+                            handleRemoveQuestion(index);
+                          },
+                          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_icons_material_Delete__WEBPACK_IMPORTED_MODULE_16__["default"], {
+                            fontSize: "small"
+                          })
+                        })
+                      }), questions[index].answers.length <= 4 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], {
+                        item: true,
+                        xs: 12,
+                        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_11__["default"], {
+                          variant: "p",
+                          fontSize: "small",
+                          children: "Add Answer"
+                        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_13__["default"], {
+                          onClick: function onClick() {
+                            handleCreateAnswer(index);
+                          },
+                          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_icons_material_Add__WEBPACK_IMPORTED_MODULE_14__["default"], {
+                            fontSize: "small"
+                          })
+                        })]
+                      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], {
+                        item: true,
+                        xs: 12,
+                        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], {
+                          container: true,
+                          align: "center",
+                          spacing: 2,
+                          children: item.answers.map(function (answer, i) {
+                            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], {
+                              item: true,
+                              xs: 12,
+                              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], {
+                                container: true,
+                                align: "center",
+                                spacing: 2,
+                                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], {
+                                  item: true,
+                                  xs: 10,
+                                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_12__["default"], {
+                                    variant: "outlined",
+                                    label: "Text",
+                                    size: "small",
+                                    inputProps: {
+                                      maxLength: 31
+                                    },
+                                    value: questions[index].answers[i],
+                                    onChange: function onChange(event) {
+                                      return handleAnswerChange(event, index, i);
+                                    }
                                   })
-                                })
-                              })]
-                            })
-                          }, i);
+                                }), i > 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], {
+                                  item: true,
+                                  xs: 2,
+                                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_13__["default"], {
+                                    onClick: function onClick() {
+                                      handleRemoveAnswer(index, i);
+                                    },
+                                    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_icons_material_Delete__WEBPACK_IMPORTED_MODULE_16__["default"], {
+                                      fontSize: "small"
+                                    })
+                                  })
+                                })]
+                              })
+                            }, i);
+                          })
                         })
-                      })
-                    }, index)]
+                      }, index)]
+                    })
                   })
                 }, index);
               })
@@ -27127,7 +27129,7 @@ function CreateQuiz() {
             item: true,
             align: "center",
             xs: 12,
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_16__["default"], {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_17__["default"], {
               type: "submit",
               variant: "outlined",
               children: "Create"
