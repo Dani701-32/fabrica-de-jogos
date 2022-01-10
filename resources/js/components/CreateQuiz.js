@@ -91,6 +91,7 @@ export default function CreateQuiz() {
             }
         });
     };
+
     return (
         <ThemeProvider theme={theme}>
             <Header />
