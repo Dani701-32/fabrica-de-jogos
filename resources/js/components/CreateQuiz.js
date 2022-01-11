@@ -13,7 +13,6 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import Header from "./Header";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -49,6 +48,9 @@ export default function CreateQuiz() {
     const handleRemoveAnswer = (index, i) => {
         let q = [...questions];
         let question = questions[index];
+        if (question.answers.length === 2) {
+            return;
+        }
         question.answers.splice(i, 1);
         q.splice(index, 1, question);
         setQuestions(q);
@@ -94,7 +96,6 @@ export default function CreateQuiz() {
 
     return (
         <ThemeProvider theme={theme}>
-            <Header />
             <Container component="main">
                 <CssBaseline />
                 <Box
@@ -112,11 +113,6 @@ export default function CreateQuiz() {
                         onSubmit={handleSubmit}
                         spacing={5}
                     >
-                        <Grid item align="center" xs={12}>
-                            <Typography variant="h3" color="primary">
-                                Create Quiz
-                            </Typography>
-                        </Grid>
                         <Grid item align="center" xs={12}>
                             <TextField
                                 label="Name"
@@ -154,9 +150,9 @@ export default function CreateQuiz() {
                                     return (
                                         <Grid
                                             item
-                                            xs={12}
+                                            xs={8}
                                             md={6}
-                                            lg={3}
+                                            lg={4}
                                             key={index}
                                         >
                                             <Paper
@@ -183,6 +179,7 @@ export default function CreateQuiz() {
                                                             variant="filled"
                                                             label="Title"
                                                             name="Title"
+                                                            fullWidth
                                                             value={
                                                                 questions[index]
                                                                     .title
@@ -204,7 +201,7 @@ export default function CreateQuiz() {
                                                                     );
                                                                 }}
                                                             >
-                                                                <DeleteIcon fontSize="small" />
+                                                                <DeleteIcon />
                                                             </IconButton>
                                                         </Grid>
                                                     )}
@@ -250,47 +247,97 @@ export default function CreateQuiz() {
                                                                                 i
                                                                             }
                                                                         >
-                                                                            <Grid
-                                                                                container
-                                                                                align="center"
-                                                                                spacing={
-                                                                                    2
-                                                                                }
-                                                                            >
+                                                                            {i ===
+                                                                            0 ? (
                                                                                 <Grid
-                                                                                    item
-                                                                                    xs={
-                                                                                        10
+                                                                                    container
+                                                                                    align="center"
+                                                                                    spacing={
+                                                                                        2
                                                                                     }
                                                                                 >
-                                                                                    <TextField
-                                                                                        variant="outlined"
-                                                                                        label="Text"
-                                                                                        size="small"
-                                                                                        inputProps={{
-                                                                                            maxLength: 31,
-                                                                                        }}
-                                                                                        value={
-                                                                                            questions[
-                                                                                                index
-                                                                                            ]
-                                                                                                .answers[
-                                                                                                i
-                                                                                            ]
+                                                                                    <Grid
+                                                                                        item
+                                                                                        xs={
+                                                                                            10
                                                                                         }
-                                                                                        onChange={(
-                                                                                            event
-                                                                                        ) =>
-                                                                                            handleAnswerChange(
-                                                                                                event,
-                                                                                                index,
-                                                                                                i
-                                                                                            )
-                                                                                        }
-                                                                                    />
+                                                                                    >
+                                                                                        <TextField
+                                                                                            variant="outlined"
+                                                                                            label="Correct answer"
+                                                                                            size="small"
+                                                                                            inputProps={{
+                                                                                                maxLength: 31,
+                                                                                            }}
+                                                                                            focused
+                                                                                            fullWidth
+                                                                                            color="success"
+                                                                                            value={
+                                                                                                questions[
+                                                                                                    index
+                                                                                                ]
+                                                                                                    .answers[
+                                                                                                    i
+                                                                                                ]
+                                                                                            }
+                                                                                            onChange={(
+                                                                                                event
+                                                                                            ) =>
+                                                                                                handleAnswerChange(
+                                                                                                    event,
+                                                                                                    index,
+                                                                                                    i
+                                                                                                )
+                                                                                            }
+                                                                                        />
+                                                                                    </Grid>
                                                                                 </Grid>
-                                                                                {i >
-                                                                                    0 && (
+                                                                            ) : (
+                                                                                <Grid
+                                                                                    container
+                                                                                    align="center"
+                                                                                    spacing={
+                                                                                        2
+                                                                                    }
+                                                                                >
+                                                                                    <Grid
+                                                                                        item
+                                                                                        xs={
+                                                                                            10
+                                                                                        }
+                                                                                    >
+                                                                                        <TextField
+                                                                                            variant="outlined"
+                                                                                            label={
+                                                                                                "Answer " +
+                                                                                                (i +
+                                                                                                    1)
+                                                                                            }
+                                                                                            fullWidth
+                                                                                            size="small"
+                                                                                            inputProps={{
+                                                                                                maxLength: 31,
+                                                                                            }}
+                                                                                            value={
+                                                                                                questions[
+                                                                                                    index
+                                                                                                ]
+                                                                                                    .answers[
+                                                                                                    i
+                                                                                                ]
+                                                                                            }
+                                                                                            onChange={(
+                                                                                                event
+                                                                                            ) =>
+                                                                                                handleAnswerChange(
+                                                                                                    event,
+                                                                                                    index,
+                                                                                                    i
+                                                                                                )
+                                                                                            }
+                                                                                        />
+                                                                                    </Grid>
+
                                                                                     <Grid
                                                                                         item
                                                                                         xs={
@@ -305,11 +352,11 @@ export default function CreateQuiz() {
                                                                                                 );
                                                                                             }}
                                                                                         >
-                                                                                            <DeleteIcon fontSize="small" />
+                                                                                            <DeleteIcon />
                                                                                         </IconButton>
                                                                                     </Grid>
-                                                                                )}
-                                                                            </Grid>
+                                                                                </Grid>
+                                                                            )}
                                                                         </Grid>
                                                                     );
                                                                 }
