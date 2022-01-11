@@ -48,8 +48,8 @@ class CruzadinhaController extends BaseController
         $cruzadinha->name = $request->name;
         $cruzadinha->slug = SlugService::createSlug(Cruzadinha::class, 'slug', $request->name);
         $cruzadinha->layout = $request->layout;
-        $cruzadinha->words = implode('/', $request->words);
-        $cruzadinha->tips = implode('/', $request->tips);
+        $cruzadinha->words = implode('|', $request->words);
+        $cruzadinha->tips = implode('|', $request->tips);
         $cruzadinha->image_tips = $request->image_tips;
         $cruzadinha->save();
 

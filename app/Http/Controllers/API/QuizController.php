@@ -56,7 +56,7 @@ class QuizController extends BaseController
             $model = new Question();
             foreach($question as $key => $value) {
                 if (is_array($value)) {
-                    $value = implode('/', $value);
+                    $value = implode('|', $value);
                 }
                 $model->$key = $value;
             }

@@ -47,7 +47,7 @@ class WordSearchController extends BaseController
         $word_search->name = $request->name;
         $word_search->slug = SlugService::createSlug(WordSearch::class, 'slug', $request->name);
         $word_search->layout = $request->layout;
-        $word_search->words = implode('/', $request->words);
+        $word_search->words = implode('|', $request->words);
         $word_search->save();
         return $this->sendResponse(new WordSearchResource($word_search), 'Word search game created successfully.');
     }

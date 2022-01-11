@@ -48,8 +48,8 @@ class MatchUpController extends BaseController
         $matchup->name = $request->name;
         $matchup->slug = SlugService::createSlug(MatchUp::class, 'slug', $request->name);
         $matchup->layout = $request->layout;
-        $matchup->words = implode("/", $request->words);
-        $matchup->meanings = implode("/", $request->meanings);
+        $matchup->words = implode("|", $request->words);
+        $matchup->meanings = implode("|", $request->meanings);
         $matchup->save();
 
         return $this->sendResponse(new MatchUpResource($matchup), 'MatchUp game created successfully');

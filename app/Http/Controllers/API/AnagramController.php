@@ -46,7 +46,7 @@ class AnagramController extends BaseController
         $anagram->name = $request->name;
         $anagram->slug = SlugService::createSlug(Anagram::class, 'slug', $request->name);
         $anagram->layout = $request->layout;
-        $anagram->words = implode('/', $request->words);
+        $anagram->words = implode('|', $request->words);
         $anagram->save();
 
         return $this->sendResponse(new AnagramResource($anagram), "Anagram game created successfully.");

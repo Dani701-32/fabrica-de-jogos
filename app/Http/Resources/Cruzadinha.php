@@ -14,7 +14,7 @@ class Cruzadinha extends JsonResource
      */
     public function toArray($request)
     {
-        $splited_words = explode('/', $this->words);
+        $splited_words = explode('|', $this->words);
         $unwanted_array = array('Š'=>'S', 'š'=>'s', 'Ž'=>'Z', 'ž'=>'z', 'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C',
             'È'=>'E', 'É'=>'E', 'Ê'=>'E', 'Ë'=>'E', 'Ì'=>'I', 'Í'=>'I', 'Î'=>'I', 'Ï'=>'I', 'Ñ'=>'N', 'Ò'=>'O', 'Ó'=>'O', 'Ô'=>'O', 'Õ'=>'O', 'Ö'=>'O',
             'Ø'=>'O', 'Ù'=>'U', 'Ú'=>'U', 'Û'=>'U', 'Ü'=>'U', 'Ý'=>'Y', 'Þ'=>'B', 'ß'=>'ss', 'à'=>'a', 'á'=>'a', 'â'=>'a', 'ã'=>'a', 'ä'=>'a', 'å'=>'a',
@@ -30,7 +30,7 @@ class Cruzadinha extends JsonResource
             'slug' => $this->slug,
             'layout' => $this->layout,
             'words' => $fully_splited_words,
-            'tips' => explode('/', $this->tips),
+            'tips' => explode('|', $this->tips),
             'image_tips' => $this->image_tips,
             'created_at' => $this->created_at->format('d/m/Y'),
             'updated_at' => $this->updated_at->format('d/m/Y'),

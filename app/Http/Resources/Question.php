@@ -16,7 +16,7 @@ class Question extends JsonResource
     {
         return [
             'title' => $this->title,
-            'answers' => explode("/", $this->answers),
+            'answers' => explode("|", $this->answers),
             ];
     }
 }

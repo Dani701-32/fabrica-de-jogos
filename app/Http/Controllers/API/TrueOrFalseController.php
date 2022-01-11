@@ -49,12 +49,12 @@ class TrueOrFalseController extends BaseController
         $true_or_false->name = $request->name;
         $true_or_false->slug = SlugService::createSlug(TrueOrFalse::class, 'slug', $request->name);
         $true_or_false->layout = $request->layout;
-        $true_or_false->questions = implode('/', $request->questions);
+        $true_or_false->questions = implode('|', $request->questions);
         $answers = $request->answers;
         for($x = 0; $x < sizeof($answers); $x++) {
             $answers[$x] = $answers[$x] ? 'true' : 'false';
         }
-        $true_or_false->answers = implode('/', $answers);
+        $true_or_false->answers = implode('|', $answers);
         $true_or_false->save();
 
         return $this->sendResponse(new TrueOrFalseResource($true_or_false), "True or false game created successfully.");
