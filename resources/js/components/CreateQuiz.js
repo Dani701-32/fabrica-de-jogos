@@ -15,24 +15,50 @@ import AddIcon from "@mui/icons-material/Add";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import {
+    MaterialSlate,
+    MaterialEditable,
+    createMaterialEditor,
+    Toolbar,
+    CharCounter,
+    withCounter,
+    BoldButton,
+    ItalicButton,
+    UnderlinedButton,
+    StrikethroughButton,
+} from "@unicef/material-slate";
 
 const theme = createTheme();
 
 export default function CreateQuiz() {
     const navigate = useNavigate();
+    const initialValue = () => {
+        return [
+            {
+                type: "paragraph",
+                children: [{ text: "" }],
+            },
+        ];
+    };
     const questionObj = {
-        title: "",
+        title: initialValue(),
         answers: ["", ""],
     };
     const [questions, setQuestions] = useState([
-        { title: "", answers: ["", ""] },
+        { title: initialValue(), answers: ["", ""] },
     ]);
     const handleCreateQuestion = () => {
         setQuestions([...questions, questionObj]);
+        let editors_ = editors;
+        editors_.push(withCounter(createMaterialEditor()));
+        setEditors(editors_);
     };
     const handleRemoveQuestion = (index) => {
         let q = [...questions];
         q.splice(index, 1);
+        let editors_ = editors;
+        editors_.splice(index, 1);
+        setEditors(editors_);
         setQuestions(q);
     };
     const handleCreateAnswer = (index) => {
@@ -55,10 +81,10 @@ export default function CreateQuiz() {
         q.splice(index, 1, question);
         setQuestions(q);
     };
-    const handleQuestionTitleChange = (event, index) => {
+    const handleQuestionTitleChange = (value, index) => {
         let q = [...questions];
         let question = questions[index];
-        question.title = event.target.value;
+        question.title = value;
         q.splice(index, 1, question);
         setQuestions(q);
     };
@@ -75,11 +101,29 @@ export default function CreateQuiz() {
         const data = new FormData(event.currentTarget);
         let name = data.get("name");
         let layout = data.get("layout");
+        let questionsJSON = [];
+        console.log(questions);
+        questions.map((item) => {
+            let title = "";
+            item.title[0].children.map((child) => {
+                let text = child.text;
+                child.bold && (text = `[b]${text}[/b]`);
+                child.italic && (text = `[i]${text}[/i]`);
+                child.underlined && (text = `[u]${text}[/u]`);
+                child.strikethrough && (text = `[s]${text}[/s]`);
+                title = title + text;
+            });
+            questionsJSON.push({
+                answers: item.answers,
+                title: title,
+            });
+        });
         const body = JSON.stringify({
             name: name,
             layout: layout,
-            questions: questions,
+            questions: questionsJSON,
         });
+        console.log(body);
         const config = {
             headers: {
                 "Content-Type": "application/json",
@@ -93,6 +137,9 @@ export default function CreateQuiz() {
             }
         });
     };
+    const [editors, setEditors] = useState([
+        withCounter(createMaterialEditor()),
+    ]);
 
     return (
         <ThemeProvider theme={theme}>
@@ -118,12 +165,14 @@ export default function CreateQuiz() {
                                 label="Name"
                                 name="name"
                                 variant="outlined"
+                                required
                             />
                             <TextField
                                 type="number"
                                 defaultValue={1}
                                 variant="outlined"
                                 name="layout"
+                                required
                                 InputProps={{
                                     inputProps: { min: 1, max: 3 },
                                 }}
@@ -152,7 +201,7 @@ export default function CreateQuiz() {
                                             item
                                             xs={8}
                                             md={6}
-                                            lg={4}
+                                            lg={6}
                                             key={index}
                                         >
                                             <Paper
@@ -164,33 +213,16 @@ export default function CreateQuiz() {
                                                 <Grid
                                                     container
                                                     align="center"
+                                                    alignItems="center"
                                                     spacing={2}
                                                 >
-                                                    <Grid item xs={12}>
+                                                    <Grid item xs={10}>
                                                         <Typography variant="subtitle1">
                                                             Question{" "}
                                                             {(
                                                                 index + 1
                                                             ).toString()}
                                                         </Typography>
-                                                    </Grid>
-                                                    <Grid item xs={10}>
-                                                        <TextField
-                                                            variant="filled"
-                                                            label="Title"
-                                                            name="Title"
-                                                            fullWidth
-                                                            value={
-                                                                questions[index]
-                                                                    .title
-                                                            }
-                                                            onChange={(event) =>
-                                                                handleQuestionTitleChange(
-                                                                    event,
-                                                                    index
-                                                                )
-                                                            }
-                                                        />
                                                     </Grid>
                                                     {index > 0 && (
                                                         <Grid item xs={2}>
@@ -201,10 +233,50 @@ export default function CreateQuiz() {
                                                                     );
                                                                 }}
                                                             >
-                                                                <DeleteIcon />
+                                                                <DeleteIcon fontSize="small" />
                                                             </IconButton>
                                                         </Grid>
                                                     )}
+                                                    <Grid
+                                                        item
+                                                        align="left"
+                                                        xs={12}
+                                                    >
+                                                        <MaterialSlate
+                                                            editor={
+                                                                editors[index]
+                                                            }
+                                                            value={
+                                                                questions[index]
+                                                                    .title
+                                                            }
+                                                            onChange={(event) =>
+                                                                handleQuestionTitleChange(
+                                                                    event,
+                                                                    index
+                                                                )
+                                                            }
+                                                        >
+                                                            <Toolbar>
+                                                                <BoldButton />
+                                                                <ItalicButton />
+                                                                <UnderlinedButton />
+                                                                <StrikethroughButton />
+                                                            </Toolbar>
+                                                            <MaterialEditable placeholder="Title of the Question" />
+                                                            <Box
+                                                                display="flex"
+                                                                justifyContent="space-between"
+                                                                mr={1}
+                                                            >
+                                                                <CharCounter
+                                                                    maxChars={
+                                                                        160
+                                                                    }
+                                                                />
+                                                            </Box>
+                                                        </MaterialSlate>
+                                                    </Grid>
                                                     {questions[index].answers
                                                         .length <= 4 && (
                                                         <Grid item xs={12}>
@@ -233,6 +305,7 @@ export default function CreateQuiz() {
                                                         <Grid
                                                             container
                                                             align="center"
+                                                            alignItems="center"
                                                             spacing={2}
                                                         >
                                                             {item.answers.map(
@@ -266,6 +339,7 @@ export default function CreateQuiz() {
                                                                                             variant="outlined"
                                                                                             label="Correct answer"
                                                                                             size="small"
+                                                                                            required
                                                                                             inputProps={{
                                                                                                 maxLength: 31,
                                                                                             }}
@@ -352,7 +426,7 @@ export default function CreateQuiz() {
                                                                                                 );
                                                                                             }}
                                                                                         >
-                                                                                            <DeleteIcon />
+                                                                                            <DeleteIcon fontSize="small" />
                                                                                         </IconButton>
                                                                                     </Grid>
                                                                                 </Grid>
@@ -371,23 +445,23 @@ export default function CreateQuiz() {
                             </Grid>
                         </Grid>
                         <Grid item align="center" xs={12}>
-                            <Button type="submit" variant="outlined">
+                            <Button
+                                size="large"
+                                type="submit"
+                                variant="outlined"
+                            >
                                 Create
                             </Button>
                         </Grid>
                     </Grid>
                 </Box>
-                <br />
-                <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    align="center"
-                >
-                    {"Copyright © "}
-                    WordWall {new Date().getFullYear()}
-                    {"."}
-                </Typography>
             </Container>
+            <br />
+            <Typography variant="body2" color="text.secondary" align="center">
+                {"Copyright © "}
+                WordWall {new Date().getFullYear()}
+                {"."}
+            </Typography>
         </ThemeProvider>
     );
 }
