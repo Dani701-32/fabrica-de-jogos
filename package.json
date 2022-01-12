@@ -36,5 +36,11 @@
     },
     "resolutions": {
         "postcss": "^8.2.13"
+    },
+    "prettier": {
+        "trailingComma": "none",
+        "tabWidth": 4,
+        "semi": true,
+        "singleQuote": true
     }
 }

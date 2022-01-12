@@ -36,7 +36,7 @@ class QuizController extends BaseController
             'name' => 'required|string|max:255',
             'layout' => 'required|integer|max:10',
             'questions' => 'required|array|max:10',
-            'questions.*.title' => 'required|string|max:80',
+            'questions.*.title' => 'required|string',
             'questions.*.answers' => 'required|array|max:5',
             'questions.*.answers.*' => 'required|string|max:31',
         ]);

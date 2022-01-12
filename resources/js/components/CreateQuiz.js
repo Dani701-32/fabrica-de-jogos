@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
     Button,
     TextField,
@@ -8,13 +8,13 @@ import {
     Box,
     CssBaseline,
     IconButton,
-    Paper,
-} from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import AddIcon from "@mui/icons-material/Add";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+    Paper
+} from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import AddIcon from '@mui/icons-material/Add';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import {
     MaterialSlate,
     MaterialEditable,
@@ -25,8 +25,8 @@ import {
     BoldButton,
     ItalicButton,
     UnderlinedButton,
-    StrikethroughButton,
-} from "@unicef/material-slate";
+    StrikethroughButton
+} from '@unicef/material-slate';
 
 const theme = createTheme();
 
@@ -35,30 +35,27 @@ export default function CreateQuiz() {
     const initialValue = () => {
         return [
             {
-                type: "paragraph",
-                children: [{ text: "" }],
-            },
+                type: 'paragraph',
+                children: [{ text: '' }]
+            }
         ];
     };
     const questionObj = {
         title: initialValue(),
-        answers: ["", ""],
+        answers: ['', '']
     };
     const [questions, setQuestions] = useState([
-        { title: initialValue(), answers: ["", ""] },
+        { title: initialValue(), answers: ['', ''] }
     ]);
     const handleCreateQuestion = () => {
         setQuestions([...questions, questionObj]);
-        let editors_ = editors;
+        let editors_ = [...editors];
         editors_.push(withCounter(createMaterialEditor()));
         setEditors(editors_);
     };
     const handleRemoveQuestion = (index) => {
         let q = [...questions];
         q.splice(index, 1);
-        let editors_ = editors;
-        editors_.splice(index, 1);
-        setEditors(editors_);
         setQuestions(q);
     };
     const handleCreateAnswer = (index) => {
@@ -67,7 +64,7 @@ export default function CreateQuiz() {
         if (question.answers.length === 5) {
             return;
         }
-        question.answers.push("");
+        question.answers.push('');
         q.splice(index, 1, question);
         setQuestions(q);
     };
@@ -99,12 +96,12 @@ export default function CreateQuiz() {
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        let name = data.get("name");
-        let layout = data.get("layout");
+        let name = data.get('name');
+        let layout = data.get('layout');
         let questionsJSON = [];
         console.log(questions);
         questions.map((item) => {
-            let title = "";
+            let title = '';
             item.title[0].children.map((child) => {
                 let text = child.text;
                 child.bold && (text = `[b]${text}[/b]`);
@@ -115,30 +112,30 @@ export default function CreateQuiz() {
             });
             questionsJSON.push({
                 answers: item.answers,
-                title: title,
+                title: title
             });
         });
         const body = JSON.stringify({
             name: name,
             layout: layout,
-            questions: questionsJSON,
+            questions: questionsJSON
         });
         console.log(body);
         const config = {
             headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
                 Authorization:
-                    "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiODVkMjg0N2FjMDQ0ZWFmMTVlM2NmYTIxN2Y2YjJlMjk2ZTI1Mzc0ODI1MjA3ODRjYmI2MmMwNDQ3ZmM4MDBmZDIzY2I4ZTNiNTM0MDljNjciLCJpYXQiOjE2NDE1NjU0MzAuOTkwMTcsIm5iZiI6MTY0MTU2NTQzMC45OTAxNzQsImV4cCI6MTY3MzEwMTQzMC44NTYzODksInN1YiI6IjEiLCJzY29wZXMiOltdfQ.GYIjvpZIYkzCoM094Ie9Tu0oQwgkc7WIC3-rjIXfYVGgB9CulBAsA9Kd5hpRaGkokqYkxOdRl01xq2V67D4QzZD47cNsm0Lwiyxy0Jg0WGmjs1SAT3sF43Doac44Z684G5SYPESGVzIFioelGMzGjnMgw_zgS1mMr2tTK7N8KG0Yja1sC5jp-zIzOlJvzsOG40GoW3YBqs1F6cU8X8SMgvRjgemUAexBN2Hs98pfhopTSNvrZmkLlRwyLReZZVEur7B54q6s2o4uHj-eCobo3GzsjSE13p0ieMMs6v0wmUl5RGXn8OmdVxhdJGQgquT50OKc-c6XAiXi8Vzll-XabDVNtxkD3AxSBVnHap56o6sgZ-rhNra3XA7VMWYBjVlSgWsroAutxx5vZvLyuRrS8BK-LKb5vZmhTr9u_MoWhByXGs1VMbT_P_oD26tXfYnldgcuZV7Z8Rvpbvfar8AE1sSiQEuOB5pqQQzOjNO447rv3g_RQ8eBc5fuvVv7rpkPljxfbQg7wT0k5iBx82auMevfVxE_CyFTKE2qHv1G2veNeZaWurVW0sOE3VHZ5vpnGdY6f_FQXsOjAhpXCyQJZwWVmaOINMRDdCDmRtOXXGj_2_c6RdepEj-53WFYAQbwKLmop8YdgPOHR8i_AJjlDaEuwulYaEFDDG7KXqlQ8Z8",
-            },
+                    'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiYWFhYzRiNGYyMTBiMGM4MmMyNWUwYTNhNzU1NWQwNmJiYTdjOTJiZTNjODRlNDA5N2MwZGM5MjBkMzJiODAyOWRlMzE3MWVhOGM2ZThkNWIiLCJpYXQiOjE2NDE5MjU4ODMuNDQwNDMzLCJuYmYiOjE2NDE5MjU4ODMuNDQwNDM3LCJleHAiOjE2NzM0NjE4ODMuNDI5NDI3LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.Z87TMAFbFhPXHftVULt0snAY0rbXgGs5I_DhMvlVhdC0HtcHqQxdAVSIOOoTt3rcx0rUOPxbPeLXlPlf0P5Y4vOAQukCFI2L2lbq12daRpYYg7ZQNBt-KYG974tcNbd6_YH7xViOISqPRreTEF6nSPun3rvjuKT65TwFR1fjzf0vXOQDxPlMES9aYRNRsjnrHcnDe-KO9j_040WJtI5ZI43tWFRWMq6Rb1U4e-l1hLopKHZpukNxqe3ZHIvwiZSBKb_wDRilxmuzP-UnVF2vCbvgJBkQGwlrKZusoLD6ixf-towFcKlrHZX5Wn71bevsIUW9S4jc5FMKf2zB41ii4Y_oglwlAg36l58vDDfncHEY8R_ppkR3jjWu1U3un4bLbaXS-yLn7VqkL-Fdyk94kKUCi5aBhWbc_VZGPSVSeiU-QujSlTwG_ghRuIASBH-mpmBq8WedADhMA6uGWRc52F3Tn31Ske0LQLDZPiw0NbZ56E5uXJOhFo10DXki7MVh-oPhNNGEndOHV5rNguB0Zf1fX15UTMFUKPbbw81whx_yM5_AlfDzPFOYLjSnwa2sPGlsMoYTUkw_LjuUlJsUnmeGwNdts08eGynIdx3F9SI4AIr2sY9FemkBS9_8kFWGqG9cK3jMwurFDXkG0wvO9jHsI5-u0zGfZosPyIApGoQ'
+            }
         };
-        axios.post("/api/quiz", body, config).then((response) => {
+        axios.post('/api/quiz', body, config).then((response) => {
             if (response.data.success === true) {
                 navigate(`/quiz/${response.data.data.slug}`);
             }
         });
     };
     const [editors, setEditors] = useState([
-        withCounter(createMaterialEditor()),
+        withCounter(createMaterialEditor())
     ]);
 
     return (
@@ -148,9 +145,9 @@ export default function CreateQuiz() {
                 <Box
                     sx={{
                         marginTop: 8,
-                        display: "flex",
-                        justifyContent: "center",
-                        flexDirection: "row",
+                        display: 'flex',
+                        justifyContent: 'center',
+                        flexDirection: 'row'
                     }}
                 >
                     <Grid
@@ -174,7 +171,7 @@ export default function CreateQuiz() {
                                 name="layout"
                                 required
                                 InputProps={{
-                                    inputProps: { min: 1, max: 3 },
+                                    inputProps: { min: 1, max: 3 }
                                 }}
                             />
                         </Grid>
@@ -207,7 +204,7 @@ export default function CreateQuiz() {
                                             <Paper
                                                 elevation={5}
                                                 sx={{
-                                                    padding: "15px",
+                                                    padding: '15px'
                                                 }}
                                             >
                                                 <Grid
@@ -218,7 +215,7 @@ export default function CreateQuiz() {
                                                 >
                                                     <Grid item xs={10}>
                                                         <Typography variant="subtitle1">
-                                                            Question{" "}
+                                                            Question{' '}
                                                             {(
                                                                 index + 1
                                                             ).toString()}
@@ -341,7 +338,7 @@ export default function CreateQuiz() {
                                                                                             size="small"
                                                                                             required
                                                                                             inputProps={{
-                                                                                                maxLength: 31,
+                                                                                                maxLength: 31
                                                                                             }}
                                                                                             focused
                                                                                             fullWidth
@@ -383,14 +380,14 @@ export default function CreateQuiz() {
                                                                                         <TextField
                                                                                             variant="outlined"
                                                                                             label={
-                                                                                                "Answer " +
+                                                                                                'Answer ' +
                                                                                                 (i +
                                                                                                     1)
                                                                                             }
                                                                                             fullWidth
                                                                                             size="small"
                                                                                             inputProps={{
-                                                                                                maxLength: 31,
+                                                                                                maxLength: 31
                                                                                             }}
                                                                                             value={
                                                                                                 questions[
@@ -411,7 +408,6 @@ export default function CreateQuiz() {
                                                                                             }
                                                                                         />
                                                                                     </Grid>
-
                                                                                     <Grid
                                                                                         item
                                                                                         xs={
@@ -458,9 +454,9 @@ export default function CreateQuiz() {
             </Container>
             <br />
             <Typography variant="body2" color="text.secondary" align="center">
-                {"Copyright © "}
+                {'Copyright © '}
                 WordWall {new Date().getFullYear()}
-                {"."}
+                {'.'}
             </Typography>
         </ThemeProvider>
     );

@@ -28,3 +28,10 @@ Route::get('/anagram/{slug}', function () {
 Route::get('/create/quiz', function () {
     return view('index');
 });
+Route::get('/create/anagram', function () {
+    return view('index');
+});
+Route::get('/create/wordsearch', function () {
+    return view('index');
+});
+
