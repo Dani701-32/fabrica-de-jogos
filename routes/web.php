@@ -34,4 +34,7 @@ Route::get('/create/anagram', function () {
 Route::get('/create/wordsearch', function () {
     return view('index');
 });
+Route::get('/create/trueorfalse', function () {
+    return view('index');
+});
 

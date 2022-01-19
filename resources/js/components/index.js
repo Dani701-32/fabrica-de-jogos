@@ -6,6 +6,7 @@ import WordSearch from './games/WordSearch';
 import CreateQuiz from './CreateQuiz';
 import CreateAnagram from './CreateAnagram';
 import CreateWordSearch from './CreateWordSearch';
+import CreateTrueOrFalse from './CreateTrueOrFalse';
 
 function App() {
     return (
@@ -28,6 +29,11 @@ function App() {
                     exact
                     path="/create/wordsearch"
                     element={<CreateWordSearch />}
+                />
+                <Route
+                    exact
+                    path="/create/trueorfalse"
+                    element={<CreateTrueOrFalse />}
                 />
             </Routes>
         </Router>

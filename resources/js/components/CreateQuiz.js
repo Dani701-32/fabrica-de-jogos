@@ -15,43 +15,53 @@ import AddIcon from '@mui/icons-material/Add';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import {
-    MaterialSlate,
-    MaterialEditable,
-    createMaterialEditor,
-    Toolbar,
-    CharCounter,
-    withCounter,
-    BoldButton,
-    ItalicButton,
-    UnderlinedButton,
-    StrikethroughButton
-} from '@unicef/material-slate';
+import MUIRichTextEditor from 'mui-rte';
+import { EditorState, convertToRaw } from 'draft-js';
 
-const theme = createTheme();
+const theme = createTheme({
+    palette: {
+        primary: {
+            main: '#000000'
+        }
+    },
+    overrides: {
+        MUIRichTextEditor: {
+            container: {
+                display: 'flex',
+                flexDirection: 'column'
+            },
+            editor: {
+                padding: '10px',
+                maxHeight: '200px',
+                overflow: 'auto',
+                alignItems: 'center'
+            },
+            toolbar: {
+                borderBottom: '1px solid gray'
+            },
+            placeHolder: {
+                paddingLeft: 20,
+                width: 'inherit'
+            },
+            anchorLink: {
+                color: '#333333',
+                textDecoration: 'underline'
+            }
+        }
+    }
+});
 
 export default function CreateQuiz() {
     const navigate = useNavigate();
-    const initialValue = () => {
-        return [
-            {
-                type: 'paragraph',
-                children: [{ text: '' }]
-            }
-        ];
-    };
     const questionObj = {
-        title: initialValue(),
+        title: EditorState.createEmpty(),
         answers: ['', '']
     };
     const [questions, setQuestions] = useState([
-        { title: initialValue(), answers: ['', ''] }
+        { title: EditorState.createEmpty(), answers: ['', ''] }
     ]);
     const handleCreateQuestion = () => {
         setQuestions([...questions, questionObj]);
-        let editors_ = [...editors];
-        editors_.push(withCounter(createMaterialEditor()));
-        setEditors(editors_);
     };
     const handleRemoveQuestion = (index) => {
         let q = [...questions];
@@ -80,10 +90,11 @@ export default function CreateQuiz() {
     };
     const handleQuestionTitleChange = (value, index) => {
         let q = [...questions];
-        let question = questions[index];
+        let question = q[index];
         question.title = value;
         q.splice(index, 1, question);
         setQuestions(q);
+        console.log(value);
     };
     const handleAnswerChange = (event, index, i) => {
         let q = [...questions];
@@ -99,7 +110,6 @@ export default function CreateQuiz() {
         let name = data.get('name');
         let layout = data.get('layout');
         let questionsJSON = [];
-        console.log(questions);
         questions.map((item) => {
             let title = '';
             item.title[0].children.map((child) => {
@@ -120,7 +130,6 @@ export default function CreateQuiz() {
             layout: layout,
             questions: questionsJSON
         });
-        console.log(body);
         const config = {
             headers: {
                 'Content-Type': 'application/json',
@@ -134,9 +143,6 @@ export default function CreateQuiz() {
             }
         });
     };
-    const [editors, setEditors] = useState([
-        withCounter(createMaterialEditor())
-    ]);
 
     return (
         <ThemeProvider theme={theme}>
@@ -239,40 +245,29 @@ export default function CreateQuiz() {
                                                         align="left"
                                                         xs={12}
                                                     >
-                                                        <MaterialSlate
-                                                            editor={
-                                                                editors[index]
-                                                            }
-                                                            value={
-                                                                questions[index]
-                                                                    .title
-                                                            }
-                                                            onChange={(event) =>
-                                                                handleQuestionTitleChange(
-                                                                    event,
-                                                                    index
-                                                                )
-                                                            }
-                                                        >
-                                                            <Toolbar>
-                                                                <BoldButton />
-                                                                <ItalicButton />
-                                                                <UnderlinedButton />
-                                                                <StrikethroughButton />
-                                                            </Toolbar>
-                                                            <MaterialEditable placeholder="Title of the Question" />
-                                                            <Box
-                                                                display="flex"
-                                                                justifyContent="space-between"
-                                                                mr={1}
-                                                            >
-                                                                <CharCounter
-                                                                    maxChars={
-                                                                        160
-                                                                    }
-                                                                />
-                                                            </Box>
-                                                        </MaterialSlate>
+                                                        <Paper variant="outlined">
+                                                            <MUIRichTextEditor
+                                                                controls={[
+                                                                    'bold',
+                                                                    'italic',
+                                                                    'underline',
+                                                                    'strikethrough',
+                                                                    'undo',
+                                                                    'redo',
+                                                                    'clear'
+                                                                ]}
+                                                                onChange={(
+                                                                    editorState
+                                                                ) => {
+                                                                    handleQuestionTitleChange(
+                                                                        editorState,
+                                                                        index
+                                                                    );
+                                                                }}
+                                                                label="Title..."
+                                                                maxLength={160}
+                                                            />
+                                                        </Paper>
                                                     </Grid>
                                                     {questions[index].answers
                                                         .length <= 4 && (
