@@ -94,7 +94,6 @@ export default function CreateQuiz() {
         question.title = value;
         q.splice(index, 1, question);
         setQuestions(q);
-        console.log(value);
     };
     const handleAnswerChange = (event, index, i) => {
         let q = [...questions];
@@ -111,18 +110,33 @@ export default function CreateQuiz() {
         let layout = data.get('layout');
         let questionsJSON = [];
         questions.map((item) => {
-            let title = '';
-            item.title[0].children.map((child) => {
-                let text = child.text;
-                child.bold && (text = `[b]${text}[/b]`);
-                child.italic && (text = `[i]${text}[/i]`);
-                child.underlined && (text = `[u]${text}[/u]`);
-                child.strikethrough && (text = `[s]${text}[/s]`);
-                title = title + text;
-            });
+            let textJson = convertToRaw(item.title.getCurrentContent())
+            let fullText = [];
+            textJson.blocks.map((block, index) => {
+                let text = block.text;
+                block.inlineStyleRanges.map((inline, index) => {
+                    let start = inline.offset
+                    let end = inline.offset + inline.length
+                    switch (inline.style) {
+                        case "BOLD":
+                            text = text.substring(0, start) + "[b]" + text.substr(start) + "[/b]" + text.substring(end);
+                            break
+                        case "UNDERLINE":
+                            text = text.substring(0, start) + "[u]" + text.substr(start) + "[/u]" + text.substring(end);
+                            break
+                        case "STRIKETHROUGH":
+                            text = text.substring(0, start) + "[b]" + text.substr(start) + "[/b]" + text.substring(end);
+                            break
+                        case "ITALIC":
+                            text = text.substring(0, start) + "[b]" + text.substr(start) + "[/b]" + text.substring(end);
+                            break
+                    }
+                fullText.push(text)
+                })
+            })
             questionsJSON.push({
                 answers: item.answers,
-                title: title
+                title: fullText.join("/n"),
             });
         });
         const body = JSON.stringify({
@@ -134,7 +148,7 @@ export default function CreateQuiz() {
             headers: {
                 'Content-Type': 'application/json',
                 Authorization:
-                    'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiYWFhYzRiNGYyMTBiMGM4MmMyNWUwYTNhNzU1NWQwNmJiYTdjOTJiZTNjODRlNDA5N2MwZGM5MjBkMzJiODAyOWRlMzE3MWVhOGM2ZThkNWIiLCJpYXQiOjE2NDE5MjU4ODMuNDQwNDMzLCJuYmYiOjE2NDE5MjU4ODMuNDQwNDM3LCJleHAiOjE2NzM0NjE4ODMuNDI5NDI3LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.Z87TMAFbFhPXHftVULt0snAY0rbXgGs5I_DhMvlVhdC0HtcHqQxdAVSIOOoTt3rcx0rUOPxbPeLXlPlf0P5Y4vOAQukCFI2L2lbq12daRpYYg7ZQNBt-KYG974tcNbd6_YH7xViOISqPRreTEF6nSPun3rvjuKT65TwFR1fjzf0vXOQDxPlMES9aYRNRsjnrHcnDe-KO9j_040WJtI5ZI43tWFRWMq6Rb1U4e-l1hLopKHZpukNxqe3ZHIvwiZSBKb_wDRilxmuzP-UnVF2vCbvgJBkQGwlrKZusoLD6ixf-towFcKlrHZX5Wn71bevsIUW9S4jc5FMKf2zB41ii4Y_oglwlAg36l58vDDfncHEY8R_ppkR3jjWu1U3un4bLbaXS-yLn7VqkL-Fdyk94kKUCi5aBhWbc_VZGPSVSeiU-QujSlTwG_ghRuIASBH-mpmBq8WedADhMA6uGWRc52F3Tn31Ske0LQLDZPiw0NbZ56E5uXJOhFo10DXki7MVh-oPhNNGEndOHV5rNguB0Zf1fX15UTMFUKPbbw81whx_yM5_AlfDzPFOYLjSnwa2sPGlsMoYTUkw_LjuUlJsUnmeGwNdts08eGynIdx3F9SI4AIr2sY9FemkBS9_8kFWGqG9cK3jMwurFDXkG0wvO9jHsI5-u0zGfZosPyIApGoQ'
+                    'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiZGI2OWIxOTE4ODg3OTc5M2IwZjRiY2M2NTVjNTRkMGQxMGIzZDM3M2VhYTVjZjYwZmVlYTFmZDhhMGUwYTJiNTBiNWZlZWE0MGY1N2ZhMTIiLCJpYXQiOjE2NDI2MDI4MTkuMTY0MTYzLCJuYmYiOjE2NDI2MDI4MTkuMTY0MTY4LCJleHAiOjE2NzQxMzg4MTkuMTU2Nzc3LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.lJKyZb1bS5BToPjsz5xUdsUJ-arSRhsco6GXHJ-Xl6mmGLEaKt-2wzZ29fcq9FNP1GjUbnko96_9Ho8IEK37UXs4kXfHldsYlGch8u0ZLv83HgFctWyYHVpOoQ6_J8ATRFKQLtuWQ12JNmB_NHNV6SuoR7JQI603hsHTlEc_UGodBMO0RK3WEnIbZ3gsunEB9gCMhhesXD2tKhLhCbNeG5IFhhP_UQHVRjy4gVUg2dRxytwSp6VoIMpmFDkKRrRJHSG7bZz5rcodMwJVsFzWcFNhwBN0dtakiq_YD3s7u0Mo0NBcKm6G4OysoTw-2GMYdXNtzn46mg8rslkUcPOJkrpGSw-T1ZNhCeAqby3o6rptNGMhSTK9POZ9N0oUOHic96xk_cUKUUDpDPMvzV3L_Key3EzyUjge19QzvSPdFY3aXYEcCkvjRRanqun13q5KD4o3yMOHHsVSUKNX80P1mur5mnqL9rRIhPq1mXsNsHN-G14sVRRArSjpiHVBPSKq1g044_38VWyll-quWsJrnQfNaydILKxeuanM7x7hw1KzlJv6ift0ac3yIRFrph_jsva6CIGg86dv93lOx-uZJ9OLSjEbZcN66oap4C4yvIOVZeDy-yw-eKH1_D0Zsz898CmhogeuJsCCY1dfrTAzC0KTE19vBKivKXn_9zm66qs'
             }
         };
         axios.post('/api/quiz', body, config).then((response) => {
@@ -256,6 +270,8 @@ export default function CreateQuiz() {
                                                                     'redo',
                                                                     'clear'
                                                                 ]}
+                                                                value={JSON.stringify(
+                                                                    convertToRaw(item.title.getCurrentContent()))}
                                                                 onChange={(
                                                                     editorState
                                                                 ) => {
