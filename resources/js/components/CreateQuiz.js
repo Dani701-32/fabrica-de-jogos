@@ -112,31 +112,38 @@ export default function CreateQuiz() {
         questions.map((item) => {
             let textJson = convertToRaw(item.title.getCurrentContent())
             let fullText = [];
-            textJson.blocks.map((block, index) => {
-                let text = block.text;
-                block.inlineStyleRanges.map((inline, index) => {
-                    let start = inline.offset
-                    let end = inline.offset + inline.length
+            console.log(textJson)
+            textJson.blocks.map((block ) => {
+                let text = block.text.split("");
+                let counter = 0;
+                block.inlineStyleRanges.map((inline) => {
+                    let start = inline.offset + counter
+                    let end = inline.offset + inline.length + counter
                     switch (inline.style) {
                         case "BOLD":
-                            text = text.substring(0, start) + "[b]" + text.substr(start) + "[/b]" + text.substring(end);
+                            text.splice(start, 0, "[b]");
+                            text.splice(end, 0, "[/b]");
                             break
                         case "UNDERLINE":
-                            text = text.substring(0, start) + "[u]" + text.substr(start) + "[/u]" + text.substring(end);
+                            text.splice(start, 0, "[u]");
+                            text.splice(end, 0, "[/u]");
                             break
                         case "STRIKETHROUGH":
-                            text = text.substring(0, start) + "[b]" + text.substr(start) + "[/b]" + text.substring(end);
+                            text.splice(start, 0, "[s]");
+                            text.splice(end, 0, "[/s]");
                             break
                         case "ITALIC":
-                            text = text.substring(0, start) + "[b]" + text.substr(start) + "[/b]" + text.substring(end);
+                            text.splice(start, 0, "[i]");
+                            text.splice(end, 0, "[/i]");
                             break
                     }
+                    counter += 1
                 fullText.push(text)
                 })
             })
             questionsJSON.push({
                 answers: item.answers,
-                title: fullText.join("/n"),
+                title: fullText.join(),
             });
         });
         const body = JSON.stringify({
