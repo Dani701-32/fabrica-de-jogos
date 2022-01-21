@@ -17,6 +17,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import MUIRichTextEditor from 'mui-rte';
 import { EditorState, convertToRaw } from 'draft-js';
+import draftToHtml from 'draftjs-to-html';
 
 const theme = createTheme({
     palette: {
@@ -105,45 +106,32 @@ export default function CreateQuiz() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        let collection = {
+            "<p>": "",
+            "</p>": "",
+            "<strong>": "[b]",
+            "</strong>": "[/b]",
+            "<em>": "[i]",
+            "</em>": "[/i]",
+            "<ins>": "[u]",
+            "</ins>": "[/u]",
+            "<del>": "[s]",
+            "</del>": "[/s]"
+        }
         const data = new FormData(event.currentTarget);
         let name = data.get('name');
         let layout = data.get('layout');
         let questionsJSON = [];
         questions.map((item) => {
-            let textJson = convertToRaw(item.title.getCurrentContent())
-            let fullText = [];
-            console.log(textJson)
-            textJson.blocks.map((block ) => {
-                let text = block.text.split("");
-                let counter = 0;
-                block.inlineStyleRanges.map((inline) => {
-                    let start = inline.offset + counter
-                    let end = inline.offset + inline.length + counter
-                    switch (inline.style) {
-                        case "BOLD":
-                            text.splice(start, 0, "[b]");
-                            text.splice(end, 0, "[/b]");
-                            break
-                        case "UNDERLINE":
-                            text.splice(start, 0, "[u]");
-                            text.splice(end, 0, "[/u]");
-                            break
-                        case "STRIKETHROUGH":
-                            text.splice(start, 0, "[s]");
-                            text.splice(end, 0, "[/s]");
-                            break
-                        case "ITALIC":
-                            text.splice(start, 0, "[i]");
-                            text.splice(end, 0, "[/i]");
-                            break
-                    }
-                    counter += 1
-                fullText.push(text)
-                })
-            })
+            let textJson = convertToRaw(item.title.getCurrentContent());
+            let markup = draftToHtml(textJson);
+            for (const [key, value] of Object.entries(collection)) {
+                const regex = new RegExp(key, 'g');
+                markup = markup.replace(regex, value);
+            }
             questionsJSON.push({
                 answers: item.answers,
-                title: fullText.join(),
+                title: markup,
             });
         });
         const body = JSON.stringify({
@@ -277,8 +265,7 @@ export default function CreateQuiz() {
                                                                     'redo',
                                                                     'clear'
                                                                 ]}
-                                                                value={JSON.stringify(
-                                                                    convertToRaw(item.title.getCurrentContent()))}
+                                                                editorState={item.title}
                                                                 onChange={(
                                                                     editorState
                                                                 ) => {
