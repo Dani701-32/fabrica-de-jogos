@@ -37,4 +37,7 @@ Route::get('/create/wordsearch', function () {
 Route::get('/create/trueorfalse', function () {
     return view('index');
 });
+Route::get('/create/matchup', function () {
+    return view('index');
+});
 
