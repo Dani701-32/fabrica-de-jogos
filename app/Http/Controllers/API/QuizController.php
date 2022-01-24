@@ -50,19 +50,8 @@ class QuizController extends BaseController
         $quiz->name = $request->name;
         $quiz->slug = SlugService::createSlug(Quiz::class, 'slug', $request->name);
         $quiz->layout = $request->layout;
+        $quiz->questions = serialize($request->questions);
         $quiz->save();
-        $questions = $request->questions;
-        foreach($questions as $question) {
-            $model = new Question();
-            foreach($question as $key => $value) {
-                if (is_array($value)) {
-                    $value = implode('|', $value);
-                }
-                $model->$key = $value;
-            }
-            $model->quiz_id = $quiz->id;
-            $model->save();
-        }
         return $this->sendResponse(new QuizResource($quiz), 'Quiz game created successfully.');
     }
 

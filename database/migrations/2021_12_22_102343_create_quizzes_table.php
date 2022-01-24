@@ -18,6 +18,7 @@ class CreateQuizzesTable extends Migration
             $table->string('slug')->unique();
             $table->string('name');
             $table->integer('layout');
+            $table->string('questions', 2048);
             $table->timestamps();
             $table->softDeletes();
         });

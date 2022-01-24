@@ -18,7 +18,7 @@ class Quiz extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'layout'
+        'name', 'layout', 'questions'
     ];
 
     public function sluggable(): array
@@ -33,10 +33,6 @@ class Quiz extends Model
     public function getRouteKeyName()
     {
         return 'slug';
-    }
-
-    public function Question() {
-        return $this->hasMany(Question::class);
     }
 
 }

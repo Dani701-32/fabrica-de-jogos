@@ -14,18 +14,11 @@ class TrueOrFalse extends JsonResource
      */
     public function toArray($request)
     {
-
-        $questions = explode('|', $this->questions);
-        $answers = explode('|', $this->answers);
-        $full_response = array();
-        for ($x = 0; $x < sizeof($questions); $x++) {
-            $full_response[$questions[$x]] = $answers[$x] == 'true';
-        }
         return [
             'name' => $this->name,
             'slug' => $this->slug,
             'layout' => $this->layout,
-            'questions' => $full_response,
+            'questions' => unserialize($this->questions),
             'created_at' => $this->created_at->format('d/m/Y'),
             'updated_at' => $this->updated_at->format('d/m/Y'),
         ];
