@@ -16,48 +16,112 @@ import AddIcon from '@mui/icons-material/Add';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import MUIRichTextEditor from 'mui-rte';
+import { EditorState, convertToRaw } from 'draft-js';
+import draftToHtml from 'draftjs-to-html';
 
-const theme = createTheme();
+const theme = createTheme({
+    palette: {
+        primary: {
+            main: '#000000'
+        }
+    },
+    overrides: {
+        MUIRichTextEditor: {
+            container: {
+                display: 'flex',
+                flexDirection: 'column'
+            },
+            editor: {
+                padding: '10px',
+                maxHeight: '200px',
+                overflow: 'auto',
+                alignItems: 'center'
+            },
+            toolbar: {
+                borderBottom: '1px solid gray'
+            },
+            placeHolder: {
+                paddingLeft: 20,
+                width: 'inherit'
+            },
+            anchorLink: {
+                color: '#333333',
+                textDecoration: 'underline'
+            }
+        }
+    }
+});
 
 export default function CreateTrueOrFalse() {
     const navigate = useNavigate();
-    const initialValue = () => {
-        return [
-            {
-                type: 'paragraph',
-                children: [{ text: '' }]
-            }
-        ];
+    const questionObj = {
+        title: EditorState.createEmpty(),
+        right: false
     };
     const [questions, setQuestions] = useState([
-        { title: initialValue(), right: false }
+        { title: EditorState.createEmpty(), right: false }
     ]);
+
+    const handleCreateQuestion = () => {
+        setQuestions([...questions, questionObj]);
+    };
+
+    const handleRemoveQuestion = (index) => {
+        if (index === 0) {
+            return;
+        }
+        let q = [...questions];
+        q.splice(index, 1);
+        setQuestions(q);
+    };
+
     const handleQuestionTitleChange = (value, index) => {
         let q = [...questions];
-        let question = questions[index];
+        let question = q[index];
         question.title = value;
         q.splice(index, 1, question);
         setQuestions(q);
     };
+
+    const handleAnswerChange = (index) => {
+        let q = [...questions];
+        let question = q[index];
+        console.log(question.right);
+        question.right = !question.right;
+        q.splice(index, 1, question);
+        setQuestions(q);
+    };
+
     const handleSubmit = (event) => {
         event.preventDefault();
+        console.log(questions);
+        let collection = {
+            '<p>': '',
+            '</p>': '',
+            '<strong>': '[b]',
+            '</strong>': '[/b]',
+            '<em>': '[i]',
+            '</em>': '[/i]',
+            '<ins>': '[u]',
+            '</ins>': '[/u]',
+            '<del>': '[s]',
+            '</del>': '[/s]'
+        };
         const data = new FormData(event.currentTarget);
         let name = data.get('name');
         let layout = data.get('layout');
         let questionsJSON = [];
         questions.map((item) => {
-            let title = '';
-            item.title[0].children.map((child) => {
-                let text = child.text;
-                child.bold && (text = `[b]${text}[/b]`);
-                child.italic && (text = `[i]${text}[/i]`);
-                child.underlined && (text = `[u]${text}[/u]`);
-                child.strikethrough && (text = `[s]${text}[/s]`);
-                title = title + text;
-            });
+            let textJson = convertToRaw(item.title.getCurrentContent());
+            let markup = draftToHtml(textJson);
+            for (const [key, value] of Object.entries(collection)) {
+                const regex = new RegExp(key, 'g');
+                markup = markup.replace(regex, value);
+            }
             questionsJSON.push({
-                answers: item.answers,
-                title: title
+                answer: item.right,
+                title: markup
             });
         });
         const body = JSON.stringify({
@@ -69,19 +133,16 @@ export default function CreateTrueOrFalse() {
             headers: {
                 'Content-Type': 'application/json',
                 Authorization:
-                    'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiYWFhYzRiNGYyMTBiMGM4MmMyNWUwYTNhNzU1NWQwNmJiYTdjOTJiZTNjODRlNDA5N2MwZGM5MjBkMzJiODAyOWRlMzE3MWVhOGM2ZThkNWIiLCJpYXQiOjE2NDE5MjU4ODMuNDQwNDMzLCJuYmYiOjE2NDE5MjU4ODMuNDQwNDM3LCJleHAiOjE2NzM0NjE4ODMuNDI5NDI3LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.Z87TMAFbFhPXHftVULt0snAY0rbXgGs5I_DhMvlVhdC0HtcHqQxdAVSIOOoTt3rcx0rUOPxbPeLXlPlf0P5Y4vOAQukCFI2L2lbq12daRpYYg7ZQNBt-KYG974tcNbd6_YH7xViOISqPRreTEF6nSPun3rvjuKT65TwFR1fjzf0vXOQDxPlMES9aYRNRsjnrHcnDe-KO9j_040WJtI5ZI43tWFRWMq6Rb1U4e-l1hLopKHZpukNxqe3ZHIvwiZSBKb_wDRilxmuzP-UnVF2vCbvgJBkQGwlrKZusoLD6ixf-towFcKlrHZX5Wn71bevsIUW9S4jc5FMKf2zB41ii4Y_oglwlAg36l58vDDfncHEY8R_ppkR3jjWu1U3un4bLbaXS-yLn7VqkL-Fdyk94kKUCi5aBhWbc_VZGPSVSeiU-QujSlTwG_ghRuIASBH-mpmBq8WedADhMA6uGWRc52F3Tn31Ske0LQLDZPiw0NbZ56E5uXJOhFo10DXki7MVh-oPhNNGEndOHV5rNguB0Zf1fX15UTMFUKPbbw81whx_yM5_AlfDzPFOYLjSnwa2sPGlsMoYTUkw_LjuUlJsUnmeGwNdts08eGynIdx3F9SI4AIr2sY9FemkBS9_8kFWGqG9cK3jMwurFDXkG0wvO9jHsI5-u0zGfZosPyIApGoQ'
+                    'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiMDU1YmE3YWVkY2ZhZTlhZjUxMGMzMTBlOWZmODY3ODc0ZGFiNGY5ZGRjMGY0M2IwNzQ3M2VlMzcxYWE2YjE4NTBjZmRhMWY0ODFmMTkyOTYiLCJpYXQiOjE2NDMwMTkzNDMuMTc3MjMsIm5iZiI6MTY0MzAxOTM0My4xNzcyMzcsImV4cCI6MTY3NDU1NTM0My4wOTU5NCwic3ViIjoiMSIsInNjb3BlcyI6W119.cZ_qYhOKtL6zCtska_12w0w-JMabe_O7a6Jy_jdQJ9Jq8BgFOIoxhX4tbcFADoWd8Xm1e8mjXT1y2nBWgweNfZD2Rz7kJgKSg6y9CHferhmzQ5tcIri6GThmKlZfJR5aJNVlFncf7F3xYvcRuBLxQ5z5cLLGSuKkNQr7h_T9BwcA8NWePmDWFmpt2ANFBrAJXYhH7bzriVvDhjr3rAWz6pDwaxM4KPpc0xt8vJBR39Mhrqy--6NiHQ5QqaCkiJ5VRggy7GRaJPTDgzjKLyPsCVYne79iJ6pRW-I8jsdLNBOdlPf38qArY_qPirOlGrPM7vUJq2OhyazDFghdFHI3y7mPItP9RKSdJCjgNb-EFzpmB90hDhckxB9bAeqZclLZW_J_I_NQvNSOrtr9vwesGdp6uDc7uzhRuZZy0zVh6w0v7xj26GclcT4QW3yWg09m0H33VQzhHzmbt5aQbJx4zPnYUKEvEQLGkmlsmsGYMfv5_876EBm6AV3cbNLfZOqkhXi7NkQhxZGCdM6IVpJLXAYPZl3wp0PSj_Yl8sU6jDoqqAwveDlYAfeHpVGZAjkR5xfvZ7SZwJ8BZR8bbIguYnPwIcgLTOAP-ylyT-QDPtuAiM4VTErORNZKXwcDZWUA0msmg-ulmg53Fy4-5KpTyA2x0FiuFs3_EwAdIz209SY'
             }
         };
-        axios.post('/api/quiz', body, config).then((response) => {
+        axios.post('/api/trueorfalse', body, config).then((response) => {
             if (response.data.success === true) {
                 navigate(`/quiz/${response.data.data.slug}`);
             }
         });
     };
 
-    const [editors, setEditors] = useState([
-        withCounter(createMaterialEditor())
-    ]);
     return (
         <ThemeProvider theme={theme}>
             <Container component="main">
@@ -124,7 +185,7 @@ export default function CreateTrueOrFalse() {
                             <Typography variant="p" fontSize="small">
                                 Add Question
                             </Typography>
-                            <IconButton>
+                            <IconButton onClick={handleCreateQuestion}>
                                 <AddIcon fontSize="small" />
                             </IconButton>
                         </Grid>
@@ -165,15 +226,69 @@ export default function CreateTrueOrFalse() {
                                                             ).toString()}
                                                         </Typography>
                                                     </Grid>
+                                                    {index ===
+                                                        questions.length -
+                                                            1 && (
+                                                        <Grid item xs={2}>
+                                                            <IconButton
+                                                                onClick={() => {
+                                                                    handleRemoveQuestion(
+                                                                        index
+                                                                    );
+                                                                }}
+                                                            >
+                                                                <DeleteIcon fontSize="small" />
+                                                            </IconButton>
+                                                        </Grid>
+                                                    )}
+                                                    <Grid
+                                                        item
+                                                        align="left"
+                                                        xs={12}
+                                                    >
+                                                        <Paper variant="outlined">
+                                                            <MUIRichTextEditor
+                                                                controls={[
+                                                                    'bold',
+                                                                    'italic',
+                                                                    'underline',
+                                                                    'strikethrough',
+                                                                    'undo',
+                                                                    'redo',
+                                                                    'clear'
+                                                                ]}
+                                                                editorState={
+                                                                    item.title
+                                                                }
+                                                                onChange={(
+                                                                    editorState
+                                                                ) => {
+                                                                    handleQuestionTitleChange(
+                                                                        editorState,
+                                                                        index
+                                                                    );
+                                                                }}
+                                                                label="Title..."
+                                                                maxLength={160}
+                                                            />
+                                                        </Paper>
+                                                    </Grid>
                                                     <Grid
                                                         item
                                                         align="center"
+                                                        display="flex"
                                                         xs={12}
                                                     >
                                                         <Typography variant="subtitle1">
                                                             False
                                                         </Typography>
-                                                        <Switch color="success" />
+                                                        <Switch
+                                                            onChange={() => {
+                                                                handleAnswerChange(
+                                                                    index
+                                                                );
+                                                            }}
+                                                        />
                                                         <Typography variant="subtitle1">
                                                             True
                                                         </Typography>

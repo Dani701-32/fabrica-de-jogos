@@ -65,6 +65,9 @@ export default function CreateQuiz() {
         setQuestions([...questions, questionObj]);
     };
     const handleRemoveQuestion = (index) => {
+        if (index === 0) {
+            return;
+        }
         let q = [...questions];
         q.splice(index, 1);
         setQuestions(q);
@@ -107,17 +110,17 @@ export default function CreateQuiz() {
     const handleSubmit = (event) => {
         event.preventDefault();
         let collection = {
-            "<p>": "",
-            "</p>": "",
-            "<strong>": "[b]",
-            "</strong>": "[/b]",
-            "<em>": "[i]",
-            "</em>": "[/i]",
-            "<ins>": "[u]",
-            "</ins>": "[/u]",
-            "<del>": "[s]",
-            "</del>": "[/s]"
-        }
+            '<p>': '',
+            '</p>': '',
+            '<strong>': '[b]',
+            '</strong>': '[/b]',
+            '<em>': '[i]',
+            '</em>': '[/i]',
+            '<ins>': '[u]',
+            '</ins>': '[/u]',
+            '<del>': '[s]',
+            '</del>': '[/s]'
+        };
         const data = new FormData(event.currentTarget);
         let name = data.get('name');
         let layout = data.get('layout');
@@ -131,7 +134,7 @@ export default function CreateQuiz() {
             }
             questionsJSON.push({
                 answers: item.answers,
-                title: markup,
+                title: markup
             });
         });
         const body = JSON.stringify({
@@ -143,7 +146,7 @@ export default function CreateQuiz() {
             headers: {
                 'Content-Type': 'application/json',
                 Authorization:
-                    'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiZGI2OWIxOTE4ODg3OTc5M2IwZjRiY2M2NTVjNTRkMGQxMGIzZDM3M2VhYTVjZjYwZmVlYTFmZDhhMGUwYTJiNTBiNWZlZWE0MGY1N2ZhMTIiLCJpYXQiOjE2NDI2MDI4MTkuMTY0MTYzLCJuYmYiOjE2NDI2MDI4MTkuMTY0MTY4LCJleHAiOjE2NzQxMzg4MTkuMTU2Nzc3LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.lJKyZb1bS5BToPjsz5xUdsUJ-arSRhsco6GXHJ-Xl6mmGLEaKt-2wzZ29fcq9FNP1GjUbnko96_9Ho8IEK37UXs4kXfHldsYlGch8u0ZLv83HgFctWyYHVpOoQ6_J8ATRFKQLtuWQ12JNmB_NHNV6SuoR7JQI603hsHTlEc_UGodBMO0RK3WEnIbZ3gsunEB9gCMhhesXD2tKhLhCbNeG5IFhhP_UQHVRjy4gVUg2dRxytwSp6VoIMpmFDkKRrRJHSG7bZz5rcodMwJVsFzWcFNhwBN0dtakiq_YD3s7u0Mo0NBcKm6G4OysoTw-2GMYdXNtzn46mg8rslkUcPOJkrpGSw-T1ZNhCeAqby3o6rptNGMhSTK9POZ9N0oUOHic96xk_cUKUUDpDPMvzV3L_Key3EzyUjge19QzvSPdFY3aXYEcCkvjRRanqun13q5KD4o3yMOHHsVSUKNX80P1mur5mnqL9rRIhPq1mXsNsHN-G14sVRRArSjpiHVBPSKq1g044_38VWyll-quWsJrnQfNaydILKxeuanM7x7hw1KzlJv6ift0ac3yIRFrph_jsva6CIGg86dv93lOx-uZJ9OLSjEbZcN66oap4C4yvIOVZeDy-yw-eKH1_D0Zsz898CmhogeuJsCCY1dfrTAzC0KTE19vBKivKXn_9zm66qs'
+                    'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiMDU1YmE3YWVkY2ZhZTlhZjUxMGMzMTBlOWZmODY3ODc0ZGFiNGY5ZGRjMGY0M2IwNzQ3M2VlMzcxYWE2YjE4NTBjZmRhMWY0ODFmMTkyOTYiLCJpYXQiOjE2NDMwMTkzNDMuMTc3MjMsIm5iZiI6MTY0MzAxOTM0My4xNzcyMzcsImV4cCI6MTY3NDU1NTM0My4wOTU5NCwic3ViIjoiMSIsInNjb3BlcyI6W119.cZ_qYhOKtL6zCtska_12w0w-JMabe_O7a6Jy_jdQJ9Jq8BgFOIoxhX4tbcFADoWd8Xm1e8mjXT1y2nBWgweNfZD2Rz7kJgKSg6y9CHferhmzQ5tcIri6GThmKlZfJR5aJNVlFncf7F3xYvcRuBLxQ5z5cLLGSuKkNQr7h_T9BwcA8NWePmDWFmpt2ANFBrAJXYhH7bzriVvDhjr3rAWz6pDwaxM4KPpc0xt8vJBR39Mhrqy--6NiHQ5QqaCkiJ5VRggy7GRaJPTDgzjKLyPsCVYne79iJ6pRW-I8jsdLNBOdlPf38qArY_qPirOlGrPM7vUJq2OhyazDFghdFHI3y7mPItP9RKSdJCjgNb-EFzpmB90hDhckxB9bAeqZclLZW_J_I_NQvNSOrtr9vwesGdp6uDc7uzhRuZZy0zVh6w0v7xj26GclcT4QW3yWg09m0H33VQzhHzmbt5aQbJx4zPnYUKEvEQLGkmlsmsGYMfv5_876EBm6AV3cbNLfZOqkhXi7NkQhxZGCdM6IVpJLXAYPZl3wp0PSj_Yl8sU6jDoqqAwveDlYAfeHpVGZAjkR5xfvZ7SZwJ8BZR8bbIguYnPwIcgLTOAP-ylyT-QDPtuAiM4VTErORNZKXwcDZWUA0msmg-ulmg53Fy4-5KpTyA2x0FiuFs3_EwAdIz209SY'
             }
         };
         axios.post('/api/quiz', body, config).then((response) => {
@@ -236,7 +239,9 @@ export default function CreateQuiz() {
                                                             ).toString()}
                                                         </Typography>
                                                     </Grid>
-                                                    {index > 0 && (
+                                                    {index ===
+                                                        questions.length -
+                                                            1 && (
                                                         <Grid item xs={2}>
                                                             <IconButton
                                                                 onClick={() => {
@@ -265,7 +270,9 @@ export default function CreateQuiz() {
                                                                     'redo',
                                                                     'clear'
                                                                 ]}
-                                                                editorState={item.title}
+                                                                editorState={
+                                                                    item.title
+                                                                }
                                                                 onChange={(
                                                                     editorState
                                                                 ) => {
