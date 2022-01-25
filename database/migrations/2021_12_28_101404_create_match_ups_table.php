@@ -18,8 +18,7 @@ class CreateMatchUpsTable extends Migration
             $table->string('name');
             $table->string('slug')->unique();
             $table->integer('layout');
-            $table->string('words', 108);
-            $table->string('meanings', 324);
+            $table->string('pages', 2048);
             $table->timestamps();
         });
     }

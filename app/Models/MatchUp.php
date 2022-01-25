@@ -12,7 +12,7 @@ class MatchUp extends Model
     use Sluggable;
 
     protected $fillable = [
-        "name", "words", "meanings"
+        "name", "layout", "pages"
     ];
 
     public function sluggable(): array

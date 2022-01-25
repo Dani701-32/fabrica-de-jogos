@@ -34,10 +34,10 @@ class MatchUpController extends BaseController
         $validator = Validator::make($input, [
             'name' => 'required|string|max:255',
             'layout' => 'required|integer|max:10',
-            'words' => 'required|array|max:4',
-            'words.*' => 'required|string|max:26',
-            'meanings' => 'required|array|max:4',
-            'meanings.*' => 'required|string|max:80'
+            'pages' => 'required|array|max:4',
+            'pages.*' => 'required|array|max:4',
+            'pages.*.*.word' => 'required|string',
+            'pages.*.*.meaning' => 'required|string'
         ]);
 
         if($validator->fails()) {
@@ -48,8 +48,7 @@ class MatchUpController extends BaseController
         $matchup->name = $request->name;
         $matchup->slug = SlugService::createSlug(MatchUp::class, 'slug', $request->name);
         $matchup->layout = $request->layout;
-        $matchup->words = implode("|", $request->words);
-        $matchup->meanings = implode("|", $request->meanings);
+        $matchup->pages = serialize($request->pages);
         $matchup->save();
 
         return $this->sendResponse(new MatchUpResource($matchup), 'MatchUp game created successfully');
