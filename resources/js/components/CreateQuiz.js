@@ -195,7 +195,7 @@ export default function CreateQuiz() {
                                 endIcon={<AddIcon fontSize="small" />}
                                 variant="contained"
                             >
-                                Add Page
+                                Add Question
                             </Button>
                         </Grid>
                         <Grid item lg={12}>
@@ -287,21 +287,20 @@ export default function CreateQuiz() {
                                                     {questions[index].answers
                                                         .length <= 4 && (
                                                         <Grid item xs={12}>
-                                                            <Typography
-                                                                variant="p"
-                                                                fontSize="small"
-                                                            >
-                                                                Add Answer
-                                                            </Typography>
-                                                            <IconButton
+                                                            <Button
+                                                                variant="outlined"
+                                                                size="small"
+                                                                endIcon={
+                                                                    <AddIcon fontSize="small" />
+                                                                }
                                                                 onClick={() => {
                                                                     handleCreateAnswer(
                                                                         index
                                                                     );
                                                                 }}
                                                             >
-                                                                <AddIcon fontSize="small" />
-                                                            </IconButton>
+                                                                Add Answer
+                                                            </Button>
                                                         </Grid>
                                                     )}
                                                     <Grid
@@ -371,6 +370,18 @@ export default function CreateQuiz() {
                                                                                                 )
                                                                                             }
                                                                                         />
+                                                                                    </Grid>
+                                                                                    <Grid
+                                                                                        item
+                                                                                        xs={
+                                                                                            2
+                                                                                        }
+                                                                                    >
+                                                                                        <IconButton
+                                                                                            disabled
+                                                                                        >
+                                                                                            <DeleteIcon fontSize="small" />
+                                                                                        </IconButton>
                                                                                     </Grid>
                                                                                 </Grid>
                                                                             ) : (
