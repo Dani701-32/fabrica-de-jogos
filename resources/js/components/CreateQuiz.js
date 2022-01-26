@@ -20,11 +20,6 @@ import { EditorState, convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 
 const theme = createTheme({
-    palette: {
-        primary: {
-            main: '#000000'
-        }
-    },
     overrides: {
         MUIRichTextEditor: {
             container: {
@@ -173,7 +168,7 @@ export default function CreateQuiz() {
                         align="center"
                         component="form"
                         onSubmit={handleSubmit}
-                        spacing={5}
+                        spacing={3}
                     >
                         <Grid item align="center" xs={12}>
                             <TextField
@@ -195,12 +190,13 @@ export default function CreateQuiz() {
                         </Grid>
 
                         <Grid item align="center" xs={12}>
-                            <Typography variant="p" fontSize="small">
-                                Add Question
-                            </Typography>
-                            <IconButton onClick={handleCreateQuestion}>
-                                <AddIcon fontSize="small" />
-                            </IconButton>
+                            <Button
+                                onClick={handleCreateQuestion}
+                                endIcon={<AddIcon fontSize="small" />}
+                                variant="contained"
+                            >
+                                Add Page
+                            </Button>
                         </Grid>
                         <Grid item lg={12}>
                             <Grid
@@ -208,7 +204,7 @@ export default function CreateQuiz() {
                                 align="center"
                                 alignItems="flex-start"
                                 justifyContent="center"
-                                spacing={5}
+                                spacing={3}
                             >
                                 {questions.map((item, index) => {
                                     return (
@@ -239,21 +235,23 @@ export default function CreateQuiz() {
                                                             ).toString()}
                                                         </Typography>
                                                     </Grid>
-                                                    {index ===
-                                                        questions.length -
-                                                            1 && (
-                                                        <Grid item xs={2}>
-                                                            <IconButton
-                                                                onClick={() => {
-                                                                    handleRemoveQuestion(
-                                                                        index
-                                                                    );
-                                                                }}
-                                                            >
-                                                                <DeleteIcon fontSize="small" />
-                                                            </IconButton>
-                                                        </Grid>
-                                                    )}
+                                                    <Grid item xs={2}>
+                                                        <IconButton
+                                                            disabled={
+                                                                index <
+                                                                    questions.length -
+                                                                        1 ||
+                                                                index === 0
+                                                            }
+                                                            onClick={() => {
+                                                                handleRemoveQuestion(
+                                                                    index
+                                                                );
+                                                            }}
+                                                        >
+                                                            <DeleteIcon fontSize="small" />
+                                                        </IconButton>
+                                                    </Grid>
                                                     <Grid
                                                         item
                                                         align="left"

@@ -83,7 +83,7 @@ export default function CreateAnagram() {
                         align="center"
                         component="form"
                         onSubmit={handleSubmit}
-                        spacing={5}
+                        spacing={3}
                     >
                         <Grid item align="center" xs={12}>
                             <TextField
@@ -104,66 +104,83 @@ export default function CreateAnagram() {
                             />
                         </Grid>
                         <Grid item align="center" xs={12}>
-                            <Typography variant="p" fontSize="small">
+                            <Button
+                                onClick={handleAddWord}
+                                endIcon={<AddIcon fontSize="small" />}
+                                variant="contained"
+                            >
                                 Add Word
-                            </Typography>
-                            <IconButton onClick={handleAddWord}>
-                                <AddIcon fontSize="small" />
-                            </IconButton>
+                            </Button>
                         </Grid>
-                        <Grid
-                            container
-                            align="center"
-                            alignItems="flex-start"
-                            justifyContent="center"
-                            spacing={5}
-                        >
-                            {words.map((word, index) => {
-                                return (
-                                    <Grid item xs={8} md={6} lg={4} key={index}>
-                                        <Paper
-                                            elevation={5}
-                                            sx={{
-                                                padding: '15px'
-                                            }}
+                        <Grid item lg={12}>
+                            <Grid
+                                container
+                                align="center"
+                                alignItems="flex-start"
+                                justifyContent="center"
+                                spacing={3}
+                            >
+                                {words.map((word, index) => {
+                                    return (
+                                        <Grid
+                                            item
+                                            xs={8}
+                                            md={6}
+                                            lg={4}
+                                            key={index}
                                         >
-                                            <Grid
-                                                container
-                                                align="center"
-                                                alignItems="center"
+                                            <Paper
+                                                elevation={5}
+                                                sx={{
+                                                    padding: '15px'
+                                                }}
                                             >
-                                                <Grid item xs={10}>
-                                                    <TextField
-                                                        label="Word"
-                                                        name="word"
-                                                        variant="outlined"
-                                                        value={word}
-                                                        onChange={(event) => {
-                                                            handleWordChange(
-                                                                event,
-                                                                index
-                                                            );
-                                                        }}
-                                                        fullWidth
-                                                        required
-                                                    />
+                                                <Grid
+                                                    container
+                                                    align="center"
+                                                    alignItems="center"
+                                                >
+                                                    <Grid item xs={10}>
+                                                        <TextField
+                                                            label="Word"
+                                                            name="word"
+                                                            variant="outlined"
+                                                            value={word}
+                                                            onChange={(
+                                                                event
+                                                            ) => {
+                                                                handleWordChange(
+                                                                    event,
+                                                                    index
+                                                                );
+                                                            }}
+                                                            fullWidth
+                                                            required
+                                                        />
+                                                    </Grid>
+                                                    <Grid item xs={2}>
+                                                        <IconButton
+                                                            disabled={
+                                                                index === 0 &&
+                                                                index ===
+                                                                    words.length -
+                                                                        1
+                                                            }
+                                                            onClick={() => {
+                                                                handleRemoveWord(
+                                                                    index
+                                                                );
+                                                            }}
+                                                        >
+                                                            <DeleteIcon />
+                                                        </IconButton>
+                                                    </Grid>
                                                 </Grid>
-                                                <Grid item xs={2}>
-                                                    <IconButton
-                                                        onClick={() => {
-                                                            handleRemoveWord(
-                                                                index
-                                                            );
-                                                        }}
-                                                    >
-                                                        <DeleteIcon />
-                                                    </IconButton>
-                                                </Grid>
-                                            </Grid>
-                                        </Paper>
-                                    </Grid>
-                                );
-                            })}
+                                            </Paper>
+                                        </Grid>
+                                    );
+                                })}
+                            </Grid>
                         </Grid>
                         <Grid item align="center" xs={12}>
                             <Button

@@ -21,11 +21,6 @@ import draftToHtml from 'draftjs-to-html';
 import axios from 'axios';
 
 const theme = createTheme({
-    palette: {
-        primary: {
-            main: '#000000'
-        }
-    },
     overrides: {
         MUIRichTextEditor: {
             container: {
@@ -178,7 +173,7 @@ export default function CreateMatchUp() {
                         align="center"
                         component="form"
                         onSubmit={handleSubmit}
-                        spacing={5}
+                        spacing={3}
                     >
                         <Grid item align="center" xs={12}>
                             <TextField
@@ -198,41 +193,55 @@ export default function CreateMatchUp() {
                                 }}
                             />
                         </Grid>
-
                         <Grid item align="center" xs={12}>
-                            <Typography variant="p" fontSize="small">
+                            <Button
+                                onClick={handleCreatePage}
+                                endIcon={<AddIcon fontSize="small" />}
+                                variant="contained"
+                            >
                                 Add Page
-                            </Typography>
-                            <IconButton onClick={handleCreatePage}>
-                                <AddIcon fontSize="small" />
-                            </IconButton>
+                            </Button>
                         </Grid>
-                        <Grid container spacing={2} align="center">
-                            {pages.map((page, index) => {
-                                console.log('Page', index);
-                                return (
-                                    <Grid key={index} item md={12} lg={6}>
-                                        <Paper
-                                            elevation={5}
-                                            sx={{
-                                                padding: '15px'
-                                            }}
-                                        >
-                                            <Grid
-                                                container
-                                                align="center"
-                                                alignItems="center"
-                                                spacing={2}
+                        <Grid item align="center" xs={12}>
+                            <Grid
+                                container
+                                spacing={3}
+                                align="center"
+                                alignItems="flex-start"
+                                justifyContent="center"
+                            >
+                                {pages.map((page, index) => {
+                                    console.log('Page', index);
+                                    return (
+                                        <Grid key={index} item md={12} lg={6}>
+                                            <Paper
+                                                elevation={5}
+                                                sx={{
+                                                    padding: '15px'
+                                                }}
                                             >
-                                                <Grid item xs={10}>
-                                                    <Typography variant="subtitle1">
-                                                        Page{' '}
-                                                        {(index + 1).toString()}
-                                                    </Typography>
-                                                </Grid>
-                                                {index === pages.length - 1 && (
+                                                <Grid
+                                                    container
+                                                    align="center"
+                                                    alignItems="center"
+                                                    spacing={2}
+                                                >
+                                                    <Grid item xs={10}>
+                                                        <Typography variant="subtitle1">
+                                                            Page{' '}
+                                                            {(
+                                                                index + 1
+                                                            ).toString()}
+                                                        </Typography>
+                                                    </Grid>
                                                     <Grid item xs={2}>
                                                         <IconButton
+                                                            disabled={
+                                                                index <
+                                                                    pages.length -
+                                                                        1 ||
+                                                                index === 0
+                                                            }
                                                             onClick={() => {
                                                                 handleRemovePage(
                                                                     index
@@ -242,98 +251,98 @@ export default function CreateMatchUp() {
                                                             <DeleteIcon fontSize="small" />
                                                         </IconButton>
                                                     </Grid>
-                                                )}
-                                                {page.map((matchUp, i) => {
-                                                    return (
-                                                        <Grid
-                                                            item
-                                                            xs={12}
-                                                            key={i}
-                                                        >
+                                                    {page.map((matchUp, i) => {
+                                                        return (
                                                             <Grid
-                                                                container
-                                                                align="center"
-                                                                alignItems="center"
-                                                                spacing={2}
+                                                                item
+                                                                xs={12}
+                                                                key={i}
                                                             >
                                                                 <Grid
-                                                                    item
-                                                                    xs={4}
+                                                                    container
+                                                                    align="center"
+                                                                    alignItems="center"
+                                                                    spacing={2}
                                                                 >
-                                                                    <TextField
-                                                                        variant="outlined"
-                                                                        label="Word"
-                                                                        required
-                                                                        inputProps={{
-                                                                            maxLength: 26
-                                                                        }}
-                                                                        fullWidth
-                                                                        value={
-                                                                            matchUp.word
-                                                                        }
-                                                                        onChange={(
-                                                                            event
-                                                                        ) =>
-                                                                            handleWordChange(
-                                                                                event,
-                                                                                index,
-                                                                                i
-                                                                            )
-                                                                        }
-                                                                    />
-                                                                </Grid>
-                                                                <Grid
-                                                                    item
-                                                                    xs={1}
-                                                                >
-                                                                    <KeyboardDoubleArrowRight fontSize="small" />
-                                                                </Grid>
-                                                                <Grid
-                                                                    item
-                                                                    align="left"
-                                                                    xs={7}
-                                                                >
-                                                                    <Paper variant="outlined">
-                                                                        <MUIRichTextEditor
-                                                                            controls={[
-                                                                                'bold',
-                                                                                'italic',
-                                                                                'underline',
-                                                                                'strikethrough',
-                                                                                'undo',
-                                                                                'redo',
-                                                                                'clear'
-                                                                            ]}
-                                                                            editorState={
-                                                                                matchUp.meaning
-                                                                            }
-                                                                            label="Meaning"
-                                                                            maxLength={
-                                                                                80
+                                                                    <Grid
+                                                                        item
+                                                                        xs={4}
+                                                                    >
+                                                                        <TextField
+                                                                            variant="outlined"
+                                                                            label="Word"
+                                                                            required
+                                                                            inputProps={{
+                                                                                maxLength: 26
+                                                                            }}
+                                                                            fullWidth
+                                                                            value={
+                                                                                matchUp.word
                                                                             }
                                                                             onChange={(
-                                                                                editorState
-                                                                            ) => {
-                                                                                handleMeaningChange(
-                                                                                    editorState,
+                                                                                event
+                                                                            ) =>
+                                                                                handleWordChange(
+                                                                                    event,
                                                                                     index,
                                                                                     i
-                                                                                );
-                                                                            }}
+                                                                                )
+                                                                            }
                                                                         />
-                                                                    </Paper>
+                                                                    </Grid>
+                                                                    <Grid
+                                                                        item
+                                                                        xs={1}
+                                                                    >
+                                                                        <KeyboardDoubleArrowRight fontSize="small" />
+                                                                    </Grid>
+                                                                    <Grid
+                                                                        item
+                                                                        align="left"
+                                                                        xs={7}
+                                                                    >
+                                                                        <Paper variant="outlined">
+                                                                            <MUIRichTextEditor
+                                                                                controls={[
+                                                                                    'bold',
+                                                                                    'italic',
+                                                                                    'underline',
+                                                                                    'strikethrough',
+                                                                                    'undo',
+                                                                                    'redo',
+                                                                                    'clear'
+                                                                                ]}
+                                                                                editorState={
+                                                                                    matchUp.meaning
+                                                                                }
+                                                                                label="Meaning"
+                                                                                maxLength={
+                                                                                    80
+                                                                                }
+                                                                                onChange={(
+                                                                                    editorState
+                                                                                ) => {
+                                                                                    handleMeaningChange(
+                                                                                        editorState,
+                                                                                        index,
+                                                                                        i
+                                                                                    );
+                                                                                }}
+                                                                            />
+                                                                        </Paper>
+                                                                    </Grid>
                                                                 </Grid>
                                                             </Grid>
-                                                        </Grid>
-                                                    );
-                                                })}
-                                            </Grid>
-                                        </Paper>
-                                    </Grid>
-                                );
-                            })}
+                                                        );
+                                                    })}
+                                                </Grid>
+                                            </Paper>
+                                        </Grid>
+                                    );
+                                })}
+                            </Grid>
                         </Grid>
-                        <Grid align="center" xs={12}>
+                        <Grid item align="center" xs={12}>
                             <Button
                                 size="large"
                                 type="submit"
@@ -345,6 +354,12 @@ export default function CreateMatchUp() {
                     </Grid>
                 </Box>
             </Container>
+            <br />
+            <Typography variant="body2" color="text.secondary" align="center">
+                {'Copyright © '}
+                WordWall {new Date().getFullYear()}
+                {'.'}
+            </Typography>
         </ThemeProvider>
     );
 }
