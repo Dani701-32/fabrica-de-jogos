@@ -184,7 +184,7 @@ export default function CreateTrueOrFalse() {
                                 endIcon={<AddIcon fontSize="small" />}
                                 variant="contained"
                             >
-                                Add Page
+                                Add Question
                             </Button>
                         </Grid>
                         <Grid item lg={12}>
