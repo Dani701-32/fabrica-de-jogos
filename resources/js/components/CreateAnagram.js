@@ -27,7 +27,7 @@ export default function CreateAnagram() {
         setWords(words_);
     };
     const handleRemoveWord = (index) => {
-        if (index === 0) {
+        if (words.length === 1) {
             return;
         }
         let words_ = [...words];
