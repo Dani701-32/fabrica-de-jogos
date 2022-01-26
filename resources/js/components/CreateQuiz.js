@@ -40,7 +40,7 @@ const theme = createTheme({
                 width: 'inherit'
             },
             anchorLink: {
-                color: '#333333',
+                color: 'primary',
                 textDecoration: 'underline'
             }
         }

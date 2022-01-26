@@ -9,7 +9,9 @@ import {
     CssBaseline,
     IconButton,
     Paper,
-    Switch
+    Switch,
+    FormGroup,
+    FormControlLabel
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
@@ -274,22 +276,23 @@ export default function CreateTrueOrFalse() {
                                                     <Grid
                                                         item
                                                         align="center"
-                                                        display="flex"
                                                         xs={12}
                                                     >
-                                                        <Typography variant="subtitle1">
-                                                            False
-                                                        </Typography>
-                                                        <Switch
-                                                            onChange={() => {
-                                                                handleAnswerChange(
-                                                                    index
-                                                                );
-                                                            }}
-                                                        />
-                                                        <Typography variant="subtitle1">
-                                                            True
-                                                        </Typography>
+                                                        <FormGroup>
+                                                            <FormControlLabel
+                                                                control={
+                                                                    <Switch
+                                                                        size="large"
+                                                                        onChange={() => {
+                                                                            handleAnswerChange(
+                                                                                index
+                                                                            );
+                                                                        }}
+                                                                    />
+                                                                }
+                                                                label="True"
+                                                            />
+                                                        </FormGroup>
                                                     </Grid>
                                                 </Grid>
                                             </Paper>
