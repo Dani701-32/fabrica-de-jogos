@@ -20,6 +20,7 @@ class CreateMemoryGamesTable extends Migration
             $table->integer('layout');
             $table->string('images');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

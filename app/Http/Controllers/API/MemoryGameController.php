@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\MemoryGame;
 use Illuminate\Http\Request;
 
 class MemoryGameController extends Controller
@@ -25,8 +26,28 @@ class MemoryGameController extends Controller
      */
     public function store(Request $request)
     {
-        $request->file('images')->move(public_path("/"), "image.jpg");
-        return($request);
+        $this->validate($request, [
+            'images' => 'required',
+            'images.*' => 'image',
+            'name' => 'required|string',
+            'layout' => 'required'
+        ]);
+
+        $files = [];
+        if ($request->hasFile('images')) {
+            $files = $request->file('images');
+            foreach ($files as $file) {
+                $name = time() . rand(1, 100) . '.' . $file->extension();
+                $file->move(public_path('files') . '/memorygame/', $name);
+                $files[] = $name;
+            }
+        }
+        $memory = new MemoryGame();
+        $memory->name = $request->name;
+        $memory->layout = $request->layout;
+        $memory->images = serialize($files);
+        $memory->save();
+        return($request->file('images'));
 
     }
 
