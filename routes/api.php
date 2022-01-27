@@ -9,6 +9,7 @@ use App\Http\Controllers\API\MatchUpController;
 use App\Http\Controllers\API\AnagramController;
 use App\Http\Controllers\API\TrueOrFalseController;
 use App\Http\Controllers\API\WordSearchController;
+use App\Http\Controllers\API\MemoryGameController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,4 +32,5 @@ Route::middleware('auth:api')->group( function () {
     Route::resource('anagram', AnagramController::class);
     Route::resource('trueorfalse', TrueOrFalseController::class);
     Route::resource('wordsearch', WordSearchController::class);
+    Route::resource('memorygame', MemoryGameController::class);;
 });
