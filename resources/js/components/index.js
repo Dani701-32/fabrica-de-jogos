@@ -6,6 +6,7 @@ import CreateAnagram from './CreateAnagram';
 import CreateWordSearch from './CreateWordSearch';
 import CreateTrueOrFalse from './CreateTrueOrFalse';
 import CreateMatchUp from './CreateMatchUp';
+import CreateMemoryGame from './CreateMemoryGame';
 
 function App() {
     return (
@@ -34,6 +35,11 @@ function App() {
                     exact
                     path="/create/matchup"
                     element={<CreateMatchUp />}
+                />
+                <Route
+                    exact
+                    path="/create/memorygame"
+                    element={<CreateMemoryGame />}
                 />
             </Routes>
         </Router>
