@@ -84,7 +84,6 @@ export default function CreateTrueOrFalse() {
     const handleAnswerChange = (index) => {
         let q = [...questions];
         let question = q[index];
-        console.log(question.right);
         question.right = !question.right;
         q.splice(index, 1, question);
         setQuestions(q);
@@ -92,7 +91,6 @@ export default function CreateTrueOrFalse() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(questions);
         let collection = {
             '<p>': '',
             '</p>': '',
