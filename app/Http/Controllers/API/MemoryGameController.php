@@ -5,8 +5,9 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\MemoryGame;
 use Illuminate\Http\Request;
+use App\Http\Resources\MemoryGame as MemoryGameResource;
 
-class MemoryGameController extends Controller
+class MemoryGameController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -22,44 +23,42 @@ class MemoryGameController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
+        $request->validate([
             'images' => 'required',
-            'images.*' => 'image',
-            'name' => 'required|string',
-            'layout' => 'required'
+            'images.*' => 'mimes:jpeg,jpg,png,gif,csv,txt,pdf|max:2048'
         ]);
 
-        $files = [];
-        if ($request->hasFile('images')) {
-            $files = $request->file('images');
-            foreach ($files as $file) {
-                $name = time() . rand(1, 100) . '.' . $file->extension();
-                $file->move(public_path('files') . '/memorygame/', $name);
-                $files[] = $name;
-            }
+        if(!$request->hasFile('images')) {
+            return $this->sendError(['upload_file_not_found'], 400);
+        }
+
+        $files = $request->file('images');
+        $images = [];
+        foreach ($files as $file) {
+            $path = $file->store('public/images');
+            $images[] = $path;
         }
         $memory = new MemoryGame();
         $memory->name = $request->name;
         $memory->layout = $request->layout;
-        $memory->images = serialize($files);
+        $memory->images = serialize($images);
         $memory->save();
-        return($request->file('images'));
-
+        return $this->sendResponse(new MemoryGameResource($memory), 'Memory game information retrieved successfully.');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  MemoryGame $memorygame
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id)
+    public function show(MemoryGame $memorygame)
     {
-        //
+        return $this->sendResponse(new MemoryGameResource($memorygame), 'Memory game information retrieved successfully.');
     }
 
     /**

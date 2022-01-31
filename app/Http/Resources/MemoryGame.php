@@ -14,6 +14,13 @@ class MemoryGame extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'slug' => $this->slug,
+            'name' => $this->name,
+            'layout' => $this->layout,
+            'images' => unserialize($this->images),
+            'created_at' => $this->created_at->format('d/m/Y'),
+            'updated_at' => $this->updated_at->format('d/m/Y'),
+        ];
     }
 }

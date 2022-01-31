@@ -18,7 +18,7 @@ class CreateMemoryGamesTable extends Migration
             $table->string('name');
             $table->string('slug')->unique();
             $table->integer('layout');
-            $table->string('images');
+            $table->string('images', 2048);
             $table->timestamps();
             $table->softDeletes();
         });
