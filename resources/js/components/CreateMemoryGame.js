@@ -6,7 +6,10 @@ import {
     Container,
     Grid,
     TextField,
-    Button
+    Button,
+    ToggleButton,
+    ToggleButtonGroup,
+    Typography
 } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import ImageEditor from './layout/imageEditor';
@@ -17,8 +20,24 @@ const theme = createTheme();
 
 export default function CreateMemoryGame() {
     const navigate = useNavigate();
-    let [images, setImages] = useState([1, 2, 3, 4, 5, 6, 7, 8]);
+    const [images, setImages] = useState([null, null]);
+    const [size, setSize] = useState(2);
 
+    const handleSize = (event, newAlignment) => {
+        if (newAlignment === null) {
+            return;
+        }
+        setSize(newAlignment);
+        if (newAlignment < images.length) {
+            images.splice(newAlignment - 1, images.length - newAlignment);
+        } else if (newAlignment > images.length) {
+            let img = [...images];
+            for (let i = 0; i < newAlignment - images.length; i++) {
+                img.push(null);
+            }
+            setImages(img);
+        }
+    };
     const updateImage = (newImage, index) => {
         let i = [...images];
         i.splice(index, 1, newImage);
@@ -30,7 +49,7 @@ export default function CreateMemoryGame() {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         images.map((image, i) => {
-            data.append('image', image);
+            data.append('images[]', image);
         });
 
         const config = {
@@ -86,6 +105,20 @@ export default function CreateMemoryGame() {
                             />
                         </Grid>
                         <Grid item align="center" xs={12}>
+                            <ToggleButtonGroup
+                                value={size}
+                                exclusive
+                                onChange={handleSize}
+                                aria-label="text alignment"
+                            >
+                                <ToggleButton value="2">2x2</ToggleButton>
+                                <ToggleButton value="3">3x2</ToggleButton>
+                                <ToggleButton value="4">4x2</ToggleButton>
+                                <ToggleButton value="6">4x3</ToggleButton>
+                                <ToggleButton value="8">4x4</ToggleButton>
+                            </ToggleButtonGroup>
+                        </Grid>
+                        <Grid item align="center" xs={12}>
                             <Grid
                                 container
                                 align="center"
@@ -123,6 +156,12 @@ export default function CreateMemoryGame() {
                     </Grid>
                 </Box>
             </Container>
+            <br />
+            <Typography variant="body2" color="text.secondary" align="center">
+                {'Copyright © '}
+                WordWall {new Date().getFullYear()}
+                {'.'}
+            </Typography>
         </ThemeProvider>
     );
 }

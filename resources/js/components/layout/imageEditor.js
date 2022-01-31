@@ -6,10 +6,8 @@ import {
     Box,
     Grid,
     Card,
-    CardMedia,
     CardActions,
-    CardContent,
-    Typography
+    CardContent
 } from '@mui/material';
 
 const style = {
@@ -113,6 +111,7 @@ export default function ImageEditor(props) {
                             type="file"
                             accept="image/*"
                             onChange={onSelectFile}
+                            required
                         />
                     </CardActions>
                 </Card>
