@@ -46,8 +46,25 @@ class MemoryGameController extends BaseController
         $memory->name = $request->name;
         $memory->layout = $request->layout;
         $memory->images = serialize($images);
+        switch (sizeof($files)) {
+            case 2:
+                $memory->grid = serialize([2, 2]);
+                break;
+            case 3:
+                $memory->grid = serialize([3, 2]);
+                break;
+            case 4:
+                $memory->grid = serialize([4, 2]);
+                break;
+            case 6:
+                $memory->grid = serialize([4, 3]);
+                break;
+            case 8:
+                $memory->grid = serialize([4, 4]);
+                break;
+        }
         $memory->save();
-        return $this->sendResponse(new MemoryGameResource($memory), 'Memory game information retrieved successfully.');
+        return $this->sendResponse(new MemoryGameResource($memory), 'Memory game created successfully.');
     }
 
     /**

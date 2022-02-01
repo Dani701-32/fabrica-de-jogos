@@ -23,32 +23,32 @@ export default function CreateMemoryGame() {
     const [images, setImages] = useState([null, null]);
     const [size, setSize] = useState(2);
 
-    const handleSize = (event, newAlignment) => {
-        if (newAlignment === null) {
+    const handleSize = (event, newSize) => {
+        if (newSize === null) {
             return;
         }
-        setSize(newAlignment);
-        if (newAlignment < images.length) {
-            images.splice(newAlignment - 1, images.length - newAlignment);
-        } else if (newAlignment > images.length) {
+        setSize(newSize);
+        if (newSize < images.length) {
+            images.splice(newSize - 1, images.length - newSize);
+        } else if (newSize > images.length) {
             let img = [...images];
-            for (let i = 0; i < newAlignment - images.length; i++) {
+            for (let i = 0; i < newSize - images.length; i++) {
                 img.push(null);
             }
             setImages(img);
         }
     };
+
     const updateImage = (newImage, index) => {
         let i = [...images];
         i.splice(index, 1, newImage);
         setImages(i);
-        console.log(images);
     };
 
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        images.map((image, i) => {
+        images.map((image) => {
             data.append('images[]', image);
         });
 
@@ -61,8 +61,7 @@ export default function CreateMemoryGame() {
         };
         axios.post('/api/memorygame', data, config).then((response) => {
             if (response.data.success === true) {
-                console.log('deu');
-                // navigate(`/quiz/${response.data.data.slug}`);
+                navigate(`/memorygame/${response.data.data.slug}`);
             }
         });
     };

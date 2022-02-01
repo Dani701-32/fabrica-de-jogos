@@ -19,7 +19,7 @@ class MemoryGame extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'layout', 'images'
+        'name', 'layout', 'images', 'grid'
     ];
 
     public function sluggable(): array
