@@ -21,7 +21,7 @@ function Anagram() {
         <div>
             <iframe
                 id="iframezin"
-                src="https://hungry-tesla-52c6f3.netlify.app/"
+                src="http://confident-lamarr-10825b.netlify.app"
                 height="720px"
                 width="1420px"
                 allowFullScreen

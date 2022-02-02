@@ -111,10 +111,10 @@ export default function CreateMemoryGame() {
                                 aria-label="text alignment"
                             >
                                 <ToggleButton value="2">2x2</ToggleButton>
-                                <ToggleButton value="3">3x2</ToggleButton>
-                                <ToggleButton value="4">4x2</ToggleButton>
-                                <ToggleButton value="6">4x3</ToggleButton>
-                                <ToggleButton value="8">4x4</ToggleButton>
+                                <ToggleButton value="3">2x3</ToggleButton>
+                                <ToggleButton value="4">2x4</ToggleButton>
+                                <ToggleButton value="5">2x5</ToggleButton>
+                                <ToggleButton value="6">3x4</ToggleButton>
                             </ToggleButtonGroup>
                         </Grid>
                         <Grid item align="center" xs={12}>

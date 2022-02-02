@@ -28,7 +28,7 @@ class MemoryGameController extends BaseController
     public function store(Request $request)
     {
         $request->validate([
-            'images' => 'required',
+            'images' => 'required|max:6|min:2',
             'images.*' => 'mimes:jpeg,jpg,png,gif,csv,txt,pdf|max:2048'
         ]);
 
@@ -39,7 +39,7 @@ class MemoryGameController extends BaseController
         $files = $request->file('images');
         $images = [];
         foreach ($files as $file) {
-            $path = $file->store('public/images');
+            $path = $file->store('images', "public");
             $images[] = $path;
         }
         $memory = new MemoryGame();
@@ -51,16 +51,16 @@ class MemoryGameController extends BaseController
                 $memory->grid = serialize([2, 2]);
                 break;
             case 3:
-                $memory->grid = serialize([3, 2]);
+                $memory->grid = serialize([2, 3]);
                 break;
             case 4:
-                $memory->grid = serialize([4, 2]);
+                $memory->grid = serialize([2, 4]);
+                break;
+            case 5:
+                $memory->grid = serialize([2, 5]);
                 break;
             case 6:
-                $memory->grid = serialize([4, 3]);
-                break;
-            case 8:
-                $memory->grid = serialize([4, 4]);
+                $memory->grid = serialize([3, 4]);
                 break;
         }
         $memory->save();
