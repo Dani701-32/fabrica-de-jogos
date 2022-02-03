@@ -29,7 +29,7 @@ class MemoryGameController extends BaseController
     {
         $request->validate([
             'images' => 'required|max:6|min:2',
-            'images.*' => 'mimes:jpeg,jpg,png,gif,csv,txt,pdf|max:2048'
+            'images.*' => 'mimes:jpeg,jpg,png'
         ]);
 
         if(!$request->hasFile('images')) {
