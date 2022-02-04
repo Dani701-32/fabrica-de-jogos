@@ -135,7 +135,6 @@ export default function CreateQuiz() {
         };
         const data = new FormData(event.currentTarget);
         let name = data.get('name');
-        let layout = data.get('layout');
         let questionsJSON = [];
         questions.map((item) => {
             let textJson = convertToRaw(item.title.getCurrentContent());

@@ -68,6 +68,7 @@ export default function CreateMemoryGame() {
         images.map((image) => {
             data.append('images[]', image);
         });
+        data.append('layout', layout.toString());
 
         const config = {
             headers: {

@@ -61,7 +61,6 @@ export default function CreateAnagram() {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         let name = data.get('name');
-        let layout = data.get('layout');
         const body = JSON.stringify({
             name: name,
             layout: layout,

@@ -133,7 +133,6 @@ export default function CreateMatchUp() {
         };
         const data = new FormData(event.currentTarget);
         let name = data.get('name');
-        let layout = data.get('layout');
         let matchUpsJSON = [];
         pages.map((page) => {
             let matchUps = [];
