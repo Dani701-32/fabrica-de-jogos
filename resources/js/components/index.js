@@ -12,11 +12,36 @@ function App() {
     return (
         <Router>
             <Routes>
-                <Route exact path="/quiz/:slug" element={<GamePage />} />
-                <Route exact path="/anagram/:slug" element={<GamePage />} />
-                <Route exact path="/wordsearch/:slug" element={<GamePage />} />
-                <Route exact path="/trueorfalse/:slug" element={<GamePage />} />
-                <Route exact path="/memorygame/:slug" element={<GamePage />} />
+                <Route
+                    exact
+                    path="/quiz/:slug"
+                    element={<GamePage game={'quiz'} />}
+                />
+                <Route
+                    exact
+                    path="/anagram/:slug"
+                    element={<GamePage game={'anagram'} />}
+                />
+                <Route
+                    exact
+                    path="/wordsearch/:slug"
+                    element={<GamePage game={'wordSearch'} />}
+                />
+                <Route
+                    exact
+                    path="/trueorfalse/:slug"
+                    element={<GamePage game={'trueOrFalse'} />}
+                />
+                <Route
+                    exact
+                    path="/memorygame/:slug"
+                    element={<GamePage game={'memoryGame'} />}
+                />
+                <Route
+                    exact
+                    path="/matchup/:slug"
+                    element={<GamePage game={'matchUp'} />}
+                />
                 <Route exact path="/create/quiz" element={<CreateQuiz />} />
                 <Route
                     exact
