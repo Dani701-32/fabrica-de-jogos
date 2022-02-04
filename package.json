@@ -31,6 +31,7 @@
     "dependencies": {
         "@mui/icons-material": "^5.2.5",
         "@mui/material": "^5.2.7",
+        "@mui/system": "^5.4.0",
         "draft-js": "^0.11.7",
         "draftjs-to-html": "^0.9.1",
         "mui-rte": "^2.0.1",
