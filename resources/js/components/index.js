@@ -15,6 +15,8 @@ function App() {
                 <Route exact path="/quiz/:slug" element={<GamePage />} />
                 <Route exact path="/anagram/:slug" element={<GamePage />} />
                 <Route exact path="/wordsearch/:slug" element={<GamePage />} />
+                <Route exact path="/trueorfalse/:slug" element={<GamePage />} />
+                <Route exact path="/memorygame/:slug" element={<GamePage />} />
                 <Route exact path="/create/quiz" element={<CreateQuiz />} />
                 <Route
                     exact
