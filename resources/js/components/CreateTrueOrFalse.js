@@ -11,11 +11,12 @@ import {
     Paper,
     Switch,
     FormGroup,
-    FormControlLabel
+    FormControlLabel,
+    ToggleButton
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { createTheme, styled, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import MUIRichTextEditor from 'mui-rte';
@@ -50,6 +51,12 @@ const theme = createTheme({
     }
 });
 
+const ImageToggleButton = styled(ToggleButton)({
+    '&.Mui-selected': {
+        border: '5px solid rgba(0, 134, 248, 0.7)'
+    }
+});
+
 export default function CreateTrueOrFalse() {
     const navigate = useNavigate();
     const questionObj = {
@@ -59,6 +66,14 @@ export default function CreateTrueOrFalse() {
     const [questions, setQuestions] = useState([
         { title: EditorState.createEmpty(), right: false }
     ]);
+    const [layout, setLayout] = useState(1);
+
+    const handleLayout = (event, newLayout) => {
+        if (newLayout === null) {
+            return;
+        }
+        setLayout(newLayout);
+    };
 
     const handleCreateQuestion = () => {
         setQuestions([...questions, questionObj]);
@@ -105,7 +120,6 @@ export default function CreateTrueOrFalse() {
         };
         const data = new FormData(event.currentTarget);
         let name = data.get('name');
-        let layout = data.get('layout');
         let questionsJSON = [];
         questions.map((item) => {
             let textJson = convertToRaw(item.title.getCurrentContent());
@@ -133,7 +147,7 @@ export default function CreateTrueOrFalse() {
         };
         axios.post('/api/trueorfalse', body, config).then((response) => {
             if (response.data.success === true) {
-                navigate(`/quiz/${response.data.data.slug}`);
+                navigate(`/trueorfalse/${response.data.data.slug}`);
             }
         });
     };
@@ -159,30 +173,112 @@ export default function CreateTrueOrFalse() {
                     >
                         <Grid item align="center" xs={12}>
                             <TextField
-                                label="Name"
+                                label="Nome"
                                 name="name"
                                 variant="outlined"
                                 required
                             />
-                            <TextField
-                                type="number"
-                                defaultValue={1}
-                                variant="outlined"
-                                name="layout"
-                                required
-                                InputProps={{
-                                    inputProps: { min: 1, max: 3 }
-                                }}
-                            />
                         </Grid>
-
+                        <Grid item align="center" xs={12}>
+                            <Grid container align="center" alignItems="center">
+                                <Grid item align="center" xs={12}>
+                                    <Typography variant="subtitle1">
+                                        Layout:
+                                    </Typography>
+                                </Grid>
+                                <Grid item align="center" xs={3}>
+                                    <ImageToggleButton
+                                        selected={layout === 1}
+                                        value={1}
+                                        color="primary"
+                                        size="small"
+                                        sx={{
+                                            padding: 0
+                                        }}
+                                        onChange={(event, value) => {
+                                            handleLayout(event, value);
+                                        }}
+                                    >
+                                        <img
+                                            src="/storage/trueorfalse/layout1.png"
+                                            alt="Layout 1"
+                                            width="250"
+                                            height="auto"
+                                        />
+                                    </ImageToggleButton>
+                                </Grid>
+                                <Grid item align="center" xs={3}>
+                                    <ImageToggleButton
+                                        selected={layout === 2}
+                                        value={2}
+                                        color="primary"
+                                        size="small"
+                                        sx={{
+                                            padding: 0
+                                        }}
+                                        onChange={(event, value) => {
+                                            handleLayout(event, value);
+                                        }}
+                                    >
+                                        <img
+                                            src="/storage/trueorfalse/layout2.png"
+                                            alt="Layout 2"
+                                            width="250"
+                                            height="auto"
+                                        />
+                                    </ImageToggleButton>
+                                </Grid>
+                                <Grid item align="center" xs={3}>
+                                    <ImageToggleButton
+                                        selected={layout === 3}
+                                        value={3}
+                                        color="primary"
+                                        size="small"
+                                        sx={{
+                                            padding: 0
+                                        }}
+                                        onChange={(event, value) => {
+                                            handleLayout(event, value);
+                                        }}
+                                    >
+                                        <img
+                                            src="/storage/trueorfalse/layout3.png"
+                                            alt="Layout 3"
+                                            width="250"
+                                            height="auto"
+                                        />
+                                    </ImageToggleButton>
+                                </Grid>
+                                <Grid item align="center" xs={3}>
+                                    <ImageToggleButton
+                                        selected={layout === 4}
+                                        value={4}
+                                        color="primary"
+                                        size="small"
+                                        sx={{
+                                            padding: 0
+                                        }}
+                                        onChange={(event, value) => {
+                                            handleLayout(event, value);
+                                        }}
+                                    >
+                                        <img
+                                            src="/storage/trueorfalse/layout3.png"
+                                            alt="Layout 4"
+                                            width="250"
+                                            height="auto"
+                                        />
+                                    </ImageToggleButton>
+                                </Grid>
+                            </Grid>
+                        </Grid>
                         <Grid item align="center" xs={12}>
                             <Button
                                 onClick={handleCreateQuestion}
                                 endIcon={<AddIcon fontSize="small" />}
                                 variant="contained"
                             >
-                                Add Question
+                                Adicionar Questão
                             </Button>
                         </Grid>
                         <Grid item lg={12}>
@@ -216,7 +312,7 @@ export default function CreateTrueOrFalse() {
                                                 >
                                                     <Grid item xs={10}>
                                                         <Typography variant="subtitle1">
-                                                            Question{' '}
+                                                            Questão{' '}
                                                             {(
                                                                 index + 1
                                                             ).toString()}
@@ -266,7 +362,7 @@ export default function CreateTrueOrFalse() {
                                                                         index
                                                                     );
                                                                 }}
-                                                                label="Title..."
+                                                                label="Enunciado..."
                                                                 maxLength={160}
                                                             />
                                                         </Paper>
@@ -288,7 +384,7 @@ export default function CreateTrueOrFalse() {
                                                                         }}
                                                                     />
                                                                 }
-                                                                label="True"
+                                                                label="Verdadeiro"
                                                             />
                                                         </FormGroup>
                                                     </Grid>
@@ -305,7 +401,7 @@ export default function CreateTrueOrFalse() {
                                 type="submit"
                                 variant="outlined"
                             >
-                                Create
+                                Criar
                             </Button>
                         </Grid>
                     </Grid>
@@ -314,7 +410,7 @@ export default function CreateTrueOrFalse() {
             <br />
             <Typography variant="body2" color="text.secondary" align="center">
                 {'Copyright © '}
-                WordWall {new Date().getFullYear()}
+                Edutec {new Date().getFullYear()}
                 {'.'}
             </Typography>
         </ThemeProvider>

@@ -8,11 +8,12 @@ import {
     Box,
     CssBaseline,
     IconButton,
-    Paper
+    Paper,
+    ToggleButton
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { createTheme, styled, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import MUIRichTextEditor from 'mui-rte';
@@ -47,6 +48,12 @@ const theme = createTheme({
     }
 });
 
+const ImageToggleButton = styled(ToggleButton)({
+    '&.Mui-selected': {
+        border: '5px solid rgba(0, 134, 248, 0.7)'
+    }
+});
+
 export default function CreateQuiz() {
     const navigate = useNavigate();
     const questionObj = {
@@ -59,6 +66,16 @@ export default function CreateQuiz() {
     const handleCreateQuestion = () => {
         setQuestions([...questions, questionObj]);
     };
+
+    const [layout, setLayout] = useState(1);
+
+    const handleLayout = (event, newLayout) => {
+        if (newLayout === null) {
+            return;
+        }
+        setLayout(newLayout);
+    };
+
     const handleRemoveQuestion = (index) => {
         if (index === 0) {
             return;
@@ -172,30 +189,112 @@ export default function CreateQuiz() {
                     >
                         <Grid item align="center" xs={12}>
                             <TextField
-                                label="Name"
+                                label="Nome"
                                 name="name"
                                 variant="outlined"
                                 required
                             />
-                            <TextField
-                                type="number"
-                                defaultValue={1}
-                                variant="outlined"
-                                name="layout"
-                                required
-                                InputProps={{
-                                    inputProps: { min: 1, max: 3 }
-                                }}
-                            />
                         </Grid>
-
+                        <Grid item align="center" xs={12}>
+                            <Grid container align="center" alignItems="center">
+                                <Grid item align="center" xs={12}>
+                                    <Typography variant="subtitle1">
+                                        Layout:
+                                    </Typography>
+                                </Grid>
+                                <Grid item align="center" xs={3}>
+                                    <ImageToggleButton
+                                        selected={layout === 1}
+                                        value={1}
+                                        color="primary"
+                                        size="small"
+                                        sx={{
+                                            padding: 0
+                                        }}
+                                        onChange={(event, value) => {
+                                            handleLayout(event, value);
+                                        }}
+                                    >
+                                        <img
+                                            src="/storage/trueorfalse/layout1.png"
+                                            alt="Layout 1"
+                                            width="250"
+                                            height="auto"
+                                        />
+                                    </ImageToggleButton>
+                                </Grid>
+                                <Grid item align="center" xs={3}>
+                                    <ImageToggleButton
+                                        selected={layout === 2}
+                                        value={2}
+                                        color="primary"
+                                        size="small"
+                                        sx={{
+                                            padding: 0
+                                        }}
+                                        onChange={(event, value) => {
+                                            handleLayout(event, value);
+                                        }}
+                                    >
+                                        <img
+                                            src="/storage/trueorfalse/layout2.png"
+                                            alt="Layout 2"
+                                            width="250"
+                                            height="auto"
+                                        />
+                                    </ImageToggleButton>
+                                </Grid>
+                                <Grid item align="center" xs={3}>
+                                    <ImageToggleButton
+                                        selected={layout === 3}
+                                        value={3}
+                                        color="primary"
+                                        size="small"
+                                        sx={{
+                                            padding: 0
+                                        }}
+                                        onChange={(event, value) => {
+                                            handleLayout(event, value);
+                                        }}
+                                    >
+                                        <img
+                                            src="/storage/trueorfalse/layout3.png"
+                                            alt="Layout 3"
+                                            width="250"
+                                            height="auto"
+                                        />
+                                    </ImageToggleButton>
+                                </Grid>
+                                <Grid item align="center" xs={3}>
+                                    <ImageToggleButton
+                                        selected={layout === 4}
+                                        value={4}
+                                        color="primary"
+                                        size="small"
+                                        sx={{
+                                            padding: 0
+                                        }}
+                                        onChange={(event, value) => {
+                                            handleLayout(event, value);
+                                        }}
+                                    >
+                                        <img
+                                            src="/storage/trueorfalse/layout3.png"
+                                            alt="Layout 4"
+                                            width="250"
+                                            height="auto"
+                                        />
+                                    </ImageToggleButton>
+                                </Grid>
+                            </Grid>
+                        </Grid>
                         <Grid item align="center" xs={12}>
                             <Button
                                 onClick={handleCreateQuestion}
                                 endIcon={<AddIcon fontSize="small" />}
                                 variant="contained"
                             >
-                                Add Question
+                                Adicionar Questão
                             </Button>
                         </Grid>
                         <Grid item lg={12}>
@@ -229,7 +328,7 @@ export default function CreateQuiz() {
                                                 >
                                                     <Grid item xs={10}>
                                                         <Typography variant="subtitle1">
-                                                            Question{' '}
+                                                            Questão{' '}
                                                             {(
                                                                 index + 1
                                                             ).toString()}
@@ -279,7 +378,7 @@ export default function CreateQuiz() {
                                                                         index
                                                                     );
                                                                 }}
-                                                                label="Title..."
+                                                                label="Enunciado..."
                                                                 maxLength={160}
                                                             />
                                                         </Paper>
@@ -299,7 +398,8 @@ export default function CreateQuiz() {
                                                                     );
                                                                 }}
                                                             >
-                                                                Add Answer
+                                                                Adicionar
+                                                                Alternativa
                                                             </Button>
                                                         </Grid>
                                                     )}
@@ -343,7 +443,7 @@ export default function CreateQuiz() {
                                                                                     >
                                                                                         <TextField
                                                                                             variant="outlined"
-                                                                                            label="Correct answer"
+                                                                                            label="Alternativa correta"
                                                                                             size="small"
                                                                                             required
                                                                                             inputProps={{
@@ -401,7 +501,7 @@ export default function CreateQuiz() {
                                                                                         <TextField
                                                                                             variant="outlined"
                                                                                             label={
-                                                                                                'Answer ' +
+                                                                                                'Alternativa ' +
                                                                                                 (i +
                                                                                                     1)
                                                                                             }
@@ -467,7 +567,7 @@ export default function CreateQuiz() {
                                 type="submit"
                                 variant="outlined"
                             >
-                                Create
+                                Criar
                             </Button>
                         </Grid>
                     </Grid>
@@ -476,7 +576,7 @@ export default function CreateQuiz() {
             <br />
             <Typography variant="body2" color="text.secondary" align="center">
                 {'Copyright © '}
-                WordWall {new Date().getFullYear()}
+                Edutec {new Date().getFullYear()}
                 {'.'}
             </Typography>
         </ThemeProvider>
