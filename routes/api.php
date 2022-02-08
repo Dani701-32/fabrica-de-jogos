@@ -32,5 +32,8 @@ Route::middleware('auth:api')->group( function () {
     Route::resource('anagram', AnagramController::class);
     Route::resource('trueorfalse', TrueOrFalseController::class);
     Route::resource('wordsearch', WordSearchController::class);
-    Route::resource('memorygame', MemoryGameController::class);;
+    Route::resource('memorygame', MemoryGameController::class);
+    Route::post('results', function (Request $request) {
+        return $request;
+    });
 });

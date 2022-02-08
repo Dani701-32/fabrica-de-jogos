@@ -18,7 +18,7 @@ function Anagram(props) {
             gameAddress = 'http://localhost:8080/trueorfalse/';
             break;
         case 'matchUp':
-            gameAddress = 'MATCHUP';
+            gameAddress = 'http://localhost:8080/matchup/';
             break;
         case 'memoryGame':
             gameAddress = 'http://localhost:8080/memorygame/';
