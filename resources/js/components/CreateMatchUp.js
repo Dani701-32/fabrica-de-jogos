@@ -8,7 +8,8 @@ import {
     Box,
     CssBaseline,
     IconButton,
-    Paper
+    Paper,
+    Alert
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { KeyboardDoubleArrowRight } from '@mui/icons-material';
@@ -46,6 +47,10 @@ export default function CreateMatchUp() {
     const [pages, setPages] = useState([initialState]);
 
     const handleCreatePage = () => {
+        if (pages.length >= 10) {
+            setAlert('O número máximo de páginas para esse jogo é 10!');
+            return;
+        }
         setPages([...pages, initialState]);
     };
 
@@ -116,12 +121,21 @@ export default function CreateMatchUp() {
                     'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiMDU1YmE3YWVkY2ZhZTlhZjUxMGMzMTBlOWZmODY3ODc0ZGFiNGY5ZGRjMGY0M2IwNzQ3M2VlMzcxYWE2YjE4NTBjZmRhMWY0ODFmMTkyOTYiLCJpYXQiOjE2NDMwMTkzNDMuMTc3MjMsIm5iZiI6MTY0MzAxOTM0My4xNzcyMzcsImV4cCI6MTY3NDU1NTM0My4wOTU5NCwic3ViIjoiMSIsInNjb3BlcyI6W119.cZ_qYhOKtL6zCtska_12w0w-JMabe_O7a6Jy_jdQJ9Jq8BgFOIoxhX4tbcFADoWd8Xm1e8mjXT1y2nBWgweNfZD2Rz7kJgKSg6y9CHferhmzQ5tcIri6GThmKlZfJR5aJNVlFncf7F3xYvcRuBLxQ5z5cLLGSuKkNQr7h_T9BwcA8NWePmDWFmpt2ANFBrAJXYhH7bzriVvDhjr3rAWz6pDwaxM4KPpc0xt8vJBR39Mhrqy--6NiHQ5QqaCkiJ5VRggy7GRaJPTDgzjKLyPsCVYne79iJ6pRW-I8jsdLNBOdlPf38qArY_qPirOlGrPM7vUJq2OhyazDFghdFHI3y7mPItP9RKSdJCjgNb-EFzpmB90hDhckxB9bAeqZclLZW_J_I_NQvNSOrtr9vwesGdp6uDc7uzhRuZZy0zVh6w0v7xj26GclcT4QW3yWg09m0H33VQzhHzmbt5aQbJx4zPnYUKEvEQLGkmlsmsGYMfv5_876EBm6AV3cbNLfZOqkhXi7NkQhxZGCdM6IVpJLXAYPZl3wp0PSj_Yl8sU6jDoqqAwveDlYAfeHpVGZAjkR5xfvZ7SZwJ8BZR8bbIguYnPwIcgLTOAP-ylyT-QDPtuAiM4VTErORNZKXwcDZWUA0msmg-ulmg53Fy4-5KpTyA2x0FiuFs3_EwAdIz209SY'
             }
         };
-        axios.post('/api/matchup', body, config).then((response) => {
-            if (response.data.success === true) {
-                navigate(`/matchup/${response.data.data.slug}`);
-            }
-        });
+        axios
+            .post('/api/matchup', body, config)
+            .then((response) => {
+                if (response.data.success === true) {
+                    navigate(`/matchup/${response.data.data.slug}`);
+                }
+            })
+            .catch((error) => {
+                setAlert(
+                    `Error ${error.response.status}: ${error.response.data.message}`
+                );
+            });
     };
+
+    const [alert, setAlert] = useState('');
 
     return (
         <ThemeProvider theme={theme}>
@@ -171,6 +185,18 @@ export default function CreateMatchUp() {
                                 alignItems="flex-start"
                                 justifyContent="center"
                             >
+                                {alert && (
+                                    <Grid item xs={12}>
+                                        <Alert
+                                            severity="warning"
+                                            onClick={() => {
+                                                setAlert('');
+                                            }}
+                                        >
+                                            {alert}
+                                        </Alert>
+                                    </Grid>
+                                )}
                                 {pages.map((page, index) => {
                                     return (
                                         <Grid key={index} item md={12} lg={6}>

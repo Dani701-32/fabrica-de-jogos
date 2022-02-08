@@ -10,9 +10,10 @@ import {
     ToggleButton,
     ToggleButtonGroup,
     Typography,
-    CircularProgress
+    CircularProgress,
+    Alert
 } from '@mui/material';
-import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import ImageEditor from './layout/imageEditor';
 import { useNavigate } from 'react-router-dom';
 import LayoutPicker from './layout/layoutPicker';
@@ -75,12 +76,21 @@ export default function CreateMemoryGame() {
                 setProgress(Math.round((event.loaded * 100) / event.total));
             }
         };
-        axios.post('/api/memorygame', data, config).then((response) => {
-            if (response.data.success === true) {
-                navigate(`/memorygame/${response.data.data.slug}`);
-            }
-        });
+        axios
+            .post('/api/memorygame', data, config)
+            .then((response) => {
+                if (response.data.success === true) {
+                    navigate(`/memorygame/${response.data.data.slug}`);
+                }
+            })
+            .catch((error) => {
+                setAlert(
+                    `Error ${error.response.status}: ${error.response.data.message}`
+                );
+            });
     };
+
+    const [alert, setAlert] = useState('');
 
     return (
         <ThemeProvider theme={theme}>
@@ -136,6 +146,18 @@ export default function CreateMemoryGame() {
                                 justifyContent="center"
                                 spacing={3}
                             >
+                                {alert && (
+                                    <Grid item xs={12}>
+                                        <Alert
+                                            severity="warning"
+                                            onClick={() => {
+                                                setAlert('');
+                                            }}
+                                        >
+                                            {alert}
+                                        </Alert>
+                                    </Grid>
+                                )}
                                 {images.map((image, index) => {
                                     return (
                                         <Grid
