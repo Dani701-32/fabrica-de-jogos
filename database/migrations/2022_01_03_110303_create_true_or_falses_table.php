@@ -18,7 +18,7 @@ class CreateTrueOrFalsesTable extends Migration
             $table->string('name');
             $table->string('slug')->unique();
             $table->integer('layout');
-            $table->string('questions', 2048);
+            $table->string('questions', 5096);
             $table->timestamps();
         });
     }
