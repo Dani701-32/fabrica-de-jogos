@@ -15,13 +15,8 @@ import {
 import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import ImageEditor from './layout/imageEditor';
 import { useNavigate } from 'react-router-dom';
+import LayoutPicker from './layout/layoutPicker';
 import axios from 'axios';
-
-const ImageToggleButton = styled(ToggleButton)({
-    '&.Mui-selected': {
-        border: '5px solid rgba(0, 134, 248, 0.7)'
-    }
-});
 
 const theme = createTheme();
 
@@ -114,100 +109,10 @@ export default function CreateMemoryGame() {
                                 required
                             />
                         </Grid>
-                        <Grid item align="center" xs={12}>
-                            <Grid container align="center" alignItems="center">
-                                <Grid item align="center" xs={12}>
-                                    <Typography variant="subtitle1">
-                                        Layout:
-                                    </Typography>
-                                </Grid>
-                                <Grid item align="center" xs={3}>
-                                    <ImageToggleButton
-                                        selected={layout === 1}
-                                        value={1}
-                                        color="primary"
-                                        size="small"
-                                        sx={{
-                                            padding: 0
-                                        }}
-                                        onChange={(event, value) => {
-                                            handleLayout(event, value);
-                                        }}
-                                    >
-                                        <img
-                                            src="/storage/trueorfalse/layout1.png"
-                                            alt="Layout 1"
-                                            width="250"
-                                            height="auto"
-                                        />
-                                    </ImageToggleButton>
-                                </Grid>
-                                <Grid item align="center" xs={3}>
-                                    <ImageToggleButton
-                                        selected={layout === 2}
-                                        value={2}
-                                        color="primary"
-                                        size="small"
-                                        sx={{
-                                            padding: 0
-                                        }}
-                                        onChange={(event, value) => {
-                                            handleLayout(event, value);
-                                        }}
-                                    >
-                                        <img
-                                            src="/storage/trueorfalse/layout2.png"
-                                            alt="Layout 2"
-                                            width="250"
-                                            height="auto"
-                                        />
-                                    </ImageToggleButton>
-                                </Grid>
-                                <Grid item align="center" xs={3}>
-                                    <ImageToggleButton
-                                        selected={layout === 3}
-                                        value={3}
-                                        color="primary"
-                                        variant="image"
-                                        size="small"
-                                        sx={{
-                                            padding: 0
-                                        }}
-                                        onChange={(event, value) => {
-                                            handleLayout(event, value);
-                                        }}
-                                    >
-                                        <img
-                                            src="/storage/trueorfalse/layout3.png"
-                                            alt="Layout 3"
-                                            width="250"
-                                            height="auto"
-                                        />
-                                    </ImageToggleButton>
-                                </Grid>
-                                <Grid item align="center" xs={3}>
-                                    <ImageToggleButton
-                                        selected={layout === 4}
-                                        value={4}
-                                        color="primary"
-                                        size="small"
-                                        sx={{
-                                            padding: 0
-                                        }}
-                                        onChange={(event, value) => {
-                                            handleLayout(event, value);
-                                        }}
-                                    >
-                                        <img
-                                            src="/storage/trueorfalse/layout3.png"
-                                            alt="Layout 4"
-                                            width="250"
-                                            height="auto"
-                                        />
-                                    </ImageToggleButton>
-                                </Grid>
-                            </Grid>
-                        </Grid>
+                        <LayoutPicker
+                            handleLayout={handleLayout}
+                            selectedLayout={layout}
+                        />
                         <Grid item align="center" xs={12}>
                             <ToggleButtonGroup
                                 value={size}

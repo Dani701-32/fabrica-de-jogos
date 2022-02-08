@@ -11,51 +11,19 @@ import {
     Paper,
     Switch,
     FormGroup,
-    FormControlLabel,
-    ToggleButton
+    FormControlLabel
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
-import { createTheme, styled, ThemeProvider } from '@mui/material/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import MUIRichTextEditor from 'mui-rte';
 import { EditorState, convertToRaw } from 'draft-js';
-import draftToHtml from 'draftjs-to-html';
+import LayoutPicker from './layout/layoutPicker';
+import RichTextField from './layout/richTextField';
+import draftToText from './utils/draftToText';
 
-const theme = createTheme({
-    overrides: {
-        MUIRichTextEditor: {
-            container: {
-                display: 'flex',
-                flexDirection: 'column'
-            },
-            editor: {
-                padding: '10px',
-                maxHeight: '200px',
-                overflow: 'auto',
-                alignItems: 'center'
-            },
-            toolbar: {
-                borderBottom: '1px solid gray'
-            },
-            placeHolder: {
-                paddingLeft: 20,
-                width: 'inherit'
-            },
-            anchorLink: {
-                color: '#333333',
-                textDecoration: 'underline'
-            }
-        }
-    }
-});
-
-const ImageToggleButton = styled(ToggleButton)({
-    '&.Mui-selected': {
-        border: '5px solid rgba(0, 134, 248, 0.7)'
-    }
-});
+const theme = createTheme();
 
 export default function CreateTrueOrFalse() {
     const navigate = useNavigate();
@@ -106,28 +74,12 @@ export default function CreateTrueOrFalse() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        let collection = {
-            '<p>': '',
-            '</p>': '',
-            '<strong>': '[b]',
-            '</strong>': '[/b]',
-            '<em>': '[i]',
-            '</em>': '[/i]',
-            '<ins>': '[u]',
-            '</ins>': '[/u]',
-            '<del>': '[s]',
-            '</del>': '[/s]'
-        };
         const data = new FormData(event.currentTarget);
         let name = data.get('name');
         let questionsJSON = [];
         questions.map((item) => {
             let textJson = convertToRaw(item.title.getCurrentContent());
-            let markup = draftToHtml(textJson);
-            for (const [key, value] of Object.entries(collection)) {
-                const regex = new RegExp(key, 'g');
-                markup = markup.replace(regex, value);
-            }
+            let markup = draftToText(textJson);
             questionsJSON.push({
                 answer: item.right,
                 title: markup
@@ -179,99 +131,10 @@ export default function CreateTrueOrFalse() {
                                 required
                             />
                         </Grid>
-                        <Grid item align="center" xs={12}>
-                            <Grid container align="center" alignItems="center">
-                                <Grid item align="center" xs={12}>
-                                    <Typography variant="subtitle1">
-                                        Layout:
-                                    </Typography>
-                                </Grid>
-                                <Grid item align="center" xs={3}>
-                                    <ImageToggleButton
-                                        selected={layout === 1}
-                                        value={1}
-                                        color="primary"
-                                        size="small"
-                                        sx={{
-                                            padding: 0
-                                        }}
-                                        onChange={(event, value) => {
-                                            handleLayout(event, value);
-                                        }}
-                                    >
-                                        <img
-                                            src="/storage/trueorfalse/layout1.png"
-                                            alt="Layout 1"
-                                            width="250"
-                                            height="auto"
-                                        />
-                                    </ImageToggleButton>
-                                </Grid>
-                                <Grid item align="center" xs={3}>
-                                    <ImageToggleButton
-                                        selected={layout === 2}
-                                        value={2}
-                                        color="primary"
-                                        size="small"
-                                        sx={{
-                                            padding: 0
-                                        }}
-                                        onChange={(event, value) => {
-                                            handleLayout(event, value);
-                                        }}
-                                    >
-                                        <img
-                                            src="/storage/trueorfalse/layout2.png"
-                                            alt="Layout 2"
-                                            width="250"
-                                            height="auto"
-                                        />
-                                    </ImageToggleButton>
-                                </Grid>
-                                <Grid item align="center" xs={3}>
-                                    <ImageToggleButton
-                                        selected={layout === 3}
-                                        value={3}
-                                        color="primary"
-                                        size="small"
-                                        sx={{
-                                            padding: 0
-                                        }}
-                                        onChange={(event, value) => {
-                                            handleLayout(event, value);
-                                        }}
-                                    >
-                                        <img
-                                            src="/storage/trueorfalse/layout3.png"
-                                            alt="Layout 3"
-                                            width="250"
-                                            height="auto"
-                                        />
-                                    </ImageToggleButton>
-                                </Grid>
-                                <Grid item align="center" xs={3}>
-                                    <ImageToggleButton
-                                        selected={layout === 4}
-                                        value={4}
-                                        color="primary"
-                                        size="small"
-                                        sx={{
-                                            padding: 0
-                                        }}
-                                        onChange={(event, value) => {
-                                            handleLayout(event, value);
-                                        }}
-                                    >
-                                        <img
-                                            src="/storage/trueorfalse/layout3.png"
-                                            alt="Layout 4"
-                                            width="250"
-                                            height="auto"
-                                        />
-                                    </ImageToggleButton>
-                                </Grid>
-                            </Grid>
-                        </Grid>
+                        <LayoutPicker
+                            handleLayout={handleLayout}
+                            selectedLayout={layout}
+                        />
                         <Grid item align="center" xs={12}>
                             <Button
                                 onClick={handleCreateQuestion}
@@ -340,32 +203,19 @@ export default function CreateTrueOrFalse() {
                                                         align="left"
                                                         xs={12}
                                                     >
-                                                        <Paper variant="outlined">
-                                                            <MUIRichTextEditor
-                                                                controls={[
-                                                                    'bold',
-                                                                    'italic',
-                                                                    'underline',
-                                                                    'strikethrough',
-                                                                    'undo',
-                                                                    'redo',
-                                                                    'clear'
-                                                                ]}
-                                                                editorState={
-                                                                    item.title
-                                                                }
-                                                                onChange={(
-                                                                    editorState
-                                                                ) => {
-                                                                    handleQuestionTitleChange(
-                                                                        editorState,
-                                                                        index
-                                                                    );
-                                                                }}
-                                                                label="Enunciado..."
-                                                                maxLength={160}
-                                                            />
-                                                        </Paper>
+                                                        <RichTextField
+                                                            editorState={
+                                                                item.title
+                                                            }
+                                                            handleTextChange={
+                                                                handleQuestionTitleChange
+                                                            }
+                                                            index={index}
+                                                            label={
+                                                                'Enunciado...'
+                                                            }
+                                                            maxLength={160}
+                                                        />
                                                     </Grid>
                                                     <Grid
                                                         item

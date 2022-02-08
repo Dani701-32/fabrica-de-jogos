@@ -16,14 +16,9 @@ import { createTheme, styled, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import DeleteIcon from '@mui/icons-material/Delete';
+import LayoutPicker from './layout/layoutPicker';
 
 const theme = createTheme();
-
-const ImageToggleButton = styled(ToggleButton)({
-    '&.Mui-selected': {
-        border: '5px solid rgba(0, 134, 248, 0.7)'
-    }
-});
 
 export default function CreateWordSearch() {
     const navigate = useNavigate();
@@ -66,7 +61,6 @@ export default function CreateWordSearch() {
             layout: layout,
             words: words
         });
-        console.log(body);
         const config = {
             headers: {
                 'Content-Type': 'application/json',
@@ -108,106 +102,17 @@ export default function CreateWordSearch() {
                                 required
                             />
                         </Grid>
-                        <Grid item align="center" xs={12}>
-                            <Grid container align="center" alignItems="center">
-                                <Grid item align="center" xs={12}>
-                                    <Typography variant="subtitle1">
-                                        Layout:
-                                    </Typography>
-                                </Grid>
-                                <Grid item align="center" xs={3}>
-                                    <ImageToggleButton
-                                        selected={layout === 1}
-                                        value={1}
-                                        color="primary"
-                                        size="small"
-                                        sx={{
-                                            padding: 0
-                                        }}
-                                        onChange={(event, value) => {
-                                            handleLayout(event, value);
-                                        }}
-                                    >
-                                        <img
-                                            src="/storage/trueorfalse/layout1.png"
-                                            alt="Layout 1"
-                                            width="250"
-                                            height="auto"
-                                        />
-                                    </ImageToggleButton>
-                                </Grid>
-                                <Grid item align="center" xs={3}>
-                                    <ImageToggleButton
-                                        selected={layout === 2}
-                                        value={2}
-                                        color="primary"
-                                        size="small"
-                                        sx={{
-                                            padding: 0
-                                        }}
-                                        onChange={(event, value) => {
-                                            handleLayout(event, value);
-                                        }}
-                                    >
-                                        <img
-                                            src="/storage/trueorfalse/layout2.png"
-                                            alt="Layout 2"
-                                            width="250"
-                                            height="auto"
-                                        />
-                                    </ImageToggleButton>
-                                </Grid>
-                                <Grid item align="center" xs={3}>
-                                    <ImageToggleButton
-                                        selected={layout === 3}
-                                        value={3}
-                                        color="primary"
-                                        size="small"
-                                        sx={{
-                                            padding: 0
-                                        }}
-                                        onChange={(event, value) => {
-                                            handleLayout(event, value);
-                                        }}
-                                    >
-                                        <img
-                                            src="/storage/trueorfalse/layout3.png"
-                                            alt="Layout 3"
-                                            width="250"
-                                            height="auto"
-                                        />
-                                    </ImageToggleButton>
-                                </Grid>
-                                <Grid item align="center" xs={3}>
-                                    <ImageToggleButton
-                                        selected={layout === 4}
-                                        value={4}
-                                        color="primary"
-                                        size="small"
-                                        sx={{
-                                            padding: 0
-                                        }}
-                                        onChange={(event, value) => {
-                                            handleLayout(event, value);
-                                        }}
-                                    >
-                                        <img
-                                            src="/storage/trueorfalse/layout3.png"
-                                            alt="Layout 4"
-                                            width="250"
-                                            height="auto"
-                                        />
-                                    </ImageToggleButton>
-                                </Grid>
-                            </Grid>
-                        </Grid>
+                        <LayoutPicker
+                            handleLayout={handleLayout}
+                            selectedLayout={layout}
+                        />
                         <Grid item align="center" xs={12}>
                             <Button
                                 onClick={handleAddWord}
                                 endIcon={<AddIcon fontSize="small" />}
                                 variant="contained"
                             >
-                                Adicionar palavra
+                                Adicionar Palavra
                             </Button>
                         </Grid>
                         <Grid item lg={12}>
