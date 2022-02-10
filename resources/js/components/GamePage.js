@@ -1,18 +1,18 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
-function Anagram(props) {
+export default function GamePage(props) {
     const { game } = props;
     let gameAddress = '';
     switch (game) {
         case 'quiz':
-            gameAddress = 'QUIZ';
+            gameAddress = 'http://localhost:8080/quiz/';
             break;
         case 'wordSearch':
             gameAddress = 'WORDSEARCH';
             break;
         case 'anagram':
-            gameAddress = 'ANAGRAM';
+            gameAddress = 'http://localhost:8080/anagram/';
             break;
         case 'trueOrFalse':
             gameAddress = 'http://localhost:8080/trueorfalse/';
@@ -52,5 +52,3 @@ function Anagram(props) {
         </div>
     );
 }
-
-export default Anagram;
