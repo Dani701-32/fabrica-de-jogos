@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\Controller;
 use Cviebrock\EloquentSluggable\Services\SlugService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Validator;
 use App\Models\WordSearch;
 use App\Http\Resources\WordSearch as WordSearchResource;
 
-class WordSearchController extends BaseController
+class WordSearchController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,7 +18,7 @@ class WordSearchController extends BaseController
      */
     public function index(): JsonResponse
     {
-        return $this->sendError('');
+        return response()->json([''], 404);
     }
 
     /**
@@ -29,19 +29,12 @@ class WordSearchController extends BaseController
      */
     public function store(Request $request): JsonResponse
     {
-        $input = $request->all();
-
-        $validator = Validator::make($input, [
+        $request->validate([
             'name' => 'required|string|max:255',
             'layout' => 'required|integer|max:10',
             'words' => 'required|array|max:10',
             'questions.*' => 'required|string|max:18',
         ]);
-
-
-        if($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
-        }
 
         $word_search = new WordSearch();
         $word_search->name = $request->name;
@@ -49,7 +42,7 @@ class WordSearchController extends BaseController
         $word_search->layout = $request->layout;
         $word_search->words = implode('|', $request->words);
         $word_search->save();
-        return $this->sendResponse(new WordSearchResource($word_search), 'Word search game created successfully.');
+        return response()->json(new WordSearchResource($word_search), 201);
     }
 
     /**
@@ -60,7 +53,7 @@ class WordSearchController extends BaseController
      */
     public function show(WordSearch $wordsearch): JsonResponse
     {
-        return $this->sendResponse(new WordSearchResource($wordsearch), 'Word search game info retrieved successfully.');
+        return response()->json(new WordSearchResource($wordsearch));
     }
 
     /**
@@ -72,7 +65,7 @@ class WordSearchController extends BaseController
      */
     public function update(Request $request, int $id): JsonResponse
     {
-        return $this->sendError('');
+        return response()->json([''], 404);
     }
 
     /**
@@ -83,6 +76,6 @@ class WordSearchController extends BaseController
      */
     public function destroy(int $id): JsonResponse
     {
-        return $this->sendError('');
+        return response()->json([''], 404);
     }
 }

@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Validator;
 use App\Models\Quiz;
 use App\Http\Resources\Quiz as QuizResource;
 use Cviebrock\EloquentSluggable\Services\SlugService;
 
-class QuizController extends BaseController
+class QuizController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,7 +18,7 @@ class QuizController extends BaseController
      */
     public function index(): JsonResponse
     {
-        return $this->sendError('');
+        return response()->json([''], 404);
     }
 
     /**
@@ -29,9 +29,7 @@ class QuizController extends BaseController
      */
     public function store(Request $request): JsonResponse
     {
-        $input = $request->all();
-
-        $validator = Validator::make($input, [
+        $request->validate([
             'name' => 'required|string|max:255',
             'layout' => 'required|integer|max:10',
             'questions' => 'required|array|max:10',
@@ -40,18 +38,13 @@ class QuizController extends BaseController
             'questions.*.answers.*' => 'required|string|max:31',
         ]);
 
-
-        if($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
-        }
-
         $quiz = new Quiz();
         $quiz->name = $request->name;
         $quiz->slug = SlugService::createSlug(Quiz::class, 'slug', $request->name);
         $quiz->layout = $request->layout;
         $quiz->questions = serialize($request->questions);
         $quiz->save();
-        return $this->sendResponse(new QuizResource($quiz), 'Quiz game created successfully.');
+        return response()->json(new QuizResource($quiz), 201);
     }
 
     /**
@@ -62,7 +55,7 @@ class QuizController extends BaseController
      */
     public function show(Quiz $quiz): JsonResponse
     {
-        return $this->sendResponse(new QuizResource($quiz), 'Quiz game information retrieved successfully.');
+        return response()->json(new QuizResource($quiz));
     }
 
     /**
@@ -84,9 +77,9 @@ class QuizController extends BaseController
         }
         if ($edited) {
             $quiz->save();
-            return $this->sendResponse(new QuizResource($quiz), 'Quiz game information updated successfully.');
+            return response()->json(new QuizResource($quiz));
         }
-        return $this->sendError("Bad request", ["Invalid request"], 400);
+        return response()->json(["Bad request" => "Invalid request"], 400);
     }
 
     /**
@@ -97,6 +90,6 @@ class QuizController extends BaseController
      */
     public function destroy(int $id): JsonResponse
     {
-        return $this->sendError('');
+        return response()->json([''], 404);
     }
 }

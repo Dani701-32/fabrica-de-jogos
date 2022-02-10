@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\Controller;
 use App\Models\MemoryGame;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Resources\MemoryGame as MemoryGameResource;
 
-class MemoryGameController extends BaseController
+class MemoryGameController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +17,7 @@ class MemoryGameController extends BaseController
      */
     public function index(): JsonResponse
     {
-        return $this->sendError('');
+        return response()->json([''], 404);
     }
 
     /**
@@ -32,9 +33,6 @@ class MemoryGameController extends BaseController
             'images.*' => 'mimes:jpeg,jpg,png'
         ]);
 
-        if(!$request->hasFile('images')) {
-            return $this->sendError('Bad Request', ['Upload image not found!'], 400);
-        }
 
         $files = $request->file('images');
         $images = [];
@@ -64,7 +62,7 @@ class MemoryGameController extends BaseController
                 break;
         }
         $memory->save();
-        return $this->sendResponse(new MemoryGameResource($memory), 'Memory game created successfully.');
+        return response()->json(new MemoryGameResource($memory), 201);
     }
 
     /**
@@ -75,7 +73,7 @@ class MemoryGameController extends BaseController
      */
     public function show(MemoryGame $memorygame): JsonResponse
     {
-        return $this->sendResponse(new MemoryGameResource($memorygame), 'Memory game information retrieved successfully.');
+        return response()->json(new MemoryGameResource($memorygame));
     }
 
     /**
@@ -87,7 +85,7 @@ class MemoryGameController extends BaseController
      */
     public function update(Request $request, int $id): JsonResponse
     {
-        return $this->sendError('');
+        return response()->json([''], 404);
     }
 
     /**
@@ -98,6 +96,6 @@ class MemoryGameController extends BaseController
      */
     public function destroy(int $id): JsonResponse
     {
-        return $this->sendError('');
+        return response()->json([''], 404);
     }
 }

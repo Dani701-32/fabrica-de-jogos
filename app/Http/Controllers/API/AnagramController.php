@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\Controller;
 use Cviebrock\EloquentSluggable\Services\SlugService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Validator;
 use App\Models\Anagram;
 use App\Http\Resources\Anagram as AnagramResource;
 
-class AnagramController extends BaseController
+class AnagramController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,7 +18,7 @@ class AnagramController extends BaseController
      */
     public function index(): JsonResponse
     {
-        return $this->sendError('');
+        return response()->json([''], 404);
     }
 
     /**
@@ -29,18 +29,12 @@ class AnagramController extends BaseController
      */
     public function store(Request $request): JsonResponse
     {
-        $input = $request->all();
-
-        $validator = Validator::make($input, [
+        $request->validate([
             'name' => 'required|string|max:255',
             'layout' => 'required|integer|max:10',
             'words' => 'required|array|max:12',
             'words.*' => 'required|string|max:20'
         ]);
-
-        if($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors(), 400);
-        }
 
         $anagram = new Anagram();
         $anagram->name = $request->name;
@@ -49,7 +43,7 @@ class AnagramController extends BaseController
         $anagram->words = implode('|', $request->words);
         $anagram->save();
 
-        return $this->sendResponse(new AnagramResource($anagram), "Anagram game created successfully.");
+        return response()->json(new AnagramResource($anagram), 201);
     }
 
     /**
@@ -60,7 +54,7 @@ class AnagramController extends BaseController
      */
     public function show(Anagram $anagram): JsonResponse
     {
-        return $this->sendResponse(new AnagramResource($anagram), "Anagram game info retrieved successfully.");
+        return response()->json(new AnagramResource($anagram));
     }
 
     /**
@@ -72,7 +66,7 @@ class AnagramController extends BaseController
      */
     public function update(Request $request, int $id): JsonResponse
     {
-        return $this->sendError('');
+        return response()->json([''], 404);
     }
 
     /**
@@ -83,6 +77,6 @@ class AnagramController extends BaseController
      */
     public function destroy(int $id): JsonResponse
     {
-        return $this->sendError('');
+        return response()->json([''], 404);
     }
 }

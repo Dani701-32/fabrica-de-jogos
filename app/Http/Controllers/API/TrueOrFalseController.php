@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\Controller;
 use Cviebrock\EloquentSluggable\Services\SlugService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Validator;
 use App\Models\TrueOrFalse;
 use App\Http\Resources\TrueOrFalse as TrueOrFalseResource;
 
-class TrueOrFalseController extends BaseController
+class TrueOrFalseController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,7 +18,7 @@ class TrueOrFalseController extends BaseController
      */
     public function index(): JsonResponse
     {
-        return $this->sendError('');
+        return response()->json([''], 404);
     }
 
 
@@ -30,19 +30,13 @@ class TrueOrFalseController extends BaseController
      */
     public function store(Request $request): JsonResponse
     {
-        $input = $request->all();
-
-        $validator = Validator::make($input, [
+        $request->validate([
             'name' => 'required|string|max:255',
             'layout' => 'required|integer|max:10',
             'questions' => 'required|array|max:10',
             'questions.*.title' => 'required|string|max:240',
             'questions.*.answer' => 'required|boolean'
         ]);
-
-        if($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
-        }
 
         $true_or_false = new TrueOrFalse();
         $true_or_false->name = $request->name;
@@ -51,7 +45,7 @@ class TrueOrFalseController extends BaseController
         $true_or_false->questions = serialize($request->questions);
         $true_or_false->save();
 
-        return $this->sendResponse(new TrueOrFalseResource($true_or_false), "True or false game created successfully.");
+        return response()->json(new TrueOrFalseResource($true_or_false), 201);
     }
 
     /**
@@ -62,7 +56,7 @@ class TrueOrFalseController extends BaseController
      */
     public function show(TrueOrFalse $trueorfalse): JsonResponse
     {
-        return $this->sendResponse(new TrueOrFalseResource($trueorfalse), "True or false game info retrieved successfully.");
+        return response()->json(new TrueOrFalseResource($trueorfalse));
     }
 
     /**
@@ -74,7 +68,7 @@ class TrueOrFalseController extends BaseController
      */
     public function update(Request $request, int $id): JsonResponse
     {
-        return $this->sendError('');
+        return response()->json([''], 404);
     }
 
     /**
@@ -85,6 +79,6 @@ class TrueOrFalseController extends BaseController
      */
     public function destroy(int $id): JsonResponse
     {
-        return $this->sendError('');
+        return response()->json([''], 404);
     }
 }

@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Validator;
 use App\Models\MatchUp;
 use App\Http\Resources\MatchUp as MatchUpResource;
 use Cviebrock\EloquentSluggable\Services\SlugService;
 
-class MatchUpController extends BaseController
+class MatchUpController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,7 +18,7 @@ class MatchUpController extends BaseController
      */
     public function index(): JsonResponse
     {
-        return $this->sendError('');
+        return response()->json([''], 404);
     }
 
     /**
@@ -29,9 +29,7 @@ class MatchUpController extends BaseController
      */
     public function store(Request $request): JsonResponse
     {
-        $input = $request->all();
-
-        $validator = Validator::make($input, [
+        $request->validate( [
             'name' => 'required|string|max:255',
             'layout' => 'required|integer|max:10',
             'pages' => 'required|array|max:4',
@@ -40,10 +38,6 @@ class MatchUpController extends BaseController
             'pages.*.*.meaning' => 'required|string'
         ]);
 
-        if($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
-        }
-
         $matchup = new MatchUp();
         $matchup->name = $request->name;
         $matchup->slug = SlugService::createSlug(MatchUp::class, 'slug', $request->name);
@@ -51,7 +45,7 @@ class MatchUpController extends BaseController
         $matchup->pages = serialize($request->pages);
         $matchup->save();
 
-        return $this->sendResponse(new MatchUpResource($matchup), 'MatchUp game created successfully');
+        return response()->json(new MatchUpResource($matchup), 201);
     }
 
     /**
@@ -62,7 +56,7 @@ class MatchUpController extends BaseController
      */
     public function show(MatchUp $matchup): JsonResponse
     {
-        return $this->sendResponse(new MatchUpResource($matchup), 'game info retrieved successfully');
+        return response()->json(new MatchUpResource($matchup));
     }
     /**
      * Update the specified resource in storage.
@@ -73,7 +67,7 @@ class MatchUpController extends BaseController
      */
     public function update(Request $request, int $id): JsonResponse
     {
-        return $this->sendError('');
+        return response()->json([''], 404);
     }
 
     /**
@@ -84,6 +78,6 @@ class MatchUpController extends BaseController
      */
     public function destroy(int $id): JsonResponse
     {
-        return $this->sendError('');
+        return response()->json([''], 404);
     }
 }
