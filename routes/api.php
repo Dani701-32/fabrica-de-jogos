@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\API\RegisterController;
+use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\QuizController;
 use App\Http\Controllers\API\CruzadinhaController;
 use App\Http\Controllers\API\MatchUpController;
@@ -22,8 +22,8 @@ use App\Http\Controllers\API\MemoryGameController;
 |
 */
 
-Route::post('register', [RegisterController::class, 'register'])->name('register');
-Route::post('login', [RegisterController::class, 'login'])->name('login');
+Route::post('register', [UserController::class, 'register'])->name('register');
+Route::post('login', [UserController::class, 'login'])->name('login');
 
 Route::middleware('auth:api')->group( function () {
     Route::resource('quiz', QuizController::class);

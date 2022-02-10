@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use App\Http\Controllers\API\BaseController as BaseController;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Validator;
 
-class RegisterController extends BaseController
+class UserController extends Controller
 {
     /**
      * Register api
@@ -19,16 +18,12 @@ class RegisterController extends BaseController
      */
     public function register(Request $request): JsonResponse
     {
-        $validator = Validator::make($request->all(), [
+        $request->validate([
             'name' => 'required',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users',
             'password' => 'required',
             'c_password' => 'required|same:password',
         ]);
-
-        if($validator->fails()){
-            return $this->sendError('Validation Error.', $validator->errors());
-        }
 
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
@@ -36,7 +31,7 @@ class RegisterController extends BaseController
         $success['token'] =  $user->createToken('MyApp')->accessToken;
         $success['name'] =  $user->name;
 
-        return $this->sendResponse($success, 'User register successfully.');
+        return response()->json($success, 201);
     }
 
     /**
@@ -47,15 +42,20 @@ class RegisterController extends BaseController
      */
     public function login(Request $request): JsonResponse
     {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|password',
+        ]);
+
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
             $user = Auth::user();
             $success['token'] =  $user->createToken('MyApp')-> accessToken;
             $success['name'] =  $user->name;
 
-            return $this->sendResponse($success, 'User login successfully.');
+            return response()->json($success, 202);
         }
         else{
-            return $this->sendError('Unauthorised.', ['error'=>'Unauthorised']);
+            return response()->json('Unauthorised.', 401);
         }
     }
 }
