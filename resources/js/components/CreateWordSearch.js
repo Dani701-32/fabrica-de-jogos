@@ -82,8 +82,8 @@ export default function CreateWordSearch() {
         axios
             .post('/api/wordsearch', body, config)
             .then((response) => {
-                if (response.data.success === true) {
-                    navigate(`/wordsearch/${response.data.data.slug}`);
+                if (response.status === 201) {
+                    navigate(`/wordsearch/${response.data.slug}`);
                 }
             })
             .catch((error) => {

@@ -120,8 +120,8 @@ export default function CreateQuiz() {
         axios
             .post('/api/quiz', body, config)
             .then((response) => {
-                if (response.data.success === true) {
-                    navigate(`/quiz/${response.data.data.slug}`);
+                if (response.status === 201) {
+                    navigate(`/quiz/${response.data.slug}`);
                 }
             })
             .catch((error) => {

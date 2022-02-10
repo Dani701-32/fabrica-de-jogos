@@ -79,8 +79,8 @@ export default function CreateMemoryGame() {
         axios
             .post('/api/memorygame', data, config)
             .then((response) => {
-                if (response.data.success === true) {
-                    navigate(`/memorygame/${response.data.data.slug}`);
+                if (response.status === 201) {
+                    navigate(`/memorygame/${response.data.slug}`);
                 }
             })
             .catch((error) => {

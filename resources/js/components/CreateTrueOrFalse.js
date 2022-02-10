@@ -105,8 +105,8 @@ export default function CreateTrueOrFalse() {
         axios
             .post('/api/trueorfalse', body, config)
             .then((response) => {
-                if (response.data.success === true) {
-                    navigate(`/trueorfalse/${response.data.data.slug}`);
+                if (response.status === 201) {
+                    navigate(`/trueorfalse/${response.data.slug}`);
                 }
             })
             .catch((error) => {

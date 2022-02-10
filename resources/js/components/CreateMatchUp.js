@@ -124,8 +124,8 @@ export default function CreateMatchUp() {
         axios
             .post('/api/matchup', body, config)
             .then((response) => {
-                if (response.data.success === true) {
-                    navigate(`/matchup/${response.data.data.slug}`);
+                if (response.status === 201) {
+                    navigate(`/matchup/${response.data.slug}`);
                 }
             })
             .catch((error) => {

@@ -79,8 +79,8 @@ export default function CreateAnagram() {
         axios
             .post('/api/anagram', body, config)
             .then((response) => {
-                if (response.data.success === true) {
-                    navigate(`/anagram/${response.data.data.slug}`);
+                if (response.status === 201) {
+                    navigate(`/anagram/${response.data.slug}`);
                 }
             })
             .catch((error) => {
