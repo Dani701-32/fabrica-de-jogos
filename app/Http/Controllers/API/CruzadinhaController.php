@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
 use Cviebrock\EloquentSluggable\Services\SlugService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Cruzadinha;
 use App\Http\Resources\Cruzadinha as CruzadinhaResource;
@@ -14,20 +14,20 @@ class CruzadinhaController extends BaseController
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
-    public function index()
+    public function index(): JsonResponse
     {
-        //
+        return $this->sendError('');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return JsonResponse
      */
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $input = $request->all();
 
@@ -59,9 +59,9 @@ class CruzadinhaController extends BaseController
      * Display the specified resource.
      *
      * @param  Cruzadinha  $cruzadinha
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
-    public function show(Cruzadinha $cruzadinha)
+    public function show(Cruzadinha $cruzadinha): JsonResponse
     {
         return $this->sendResponse(new CruzadinhaResource($cruzadinha), 'Quiz game information retrieved successfully.');
     }
@@ -69,11 +69,11 @@ class CruzadinhaController extends BaseController
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @param  Cruzadinha $cruzadinha
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
-    public function update(Request $request, Cruzadinha $cruzadinha)
+    public function update(Request $request, Cruzadinha $cruzadinha): JsonResponse
     {
         $input = $request->all();
         $edited = false;
@@ -91,17 +91,17 @@ class CruzadinhaController extends BaseController
 
             return $this->sendResponse(new CruzadinhaResource($cruzadinha), "Product updated successfully.");
         }
-        return $this->sendError("Bad request", "Invalid request", 400);
+        return $this->sendError("Bad request", ["Invalid request"], 400);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return JsonResponse
      */
-    public function destroy($id)
+    public function destroy(int $id): JsonResponse
     {
-        //
+        return $this->sendError('');
     }
 }

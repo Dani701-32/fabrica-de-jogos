@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Cviebrock\EloquentSluggable\Sluggable;
+use JetBrains\PhpStorm\ArrayShape;
 
 class Quiz extends Model
 {
@@ -21,6 +22,7 @@ class Quiz extends Model
         'name', 'layout', 'questions'
     ];
 
+    #[ArrayShape(['slug' => "string[]"])]
     public function sluggable(): array
     {
         return [
@@ -30,7 +32,7 @@ class Quiz extends Model
         ];
     }
 
-    public function getRouteKeyName()
+    public function getRouteKeyName(): string
     {
         return 'slug';
     }

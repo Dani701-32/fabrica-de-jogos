@@ -2,17 +2,20 @@
 
 namespace App\Http\Resources;
 
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use JetBrains\PhpStorm\ArrayShape;
 
 class TrueOrFalse extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
+     * @param  Request  $request
+     * @return array
      */
-    public function toArray($request)
+    #[ArrayShape(['name' => "mixed", 'slug' => "mixed", 'layout' => "mixed", 'questions' => "mixed", 'created_at' => "mixed", 'updated_at' => "mixed"])]
+    public function toArray($request): array
     {
         return [
             'name' => $this->name,

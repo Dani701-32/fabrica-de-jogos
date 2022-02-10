@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
 use Cviebrock\EloquentSluggable\Services\SlugService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Validator;
 use App\Models\TrueOrFalse;
@@ -14,21 +14,21 @@ class TrueOrFalseController extends BaseController
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
-    public function index()
+    public function index(): JsonResponse
     {
-        //
+        return $this->sendError('');
     }
 
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return JsonResponse
      */
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $input = $request->all();
 
@@ -58,9 +58,9 @@ class TrueOrFalseController extends BaseController
      * Display the specified resource.
      *
      * @param  TrueOrFalse $trueorfalse
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
-    public function show(TrueOrFalse $trueorfalse)
+    public function show(TrueOrFalse $trueorfalse): JsonResponse
     {
         return $this->sendResponse(new TrueOrFalseResource($trueorfalse), "True or false game info retrieved successfully.");
     }
@@ -68,23 +68,23 @@ class TrueOrFalseController extends BaseController
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param int $id
+     * @return JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): JsonResponse
     {
-        //
+        return $this->sendError('');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return JsonResponse
      */
-    public function destroy($id)
+    public function destroy(int $id): JsonResponse
     {
-        //
+        return $this->sendError('');
     }
 }

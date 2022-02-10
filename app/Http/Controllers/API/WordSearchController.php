@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
 use Cviebrock\EloquentSluggable\Services\SlugService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Validator;
 use App\Models\WordSearch;
@@ -14,20 +14,20 @@ class WordSearchController extends BaseController
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
-    public function index()
+    public function index(): JsonResponse
     {
-        //
+        return $this->sendError('');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return JsonResponse
      */
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $input = $request->all();
 
@@ -56,9 +56,9 @@ class WordSearchController extends BaseController
      * Display the specified resource.
      *
      * @param  WordSearch $wordsearch
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
-    public function show(WordSearch $wordsearch)
+    public function show(WordSearch $wordsearch): JsonResponse
     {
         return $this->sendResponse(new WordSearchResource($wordsearch), 'Word search game info retrieved successfully.');
     }
@@ -66,23 +66,23 @@ class WordSearchController extends BaseController
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param int $id
+     * @return JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): JsonResponse
     {
-        //
+        return $this->sendError('');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return JsonResponse
      */
-    public function destroy($id)
+    public function destroy(int $id): JsonResponse
     {
-        //
+        return $this->sendError('');
     }
 }

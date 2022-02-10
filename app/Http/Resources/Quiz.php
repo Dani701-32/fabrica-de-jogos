@@ -2,18 +2,20 @@
 
 namespace App\Http\Resources;
 
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Http\Resources\Question as QuestionResource;
+use JetBrains\PhpStorm\ArrayShape;
 
 class Quiz extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
+     * @param  Request  $request
+     * @return array
      */
-    public function toArray($request)
+    #[ArrayShape(['slug' => "string", 'name' => "string", 'layout' => "int", 'questions' => "array", 'created_at' => "datetime", 'updated_at' => "datetime"])]
+    public function toArray($request): array
     {
         return [
             'slug' => $this->slug,

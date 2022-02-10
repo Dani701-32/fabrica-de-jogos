@@ -5,6 +5,7 @@ namespace App\Models;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use JetBrains\PhpStorm\ArrayShape;
 
 class WordSearch extends Model
 {
@@ -16,6 +17,7 @@ class WordSearch extends Model
       'name', 'layout', 'words'
     ];
 
+    #[ArrayShape(['slug' => "string[]"])]
     public function sluggable(): array
     {
         return [
@@ -25,7 +27,7 @@ class WordSearch extends Model
         ];
     }
 
-    public function getRouteKeyName()
+    public function getRouteKeyName(): string
     {
         return 'slug';
     }

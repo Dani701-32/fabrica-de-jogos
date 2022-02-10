@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
 use App\Models\MemoryGame;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Resources\MemoryGame as MemoryGameResource;
 
@@ -12,20 +12,20 @@ class MemoryGameController extends BaseController
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
-    public function index()
+    public function index(): JsonResponse
     {
-        //
+        return $this->sendError('');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
+     * @param Request $request
+     * @return JsonResponse
      */
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $request->validate([
             'images' => 'required|max:6|min:2',
@@ -33,7 +33,7 @@ class MemoryGameController extends BaseController
         ]);
 
         if(!$request->hasFile('images')) {
-            return $this->sendError(['upload_file_not_found'], 400);
+            return $this->sendError('Bad Request', ['Upload image not found!'], 400);
         }
 
         $files = $request->file('images');
@@ -71,9 +71,9 @@ class MemoryGameController extends BaseController
      * Display the specified resource.
      *
      * @param  MemoryGame $memorygame
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function show(MemoryGame $memorygame)
+    public function show(MemoryGame $memorygame): JsonResponse
     {
         return $this->sendResponse(new MemoryGameResource($memorygame), 'Memory game information retrieved successfully.');
     }
@@ -81,23 +81,23 @@ class MemoryGameController extends BaseController
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param int $id
+     * @return JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id): JsonResponse
     {
-        //
+        return $this->sendError('');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return JsonResponse
      */
-    public function destroy($id)
+    public function destroy(int $id): JsonResponse
     {
-        //
+        return $this->sendError('');
     }
 }

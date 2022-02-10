@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Cviebrock\EloquentSluggable\Sluggable;
+use JetBrains\PhpStorm\ArrayShape;
 
 class MemoryGame extends Model
 {
@@ -22,6 +23,7 @@ class MemoryGame extends Model
         'name', 'layout', 'images', 'grid'
     ];
 
+    #[ArrayShape(['slug' => "string[]"])]
     public function sluggable(): array
     {
         return [
@@ -31,7 +33,7 @@ class MemoryGame extends Model
         ];
     }
 
-    public function getRouteKeyName()
+    public function getRouteKeyName(): string
     {
         return 'slug';
     }

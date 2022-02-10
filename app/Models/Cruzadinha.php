@@ -5,6 +5,7 @@ namespace App\Models;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use JetBrains\PhpStorm\ArrayShape;
 
 class Cruzadinha extends Model
 {
@@ -15,6 +16,7 @@ class Cruzadinha extends Model
       'name', 'layout', 'words', 'tips'
     ];
 
+    #[ArrayShape(['slug' => "string[]"])]
     public function sluggable(): array
     {
         return [
@@ -24,7 +26,7 @@ class Cruzadinha extends Model
         ];
     }
 
-    public function getRouteKeyName()
+    public function getRouteKeyName(): string
     {
         return 'slug';
     }
