@@ -44,8 +44,7 @@ export default function (props) {
                         'underline',
                         'strikethrough',
                         'undo',
-                        'redo',
-                        'clear'
+                        'redo'
                     ]}
                     editorState={editorState}
                     onChange={(editorState) => {
