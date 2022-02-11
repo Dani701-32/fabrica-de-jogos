@@ -18,7 +18,7 @@ class CreateWordSearchesTable extends Migration
             $table->string('name');
             $table->string('slug')->unique();
             $table->integer('layout');
-            $table->string('words');
+            $table->string('words', 5096);
             $table->timestamps();
         });
     }

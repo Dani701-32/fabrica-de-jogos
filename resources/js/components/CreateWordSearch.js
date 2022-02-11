@@ -17,37 +17,67 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import DeleteIcon from '@mui/icons-material/Delete';
 import LayoutPicker from './layout/layoutPicker';
+import RichTextField from './layout/richTextField';
+import { convertToRaw, EditorState } from 'draft-js';
+import draftToText from './utils/draftToText';
 
 const theme = createTheme();
 
 export default function CreateWordSearch() {
     const navigate = useNavigate();
+    let initialState = [
+        {
+            word: '',
+            tip: EditorState.createEmpty()
+        },
+        {
+            word: '',
+            tip: EditorState.createEmpty()
+        },
+        {
+            word: '',
+            tip: EditorState.createEmpty()
+        }
+    ];
 
-    const [words, setWords] = useState(['', '', '', '']);
+    const [pages, setPages] = useState([...initialState]);
 
     const handleAddWord = () => {
-        if (words.length >= 8) {
+        if (pages.length >= 8) {
             setAlert('O numero máximo de palavras nesse jogo é 8!');
             return;
         }
-        let words_ = [...words];
-        words_.push('');
-        setWords(words_);
+        let p = [...pages];
+        p.push({
+            word: '',
+            tip: EditorState.createEmpty()
+        });
+        setPages(p);
     };
 
     const handleRemoveWord = (index) => {
-        if (words.length === 1) {
+        if (pages.length === 1) {
             return;
         }
-        let words_ = [...words];
-        words_.splice(index, 1);
-        setWords(words_);
+        let p = [...pages];
+        p.splice(index, 1);
+        setPages(p);
     };
 
     const handleWordChange = (event, index) => {
-        let words_ = [...words];
-        words_.splice(index, 1, event.target.value);
-        setWords(words_);
+        let p = [...pages];
+        let page = p[index];
+        page.word = event.target.value;
+        p.splice(index, 1, page);
+        setPages(p);
+    };
+
+    const handleTipChange = (editorState, index) => {
+        let p = [...pages];
+        let page = p[index];
+        page.tip = editorState;
+        p.splice(index, 1, page);
+        setPages(p);
     };
 
     const [layout, setLayout] = useState(1);
@@ -61,22 +91,31 @@ export default function CreateWordSearch() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        if (words.length < 4) {
-            setAlert('O jogo deve ter no mínimo 4 palavras!');
+        if (pages.length < 3) {
+            setAlert('O jogo deve ter no mínimo 3 palavras!');
             return;
         }
         const data = new FormData(event.currentTarget);
         let name = data.get('name');
+        let wordsJSON = [];
+        pages.map((page) => {
+            let textJson = convertToRaw(page.tip.getCurrentContent());
+            let markup = draftToText(textJson);
+            wordsJSON.push({
+                tip: markup,
+                word: page.word
+            });
+        });
         const body = JSON.stringify({
             name: name,
             layout: layout,
-            words: words
+            words: wordsJSON
         });
         const config = {
             headers: {
                 'Content-Type': 'application/json',
                 Authorization:
-                    'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiZGI2OWIxOTE4ODg3OTc5M2IwZjRiY2M2NTVjNTRkMGQxMGIzZDM3M2VhYTVjZjYwZmVlYTFmZDhhMGUwYTJiNTBiNWZlZWE0MGY1N2ZhMTIiLCJpYXQiOjE2NDI2MDI4MTkuMTY0MTYzLCJuYmYiOjE2NDI2MDI4MTkuMTY0MTY4LCJleHAiOjE2NzQxMzg4MTkuMTU2Nzc3LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.lJKyZb1bS5BToPjsz5xUdsUJ-arSRhsco6GXHJ-Xl6mmGLEaKt-2wzZ29fcq9FNP1GjUbnko96_9Ho8IEK37UXs4kXfHldsYlGch8u0ZLv83HgFctWyYHVpOoQ6_J8ATRFKQLtuWQ12JNmB_NHNV6SuoR7JQI603hsHTlEc_UGodBMO0RK3WEnIbZ3gsunEB9gCMhhesXD2tKhLhCbNeG5IFhhP_UQHVRjy4gVUg2dRxytwSp6VoIMpmFDkKRrRJHSG7bZz5rcodMwJVsFzWcFNhwBN0dtakiq_YD3s7u0Mo0NBcKm6G4OysoTw-2GMYdXNtzn46mg8rslkUcPOJkrpGSw-T1ZNhCeAqby3o6rptNGMhSTK9POZ9N0oUOHic96xk_cUKUUDpDPMvzV3L_Key3EzyUjge19QzvSPdFY3aXYEcCkvjRRanqun13q5KD4o3yMOHHsVSUKNX80P1mur5mnqL9rRIhPq1mXsNsHN-G14sVRRArSjpiHVBPSKq1g044_38VWyll-quWsJrnQfNaydILKxeuanM7x7hw1KzlJv6ift0ac3yIRFrph_jsva6CIGg86dv93lOx-uZJ9OLSjEbZcN66oap4C4yvIOVZeDy-yw-eKH1_D0Zsz898CmhogeuJsCCY1dfrTAzC0KTE19vBKivKXn_9zm66qs'
+                    'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiYWFhYzRiNGYyMTBiMGM4MmMyNWUwYTNhNzU1NWQwNmJiYTdjOTJiZTNjODRlNDA5N2MwZGM5MjBkMzJiODAyOWRlMzE3MWVhOGM2ZThkNWIiLCJpYXQiOjE2NDE5MjU4ODMuNDQwNDMzLCJuYmYiOjE2NDE5MjU4ODMuNDQwNDM3LCJleHAiOjE2NzM0NjE4ODMuNDI5NDI3LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.Z87TMAFbFhPXHftVULt0snAY0rbXgGs5I_DhMvlVhdC0HtcHqQxdAVSIOOoTt3rcx0rUOPxbPeLXlPlf0P5Y4vOAQukCFI2L2lbq12daRpYYg7ZQNBt-KYG974tcNbd6_YH7xViOISqPRreTEF6nSPun3rvjuKT65TwFR1fjzf0vXOQDxPlMES9aYRNRsjnrHcnDe-KO9j_040WJtI5ZI43tWFRWMq6Rb1U4e-l1hLopKHZpukNxqe3ZHIvwiZSBKb_wDRilxmuzP-UnVF2vCbvgJBkQGwlrKZusoLD6ixf-towFcKlrHZX5Wn71bevsIUW9S4jc5FMKf2zB41ii4Y_oglwlAg36l58vDDfncHEY8R_ppkR3jjWu1U3un4bLbaXS-yLn7VqkL-Fdyk94kKUCi5aBhWbc_VZGPSVSeiU-QujSlTwG_ghRuIASBH-mpmBq8WedADhMA6uGWRc52F3Tn31Ske0LQLDZPiw0NbZ56E5uXJOhFo10DXki7MVh-oPhNNGEndOHV5rNguB0Zf1fX15UTMFUKPbbw81whx_yM5_AlfDzPFOYLjSnwa2sPGlsMoYTUkw_LjuUlJsUnmeGwNdts08eGynIdx3F9SI4AIr2sY9FemkBS9_8kFWGqG9cK3jMwurFDXkG0wvO9jHsI5-u0zGfZosPyIApGoQ'
             }
         };
         axios
@@ -155,13 +194,13 @@ export default function CreateWordSearch() {
                                         </Alert>
                                     </Grid>
                                 )}
-                                {words.map((word, index) => {
+                                {pages.map((page, index) => {
                                     return (
                                         <Grid
                                             item
                                             xs={8}
                                             md={6}
-                                            lg={3}
+                                            lg={4}
                                             key={index}
                                         >
                                             <Paper
@@ -180,7 +219,7 @@ export default function CreateWordSearch() {
                                                             label="Palavra"
                                                             name="word"
                                                             variant="outlined"
-                                                            value={word}
+                                                            value={page.word}
                                                             onChange={(
                                                                 event
                                                             ) => {
@@ -189,6 +228,9 @@ export default function CreateWordSearch() {
                                                                     index
                                                                 );
                                                             }}
+                                                            inputProps={{
+                                                                maxLength: 10
+                                                            }}
                                                             fullWidth
                                                             required
                                                         />
@@ -196,10 +238,10 @@ export default function CreateWordSearch() {
                                                     <Grid item xs={2}>
                                                         <IconButton
                                                             disabled={
-                                                                index === 0 &&
-                                                                index ===
-                                                                    words.length -
-                                                                        1
+                                                                index <
+                                                                    pages.length -
+                                                                        1 ||
+                                                                index === 0
                                                             }
                                                             onClick={() => {
                                                                 handleRemoveWord(
@@ -209,6 +251,23 @@ export default function CreateWordSearch() {
                                                         >
                                                             <DeleteIcon />
                                                         </IconButton>
+                                                    </Grid>
+                                                    <Grid
+                                                        align="left"
+                                                        item
+                                                        xs={10}
+                                                    >
+                                                        <RichTextField
+                                                            editorState={
+                                                                page.tip
+                                                            }
+                                                            handleTextChange={
+                                                                handleTipChange
+                                                            }
+                                                            label={'Dica'}
+                                                            index={index}
+                                                            maxLength={50}
+                                                        />
                                                     </Grid>
                                                 </Grid>
                                             </Paper>

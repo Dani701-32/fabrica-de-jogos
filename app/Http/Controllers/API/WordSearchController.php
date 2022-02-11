@@ -33,14 +33,15 @@ class WordSearchController extends Controller
             'name' => 'required|string|max:255',
             'layout' => 'required|integer|max:10',
             'words' => 'required|array|max:10',
-            'questions.*' => 'required|string|max:18',
+            'words.*.word' => 'required|string|max:10',
+            'words.*.tip' => 'required|string|max:50'
         ]);
 
         $word_search = new WordSearch();
         $word_search->name = $request->name;
         $word_search->slug = SlugService::createSlug(WordSearch::class, 'slug', $request->name);
         $word_search->layout = $request->layout;
-        $word_search->words = implode('|', $request->words);
+        $word_search->words = serialize($request->words);
         $word_search->save();
         return response()->json(new WordSearchResource($word_search), 201);
     }
