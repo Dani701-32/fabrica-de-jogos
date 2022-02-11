@@ -40,7 +40,7 @@ class AnagramController extends Controller
         $anagram->name = $request->name;
         $anagram->slug = SlugService::createSlug(Anagram::class, 'slug', $request->name);
         $anagram->layout = $request->layout;
-        $anagram->words = implode('|', $request->words);
+        $anagram->words = serialize($request->words);
         $anagram->save();
 
         return response()->json(new AnagramResource($anagram), 201);
