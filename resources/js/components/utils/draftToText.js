@@ -11,7 +11,8 @@ export default function draftToText(textJson) {
         '<ins>': '[u]',
         '</ins>': '[/u]',
         '<del>': '[s]',
-        '</del>': '[/s]'
+        '</del>': '[/s]',
+        '&nbsp': ''
     };
     let markup = draftToHtml(textJson);
     for (const [key, value] of Object.entries(collection)) {

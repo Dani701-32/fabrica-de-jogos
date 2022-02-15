@@ -266,7 +266,7 @@ export default function CreateWordSearch() {
                                                             }
                                                             label={'Dica'}
                                                             index={index}
-                                                            maxLength={50}
+                                                            maxLength={200}
                                                         />
                                                     </Grid>
                                                 </Grid>
