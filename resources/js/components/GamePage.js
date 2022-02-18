@@ -1,13 +1,45 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
 export default function GamePage(props) {
     const { game } = props;
+    let game_address = 'https://fabricadejogos.portaleducacional.tec.br';
+    const { slug } = useParams();
+    window.addEventListener('message', (event) => {
+        if (event.origin !== window.location.origin) {
+            let data = event.data;
+            if (data.loaded) {
+                let iframe = document.getElementById('frame');
+                const message = JSON.stringify({
+                    user_token: data.token,
+                    api_address: data.api_address,
+                    game_address: game_address,
+                    slug: slug
+                });
+                iframe.contentWindow.postMessage(message, '*');
+                return;
+            }
+            const api_address = data.api_address;
+            const token = data.user_token;
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            };
+            axios
+                .get(`${api_address}/api/validate`, config)
+                .then((response) => {
+                    if (response.status === 200) {
+                        console.log('okay');
+                    }
+                });
+        }
+    });
     let gameAddress = '';
     switch (game) {
         case 'quiz':
-            gameAddress =
-                'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/Quiz%20Certo/index.html';
+            gameAddress = 'https://condescending-leakey-1e8efc.netlify.app/';
             break;
         case 'wordSearch':
             gameAddress =
@@ -29,30 +61,26 @@ export default function GamePage(props) {
             gameAddress = 'http://localhost:8080/memorygame/';
             break;
     }
-
-    let { slug } = useParams();
-    let token =
-        'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiMDU1YmE3YWVkY2ZhZTlhZjUxMGMzMTBlOWZmODY3ODc0ZGFiNGY5ZGRjMGY0M2IwNzQ3M2VlMzcxYWE2YjE4NTBjZmRhMWY0ODFmMTkyOTYiLCJpYXQiOjE2NDMwMTkzNDMuMTc3MjMsIm5iZiI6MTY0MzAxOTM0My4xNzcyMzcsImV4cCI6MTY3NDU1NTM0My4wOTU5NCwic3ViIjoiMSIsInNjb3BlcyI6W119.cZ_qYhOKtL6zCtska_12w0w-JMabe_O7a6Jy_jdQJ9Jq8BgFOIoxhX4tbcFADoWd8Xm1e8mjXT1y2nBWgweNfZD2Rz7kJgKSg6y9CHferhmzQ5tcIri6GThmKlZfJR5aJNVlFncf7F3xYvcRuBLxQ5z5cLLGSuKkNQr7h_T9BwcA8NWePmDWFmpt2ANFBrAJXYhH7bzriVvDhjr3rAWz6pDwaxM4KPpc0xt8vJBR39Mhrqy--6NiHQ5QqaCkiJ5VRggy7GRaJPTDgzjKLyPsCVYne79iJ6pRW-I8jsdLNBOdlPf38qArY_qPirOlGrPM7vUJq2OhyazDFghdFHI3y7mPItP9RKSdJCjgNb-EFzpmB90hDhckxB9bAeqZclLZW_J_I_NQvNSOrtr9vwesGdp6uDc7uzhRuZZy0zVh6w0v7xj26GclcT4QW3yWg09m0H33VQzhHzmbt5aQbJx4zPnYUKEvEQLGkmlsmsGYMfv5_876EBm6AV3cbNLfZOqkhXi7NkQhxZGCdM6IVpJLXAYPZl3wp0PSj_Yl8sU6jDoqqAwveDlYAfeHpVGZAjkR5xfvZ7SZwJ8BZR8bbIguYnPwIcgLTOAP-ylyT-QDPtuAiM4VTErORNZKXwcDZWUA0msmg-ulmg53Fy4-5KpTyA2x0FiuFs3_EwAdIz209SY';
-    let api_address = 'https://fabricadejogos.portaleducacional.tec.br';
-    useEffect(() => {
-        window.addEventListener('message', () => {
-            let iframe = document.getElementById('frame');
-            const message = JSON.stringify({
-                user_token: token,
-                api_address: api_address,
-                slug: slug
-            });
-            iframe.contentWindow.postMessage(message, '*');
-        });
-    }, []);
     return (
         <div>
             <iframe
                 id="frame"
                 src={gameAddress}
-                height="720px"
-                width="1420px"
+                height="100%"
+                width="100%"
+                frameBorder="0"
                 allowFullScreen
+                style={{
+                    position: 'fixed',
+                    top: '0px',
+                    bottom: '0px',
+                    right: '0px',
+                    border: 'none',
+                    margin: 0,
+                    padding: 0,
+                    overflow: 'hidden',
+                    zIndex: 999999
+                }}
             />
         </div>
     );

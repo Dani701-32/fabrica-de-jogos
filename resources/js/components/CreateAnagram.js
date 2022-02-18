@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Alert,
     Box,
@@ -14,13 +14,18 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import DeleteIcon from '@mui/icons-material/Delete';
 import LayoutPicker from './layout/layoutPicker';
+import createGame from './utils/createGame';
+import userInfo from './utils/userInfo';
 
 const theme = createTheme();
 
 export default function CreateAnagram() {
+    let user_info = {};
+    useEffect(() => {
+        user_info = userInfo();
+    }, []);
     const navigate = useNavigate();
     const [pages, setPages] = useState([['', '', '', '']]);
     const handleAddWord = () => {
@@ -80,22 +85,10 @@ export default function CreateAnagram() {
         const config = {
             headers: {
                 'Content-Type': 'application/json',
-                Authorization:
-                    'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiYWFhYzRiNGYyMTBiMGM4MmMyNWUwYTNhNzU1NWQwNmJiYTdjOTJiZTNjODRlNDA5N2MwZGM5MjBkMzJiODAyOWRlMzE3MWVhOGM2ZThkNWIiLCJpYXQiOjE2NDE5MjU4ODMuNDQwNDMzLCJuYmYiOjE2NDE5MjU4ODMuNDQwNDM3LCJleHAiOjE2NzM0NjE4ODMuNDI5NDI3LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.Z87TMAFbFhPXHftVULt0snAY0rbXgGs5I_DhMvlVhdC0HtcHqQxdAVSIOOoTt3rcx0rUOPxbPeLXlPlf0P5Y4vOAQukCFI2L2lbq12daRpYYg7ZQNBt-KYG974tcNbd6_YH7xViOISqPRreTEF6nSPun3rvjuKT65TwFR1fjzf0vXOQDxPlMES9aYRNRsjnrHcnDe-KO9j_040WJtI5ZI43tWFRWMq6Rb1U4e-l1hLopKHZpukNxqe3ZHIvwiZSBKb_wDRilxmuzP-UnVF2vCbvgJBkQGwlrKZusoLD6ixf-towFcKlrHZX5Wn71bevsIUW9S4jc5FMKf2zB41ii4Y_oglwlAg36l58vDDfncHEY8R_ppkR3jjWu1U3un4bLbaXS-yLn7VqkL-Fdyk94kKUCi5aBhWbc_VZGPSVSeiU-QujSlTwG_ghRuIASBH-mpmBq8WedADhMA6uGWRc52F3Tn31Ske0LQLDZPiw0NbZ56E5uXJOhFo10DXki7MVh-oPhNNGEndOHV5rNguB0Zf1fX15UTMFUKPbbw81whx_yM5_AlfDzPFOYLjSnwa2sPGlsMoYTUkw_LjuUlJsUnmeGwNdts08eGynIdx3F9SI4AIr2sY9FemkBS9_8kFWGqG9cK3jMwurFDXkG0wvO9jHsI5-u0zGfZosPyIApGoQ'
+                Authorization: `Bearer ${user_info.token}`
             }
         };
-        axios
-            .post('/api/anagram', body, config)
-            .then((response) => {
-                if (response.status === 201) {
-                    navigate(`/anagram/${response.data.slug}`);
-                }
-            })
-            .catch((error) => {
-                setAlert(
-                    `Error ${error.response.status}: ${error.response.data.message}`
-                );
-            });
+        createGame(body, config, user_info.api_address, setAlert, navigate);
     };
 
     const [alert, setAlert] = useState('');
