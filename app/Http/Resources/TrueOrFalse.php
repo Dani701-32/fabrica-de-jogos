@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Resources\Game as GameResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use JetBrains\PhpStorm\ArrayShape;
@@ -14,13 +15,14 @@ class TrueOrFalse extends JsonResource
      * @param  Request  $request
      * @return array
      */
-    #[ArrayShape(['name' => "mixed", 'slug' => "mixed", 'layout' => "mixed", 'questions' => "mixed", 'created_at' => "mixed", 'updated_at' => "mixed"])]
+    #[ArrayShape(['slug' => "string", 'name' => "string", 'layout' => "int", 'questions' => "array", 'created_at' => "datetime", 'updated_at' => "datetime"])]
     public function toArray($request): array
     {
+        $game = new GameResource($this->game);
         return [
-            'name' => $this->name,
             'slug' => $this->slug,
-            'layout' => $this->layout,
+            'name' => $game->name,
+            'layout' => $game->layout,
             'questions' => unserialize($this->questions),
             'created_at' => $this->created_at->format('d/m/Y'),
             'updated_at' => $this->updated_at->format('d/m/Y'),

@@ -5,6 +5,7 @@ namespace App\Models;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use JetBrains\PhpStorm\ArrayShape;
 
 class TrueOrFalse extends Model
@@ -13,7 +14,7 @@ class TrueOrFalse extends Model
     use Sluggable;
 
     protected $fillable = [
-        'name', 'layout', 'questions', 'answers'
+        'questions', 'answers'
     ];
 
     #[ArrayShape(['slug' => "string[]"])]
@@ -21,9 +22,14 @@ class TrueOrFalse extends Model
     {
         return [
             'slug' => [
-                'source' => 'name'
+                'source' => ['game.name', 'game.type']
             ]
         ];
+    }
+
+    public function game(): BelongsTo
+    {
+        return $this->belongsTo(Game::class);
     }
 
     public function getRouteKeyName(): string

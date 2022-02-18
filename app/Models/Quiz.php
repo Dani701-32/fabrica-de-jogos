@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Cviebrock\EloquentSluggable\Sluggable;
 use JetBrains\PhpStorm\ArrayShape;
@@ -13,13 +14,9 @@ class Quiz extends Model
     use HasFactory;
     use SoftDeletes;
     use Sluggable;
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
+
     protected $fillable = [
-        'name', 'layout', 'questions'
+        'questions'
     ];
 
     #[ArrayShape(['slug' => "string[]"])]
@@ -27,9 +24,14 @@ class Quiz extends Model
     {
         return [
             'slug' => [
-                'source' => 'name'
+                'source' => ['game.name', 'game.type']
             ]
         ];
+    }
+
+    public function game(): BelongsTo
+    {
+        return $this->belongsTo(Game::class);
     }
 
     public function getRouteKeyName(): string

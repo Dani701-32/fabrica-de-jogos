@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Game;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,11 +16,11 @@ class CreateMatchUpsTable extends Migration
     {
         Schema::create('match_ups', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
             $table->string('slug')->unique();
-            $table->integer('layout');
             $table->string('pages', 2048);
+            $table->foreignIdFor(Game::class);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

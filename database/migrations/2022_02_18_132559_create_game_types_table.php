@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCruzadinhasTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,10 @@ class CreateCruzadinhasTable extends Migration
      */
     public function up()
     {
-        Schema::create('cruzadinhas', function (Blueprint $table) {
+        Schema::create('game_types', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('slug')->unique();
-            $table->integer('layout');
-            $table->string('words', 88);
-            $table->boolean('image_tips');
-            $table->string('tips');
-            $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -32,6 +27,6 @@ class CreateCruzadinhasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cruzadinhas');
+        Schema::dropIfExists('game_types');
     }
-}
+};

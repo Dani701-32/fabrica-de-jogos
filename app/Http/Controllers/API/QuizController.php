@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\Game;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Quiz;
 use App\Http\Resources\Quiz as QuizResource;
-use Cviebrock\EloquentSluggable\Services\SlugService;
 
 class QuizController extends Controller
 {
@@ -37,12 +37,17 @@ class QuizController extends Controller
             'questions.*.answers' => 'required|array|max:5',
             'questions.*.answers.*' => 'required|string|max:31',
         ]);
-
+        $game = new Game();
+        $game->name = $request->name;
+        $game->layout = $request->layout;
+        $game->user_id = $request->user_id;
+        $game->client_id = $request->client_id;
+        $game->origin = $request->origin;
+        $game->game_type_id = 4;
+        $game->save();
         $quiz = new Quiz();
-        $quiz->name = $request->name;
-        $quiz->slug = SlugService::createSlug(Quiz::class, 'slug', $request->name);
-        $quiz->layout = $request->layout;
         $quiz->questions = serialize($request->questions);
+        $quiz->game_id = $game->id;
         $quiz->save();
         return response()->json(new QuizResource($quiz), 201);
     }

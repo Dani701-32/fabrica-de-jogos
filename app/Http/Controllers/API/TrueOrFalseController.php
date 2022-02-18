@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use Cviebrock\EloquentSluggable\Services\SlugService;
+use App\Models\Game;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\TrueOrFalse;
@@ -37,12 +37,17 @@ class TrueOrFalseController extends Controller
             'questions.*.title' => 'required|string|max:240',
             'questions.*.answer' => 'required|boolean'
         ]);
-
+        $game = new Game();
+        $game->name = $request->name;
+        $game->layout = $request->layout;
+        $game->user_id = $request->user_id;
+        $game->client_id = $request->client_id;
+        $game->origin = $request->origin;
+        $game->game_type_id = 5;
+        $game->save();
         $true_or_false = new TrueOrFalse();
-        $true_or_false->name = $request->name;
-        $true_or_false->slug = SlugService::createSlug(TrueOrFalse::class, 'slug', $request->name);
-        $true_or_false->layout = $request->layout;
         $true_or_false->questions = serialize($request->questions);
+        $true_or_false->game_id = $game->id;
         $true_or_false->save();
 
         return response()->json(new TrueOrFalseResource($true_or_false), 201);

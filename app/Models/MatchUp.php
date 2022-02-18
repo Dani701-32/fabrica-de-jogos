@@ -5,6 +5,7 @@ namespace App\Models;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use JetBrains\PhpStorm\ArrayShape;
 
 class MatchUp extends Model
@@ -13,7 +14,7 @@ class MatchUp extends Model
     use Sluggable;
 
     protected $fillable = [
-        "name", "layout", "pages"
+        "pages"
     ];
 
     #[ArrayShape(['slug' => "string[]"])]
@@ -21,9 +22,14 @@ class MatchUp extends Model
     {
         return [
             'slug' => [
-                'source' => 'name'
+                'source' => ['game.name', 'game.type']
             ]
         ];
+    }
+
+    public function game(): BelongsTo
+    {
+        return $this->belongsTo(Game::class);
     }
 
     public function getRouteKeyName(): string

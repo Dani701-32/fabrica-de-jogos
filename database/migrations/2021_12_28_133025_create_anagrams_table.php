@@ -1,10 +1,11 @@
 <?php
 
+use App\Models\Game;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAnagramsTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -15,11 +16,11 @@ class CreateAnagramsTable extends Migration
     {
         Schema::create('anagrams', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
             $table->string('slug')->unique();
-            $table->integer('layout');
             $table->string('words', 5096);
+            $table->foreignIdFor(Game::class);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -32,4 +33,4 @@ class CreateAnagramsTable extends Migration
     {
         Schema::dropIfExists('anagrams');
     }
-}
+};

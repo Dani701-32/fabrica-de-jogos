@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use Cviebrock\EloquentSluggable\Services\SlugService;
+use App\Models\Game;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Anagram;
@@ -36,11 +36,17 @@ class AnagramController extends Controller
             'words.*' => 'required|string|max:20'
         ]);
 
+        $game = new Game();
+        $game->name = $request->name;
+        $game->layout = $request->layout;
+        $game->user_id = $request->user_id;
+        $game->client_id = $request->client_id;
+        $game->origin = $request->origin;
+        $game->game_type_id = 1;
+        $game->save();
         $anagram = new Anagram();
-        $anagram->name = $request->name;
-        $anagram->slug = SlugService::createSlug(Anagram::class, 'slug', $request->name);
-        $anagram->layout = $request->layout;
         $anagram->words = serialize($request->words);
+        $anagram->game_id = $game->id;
         $anagram->save();
 
         return response()->json(new AnagramResource($anagram), 201);

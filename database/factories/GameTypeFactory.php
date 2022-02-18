@@ -4,7 +4,10 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class QuestionFactory extends Factory
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\GameType>
+ */
+class GameTypeFactory extends Factory
 {
     /**
      * Define the model's default state.
