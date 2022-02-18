@@ -30,4 +30,5 @@ Route::resource('memorygame', MemoryGameController::class);
 Route::post('results', function (Request $request) {
     return $request;
 });
-Route::resource('games', GameController::class);
+Route::get('games', [GameController::class, 'index']);
+Route::get('games/{user_id?}', [GameController::class, 'index']);

@@ -7,19 +7,25 @@ use App\Http\Requests\StoreGameRequest;
 use App\Http\Requests\UpdateGameRequest;
 use App\Models\Game;
 use Illuminate\Http\JsonResponse;
+use App\Http\Resources\GameList as GameResource;
 
 class GameController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
+     * @param int|null $user_id
      * @return JsonResponse
      */
-    public function index(): JsonResponse
+    public function index(int $user_id = null): JsonResponse
     {
-        $games = Game::all();
-
-        return response()->json($games);
+        if ($user_id) {
+            $games = Game::all()->where('user_id', $user_id);
+        }
+        else {
+            $games = Game::all();
+        }
+        return response()->json(GameResource::collection($games));
     }
 
 
