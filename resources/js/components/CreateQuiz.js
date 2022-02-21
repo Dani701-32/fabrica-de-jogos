@@ -113,7 +113,10 @@ export default function CreateQuiz() {
         let body = JSON.stringify({
             name: name,
             layout: layout,
-            questions: questionsJSON
+            questions: questionsJSON,
+            user_id: user_info.user_id,
+            client_id: user_info.client_id,
+            origin: user_info.api_address
         });
         const config = {
             headers: {

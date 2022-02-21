@@ -37,7 +37,7 @@ export default function GamePage(props) {
                 }
             };
             axios
-                .get(`${api_address}/api/validate`, config)
+                .get(`https://${api_address}/api/validate`, config)
                 .then((response) => {
                     if (response.status === 200) {
                         console.log('okay');

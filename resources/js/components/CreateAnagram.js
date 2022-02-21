@@ -80,7 +80,10 @@ export default function CreateAnagram() {
         const body = JSON.stringify({
             name: name,
             layout: layout,
-            words: wordsJSON
+            words: wordsJSON,
+            user_id: user_info.user_id,
+            client_id: user_info.client_id,
+            origin: user_info.api_address
         });
         const config = {
             headers: {
