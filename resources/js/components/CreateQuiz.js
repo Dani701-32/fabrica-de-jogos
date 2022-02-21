@@ -14,7 +14,7 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { EditorState, convertToRaw } from 'draft-js';
 import LayoutPicker from './layout/layoutPicker';
 import RichTextField from './layout/richTextField';
@@ -25,8 +25,6 @@ import createGame from './utils/createGame';
 const theme = createTheme();
 
 export default function CreateQuiz() {
-    const [search, setSearch] = useSearchParams();
-    console.log(search);
     let user_info = {};
     useEffect(() => {
         user_info = userInfo();
@@ -123,7 +121,14 @@ export default function CreateQuiz() {
                 Authorization: `Bearer ${user_info.token}`
             }
         };
-        createGame(body, config, user_info.api_address, setAlert, navigate);
+        createGame(
+            'quiz',
+            body,
+            config,
+            user_info.api_address,
+            setAlert,
+            navigate
+        );
     };
 
     const [alert, setAlert] = useState('');

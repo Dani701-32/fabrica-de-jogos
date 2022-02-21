@@ -122,7 +122,14 @@ export default function CreateWordSearch() {
                 Authorization: `Bearer ${user_info.token}`
             }
         };
-        createGame(body, config, user_info.api_address, setAlert, navigate);
+        createGame(
+            'wordsearch',
+            body,
+            config,
+            user_info.api_address,
+            setAlert,
+            navigate
+        );
     };
 
     const [alert, setAlert] = useState('');

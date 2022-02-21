@@ -125,7 +125,14 @@ export default function CreateMatchUp() {
                 Authorization: `Bearer ${user_info.token}`
             }
         };
-        createGame(body, config, user_info.api_address, setAlert, navigate);
+        createGame(
+            'matchup',
+            body,
+            config,
+            user_info.api_address,
+            setAlert,
+            navigate
+        );
     };
 
     const [alert, setAlert] = useState('');

@@ -80,7 +80,14 @@ export default function CreateMemoryGame() {
                 setProgress(Math.round((event.loaded * 100) / event.total));
             }
         };
-        createGame(data, config, user_info.api_address, setAlert, navigate);
+        createGame(
+            'memorygame',
+            data,
+            config,
+            user_info.api_address,
+            setAlert,
+            navigate
+        );
     };
 
     const [alert, setAlert] = useState('');

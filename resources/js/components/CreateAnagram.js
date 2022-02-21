@@ -88,7 +88,14 @@ export default function CreateAnagram() {
                 Authorization: `Bearer ${user_info.token}`
             }
         };
-        createGame(body, config, user_info.api_address, setAlert, navigate);
+        createGame(
+            'anagram',
+            body,
+            config,
+            user_info.api_address,
+            setAlert,
+            navigate
+        );
     };
 
     const [alert, setAlert] = useState('');
