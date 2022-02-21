@@ -5,6 +5,8 @@ import axios from 'axios';
 export default function GamePage(props) {
     const { game } = props;
     const { slug } = useParams();
+    const api_address = '';
+    const token = '';
     window.addEventListener('message', (event) => {
         if (event.origin !== window.location.origin) {
             let data = event.data;
@@ -15,8 +17,10 @@ export default function GamePage(props) {
                 const urlParams = new URLSearchParams(queryString);
                 let iframe = document.getElementById('frame');
                 const message = JSON.stringify({
-                    user_token: data.token,
-                    api_address: data.api_address,
+                    user_token: token ? token : localStorage.getItem('token'),
+                    api_address: api_address
+                        ? api_address
+                        : localStorage.getItem('api_address'),
                     game_address: game_address,
                     slug: slug,
                     aula_id: urlParams.has('aula_id')
