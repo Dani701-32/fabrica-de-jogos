@@ -17,7 +17,7 @@ export default function createGame(
         })
         .catch((error) => {
             setAlert(
-                `Error ${error.response.status}: ${error.response.data.message}`
+                `Ocorreu um erro ${error.response.status} ao tentar criar o jogo!`
             );
         });
 }

@@ -14,7 +14,11 @@ export default function userInfo() {
                 .get(`https://${api_address}/api/validate`, config)
                 .then((response) => {
                     if (response.status === 200) {
-                        return { token: token, api_address: api_address };
+                        return {
+                            token: token,
+                            api_address: api_address,
+                            user_id: event.data.user_id
+                        };
                     }
                 });
         }
