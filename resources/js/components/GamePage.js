@@ -4,18 +4,27 @@ import axios from 'axios';
 
 export default function GamePage(props) {
     const { game } = props;
-    let game_address = 'https://fabricadejogos.portaleducacional.tec.br';
     const { slug } = useParams();
     window.addEventListener('message', (event) => {
         if (event.origin !== window.location.origin) {
             let data = event.data;
             if (data.loaded) {
+                let game_address =
+                    'https://fabricadejogos.portaleducacional.tec.br';
+                const queryString = window.location.search;
+                const urlParams = new URLSearchParams(queryString);
                 let iframe = document.getElementById('frame');
                 const message = JSON.stringify({
                     user_token: data.token,
                     api_address: data.api_address,
                     game_address: game_address,
-                    slug: slug
+                    slug: slug,
+                    aula_id: urlParams.has('aula_id')
+                        ? urlParams.get('aula_id')
+                        : 0,
+                    conteudo_id: urlParams.has('conteudo_id')
+                        ? urlParams.get('conteudo_id')
+                        : 0
                 });
                 iframe.contentWindow.postMessage(message, '*');
                 return;
@@ -39,7 +48,8 @@ export default function GamePage(props) {
     let gameAddress = '';
     switch (game) {
         case 'quiz':
-            gameAddress = 'https://condescending-leakey-1e8efc.netlify.app/';
+            gameAddress =
+                'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/Quiz%20Certo/index.html';
             break;
         case 'wordSearch':
             gameAddress =
@@ -58,7 +68,8 @@ export default function GamePage(props) {
                 'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/Significados%20das%20Palavras%20Certo/index.html';
             break;
         case 'memoryGame':
-            gameAddress = 'http://localhost:8080/memorygame/';
+            gameAddress =
+                'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/jogodamemeria-daniel/index.html';
             break;
     }
     return (
