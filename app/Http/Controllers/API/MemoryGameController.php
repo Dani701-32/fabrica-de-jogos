@@ -56,16 +56,16 @@ class MemoryGameController extends Controller
                 $memory->grid = serialize([2, 2]);
                 break;
             case 3:
-                $memory->grid = serialize([2, 3]);
+                $memory->grid = serialize([3, 2]);
                 break;
             case 4:
-                $memory->grid = serialize([2, 4]);
+                $memory->grid = serialize([4, 2]);
                 break;
             case 5:
-                $memory->grid = serialize([2, 5]);
+                $memory->grid = serialize([5, 2]);
                 break;
             case 6:
-                $memory->grid = serialize([3, 4]);
+                $memory->grid = serialize([4, 3]);
                 break;
         }
         $memory->game_id = $game->id;
