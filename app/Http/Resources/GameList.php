@@ -21,7 +21,7 @@ class GameList extends JsonResource
         return [
             'name' => $this->name,
             'layout' => $this->layout,
-            'game_type' => $this->game_type,
+            'game_type' => $this->game_type_id,
             'client_id' => $this->client_id,
             'user_id' => $this->user_id,
             'origin' => $this->origin,
