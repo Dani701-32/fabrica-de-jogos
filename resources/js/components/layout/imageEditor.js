@@ -110,7 +110,9 @@ export default function ImageEditor(props) {
                     <CardActions>
                         <Input
                             type="file"
-                            accept="image/*"
+                            inputProps={{
+                                accept: 'image/*'
+                            }}
                             onChange={onSelectFile}
                             required
                         />
