@@ -27,8 +27,5 @@ Route::resource('anagram', AnagramController::class);
 Route::resource('trueorfalse', TrueOrFalseController::class);
 Route::resource('wordsearch', WordSearchController::class);
 Route::resource('memorygame', MemoryGameController::class);
-Route::post('results', function (Request $request) {
-    return $request;
-});
 Route::get('games', [GameController::class, 'index']);
 Route::get('games/{user_id?}', [GameController::class, 'index']);
