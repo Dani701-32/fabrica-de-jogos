@@ -7,7 +7,8 @@ import {
     Grid,
     Card,
     CardActions,
-    CardContent
+    CardContent,
+    Input
 } from '@mui/material';
 
 const style = {
@@ -107,7 +108,7 @@ export default function ImageEditor(props) {
                         />
                     </CardContent>
                     <CardActions>
-                        <input
+                        <Input
                             type="file"
                             accept="image/*"
                             onChange={onSelectFile}
