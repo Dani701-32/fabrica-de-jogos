@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Models\Game;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Quiz;
@@ -37,17 +36,13 @@ class QuizController extends Controller
             'questions.*.answers' => 'required|array|max:5',
             'questions.*.answers.*' => 'required|string|max:31',
         ]);
-        $game = new Game();
-        $game->name = $request->name;
-        $game->layout = $request->layout;
-        $game->user_id = $request->user_id;
-        $game->client_id = $request->client_id;
-        $game->origin = $request->origin;
-        $game->game_type_id = 4;
-        $game->save();
         $quiz = new Quiz();
+        $quiz->name = $request->name;
+        $quiz->layout = $request->layout;
+        $quiz->user_id = $request->user_id;
+        $quiz->client_id = $request->client_id;
+        $quiz->origin = $request->origin;
         $quiz->questions = serialize($request->questions);
-        $quiz->game_id = $game->id;
         $quiz->save();
         return response()->json(new QuizResource($quiz), 201);
     }

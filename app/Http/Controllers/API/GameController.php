@@ -3,11 +3,20 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreGameRequest;
-use App\Http\Requests\UpdateGameRequest;
-use App\Models\Game;
 use Illuminate\Http\JsonResponse;
-use App\Http\Resources\GameList as GameResource;
+use App\Models\Anagram;
+use App\Http\Resources\Anagram as AnagramResource;
+use App\Models\MatchUp;
+use App\Http\Resources\MatchUp as MatchUpResource;
+use App\Models\MemoryGame;
+use App\Http\Resources\MemoryGame as MemoryGameResource;
+use App\Models\Quiz;
+use App\Http\Resources\Quiz as QuizResource;
+use App\Models\TrueOrFalse;
+use App\Http\Resources\TrueOrFalse as TrueOrFalseResource;
+use App\Models\WordSearch;
+use App\Http\Resources\WordSearch as WordSearchResource;
+
 
 class GameController extends Controller
 {
@@ -19,58 +28,24 @@ class GameController extends Controller
      */
     public function index(int $user_id = null): JsonResponse
     {
+        $games = [];
         if ($user_id) {
-            $games = Game::all()->where('user_id', $user_id);
+            $games[] = AnagramResource::collection(Anagram::all()->where('user_id', $user_id));
+            $games[] = MatchUpResource::collection(MatchUp::all()->where('user_id', $user_id));
+            $games[] = MemoryGameResource::collection(MemoryGame::all()->where('user_id', $user_id));
+            $games[] = QuizResource::collection(Quiz::all()->where('user_id', $user_id));
+            $games[] = TrueOrFalseResource::collection(TrueOrFalse::all()->where('user_id', $user_id));
+            $games[] = WordSearchResource::collection(WordSearch::all()->where('user_id', $user_id));
         }
         else {
-            $games = Game::all();
+            $games[] = AnagramResource::collection(Anagram::all());
+            $games[] = MatchUpResource::collection(MatchUp::all());
+            $games[] = MemoryGameResource::collection(MemoryGame::all());
+            $games[] = QuizResource::collection(Quiz::all());
+            $games[] = TrueOrFalseResource::collection(TrueOrFalse::all());
+            $games[] = WordSearchResource::collection(WordSearch::all());
         }
-        return response()->json(GameResource::collection($games));
+        return Response()->json($games);
     }
 
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param StoreGameRequest $request
-     * @return JsonResponse
-     */
-    public function store(StoreGameRequest $request): JsonResponse
-    {
-        return response()->json([''], 404);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param Game $game
-     * @return JsonResponse
-     */
-    public function show(Game $game): JsonResponse
-    {
-        return response()->json([''], 404);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param UpdateGameRequest $request
-     * @param Game $game
-     * @return JsonResponse
-     */
-    public function update(UpdateGameRequest $request, Game $game): JsonResponse
-    {
-        return response()->json([''], 404);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param Game $game
-     * @return JsonResponse
-     */
-    public function destroy(Game $game): JsonResponse
-    {
-        return response()->json([''], 404);
-    }
 }

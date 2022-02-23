@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Models\Game;
 use App\Models\MemoryGame;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -41,15 +40,12 @@ class MemoryGameController extends Controller
             $path = $file->store('images', "public");
             $images[] = $path;
         }
-        $game = new Game();
-        $game->name = $request->name;
-        $game->layout = $request->layout;
-        $game->user_id = $request->user_id;
-        $game->client_id = $request->client_id;
-        $game->origin = $request->origin;
-        $game->game_type_id = 3;
-        $game->save();
         $memory = new MemoryGame();
+        $memory->name = $request->name;
+        $memory->layout = $request->layout;
+        $memory->user_id = $request->user_id;
+        $memory->client_id = $request->client_id;
+        $memory->origin = $request->origin;
         $memory->images = serialize($images);
         switch (sizeof($files)) {
             case 2:
@@ -68,7 +64,6 @@ class MemoryGameController extends Controller
                 $memory->grid = serialize([4, 3]);
                 break;
         }
-        $memory->game_id = $game->id;
         $memory->save();
         return response()->json(new MemoryGameResource($memory), 201);
     }

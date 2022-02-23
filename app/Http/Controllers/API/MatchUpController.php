@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Models\Game;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\MatchUp;
@@ -37,17 +36,13 @@ class MatchUpController extends Controller
             'pages.*.*.word' => 'required|string',
             'pages.*.*.meaning' => 'required|string'
         ]);
-        $game = new Game();
-        $game->name = $request->name;
-        $game->layout = $request->layout;
-        $game->user_id = $request->user_id;
-        $game->client_id = $request->client_id;
-        $game->origin = $request->origin;
-        $game->game_type_id = 2;
-        $game->save();
         $matchup = new MatchUp();
+        $matchup->name = $request->name;
+        $matchup->layout = $request->layout;
+        $matchup->user_id = $request->user_id;
+        $matchup->client_id = $request->client_id;
+        $matchup->origin = $request->origin;
         $matchup->pages = serialize($request->pages);
-        $matchup->game_id = $game->id;
         $matchup->save();
 
         return response()->json(new MatchUpResource($matchup), 201);

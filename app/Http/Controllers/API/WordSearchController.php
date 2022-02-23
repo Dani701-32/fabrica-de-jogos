@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Models\Game;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\WordSearch;
@@ -36,17 +35,13 @@ class WordSearchController extends Controller
             'words.*.word' => 'required|string|max:10',
             'words.*.tip' => 'required|string|max:50'
         ]);
-        $game = new Game();
-        $game->name = $request->name;
-        $game->layout = $request->layout;
-        $game->user_id = $request->user_id;
-        $game->client_id = $request->client_id;
-        $game->origin = $request->origin;
-        $game->game_type_id = 6;
-        $game->save();
         $word_search = new WordSearch();
+        $word_search->name = $request->name;
+        $word_search->layout = $request->layout;
+        $word_search->user_id = $request->user_id;
+        $word_search->client_id = $request->client_id;
+        $word_search->origin = $request->origin;
         $word_search->words = serialize($request->words);
-        $word_search->game_id = $game->id;
         $word_search->save();
         return response()->json(new WordSearchResource($word_search), 201);
     }
