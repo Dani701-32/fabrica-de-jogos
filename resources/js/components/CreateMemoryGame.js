@@ -57,6 +57,12 @@ export default function CreateMemoryGame() {
         setLayout(newLayout);
     };
 
+    const [name, setName] = useState('');
+
+    const handleName = (event) => {
+        setName(event.target.value);
+    };
+
     const updateImage = (newImage, index) => {
         let i = [...images];
         i.splice(index, 1, newImage);
@@ -65,10 +71,15 @@ export default function CreateMemoryGame() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        const data = new FormData(event.currentTarget);
+        if (images.includes(null)) {
+            setAlert('Preencha todos os campos!');
+            return;
+        }
+        const data = new FormData();
         images.map((image) => {
             data.append('images[]', image);
         });
+        data.append('name', name);
         data.append('layout', layout.toString());
         data.append('user_id', user_info.user_id);
         data.append('client_id', user_info.client_id);
@@ -117,6 +128,7 @@ export default function CreateMemoryGame() {
                         <Grid item align="center" xs={12}>
                             <TextField
                                 label="Nome"
+                                onChange={handleName}
                                 name="name"
                                 variant="outlined"
                                 required
