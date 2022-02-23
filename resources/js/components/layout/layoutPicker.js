@@ -1,4 +1,4 @@
-import { Box, Grid, ToggleButton, Typography } from '@mui/material';
+import { Box, Card, Grid, ToggleButton, Typography } from '@mui/material';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import React from 'react';
@@ -39,7 +39,7 @@ export default function LayoutPicker(props) {
                     <Carousel responsive={responsive} infinite={true}>
                         {layouts.map((layout, i) => {
                             return (
-                                <Box sx={{ width: 250 }} key={i}>
+                                <Box sx={{ width: 250, height: 145 }} key={i}>
                                     <ImageToggleButton
                                         selected={selectedLayout === layout}
                                         value={layout}
@@ -52,12 +52,28 @@ export default function LayoutPicker(props) {
                                             handleLayout(event, value);
                                         }}
                                     >
-                                        <img
-                                            src={`/storage/layout/layout${layout}.png`}
-                                            alt={`Layout ${layout}`}
-                                            width="250"
-                                            height="auto"
-                                        />
+                                        <Card
+                                            sx={
+                                                selectedLayout === i
+                                                    ? {
+                                                          width: 250,
+                                                          height: 125
+                                                      }
+                                                    : {
+                                                          width: 250,
+                                                          height: 125,
+                                                          borderRadius: 0
+                                                      }
+                                            }
+                                            elevation={5}
+                                        >
+                                            <img
+                                                src={`/storage/layout/layout${layout}.png`}
+                                                alt={`Layout ${layout}`}
+                                                width="100%"
+                                                height="100%"
+                                            />
+                                        </Card>
                                     </ImageToggleButton>
                                 </Box>
                             );

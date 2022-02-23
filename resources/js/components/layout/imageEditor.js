@@ -8,7 +8,9 @@ import {
     Card,
     CardActions,
     CardContent,
-    Input
+    Input,
+    Button,
+    CardMedia
 } from '@mui/material';
 
 const style = {
@@ -97,27 +99,42 @@ export default function ImageEditor(props) {
     return (
         <Grid container align="center" spacing={3}>
             <Grid item xs={12}>
-                <Card sx={{ maxWidth: 345 }}>
-                    <CardContent>
-                        <canvas
-                            ref={previewCanvasRef}
-                            style={{
-                                width: 200,
-                                height: 200
-                            }}
-                        />
-                    </CardContent>
-                    <CardActions>
-                        <Input
-                            type="file"
-                            inputProps={{
-                                accept: 'image/*'
-                            }}
-                            onChange={onSelectFile}
-                            required
-                        />
-                    </CardActions>
+                <Card elevation={5} sx={{ width: 250, height: 250 }}>
+                    <canvas
+                        ref={previewCanvasRef}
+                        style={{
+                            height: '100%',
+                            width: '100%'
+                        }}
+                    />
                 </Card>
+                <Grid
+                    item
+                    xs={12}
+                    align="center"
+                    sx={{
+                        marginTop: 2
+                    }}
+                >
+                    <label htmlFor={`upload-image${index}`}>
+                        <input
+                            style={{ display: 'none' }}
+                            id={`upload-image${index}`}
+                            name={`upload-image${index}`}
+                            type="file"
+                            accept="image/*"
+                            onChange={onSelectFile}
+                        />
+
+                        <Button
+                            size="small"
+                            variant="outlined"
+                            component="span"
+                        >
+                            Selecione uma imagem
+                        </Button>
+                    </label>
+                </Grid>
             </Grid>
             <Modal
                 open={open}
