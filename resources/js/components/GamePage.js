@@ -5,8 +5,8 @@ import axios from 'axios';
 export default function GamePage(props) {
     const { game } = props;
     const { slug } = useParams();
-    const api_address = '';
-    const token = '';
+    let api_address = '';
+    let token = '';
     window.addEventListener('message', (event) => {
         if (event.origin !== window.location.origin) {
             let data = event.data;
@@ -33,8 +33,8 @@ export default function GamePage(props) {
                 iframe.contentWindow.postMessage(message, '*');
                 return;
             }
-            const api_address = data.api_address;
-            const token = data.user_token;
+            api_address = data.api_address;
+            token = data.user_token;
             const config = {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -53,19 +53,19 @@ export default function GamePage(props) {
     switch (game) {
         case 'quiz':
             gameAddress =
-                'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/Quiz%20Certo/index.html';
+                'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/Quiz%20%281%29/index.html';
             break;
         case 'wordSearch':
             gameAddress =
-                'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/Caça-Palavras/index.html';
+                'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/Caca-Palavras%20%281%29/index.html';
             break;
         case 'anagram':
             gameAddress =
-                'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/Anagrama%20Certo/index.html';
+                'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/Anagrama%20%281%29/index.html';
             break;
         case 'trueOrFalse':
             gameAddress =
-                'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/Verdadeiro%20ou%20Falso%20Certo/index.html';
+                'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/VerdadeiroOuFalso%20%282%29/index.html';
             break;
         case 'matchUp':
             gameAddress =
@@ -73,7 +73,7 @@ export default function GamePage(props) {
             break;
         case 'memoryGame':
             gameAddress =
-                'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/jogodamemeria-daniel/index.html';
+                'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/JogoDaMemória%20%281%29/index.html';
             break;
     }
     return (
