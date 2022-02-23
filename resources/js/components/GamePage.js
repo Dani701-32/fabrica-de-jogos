@@ -69,7 +69,7 @@ export default function GamePage(props) {
             break;
         case 'matchUp':
             gameAddress =
-                'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/Significados%20das%20Palavras%20Certo/index.html';
+                'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/SignificadosDasPalavras%20%281%29/index.html';
             break;
         case 'memoryGame':
             gameAddress =
