@@ -5,7 +5,6 @@ namespace App\Models;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use JetBrains\PhpStorm\ArrayShape;
 
 class WordSearch extends Model
@@ -14,8 +13,13 @@ class WordSearch extends Model
     use Sluggable;
 
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = [
-        'words'
+        'name', 'type', 'layout', 'client_id', 'user_id', 'origin', 'words'
     ];
 
     #[ArrayShape(['slug' => "string[]"])]
@@ -23,14 +27,9 @@ class WordSearch extends Model
     {
         return [
             'slug' => [
-                'source' => ['game.name', 'game.type']
+                'source' => ['name']
             ]
         ];
-    }
-
-    public function game(): BelongsTo
-    {
-        return $this->belongsTo(Game::class);
     }
 
     public function getRouteKeyName(): string

@@ -5,7 +5,6 @@ namespace App\Models;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use JetBrains\PhpStorm\ArrayShape;
 
@@ -15,8 +14,13 @@ class Anagram extends Model
     use SoftDeletes;
     use Sluggable;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = [
-      'words'
+        'name', 'type', 'layout', 'client_id', 'user_id', 'origin', 'words'
     ];
 
     #[ArrayShape(['slug' => "string[]"])]
@@ -24,14 +28,9 @@ class Anagram extends Model
     {
         return [
             'slug' => [
-                'source' => ['game.name', 'game.type']
+                'source' => ['name']
             ]
         ];
-    }
-
-    public function game(): BelongsTo
-    {
-        return $this->belongsTo(Game::class);
     }
 
     public function getRouteKeyName(): string

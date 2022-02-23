@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Game;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,10 +15,14 @@ return new class extends Migration
     {
         Schema::create('memory_games', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->integer('layout');
+            $table->integer('client_id');
+            $table->integer('user_id');
+            $table->string('origin');
             $table->string('slug')->unique();
             $table->string('images', 5096);
             $table->string('grid');
-            $table->foreignIdFor(Game::class);
             $table->timestamps();
             $table->softDeletes();
         });

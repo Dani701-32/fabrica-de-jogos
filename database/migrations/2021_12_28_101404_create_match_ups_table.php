@@ -1,11 +1,10 @@
 <?php
 
-use App\Models\Game;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMatchUpsTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -16,9 +15,13 @@ class CreateMatchUpsTable extends Migration
     {
         Schema::create('match_ups', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->integer('layout');
+            $table->integer('client_id');
+            $table->integer('user_id');
+            $table->string('origin');
             $table->string('slug')->unique();
             $table->string('pages', 2048);
-            $table->foreignIdFor(Game::class);
             $table->timestamps();
             $table->softDeletes();
         });
@@ -33,4 +36,4 @@ class CreateMatchUpsTable extends Migration
     {
         Schema::dropIfExists('match_ups');
     }
-}
+};
