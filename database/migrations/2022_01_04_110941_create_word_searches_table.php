@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('origin');
             $table->string('slug')->unique();
             $table->string('words', 5096);
+            $table->dateTime('approved_at')->nullable()->useCurrentOnUpdate();
             $table->timestamps();
             $table->softDeletes();
         });
