@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\MatchUp;
@@ -31,6 +32,9 @@ class MatchUpController extends Controller
         $request->validate( [
             'name' => 'required|string|max:255',
             'layout' => 'required|integer|max:10',
+            'user_id' => 'required|integer',
+            'client_id' => 'required|integer',
+            'origin' => 'required|string',
             'pages' => 'required|array|max:4',
             'pages.*' => 'required|array|max:4',
             'pages.*.*.word' => 'required|string',
@@ -58,6 +62,17 @@ class MatchUpController extends Controller
     {
         return response()->json(new MatchUpResource($matchup));
     }
+
+    public function approve(MatchUp $matchup): JsonResponse
+    {
+        if ($matchup->approved_at){
+            return response()->json('MatchUp Game Already Approved!', 400);
+        }
+        $matchup->approved_at = Carbon::now();
+        $matchup->save();
+        return response()->json('MatchUp Game Approved Successfully!');
+    }
+
     /**
      * Update the specified resource in storage.
      *

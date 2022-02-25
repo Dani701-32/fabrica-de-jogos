@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Quiz;
@@ -31,6 +32,9 @@ class QuizController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'layout' => 'required|integer|max:10',
+            'user_id' => 'required|integer',
+            'client_id' => 'required|integer',
+            'origin' => 'required|string',
             'questions' => 'required|array|max:10',
             'questions.*.title' => 'required|string',
             'questions.*.answers' => 'required|array|max:5',
@@ -56,6 +60,16 @@ class QuizController extends Controller
     public function show(Quiz $quiz): JsonResponse
     {
         return response()->json(new QuizResource($quiz));
+    }
+
+    public function approve(Quiz $quiz): JsonResponse
+    {
+        if ($quiz->approved_at) {
+            return response()->json('Quiz Game Already Approved!', 400);
+        }
+        $quiz->approved_at = Carbon::now();
+        $quiz->save();
+        return response()->json('Quiz Game Approved Successfully!');
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\WordSearch;
@@ -31,6 +32,9 @@ class WordSearchController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'layout' => 'required|integer|max:10',
+            'user_id' => 'required|integer',
+            'client_id' => 'required|integer',
+            'origin' => 'required|string',
             'words' => 'required|array|max:10',
             'words.*.word' => 'required|string|max:10',
             'words.*.tip' => 'required|string|max:50'
@@ -55,6 +59,16 @@ class WordSearchController extends Controller
     public function show(WordSearch $wordsearch): JsonResponse
     {
         return response()->json(new WordSearchResource($wordsearch));
+    }
+
+    public function approve(WordSearch $wordsearch): JsonResponse
+    {
+        if ($wordsearch->approved_at) {
+            return response()->json('Word Search Game Already Approved!', 400);
+        }
+        $wordsearch->approved_at = Carbon::now();
+        $wordsearch->save();
+        return response()->json('Word Search Game Approved Successfully');
     }
 
     /**

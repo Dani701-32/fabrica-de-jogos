@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\TrueOrFalse;
@@ -32,6 +33,9 @@ class TrueOrFalseController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'layout' => 'required|integer|max:10',
+            'user_id' => 'required|integer',
+            'client_id' => 'required|integer',
+            'origin' => 'required|string',
             'questions' => 'required|array|max:10',
             'questions.*.title' => 'required|string|max:240',
             'questions.*.answer' => 'required|boolean'
@@ -57,6 +61,16 @@ class TrueOrFalseController extends Controller
     public function show(TrueOrFalse $trueorfalse): JsonResponse
     {
         return response()->json(new TrueOrFalseResource($trueorfalse));
+    }
+
+    public function approve(TrueOrFalse $trueorfalse): JsonResponse
+    {
+        if ($trueorfalse->approve_at) {
+            return response()->json('True or False Game Already Approved!', 400);
+        }
+        $trueorfalse->approved_at = Carbon::now();
+        $trueorfalse->save();
+        return response()->json('True or False Game Approved successfully!');
     }
 
     /**

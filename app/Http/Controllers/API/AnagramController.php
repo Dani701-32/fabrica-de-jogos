@@ -7,6 +7,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Anagram;
 use App\Http\Resources\Anagram as AnagramResource;
+use Carbon\Carbon;
 
 class AnagramController extends Controller
 {
@@ -31,6 +32,9 @@ class AnagramController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'layout' => 'required|integer|max:10',
+            'user_id' => 'required|integer',
+            'client_id' => 'required|integer',
+            'origin' => 'required|string',
             'words' => 'required|array|max:12',
             'words.*' => 'required|string|max:20'
         ]);
@@ -59,6 +63,15 @@ class AnagramController extends Controller
         return response()->json(new AnagramResource($anagram));
     }
 
+    public function approve(Anagram $anagram): JsonResponse
+    {
+        if ($anagram->approved_at){
+            return response()->json('Anagram Game Already Approved!', 400);
+        }
+        $anagram->approved_at = Carbon::now();
+        $anagram->save();
+        return response()->json('Anagram Game Approved successfully!');
+    }
     /**
      * Update the specified resource in storage.
      *

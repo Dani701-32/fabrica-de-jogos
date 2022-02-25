@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\MemoryGame;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Resources\MemoryGame as MemoryGameResource;
@@ -29,6 +30,11 @@ class MemoryGameController extends Controller
     public function store(Request $request): JsonResponse
     {
         $request->validate([
+            'name' => 'required|string|max:255',
+            'layout' => 'required|integer|max:10',
+            'user_id' => 'required|integer',
+            'client_id' => 'required|integer',
+            'origin' => 'required|string',
             'images' => 'required|max:6|min:2',
             'images.*' => 'mimes:jpeg,jpg,png'
         ]);
@@ -77,6 +83,16 @@ class MemoryGameController extends Controller
     public function show(MemoryGame $memorygame): JsonResponse
     {
         return response()->json(new MemoryGameResource($memorygame));
+    }
+
+    public function approve(MemoryGame $memorygame): JsonResponse
+    {
+        if ($memorygame->approved_at) {
+            return response()->json('Memory Game Already Approved!', 400);
+        }
+        $memorygame->approved_at = Carbon::now();
+        $memorygame->save();
+        return response()->json('Memory Game Approved Successfully!');
     }
 
     /**
