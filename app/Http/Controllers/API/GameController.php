@@ -23,19 +23,28 @@ class GameController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param string|null $origin
      * @param int|null $user_id
      * @return JsonResponse
      */
-    public function index(int $user_id = null): JsonResponse
+    public function index(string $origin = null, int $user_id = null): JsonResponse
     {
         $games = [];
-        if ($user_id) {
-            $games[] = AnagramResource::collection(Anagram::all()->where('user_id', $user_id));
-            $games[] = MatchUpResource::collection(MatchUp::all()->where('user_id', $user_id));
-            $games[] = MemoryGameResource::collection(MemoryGame::all()->where('user_id', $user_id));
-            $games[] = QuizResource::collection(Quiz::all()->where('user_id', $user_id));
-            $games[] = TrueOrFalseResource::collection(TrueOrFalse::all()->where('user_id', $user_id));
-            $games[] = WordSearchResource::collection(WordSearch::all()->where('user_id', $user_id));
+        if ($user_id && $origin) {
+            $games[] = AnagramResource::collection(Anagram::all()->where('user_id', $user_id)->where('origin', $origin));
+            $games[] = MatchUpResource::collection(MatchUp::all()->where('user_id', $user_id)->where('origin', $origin));
+            $games[] = MemoryGameResource::collection(MemoryGame::all()->where('user_id', $user_id)->where('origin', $origin));
+            $games[] = QuizResource::collection(Quiz::all()->where('user_id', $user_id)->where('origin', $origin));
+            $games[] = TrueOrFalseResource::collection(TrueOrFalse::all()->where('user_id', $user_id)->where('origin', $origin));
+            $games[] = WordSearchResource::collection(WordSearch::all()->where('user_id', $user_id)->where('origin', $origin));
+        }
+        else if($origin){
+            $games[] = AnagramResource::collection(Anagram::all()->where('origin', $origin));
+            $games[] = MatchUpResource::collection(MatchUp::all()->where('origin', $origin));
+            $games[] = MemoryGameResource::collection(MemoryGame::all()->where('origin', $origin));
+            $games[] = QuizResource::collection(Quiz::all()->where('origin', $origin));
+            $games[] = TrueOrFalseResource::collection(TrueOrFalse::all()->where('origin', $origin));
+            $games[] = WordSearchResource::collection(WordSearch::all()->where('origin', $origin));
         }
         else {
             $games[] = AnagramResource::collection(Anagram::all());
