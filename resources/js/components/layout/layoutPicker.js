@@ -26,9 +26,7 @@ const responsive = {
 };
 const layouts = [1, 2, 3, 4, 5];
 
-export default function LayoutPicker(props) {
-    const { handleLayout, selectedLayout } = props;
-
+export default function LayoutPicker({ handleLayout, selectedLayout }) {
     return (
         <Grid item align="center" xs={12}>
             <Grid container align="center" alignItems="center">

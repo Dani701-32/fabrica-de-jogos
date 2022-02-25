@@ -1,17 +1,7 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
-import {
-    Modal,
-    Box,
-    Grid,
-    Card,
-    CardActions,
-    CardContent,
-    Input,
-    Button,
-    CardMedia
-} from '@mui/material';
+import { Modal, Box, Grid, Card, Button } from '@mui/material';
 
 const style = {
     position: 'absolute',
@@ -25,12 +15,11 @@ const style = {
     borderRadius: 2
 };
 
-export default function ImageEditor(props) {
-    const { index, callback } = props;
+export default function ImageEditor({ index, callback }) {
     const [upImg, setUpImg] = useState();
     const imgRef = useRef(null);
     const previewCanvasRef = useRef(null);
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const [crop, setCrop] = useState({ unit: '%', width: 40, aspect: 1 });

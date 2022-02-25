@@ -31,9 +31,14 @@ const theme = createTheme({
     }
 });
 
-export default function (props) {
-    const { editorState, handleTextChange, index, i, label, maxLength } = props;
-
+export default function ({
+    editorState,
+    handleTextChange,
+    index,
+    i,
+    label,
+    maxLength
+}) {
     return (
         <Paper variant="outlined">
             <ThemeProvider theme={theme}>

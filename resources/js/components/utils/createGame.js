@@ -6,13 +6,22 @@ export default function createGame(
     config,
     api_address,
     setAlert,
-    navigate
+    setOpen
 ) {
     axios
         .post(`/api/${type}`, body, config)
         .then((response) => {
             if (response.status === 201) {
-                navigate(`/${type}/${response.data.slug}`);
+                body = JSON.stringify({
+                    link: `https://www.fabricadejogos.portaleducacional.tec.br/${type}/${response.data.slug}`,
+                    type: type
+                });
+                axios.post(`/api/${type}`, body, config).then((response) => {
+                    if (response.status === 201) {
+                        setOpen(true);
+                        console.log(body);
+                    }
+                });
             }
         })
         .catch((error) => {
