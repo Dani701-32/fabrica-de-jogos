@@ -13,11 +13,11 @@ import {
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useNavigate } from 'react-router-dom';
 import DeleteIcon from '@mui/icons-material/Delete';
 import LayoutPicker from './layout/layoutPicker';
 import createGame from './utils/createGame';
 import userInfo from './utils/userInfo';
+import SuccessDialog from './layout/successDialog';
 
 const theme = createTheme();
 
@@ -26,7 +26,7 @@ export default function CreateAnagram() {
     useEffect(() => {
         user_info = userInfo();
     }, []);
-    const navigate = useNavigate();
+    const [name, setName] = useState('');
     const [pages, setPages] = useState([['', '', '', '']]);
     const handleAddWord = () => {
         if (pages.length >= 8) {
@@ -62,6 +62,14 @@ export default function CreateAnagram() {
         }
         setLayout(newLayout);
     };
+    const [open, setOpen] = useState(false);
+
+    const handleClose = () => {
+        setPages([['', '', '', '']]);
+        setLayout(1);
+        setName('');
+        setOpen(false);
+    };
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -69,8 +77,6 @@ export default function CreateAnagram() {
             setAlert('O jogo deve ter no mínimo 1 tela!');
             return;
         }
-        const data = new FormData(event.currentTarget);
-        let name = data.get('name');
         let wordsJSON = [];
         pages.map((page, index) => {
             page.map((word, i) => {
@@ -97,7 +103,7 @@ export default function CreateAnagram() {
             config,
             user_info.api_address,
             setAlert,
-            navigate
+            setOpen
         );
     };
 
@@ -107,6 +113,7 @@ export default function CreateAnagram() {
         <ThemeProvider theme={theme}>
             <Container component="main">
                 <CssBaseline />
+                <SuccessDialog open={open} handleClose={handleClose} />
                 <Box
                     sx={{
                         marginTop: 8,
@@ -127,6 +134,10 @@ export default function CreateAnagram() {
                                 label="Nome"
                                 name="name"
                                 variant="outlined"
+                                value={name}
+                                onChange={(event) => {
+                                    setName(event.target.value);
+                                }}
                                 required
                             />
                         </Grid>

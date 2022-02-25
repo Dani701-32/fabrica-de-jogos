@@ -15,13 +15,13 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { KeyboardDoubleArrowRight } from '@mui/icons-material';
 import AddIcon from '@mui/icons-material/Add';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useNavigate } from 'react-router-dom';
 import { EditorState, convertToRaw } from 'draft-js';
 import LayoutPicker from './layout/layoutPicker';
 import RichTextField from './layout/richTextField';
 import draftToText from './utils/draftToText';
 import userInfo from './utils/userInfo';
 import createGame from './utils/createGame';
+import SuccessDialog from './layout/successDialog';
 
 const theme = createTheme();
 
@@ -30,7 +30,6 @@ export default function CreateMatchUp() {
     useEffect(() => {
         user_info = userInfo();
     }, []);
-    const navigate = useNavigate();
     let initialState = [
         {
             word: '',
@@ -49,6 +48,7 @@ export default function CreateMatchUp() {
             meaning: EditorState.createEmpty()
         }
     ];
+    const [name, setName] = useState('');
     const [pages, setPages] = useState([initialState]);
 
     const handleCreatePage = () => {
@@ -94,11 +94,17 @@ export default function CreateMatchUp() {
         setLayout(newLayout);
     };
 
+    const [open, setOpen] = useState(false);
+
+    const handleClose = () => {
+        setLayout(1);
+        setName('');
+        setPages([initialState]);
+        setOpen(false);
+    };
+
     const handleSubmit = (event) => {
         event.preventDefault();
-
-        const data = new FormData(event.currentTarget);
-        let name = data.get('name');
         let matchUpsJSON = [];
         pages.map((page) => {
             let matchUps = [];
@@ -134,7 +140,7 @@ export default function CreateMatchUp() {
             config,
             user_info.api_address,
             setAlert,
-            navigate
+            setOpen
         );
     };
 
@@ -144,6 +150,7 @@ export default function CreateMatchUp() {
         <ThemeProvider theme={theme}>
             <Container component="main">
                 <CssBaseline />
+                <SuccessDialog open={open} handleClose={handleClose} />
                 <Box
                     sx={{
                         marginTop: 8,
@@ -164,6 +171,10 @@ export default function CreateMatchUp() {
                                 label="Nome"
                                 name="name"
                                 variant="outlined"
+                                value={name}
+                                onChange={(event) => {
+                                    setName(event.target.value);
+                                }}
                                 required
                             />
                         </Grid>

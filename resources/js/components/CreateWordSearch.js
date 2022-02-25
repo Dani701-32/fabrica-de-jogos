@@ -13,7 +13,6 @@ import {
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useNavigate } from 'react-router-dom';
 import DeleteIcon from '@mui/icons-material/Delete';
 import LayoutPicker from './layout/layoutPicker';
 import RichTextField from './layout/richTextField';
@@ -21,6 +20,7 @@ import { convertToRaw, EditorState } from 'draft-js';
 import draftToText from './utils/draftToText';
 import userInfo from './utils/userInfo';
 import createGame from './utils/createGame';
+import SuccessDialog from './layout/successDialog';
 
 const theme = createTheme();
 
@@ -29,7 +29,6 @@ export default function CreateWordSearch() {
     useEffect(() => {
         user_info = userInfo();
     }, []);
-    const navigate = useNavigate();
     let initialState = [
         {
             word: '',
@@ -85,6 +84,8 @@ export default function CreateWordSearch() {
         setPages(p);
     };
 
+    const [name, setName] = useState('');
+
     const [layout, setLayout] = useState(1);
 
     const handleLayout = (event, newLayout) => {
@@ -94,14 +95,21 @@ export default function CreateWordSearch() {
         setLayout(newLayout);
     };
 
+    const [open, setOpen] = useState(false);
+
+    const handleClose = () => {
+        setName('');
+        setPages([...initialState]);
+        setLayout(1);
+        setOpen(false);
+    };
+
     const handleSubmit = (event) => {
         event.preventDefault();
         if (pages.length < 3) {
             setAlert('O jogo deve ter no mínimo 3 palavras!');
             return;
         }
-        const data = new FormData(event.currentTarget);
-        let name = data.get('name');
         let wordsJSON = [];
         pages.map((page) => {
             let textJson = convertToRaw(page.tip.getCurrentContent());
@@ -131,7 +139,7 @@ export default function CreateWordSearch() {
             config,
             user_info.api_address,
             setAlert,
-            navigate
+            setOpen
         );
     };
 
@@ -141,6 +149,7 @@ export default function CreateWordSearch() {
         <ThemeProvider theme={theme}>
             <Container component="main">
                 <CssBaseline />
+                <SuccessDialog open={open} handleClose={handleClose} />
                 <Box
                     sx={{
                         marginTop: 8,
@@ -161,6 +170,10 @@ export default function CreateWordSearch() {
                                 label="Nome"
                                 name="name"
                                 variant="outlined"
+                                value={name}
+                                onChange={(event) => {
+                                    setName(event.target.value);
+                                }}
                                 required
                             />
                         </Grid>

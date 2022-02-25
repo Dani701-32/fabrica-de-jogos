@@ -17,13 +17,13 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useNavigate } from 'react-router-dom';
 import { EditorState, convertToRaw } from 'draft-js';
 import LayoutPicker from './layout/layoutPicker';
 import RichTextField from './layout/richTextField';
 import draftToText from './utils/draftToText';
 import userInfo from './utils/userInfo';
 import createGame from './utils/createGame';
+import SuccessDialog from './layout/successDialog';
 
 const theme = createTheme();
 
@@ -32,7 +32,6 @@ export default function CreateTrueOrFalse() {
     useEffect(() => {
         user_info = userInfo();
     }, []);
-    const navigate = useNavigate();
     const questionObj = {
         title: EditorState.createEmpty(),
         right: false
@@ -40,6 +39,9 @@ export default function CreateTrueOrFalse() {
     const [questions, setQuestions] = useState([
         { title: EditorState.createEmpty(), right: false }
     ]);
+
+    const [name, setName] = useState('');
+
     const [layout, setLayout] = useState(1);
 
     const handleLayout = (event, newLayout) => {
@@ -82,10 +84,17 @@ export default function CreateTrueOrFalse() {
         setQuestions(q);
     };
 
+    const [open, setOpen] = useState(false);
+
+    const handleClose = () => {
+        setName('');
+        setQuestions([{ title: EditorState.createEmpty(), right: false }]);
+        setLayout(1);
+        setOpen(false);
+    };
+
     const handleSubmit = (event) => {
         event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        let name = data.get('name');
         let questionsJSON = [];
         questions.map((item) => {
             let textJson = convertToRaw(item.title.getCurrentContent());
@@ -115,7 +124,7 @@ export default function CreateTrueOrFalse() {
             config,
             user_info.api_address,
             setAlert,
-            navigate
+            setOpen
         );
     };
 
@@ -125,6 +134,7 @@ export default function CreateTrueOrFalse() {
         <ThemeProvider theme={theme}>
             <Container component="main">
                 <CssBaseline />
+                <SuccessDialog open={open} handleClose={handleClose} />
                 <Box
                     sx={{
                         marginTop: 8,
@@ -145,6 +155,10 @@ export default function CreateTrueOrFalse() {
                                 label="Nome"
                                 name="name"
                                 variant="outlined"
+                                value={name}
+                                onChange={(event) => {
+                                    setName(event.target.value);
+                                }}
                                 required
                             />
                         </Grid>

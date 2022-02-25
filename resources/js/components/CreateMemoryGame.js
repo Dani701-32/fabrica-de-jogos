@@ -19,6 +19,7 @@ import { useNavigate } from 'react-router-dom';
 import LayoutPicker from './layout/layoutPicker';
 import userInfo from './utils/userInfo';
 import createGame from './utils/createGame';
+import SuccessDialog from './layout/successDialog';
 
 const theme = createTheme();
 
@@ -69,6 +70,17 @@ export default function CreateMemoryGame() {
         setImages(i);
     };
 
+    const [open, setOpen] = useState(false);
+
+    const handleClose = () => {
+        setName('');
+        setLayout(1);
+        setSize(2);
+        setImages([null, null]);
+        setProgress(0);
+        setOpen(false);
+    };
+
     const handleSubmit = (event) => {
         event.preventDefault();
         if (images.includes(null)) {
@@ -100,7 +112,8 @@ export default function CreateMemoryGame() {
             config,
             user_info.api_address,
             setAlert,
-            navigate
+            navigate,
+            setOpen
         );
     };
 
@@ -110,6 +123,7 @@ export default function CreateMemoryGame() {
         <ThemeProvider theme={theme}>
             <Container component="main">
                 <CssBaseline />
+                <SuccessDialog open={open} handleClose={handleClose} />
                 <Box
                     sx={{
                         marginTop: 8,
