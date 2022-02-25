@@ -14,7 +14,7 @@ class MatchUp extends JsonResource
      * @param  Request  $request
      * @return array
      */
-    #[ArrayShape(['slug' => "string", 'name' => "string", 'layout' => "int", 'pages' => "array", 'created_at' => "datetime", 'updated_at' => "datetime"])]
+    #[ArrayShape(['slug' => "string", 'name' => "string", 'layout' => "int", 'pages' => "array", 'approved_at' => "datetime", 'created_at' => "datetime", 'updated_at' => "datetime"])]
     public function toArray($request): array
     {
         return [
@@ -22,8 +22,9 @@ class MatchUp extends JsonResource
             'name' => $this->name,
             'layout' => $this->layout,
             'pages' => unserialize($this->pages),
-            'created_at' => $this->created_at->format('d/m/Y'),
-            'updated_at' => $this->updated_at->format('d/m/Y'),
+            'approved_at' => $this->approved_at,
+            'created_at' => $this->created_at->format('d/m/Y H:i:s'),
+            'updated_at' => $this->updated_at->format('d/m/Y H:i:s'),
         ];
     }
 }
