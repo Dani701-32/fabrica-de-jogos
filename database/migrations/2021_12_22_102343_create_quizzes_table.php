@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('origin');
             $table->string('slug')->unique();
             $table->string('questions', 5096);
-            $table->dateTime('approved_at')->nullable()->useCurrentOnUpdate();
+            $table->dateTime('approved_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

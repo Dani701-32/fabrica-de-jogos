@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->string('images', 5096);
             $table->string('grid');
-            $table->dateTime('approved_at')->nullable()->useCurrentOnUpdate();
+            $table->dateTime('approved_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
