@@ -75,22 +75,39 @@ class WordSearchController extends Controller
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param int $id
+     * @param WordSearch $wordsearch
      * @return JsonResponse
      */
-    public function update(Request $request, int $id): JsonResponse
+    public function update(Request $request, WordSearch $wordsearch): JsonResponse
     {
-        return response()->json([''], 404);
+        if ($wordsearch->approved_at){
+            return response()->json(["Bad request" => "Word Search Game Already Approved!"], 400);
+        }
+        $edited = false;
+        foreach ($request->all() as $attr=>$value) {
+            if (in_array($attr, array_keys($wordsearch->getAttributes()))) {
+                $edited = true;
+                if (is_array($value)) {
+                    $value =  serialize($value);
+                }
+                $wordsearch->$attr = $value;
+            }
+        }
+        if ($edited) {
+            $wordsearch->save();
+        }
+        return response()->json((new WordSearchResource($wordsearch)));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param WordSearch $wordsearch
      * @return JsonResponse
      */
-    public function destroy(int $id): JsonResponse
+    public function destroy(WordSearch $wordsearch): JsonResponse
     {
-        return response()->json([''], 404);
+        $wordsearch->delete();
+        return response()->json(['Success' => 'Word Search Game Deleted Successfully!']);
     }
 }

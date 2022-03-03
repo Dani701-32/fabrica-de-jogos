@@ -72,26 +72,44 @@ class AnagramController extends Controller
         $anagram->save();
         return response()->json('Anagram Game Approved successfully!');
     }
+
     /**
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param int $id
+     * @param Anagram $anagram
      * @return JsonResponse
      */
-    public function update(Request $request, int $id): JsonResponse
+    public function update(Request $request, Anagram $anagram): JsonResponse
     {
-        return response()->json([''], 404);
+        if ($anagram->approved_at){
+            return response()->json(["Bad request" => "Anagram Game Already Approved!"], 400);
+        }
+        $edited = false;
+        foreach ($request->all() as $attr=>$value) {
+            if (in_array($attr, array_keys($anagram->getAttributes()))) {
+                $edited = true;
+                if (is_array($value)) {
+                    $value =  serialize($value);
+                }
+                $anagram->$attr = $value;
+            }
+        }
+        if ($edited) {
+            $anagram->save();
+        }
+        return response()->json((new AnagramResource($anagram)));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param Anagram $anagram
      * @return JsonResponse
      */
-    public function destroy(int $id): JsonResponse
+    public function destroy(Anagram $anagram): JsonResponse
     {
-        return response()->json([''], 404);
+        $anagram->delete();
+        return response()->json(['Success' => 'Anagram Game Deleted Successfully!']);
     }
 }

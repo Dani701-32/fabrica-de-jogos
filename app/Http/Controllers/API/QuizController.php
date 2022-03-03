@@ -81,29 +81,34 @@ class QuizController extends Controller
      */
     public function update(Request $request, Quiz $quiz): JsonResponse
     {
-        $input = $request->all();
+        if ($quiz->approved_at){
+            return response()->json(["Bad request" => "Quiz Game Already Approved!"], 400);
+        }
         $edited = false;
-        foreach ($input as $attr=>$value) {
+        foreach ($request->all() as $attr=>$value) {
             if (in_array($attr, array_keys($quiz->getAttributes()))) {
                 $edited = true;
+                if (is_array($value)) {
+                    $value =  serialize($value);
+                }
                 $quiz->$attr = $value;
             }
         }
         if ($edited) {
             $quiz->save();
-            return response()->json(new QuizResource($quiz));
         }
-        return response()->json(["Bad request" => "Invalid request"], 400);
+        return response()->json((new QuizResource($quiz)));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param Quiz $quiz
      * @return JsonResponse
      */
-    public function destroy(int $id): JsonResponse
+    public function destroy(Quiz $quiz): JsonResponse
     {
-        return response()->json([''], 404);
+        $quiz->delete();
+        return response()->json(['Success' => 'Quiz Game Deleted Successfully!']);
     }
 }

@@ -77,22 +77,39 @@ class TrueOrFalseController extends Controller
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param int $id
+     * @param TrueOrFalse $trueorfalse
      * @return JsonResponse
      */
-    public function update(Request $request, int $id): JsonResponse
+    public function update(Request $request, TrueOrFalse $trueorfalse): JsonResponse
     {
-        return response()->json([''], 404);
+        if ($trueorfalse->approved_at){
+            return response()->json(["Bad request" => "True Or False Game Already Approved!"], 400);
+        }
+        $edited = false;
+        foreach ($request->all() as $attr=>$value) {
+            if (in_array($attr, array_keys($trueorfalse->getAttributes()))) {
+                $edited = true;
+                if (is_array($value)) {
+                    $value =  serialize($value);
+                }
+                $trueorfalse->$attr = $value;
+            }
+        }
+        if ($edited) {
+            $trueorfalse->save();
+        }
+        return response()->json((new TrueOrFalseResource($trueorfalse)));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param TrueOrFalse $trueorfalse
      * @return JsonResponse
      */
-    public function destroy(int $id): JsonResponse
+    public function destroy(TrueOrFalse $trueorfalse): JsonResponse
     {
-        return response()->json([''], 404);
+        $trueorfalse->delete();
+        return response()->json(['Success' => 'True or False Game Deleted Successfully!']);
     }
 }

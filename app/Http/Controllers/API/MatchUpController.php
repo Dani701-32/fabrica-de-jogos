@@ -77,22 +77,39 @@ class MatchUpController extends Controller
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param int $id
+     * @param MatchUp $matchup
      * @return JsonResponse
      */
-    public function update(Request $request, int $id): JsonResponse
+    public function update(Request $request, MatchUp $matchup): JsonResponse
     {
-        return response()->json([''], 404);
+        if ($matchup->approved_at){
+            return response()->json(["Bad request" => "MatchUp Game Already Approved!"], 400);
+        }
+        $edited = false;
+        foreach ($request->all() as $attr=>$value) {
+            if (in_array($attr, array_keys($matchup->getAttributes()))) {
+                $edited = true;
+                if (is_array($value)) {
+                    $value =  serialize($value);
+                }
+                $matchup->$attr = $value;
+            }
+        }
+        if ($edited) {
+            $matchup->save();
+        }
+        return response()->json((new MatchUpResource($matchup)));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param MatchUp $matchup
      * @return JsonResponse
      */
-    public function destroy(int $id): JsonResponse
+    public function destroy(MatchUp $matchup): JsonResponse
     {
-        return response()->json([''], 404);
+        $matchup->delete();
+        return response()->json(['Success' => 'MatchUp Game Deleted Successfully!']);
     }
 }
