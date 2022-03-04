@@ -30,7 +30,7 @@ export default function CreateAnagram() {
     const [pages, setPages] = useState([['', '', '', '']]);
     const handleAddWord = () => {
         if (pages.length >= 8) {
-            setAlert('O numero máximo de palavras nesse jogo é 8!');
+            setAlert('O numero máximo de páginas nesse jogo é 8!');
             return;
         }
         let p = [...pages];
@@ -74,7 +74,7 @@ export default function CreateAnagram() {
     const handleSubmit = (event) => {
         event.preventDefault();
         if (pages.length < 1) {
-            setAlert('O jogo deve ter no mínimo 1 tela!');
+            setAlert('O jogo deve ter no mínimo 1 página!');
             return;
         }
         let wordsJSON = [];
@@ -178,9 +178,9 @@ export default function CreateAnagram() {
                                     return (
                                         <Grid
                                             item
-                                            xs={8}
-                                            md={6}
-                                            lg={4}
+                                            xs={6}
+                                            md={4}
+                                            lg={3}
                                             key={index}
                                         >
                                             <Paper
@@ -195,12 +195,12 @@ export default function CreateAnagram() {
                                                     align="center"
                                                     alignItems="center"
                                                 >
-                                                    <Grid item xs={10}>
+                                                    <Grid item xs={9}>
                                                         <Typography variant="subtitle1">
                                                             Pag {index + 1}
                                                         </Typography>
                                                     </Grid>
-                                                    <Grid item xs={2}>
+                                                    <Grid item xs={3}>
                                                         <IconButton
                                                             disabled={
                                                                 index === 0 &&
@@ -214,7 +214,7 @@ export default function CreateAnagram() {
                                                                 );
                                                             }}
                                                         >
-                                                            <DeleteIcon />
+                                                            <DeleteIcon fontSize="small" />
                                                         </IconButton>
                                                     </Grid>
                                                     {page.map((word, i) => {
