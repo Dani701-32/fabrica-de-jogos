@@ -69,6 +69,11 @@ class MemoryGameController extends Controller
             case 6:
                 $memory->grid = serialize([4, 3]);
                 break;
+            case 8:
+                $memory->grid = serialize([4, 4]);
+                break;
+            default:
+                return response()->json(['Bad Request'=> 'Invalid number of files'], 400);
         }
         $memory->save();
         return response()->json(new MemoryGameResource($memory), 201);
