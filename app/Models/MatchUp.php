@@ -7,6 +7,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use JetBrains\PhpStorm\ArrayShape;
 
+/**
+ * @property string $name
+ * @property int $layout
+ * @property int $user_id
+ * @property int $client_id
+ * @property string $origin
+ * @property array|string $pages
+ */
 class MatchUp extends Model
 {
     use HasFactory;

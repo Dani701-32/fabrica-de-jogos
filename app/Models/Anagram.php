@@ -8,6 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use JetBrains\PhpStorm\ArrayShape;
 
+/**
+ * @property string $name
+ * @property int $layout
+ * @property int $user_id
+ * @property int $client_id
+ * @property string $origin
+ * @property array|string $words
+ */
 class Anagram extends Model
 {
     use HasFactory;

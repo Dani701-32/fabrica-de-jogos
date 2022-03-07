@@ -348,7 +348,7 @@ export default function CreateMatchUp() {
             <br />
             <Typography variant="body2" color="text.secondary" align="center">
                 {'Copyright © '}
-                Edutec {new Date().getFullYear()}
+                {new Date().getFullYear()}
                 {'.'}
             </Typography>
         </ThemeProvider>

@@ -8,17 +8,20 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Cviebrock\EloquentSluggable\Sluggable;
 use JetBrains\PhpStorm\ArrayShape;
 
+/**
+ * @property string $name
+ * @property int $layout
+ * @property int $user_id
+ * @property int $client_id
+ * @property string $origin
+ * @property array|string $images
+ */
 class MemoryGame extends Model
 {
     use HasFactory;
     use SoftDeletes;
     use Sluggable;
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
+    
     /**
      * The attributes that are mass assignable.
      *
