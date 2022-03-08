@@ -52,8 +52,8 @@ export default function CreateTrueOrFalse() {
     };
 
     const handleCreateQuestion = () => {
-        if (questions.length >= 10) {
-            setAlert('O número máximo de questões para esse jogo é 10!');
+        if (questions.length >= 9) {
+            setAlert('O número máximo de questões para esse jogo é 9!');
             return;
         }
         setQuestions([...questions, questionObj]);
@@ -201,7 +201,7 @@ export default function CreateTrueOrFalse() {
                                             item
                                             xs={8}
                                             md={6}
-                                            lg={6}
+                                            lg={4}
                                             key={index}
                                         >
                                             <Paper
@@ -263,7 +263,16 @@ export default function CreateTrueOrFalse() {
                                                     <Grid
                                                         item
                                                         align="center"
-                                                        xs={12}
+                                                        xs={2}
+                                                    >
+                                                        <Typography variant="subtitle1">
+                                                            Falso
+                                                        </Typography>
+                                                    </Grid>
+                                                    <Grid
+                                                        item
+                                                        align="center"
+                                                        xs={10}
                                                     >
                                                         <FormGroup>
                                                             <FormControlLabel

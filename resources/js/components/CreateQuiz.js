@@ -37,8 +37,8 @@ export default function CreateQuiz() {
         { title: EditorState.createEmpty(), answers: ['', ''] }
     ]);
     const handleCreateQuestion = () => {
-        if (questions.length >= 10) {
-            setAlert('O número máximo de questões para esse jogo é 10!');
+        if (questions.length >= 9) {
+            setAlert('O número máximo de questões para esse jogo é 9!');
             return;
         }
         setQuestions([...questions, questionObj]);
@@ -215,7 +215,7 @@ export default function CreateQuiz() {
                                             item
                                             xs={8}
                                             md={6}
-                                            lg={6}
+                                            lg={4}
                                             key={index}
                                         >
                                             <Paper
