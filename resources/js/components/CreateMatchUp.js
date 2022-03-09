@@ -123,10 +123,7 @@ export default function CreateMatchUp() {
         let body = JSON.stringify({
             name: name,
             layout: layout,
-            pages: matchUpsJSON,
-            user_id: user_info.user_id,
-            client_id: user_info.client_id,
-            origin: user_info.api_address
+            pages: matchUpsJSON
         });
         const config = {
             headers: {

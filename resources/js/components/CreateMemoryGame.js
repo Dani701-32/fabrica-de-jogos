@@ -93,9 +93,6 @@ export default function CreateMemoryGame() {
         });
         data.append('name', name);
         data.append('layout', layout.toString());
-        data.append('user_id', user_info.user_id);
-        data.append('client_id', user_info.client_id);
-        data.append('origin', user_info.api_address);
 
         const config = {
             headers: {
