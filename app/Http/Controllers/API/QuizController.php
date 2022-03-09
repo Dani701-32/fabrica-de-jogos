@@ -32,9 +32,6 @@ class QuizController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'layout' => 'required|integer|max:10',
-            'user_id' => 'required|integer',
-            'client_id' => 'required|integer',
-            'origin' => 'required|string',
             'questions' => 'required|array|max:10',
             'questions.*.title' => 'required|string',
             'questions.*.answers' => 'required|array|max:5',
@@ -43,9 +40,6 @@ class QuizController extends Controller
         $quiz = new Quiz();
         $quiz->name = $request->name;
         $quiz->layout = $request->layout;
-        $quiz->user_id = $request->user_id;
-        $quiz->client_id = $request->client_id;
-        $quiz->origin = $request->origin;
         $quiz->questions = serialize($request->questions);
         $quiz->save();
         return response()->json(new QuizResource($quiz), 201);

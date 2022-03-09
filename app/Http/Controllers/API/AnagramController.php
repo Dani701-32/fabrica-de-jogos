@@ -32,9 +32,6 @@ class AnagramController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'layout' => 'required|integer|max:10',
-            'user_id' => 'required|integer',
-            'client_id' => 'required|integer',
-            'origin' => 'required|string',
             'words' => 'required|array|max:12',
             'words.*' => 'required|string|max:20'
         ]);
@@ -43,9 +40,6 @@ class AnagramController extends Controller
         $anagram = new Anagram();
         $anagram->name = $request->name;
         $anagram->layout = $request->layout;
-        $anagram->user_id = $request->user_id;
-        $anagram->client_id = $request->client_id;
-        $anagram->origin = $request->origin;
         $anagram->words = serialize($request->words);
         $anagram->save();
 

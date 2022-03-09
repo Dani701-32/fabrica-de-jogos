@@ -33,9 +33,6 @@ class TrueOrFalseController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'layout' => 'required|integer|max:10',
-            'user_id' => 'required|integer',
-            'client_id' => 'required|integer',
-            'origin' => 'required|string',
             'questions' => 'required|array|max:10',
             'questions.*.title' => 'required|string|max:240',
             'questions.*.answer' => 'required|boolean'
@@ -43,9 +40,6 @@ class TrueOrFalseController extends Controller
         $true_or_false = new TrueOrFalse();
         $true_or_false->name = $request->name;
         $true_or_false->layout = $request->layout;
-        $true_or_false->user_id = $request->user_id;
-        $true_or_false->client_id = $request->client_id;
-        $true_or_false->origin = $request->origin;
         $true_or_false->questions = serialize($request->questions);
         $true_or_false->save();
 

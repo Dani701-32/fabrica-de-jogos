@@ -17,9 +17,6 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->integer('layout');
-            $table->integer('client_id');
-            $table->integer('user_id');
-            $table->string('origin');
             $table->string('slug')->unique();
             $table->string('pages', 2048);
             $table->dateTime('approved_at')->nullable();

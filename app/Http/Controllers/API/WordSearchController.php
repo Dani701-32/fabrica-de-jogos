@@ -32,9 +32,6 @@ class WordSearchController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'layout' => 'required|integer|max:10',
-            'user_id' => 'required|integer',
-            'client_id' => 'required|integer',
-            'origin' => 'required|string',
             'words' => 'required|array|max:10',
             'words.*.word' => 'required|string|max:10',
             'words.*.tip' => 'required|string|max:50'
@@ -42,9 +39,6 @@ class WordSearchController extends Controller
         $word_search = new WordSearch();
         $word_search->name = $request->name;
         $word_search->layout = $request->layout;
-        $word_search->user_id = $request->user_id;
-        $word_search->client_id = $request->client_id;
-        $word_search->origin = $request->origin;
         $word_search->words = serialize($request->words);
         $word_search->save();
         return response()->json(new WordSearchResource($word_search), 201);

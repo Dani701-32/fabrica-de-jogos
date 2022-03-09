@@ -32,9 +32,6 @@ class MatchUpController extends Controller
         $request->validate( [
             'name' => 'required|string|max:255',
             'layout' => 'required|integer|max:10',
-            'user_id' => 'required|integer',
-            'client_id' => 'required|integer',
-            'origin' => 'required|string',
             'pages' => 'required|array|max:4',
             'pages.*' => 'required|array|max:4',
             'pages.*.*.word' => 'required|string',
@@ -43,9 +40,6 @@ class MatchUpController extends Controller
         $matchup = new MatchUp();
         $matchup->name = $request->name;
         $matchup->layout = $request->layout;
-        $matchup->user_id = $request->user_id;
-        $matchup->client_id = $request->client_id;
-        $matchup->origin = $request->origin;
         $matchup->pages = serialize($request->pages);
         $matchup->save();
 

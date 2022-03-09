@@ -32,9 +32,6 @@ class MemoryGameController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'layout' => 'required|integer|max:10',
-            'user_id' => 'required|integer',
-            'client_id' => 'required|integer',
-            'origin' => 'required|string',
             'images' => 'required|max:6|min:2',
             'images.*' => 'mimes:jpeg,jpg,png'
         ]);
@@ -49,9 +46,6 @@ class MemoryGameController extends Controller
         $memory = new MemoryGame();
         $memory->name = $request->name;
         $memory->layout = $request->layout;
-        $memory->user_id = $request->user_id;
-        $memory->client_id = $request->client_id;
-        $memory->origin = $request->origin;
         $memory->images = serialize($images);
         switch (sizeof($files)) {
             case 2:
