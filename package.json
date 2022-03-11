@@ -38,10 +38,15 @@
         "@mui/system": "^5.4.0",
         "draft-js": "^0.11.7",
         "draftjs-to-html": "^0.9.1",
+        "html-to-draftjs": "^1.5.0",
         "mui-rte": "^2.0.1",
         "react-image-crop": "^9.0.5",
         "react-multi-carousel": "^2.6.5",
-        "react-router-dom": "^6.2.1"
+        "react-redux": "^7.2.6",
+        "react-router-dom": "^6.2.1",
+        "redux": "^4.1.2",
+        "redux-devtools-extension": "^2.13.9",
+        "redux-thunk": "^2.4.1"
     },
     "prettier": {
         "trailingComma": "none",
