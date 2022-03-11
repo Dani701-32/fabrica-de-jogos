@@ -6,8 +6,15 @@ import {
     DialogActions,
     Button
 } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { bindActionCreators } from 'redux';
+import { useDispatch } from 'react-redux';
+import { actionCreators } from '../../store/actionCreators';
 
-export default function SuccessDialog({ open, handleClose }) {
+export default function SuccessDialog({ open, handleClose, type, slug }) {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { setClose, setAlert } = bindActionCreators(actionCreators, dispatch);
     return (
         <Dialog open={open} onClose={handleClose}>
             <DialogTitle>Jogo criado com sucesso</DialogTitle>
@@ -18,6 +25,16 @@ export default function SuccessDialog({ open, handleClose }) {
             <DialogActions>
                 <Button size="small" onClick={handleClose}>
                     OK
+                </Button>
+                <Button
+                    size="small"
+                    onClick={() => {
+                        setClose();
+                        setAlert('');
+                        navigate(`/edit/${type}/${slug}`);
+                    }}
+                >
+                    Editar
                 </Button>
             </DialogActions>
         </Dialog>

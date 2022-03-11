@@ -19,23 +19,30 @@ import LayoutPicker from './layout/layoutPicker';
 import RichTextField from './layout/richTextField';
 import draftToText from './utils/draftToText';
 import userInfo from './utils/userInfo';
-import createGame from './utils/createGame';
 import SuccessDialog from './layout/successDialog';
+import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { actionCreators } from '../store/actionCreators';
 
 const theme = createTheme();
 
-export default function CreateQuiz() {
+export default function QuizPage({ mode }) {
+    const { slug } = useParams();
     let user_info = {};
-    useEffect(() => {
-        user_info = userInfo();
-    }, []);
+    const open = useSelector((state) => state.base.open);
+    const alert = useSelector((state) => state.base.alert);
+    const quiz = useSelector((state) => state.game.quiz);
+    const [questions, setQuestions] = useState(quiz.questions);
+    const [name, setName] = useState(quiz.name);
+    const [layout, setLayout] = useState(quiz.layout);
+    const dispatch = useDispatch();
+    const { createGame, getGame, editGame, setAlert, setClose } =
+        bindActionCreators(actionCreators, dispatch);
     const questionObj = {
         title: EditorState.createEmpty(),
         answers: ['', '']
     };
-    const [questions, setQuestions] = useState([
-        { title: EditorState.createEmpty(), answers: ['', ''] }
-    ]);
     const handleCreateQuestion = () => {
         if (questions.length >= 9) {
             setAlert('O número máximo de questões para esse jogo é 9!');
@@ -43,18 +50,12 @@ export default function CreateQuiz() {
         }
         setQuestions([...questions, questionObj]);
     };
-
-    const [name, setName] = useState('');
-
-    const [layout, setLayout] = useState(1);
-
     const handleLayout = (event, newLayout) => {
         if (newLayout === null) {
             return;
         }
         setLayout(newLayout);
     };
-
     const handleRemoveQuestion = (index) => {
         if (index === 0) {
             return;
@@ -97,16 +98,12 @@ export default function CreateQuiz() {
         q.splice(index, 1, question);
         setQuestions(q);
     };
-
-    const [open, setOpen] = useState(false);
-
     const handleClose = () => {
         setName('');
         setQuestions([{ title: EditorState.createEmpty(), answers: ['', ''] }]);
         setLayout(1);
-        setOpen(false);
+        setClose();
     };
-
     const handleSubmit = (event) => {
         event.preventDefault();
         let questionsJSON = [];
@@ -123,29 +120,30 @@ export default function CreateQuiz() {
             layout: layout,
             questions: questionsJSON
         });
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${user_info.token}`
-            }
-        };
-        createGame(
-            'quiz',
-            body,
-            config,
-            user_info.api_address,
-            setAlert,
-            setOpen
-        );
+        mode === 'EDIT'
+            ? editGame(body, 'quiz', quiz.slug, user_info.token)
+            : createGame(body, 'quiz', user_info);
     };
-
-    const [alert, setAlert] = useState('');
+    useEffect(() => {
+        user_info = userInfo();
+        if (mode === 'EDIT') {
+            getGame('quiz', slug);
+            setQuestions(quiz.questions);
+            setName(quiz.name);
+            setLayout(quiz.layout);
+        }
+    }, [quiz.slug]);
 
     return (
         <ThemeProvider theme={theme}>
             <Container component="main">
                 <CssBaseline />
-                <SuccessDialog open={open} handleClose={handleClose} />
+                <SuccessDialog
+                    open={open}
+                    handleClose={handleClose}
+                    slug={quiz.slug}
+                    type="quiz"
+                />
                 <Box
                     sx={{
                         marginTop: 8,
@@ -455,7 +453,7 @@ export default function CreateQuiz() {
                                 type="submit"
                                 variant="outlined"
                             >
-                                Criar
+                                {mode === 'EDIT' ? 'Editar' : 'Criar'}
                             </Button>
                         </Grid>
                     </Grid>

@@ -20,17 +20,27 @@ import LayoutPicker from './layout/layoutPicker';
 import RichTextField from './layout/richTextField';
 import draftToText from './utils/draftToText';
 import userInfo from './utils/userInfo';
-import createGame from './utils/createGame';
 import SuccessDialog from './layout/successDialog';
+import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { actionCreators } from '../store/actionCreators';
 
 const theme = createTheme();
 
-export default function CreateMatchUp() {
+export default function MatchUpPage({ mode }) {
+    const { slug } = useParams();
     let user_info = {};
-    useEffect(() => {
-        user_info = userInfo();
-    }, []);
-    let initialState = [
+    const open = useSelector((state) => state.base.open);
+    const alert = useSelector((state) => state.base.alert);
+    const matchup = useSelector((state) => state.game.matchup);
+    const [name, setName] = useState(matchup.name);
+    const [layout, setLayout] = useState(matchup.layout);
+    const [pages, setPages] = useState(matchup.pages);
+    const dispatch = useDispatch();
+    const { createGame, getGame, editGame, setAlert, setClose } =
+        bindActionCreators(actionCreators, dispatch);
+    const page = [
         {
             word: '',
             meaning: EditorState.createEmpty()
@@ -48,23 +58,18 @@ export default function CreateMatchUp() {
             meaning: EditorState.createEmpty()
         }
     ];
-    const [name, setName] = useState('');
-    const [pages, setPages] = useState([initialState]);
-
     const handleCreatePage = () => {
         if (pages.length >= 10) {
             setAlert('O número máximo de páginas para esse jogo é 10!');
             return;
         }
-        setPages([...pages, initialState]);
+        setPages([...pages, page]);
     };
-
     const handleRemovePage = (index) => {
         let p = [...pages];
         p.splice(index, 1);
         setPages(p);
     };
-
     const handleWordChange = (event, index, i) => {
         let p = [...pages];
         let page = p[index];
@@ -74,7 +79,6 @@ export default function CreateMatchUp() {
         p.splice(index, 1, page);
         setPages(p);
     };
-
     const handleMeaningChange = (editorState, index, i) => {
         let p = [...pages];
         let page = p[index];
@@ -84,25 +88,18 @@ export default function CreateMatchUp() {
         p.splice(index, 1, page);
         setPages(p);
     };
-
-    const [layout, setLayout] = useState(1);
-
     const handleLayout = (event, newLayout) => {
         if (newLayout === null) {
             return;
         }
         setLayout(newLayout);
     };
-
-    const [open, setOpen] = useState(false);
-
     const handleClose = () => {
         setLayout(1);
         setName('');
-        setPages([initialState]);
-        setOpen(false);
+        setPages([page]);
+        setClose();
     };
-
     const handleSubmit = (event) => {
         event.preventDefault();
         let matchUpsJSON = [];
@@ -125,29 +122,30 @@ export default function CreateMatchUp() {
             layout: layout,
             pages: matchUpsJSON
         });
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${user_info.token}`
-            }
-        };
-        createGame(
-            'matchup',
-            body,
-            config,
-            user_info.api_address,
-            setAlert,
-            setOpen
-        );
+        mode === 'EDIT'
+            ? editGame(body, 'matchup', matchup.slug, user_info.token)
+            : createGame(body, 'matchup', user_info);
     };
-
-    const [alert, setAlert] = useState('');
+    useEffect(() => {
+        user_info = userInfo();
+        if (mode === 'EDIT') {
+            getGame('matchup', slug);
+            setPages(matchup.pages);
+            setName(matchup.name);
+            setLayout(matchup.layout);
+        }
+    }, [matchup.slug]);
 
     return (
         <ThemeProvider theme={theme}>
             <Container component="main">
                 <CssBaseline />
-                <SuccessDialog open={open} handleClose={handleClose} />
+                <SuccessDialog
+                    open={open}
+                    handleClose={handleClose}
+                    type="matchup"
+                    slug={matchup.slug}
+                />
                 <Box
                     sx={{
                         marginTop: 8,
@@ -210,7 +208,13 @@ export default function CreateMatchUp() {
                                 )}
                                 {pages.map((page, index) => {
                                     return (
-                                        <Grid key={index} item md={12} lg={6}>
+                                        <Grid
+                                            key={index}
+                                            item
+                                            xs={12}
+                                            md={6}
+                                            lg={6}
+                                        >
                                             <Paper
                                                 elevation={5}
                                                 sx={{
@@ -336,7 +340,7 @@ export default function CreateMatchUp() {
                                 type="submit"
                                 variant="outlined"
                             >
-                                Criar
+                                {mode === 'EDIT' ? 'Editar' : 'Criar'}
                             </Button>
                         </Grid>
                     </Grid>

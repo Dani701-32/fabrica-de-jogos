@@ -15,19 +15,34 @@ import AddIcon from '@mui/icons-material/Add';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import DeleteIcon from '@mui/icons-material/Delete';
 import LayoutPicker from './layout/layoutPicker';
-import createGame from './utils/createGame';
 import userInfo from './utils/userInfo';
 import SuccessDialog from './layout/successDialog';
+import { useDispatch, useSelector } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { actionCreators } from '../store/actionCreators';
+import { useParams } from 'react-router-dom';
 
 const theme = createTheme();
 
-export default function CreateAnagram() {
+export default function AnagramPage({ mode }) {
+    const { slug } = useParams();
     let user_info = {};
-    useEffect(() => {
-        user_info = userInfo();
-    }, []);
-    const [name, setName] = useState('');
-    const [pages, setPages] = useState([['', '', '', '']]);
+    const open = useSelector((state) => state.base.open);
+    const alert = useSelector((state) => state.base.alert);
+    const anagram = useSelector((state) => state.game.anagram);
+    const [name, setName] = useState(anagram.name);
+    function sliceIntoChunks(arr, chunkSize) {
+        const res = [];
+        for (let i = 0; i < arr.length; i += chunkSize) {
+            const chunk = arr.slice(i, i + chunkSize);
+            res.push(chunk);
+        }
+        return res;
+    }
+    const [pages, setPages] = useState(sliceIntoChunks(anagram.words, 4));
+    const dispatch = useDispatch();
+    const { createGame, getGame, editGame, setAlert, setClose } =
+        bindActionCreators(actionCreators, dispatch);
     const handleAddWord = () => {
         if (pages.length >= 8) {
             setAlert('O numero máximo de páginas nesse jogo é 8!');
@@ -45,7 +60,6 @@ export default function CreateAnagram() {
         p.splice(index, 1);
         setPages(p);
     };
-
     const handleWordChange = (event, index, i) => {
         let p = [...pages];
         let page = p[index];
@@ -53,24 +67,19 @@ export default function CreateAnagram() {
         p.splice(index, 1, page);
         setPages(p);
     };
-
-    const [layout, setLayout] = useState(1);
-
+    const [layout, setLayout] = useState(anagram.layout);
     const handleLayout = (event, newLayout) => {
         if (newLayout === null) {
             return;
         }
         setLayout(newLayout);
     };
-    const [open, setOpen] = useState(false);
-
     const handleClose = () => {
         setPages([['', '', '', '']]);
         setLayout(1);
         setName('');
-        setOpen(false);
+        setClose();
     };
-
     const handleSubmit = (event) => {
         event.preventDefault();
         if (pages.length < 1) {
@@ -78,8 +87,8 @@ export default function CreateAnagram() {
             return;
         }
         let wordsJSON = [];
-        pages.map((page, index) => {
-            page.map((word, i) => {
+        pages.map((page) => {
+            page.map((word) => {
                 wordsJSON.push(word);
             });
         });
@@ -88,29 +97,30 @@ export default function CreateAnagram() {
             layout: layout,
             words: wordsJSON
         });
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${user_info.token}`
-            }
-        };
-        createGame(
-            'anagram',
-            body,
-            config,
-            user_info.api_address,
-            setAlert,
-            setOpen
-        );
+        mode === 'EDIT'
+            ? editGame(body, 'anagram', anagram.slug, user_info.token)
+            : createGame(body, 'anagram', user_info);
     };
-
-    const [alert, setAlert] = useState('');
+    useEffect(() => {
+        user_info = userInfo();
+        if (mode === 'EDIT') {
+            getGame('anagram', slug);
+            setPages(sliceIntoChunks(anagram.words, 4));
+            setName(anagram.name);
+            setLayout(anagram.layout);
+        }
+    }, [anagram.slug]);
 
     return (
         <ThemeProvider theme={theme}>
             <Container component="main">
                 <CssBaseline />
-                <SuccessDialog open={open} handleClose={handleClose} />
+                <SuccessDialog
+                    open={open}
+                    handleClose={handleClose}
+                    type="anagram"
+                    slug={anagram.slug}
+                />
                 <Box
                     sx={{
                         marginTop: 8,
@@ -257,7 +267,7 @@ export default function CreateAnagram() {
                                 type="submit"
                                 variant="outlined"
                             >
-                                Criar
+                                {mode === 'EDIT' ? 'Editar' : 'Criar'}
                             </Button>
                         </Grid>
                     </Grid>

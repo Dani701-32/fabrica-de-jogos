@@ -15,24 +15,30 @@ import {
 } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import ImageEditor from './layout/imageEditor';
-import { useNavigate } from 'react-router-dom';
 import LayoutPicker from './layout/layoutPicker';
 import userInfo from './utils/userInfo';
-import createGame from './utils/createGame';
 import SuccessDialog from './layout/successDialog';
+import { useDispatch, useSelector } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { actionCreators } from '../store/actionCreators';
+import { useParams } from 'react-router-dom';
 
 const theme = createTheme();
 
-export default function CreateMemoryGame() {
+export default function MemoryGamePage({ mode }) {
+    const { slug } = useParams();
     let user_info = {};
-    useEffect(() => {
-        user_info = userInfo();
-    }, []);
-    const navigate = useNavigate();
-    const [images, setImages] = useState([null, null]);
-    const [size, setSize] = useState(2);
-    const [progress, setProgress] = useState(0);
-
+    const open = useSelector((state) => state.base.open);
+    const alert = useSelector((state) => state.base.alert);
+    const memorygame = useSelector((state) => state.game.memorygame);
+    const progress = useSelector((state) => state.base.progress);
+    const [images, setImages] = useState(memorygame.images);
+    const [size, setSize] = useState(memorygame.size);
+    const [name, setName] = useState(memorygame.name);
+    const [layout, setLayout] = useState(memorygame.layout);
+    const dispatch = useDispatch();
+    const { createGame, getGame, editGame, setAlert, setClose, setProgress } =
+        bindActionCreators(actionCreators, dispatch);
     const handleSize = (event, newSize) => {
         if (newSize === null) {
             return;
@@ -48,39 +54,28 @@ export default function CreateMemoryGame() {
             setImages(img);
         }
     };
-
-    const [layout, setLayout] = useState(1);
-
     const handleLayout = (event, newLayout) => {
         if (newLayout === null) {
             return;
         }
         setLayout(newLayout);
     };
-
-    const [name, setName] = useState('');
-
     const handleName = (event) => {
         setName(event.target.value);
     };
-
     const updateImage = (newImage, index) => {
         let i = [...images];
         i.splice(index, 1, newImage);
         setImages(i);
     };
-
-    const [open, setOpen] = useState(false);
-
     const handleClose = () => {
         setName('');
         setLayout(1);
         setSize(2);
         setImages([null, null]);
         setProgress(0);
-        setOpen(false);
+        setClose();
     };
-
     const handleSubmit = (event) => {
         event.preventDefault();
         if (images.includes(null)) {
@@ -93,34 +88,36 @@ export default function CreateMemoryGame() {
         });
         data.append('name', name);
         data.append('layout', layout.toString());
-
-        const config = {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-                Authorization: `Bearer ${user_info.token}`
-            },
-            onUploadProgress: (event) => {
-                setProgress(Math.round((event.loaded * 100) / event.total));
-            }
-        };
-        createGame(
-            'memorygame',
-            data,
-            config,
-            user_info.api_address,
-            setAlert,
-            navigate,
-            setOpen
-        );
+        mode === 'EDIT'
+            ? editGame(
+                  data,
+                  'memorygame',
+                  memorygame.slug,
+                  user_info.token,
+                  'multipart/form-data'
+              )
+            : createGame(data, 'memorygame', user_info, 'multipart/form-data');
     };
-
-    const [alert, setAlert] = useState('');
+    useEffect(() => {
+        user_info = userInfo();
+        if (mode === 'EDIT') {
+            getGame('memorygame', slug);
+            setImages(memorygame.images);
+            setName(memorygame.name);
+            setLayout(memorygame.layout);
+        }
+    }, [memorygame.slug]);
 
     return (
         <ThemeProvider theme={theme}>
             <Container component="main">
                 <CssBaseline />
-                <SuccessDialog open={open} handleClose={handleClose} />
+                <SuccessDialog
+                    open={open}
+                    handleClose={handleClose}
+                    type="memorygame"
+                    slug={memorygame.slug}
+                />
                 <Box
                     sx={{
                         marginTop: 8,
@@ -142,6 +139,7 @@ export default function CreateMemoryGame() {
                                 onChange={handleName}
                                 name="name"
                                 variant="outlined"
+                                value={name}
                                 required
                             />
                         </Grid>
@@ -196,6 +194,7 @@ export default function CreateMemoryGame() {
                                         >
                                             <ImageEditor
                                                 index={index}
+                                                defaultImg={image}
                                                 callback={updateImage}
                                             />
                                         </Grid>
@@ -210,7 +209,7 @@ export default function CreateMemoryGame() {
                                     type="submit"
                                     variant="outlined"
                                 >
-                                    Criar
+                                    {mode === 'EDIT' ? 'Editar' : 'Criar'}
                                 </Button>
                             </Grid>
                         ) : (

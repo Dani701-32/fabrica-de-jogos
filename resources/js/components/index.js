@@ -1,17 +1,18 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import GamePage from './GamePage';
-import CreateQuiz from './CreateQuiz';
-import CreateAnagram from './CreateAnagram';
-import CreateWordSearch from './CreateWordSearch';
-import CreateTrueOrFalse from './CreateTrueOrFalse';
-import CreateMatchUp from './CreateMatchUp';
-import CreateMemoryGame from './CreateMemoryGame';
+import QuizPage from './QuizPage';
+import AnagramPage from './AnagramPage';
+import WordSearchPage from './WordSearchPage';
+import TrueOrFalsePage from './TrueOrFalsePage';
+import MatchUpPage from './MatchUpPage';
+import MemoryGamePage from './MemoryGamePage';
 
 function App() {
     return (
         <Router>
             <Routes>
+                {/* Game Routes */}
                 <Route
                     path="/quiz/:slug"
                     element={<GamePage game={'quiz'} />}
@@ -36,20 +37,55 @@ function App() {
                     path="/matchup/:slug"
                     element={<GamePage game={'matchUp'} />}
                 />
-                <Route path="/create/quiz" element={<CreateQuiz />} />
-                <Route path="/create/anagram" element={<CreateAnagram />} />
+                {/* Create Routes */}
                 <Route
-                    path="/create/wordsearch"
-                    element={<CreateWordSearch />}
+                    path="/create/anagram"
+                    element={<AnagramPage mode="CREATE" />}
+                />
+                <Route
+                    path="/create/matchup"
+                    element={<MatchUpPage mode="CREATE" />}
+                />
+                <Route
+                    path="/create/memorygame"
+                    element={<MemoryGamePage mode="CREATE" />}
+                />
+                <Route
+                    path="/create/quiz"
+                    element={<QuizPage mode="CREATE" />}
                 />
                 <Route
                     path="/create/trueorfalse"
-                    element={<CreateTrueOrFalse />}
+                    element={<TrueOrFalsePage mode="CREATE" />}
                 />
-                <Route path="/create/matchup" element={<CreateMatchUp />} />
                 <Route
-                    path="/create/memorygame"
-                    element={<CreateMemoryGame />}
+                    path="/create/wordsearch"
+                    element={<WordSearchPage mode="CREATE" />}
+                />
+                {/* Edit Routes */}
+                <Route
+                    path="/edit/anagram/:slug"
+                    element={<AnagramPage mode="EDIT" />}
+                />
+                <Route
+                    path="/edit/matchup/:slug"
+                    element={<MatchUpPage mode="EDIT" />}
+                />
+                <Route
+                    path="/edit/memorygame/:slug"
+                    element={<MemoryGamePage mode="EDIT" />}
+                />
+                <Route
+                    path="/edit/quiz/:slug"
+                    element={<QuizPage mode="EDIT" />}
+                />
+                <Route
+                    path="/edit/trueorfalse/:slug"
+                    element={<TrueOrFalsePage mode="EDIT" />}
+                />
+                <Route
+                    path="/edit/wordsearch/:slug"
+                    element={<WordSearchPage mode="EDIT" />}
                 />
             </Routes>
         </Router>

@@ -2,6 +2,7 @@ import React from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Paper } from '@mui/material';
 import MUIRichTextEditor from 'mui-rte';
+import { convertToRaw } from 'draft-js';
 
 const theme = createTheme({
     overrides: {
@@ -31,14 +32,14 @@ const theme = createTheme({
     }
 });
 
-export default function ({
+const richTextField = ({
     editorState,
     handleTextChange,
     index,
     i,
     label,
     maxLength
-}) {
+}) => {
     return (
         <Paper variant="outlined">
             <ThemeProvider theme={theme}>
@@ -52,6 +53,9 @@ export default function ({
                         'redo'
                     ]}
                     editorState={editorState}
+                    defaultValue={JSON.stringify(
+                        convertToRaw(editorState.getCurrentContent())
+                    )}
                     onChange={(editorState) => {
                         handleTextChange(editorState, index, i);
                     }}
@@ -61,4 +65,6 @@ export default function ({
             </ThemeProvider>
         </Paper>
     );
-}
+};
+
+export default React.memo(richTextField);

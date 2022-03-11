@@ -19,104 +19,98 @@ import RichTextField from './layout/richTextField';
 import { convertToRaw, EditorState } from 'draft-js';
 import draftToText from './utils/draftToText';
 import userInfo from './utils/userInfo';
-import createGame from './utils/createGame';
 import SuccessDialog from './layout/successDialog';
+import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { actionCreators } from '../store/actionCreators';
 
 const theme = createTheme();
 
-export default function CreateWordSearch() {
+export default function WordSearchPage({ mode }) {
+    const { slug } = useParams();
     let user_info = {};
-    useEffect(() => {
-        user_info = userInfo();
-    }, []);
-    let initialState = [
-        {
-            word: '',
-            tip: EditorState.createEmpty()
-        },
-        {
-            word: '',
-            tip: EditorState.createEmpty()
-        },
-        {
-            word: '',
-            tip: EditorState.createEmpty()
-        }
-    ];
-
-    const [pages, setPages] = useState([...initialState]);
-
+    const open = useSelector((state) => state.base.open);
+    const alert = useSelector((state) => state.base.alert);
+    const wordsearch = useSelector((state) => state.game.wordsearch);
+    const [words, setWords] = useState(wordsearch.words);
+    const [name, setName] = useState(wordsearch.name);
+    const [layout, setLayout] = useState(wordsearch.layout);
+    const dispatch = useDispatch();
+    const { createGame, getGame, editGame, setAlert, setClose } =
+        bindActionCreators(actionCreators, dispatch);
     const handleAddWord = () => {
-        if (pages.length >= 8) {
+        if (words.length >= 8) {
             setAlert('O numero máximo de palavras nesse jogo é 8!');
             return;
         }
-        let p = [...pages];
+        let p = [...words];
         p.push({
             word: '',
             tip: EditorState.createEmpty()
         });
-        setPages(p);
+        setWords(p);
     };
-
     const handleRemoveWord = (index) => {
-        if (pages.length === 1) {
+        if (words.length === 1) {
             return;
         }
-        let p = [...pages];
+        let p = [...words];
         p.splice(index, 1);
-        setPages(p);
+        setWords(p);
     };
-
     const handleWordChange = (event, index) => {
-        let p = [...pages];
-        let page = p[index];
-        page.word = event.target.value;
-        p.splice(index, 1, page);
-        setPages(p);
+        let p = [...words];
+        let word = p[index];
+        word.word = event.target.value;
+        p.splice(index, 1, word);
+        setWords(p);
     };
-
     const handleTipChange = (editorState, index) => {
-        let p = [...pages];
-        let page = p[index];
-        page.tip = editorState;
-        p.splice(index, 1, page);
-        setPages(p);
+        let p = [...words];
+        let word = p[index];
+        word.tip = editorState;
+        p.splice(index, 1, word);
+        setWords(p);
     };
-
-    const [name, setName] = useState('');
-
-    const [layout, setLayout] = useState(1);
-
     const handleLayout = (event, newLayout) => {
         if (newLayout === null) {
             return;
         }
         setLayout(newLayout);
     };
-
-    const [open, setOpen] = useState(false);
-
     const handleClose = () => {
         setName('');
-        setPages([...initialState]);
+        setWords([
+            {
+                word: '',
+                tip: EditorState.createEmpty()
+            },
+            {
+                word: '',
+                tip: EditorState.createEmpty()
+            },
+            {
+                word: '',
+                tip: EditorState.createEmpty()
+            }
+        ]);
         setLayout(1);
-        setOpen(false);
+        setClose();
     };
-
     const handleSubmit = (event) => {
         event.preventDefault();
-        if (pages.length < 3) {
+        if (words.length < 3) {
             setAlert('O jogo deve ter no mínimo 3 palavras!');
             return;
         }
         let wordsJSON = [];
-        pages.map((page) => {
-            let textJson = convertToRaw(page.tip.getCurrentContent());
+        words.map((word) => {
+            let textJson = convertToRaw(word.tip.getCurrentContent());
             let markup = draftToText(textJson);
             wordsJSON.push({
                 tip: markup,
-                word: page.word
+                word: word.word
             });
         });
         let body = JSON.stringify({
@@ -124,29 +118,30 @@ export default function CreateWordSearch() {
             layout: layout,
             words: wordsJSON
         });
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${user_info.token}`
-            }
-        };
-        createGame(
-            'wordsearch',
-            body,
-            config,
-            user_info.api_address,
-            setAlert,
-            setOpen
-        );
+        mode === 'EDIT'
+            ? editGame(body, 'wordsearch', wordsearch.slug, user_info.token)
+            : createGame(body, 'wordsearch', user_info);
     };
-
-    const [alert, setAlert] = useState('');
+    useEffect(() => {
+        user_info = userInfo();
+        if (mode === 'EDIT') {
+            getGame('wordsearch', slug);
+            setWords(wordsearch.words);
+            setName(wordsearch.name);
+            setLayout(wordsearch.layout);
+        }
+    }, [wordsearch.slug]);
 
     return (
         <ThemeProvider theme={theme}>
             <Container component="main">
                 <CssBaseline />
-                <SuccessDialog open={open} handleClose={handleClose} />
+                <SuccessDialog
+                    open={open}
+                    handleClose={handleClose}
+                    slug={wordsearch.slug}
+                    type="wordsearch"
+                />
                 <Box
                     sx={{
                         marginTop: 8,
@@ -207,7 +202,7 @@ export default function CreateWordSearch() {
                                         </Alert>
                                     </Grid>
                                 )}
-                                {pages.map((page, index) => {
+                                {words.map((item, index) => {
                                     return (
                                         <Grid
                                             item
@@ -232,7 +227,7 @@ export default function CreateWordSearch() {
                                                             label="Palavra"
                                                             name="word"
                                                             variant="outlined"
-                                                            value={page.word}
+                                                            value={item.word}
                                                             onChange={(
                                                                 event
                                                             ) => {
@@ -252,7 +247,7 @@ export default function CreateWordSearch() {
                                                         <IconButton
                                                             disabled={
                                                                 index <
-                                                                    pages.length -
+                                                                    words.length -
                                                                         1 ||
                                                                 index === 0
                                                             }
@@ -272,7 +267,7 @@ export default function CreateWordSearch() {
                                                     >
                                                         <RichTextField
                                                             editorState={
-                                                                page.tip
+                                                                item.tip
                                                             }
                                                             handleTextChange={
                                                                 handleTipChange
@@ -295,7 +290,7 @@ export default function CreateWordSearch() {
                                 type="submit"
                                 variant="outlined"
                             >
-                                Criar
+                                {mode === 'EDIT' ? 'Editar' : 'Criar'}
                             </Button>
                         </Grid>
                     </Grid>

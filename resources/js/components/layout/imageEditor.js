@@ -15,7 +15,7 @@ const style = {
     borderRadius: 2
 };
 
-export default function ImageEditor({ index, callback }) {
+const ImageEditor = ({ index, callback, defaultImg }) => {
     const [upImg, setUpImg] = useState();
     const imgRef = useRef(null);
     const previewCanvasRef = useRef(null);
@@ -51,11 +51,18 @@ export default function ImageEditor({ index, callback }) {
         imgRef.current = img;
     }, []);
 
+    const loadDefaultImg = (defaultImg) => {
+        const ctx = previewCanvasRef.current.getContext('2d');
+        let img = new Image();
+        img.src = URL.createObjectURL(defaultImg);
+        ctx.drawImage(img, 0, 0);
+    };
+
     useEffect(() => {
+        defaultImg && loadDefaultImg(defaultImg);
         if (!completedCrop || !previewCanvasRef.current || !imgRef.current) {
             return;
         }
-
         const image = imgRef.current;
         const canvas = previewCanvasRef.current;
         const crop = completedCrop;
@@ -143,4 +150,6 @@ export default function ImageEditor({ index, callback }) {
             </Modal>
         </Grid>
     );
-}
+};
+
+export default React.memo(ImageEditor);

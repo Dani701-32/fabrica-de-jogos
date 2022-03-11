@@ -22,35 +22,36 @@ import LayoutPicker from './layout/layoutPicker';
 import RichTextField from './layout/richTextField';
 import draftToText from './utils/draftToText';
 import userInfo from './utils/userInfo';
-import createGame from './utils/createGame';
 import SuccessDialog from './layout/successDialog';
+import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { actionCreators } from '../store/actionCreators';
 
 const theme = createTheme();
 
-export default function CreateTrueOrFalse() {
+export default function TrueOrFalsePage({ mode }) {
+    const { slug } = useParams();
     let user_info = {};
-    useEffect(() => {
-        user_info = userInfo();
-    }, []);
+    const open = useSelector((state) => state.base.open);
+    const alert = useSelector((state) => state.base.alert);
+    const trueorfalse = useSelector((state) => state.game.trueorfalse);
+    const [questions, setQuestions] = useState(trueorfalse.questions);
+    const [name, setName] = useState(trueorfalse.name);
+    const [layout, setLayout] = useState(trueorfalse.layout);
+    const dispatch = useDispatch();
+    const { createGame, getGame, editGame, setAlert, setClose } =
+        bindActionCreators(actionCreators, dispatch);
     const questionObj = {
         title: EditorState.createEmpty(),
         right: false
     };
-    const [questions, setQuestions] = useState([
-        { title: EditorState.createEmpty(), right: false }
-    ]);
-
-    const [name, setName] = useState('');
-
-    const [layout, setLayout] = useState(1);
-
     const handleLayout = (event, newLayout) => {
         if (newLayout === null) {
             return;
         }
         setLayout(newLayout);
     };
-
     const handleCreateQuestion = () => {
         if (questions.length >= 9) {
             setAlert('O número máximo de questões para esse jogo é 9!');
@@ -58,7 +59,6 @@ export default function CreateTrueOrFalse() {
         }
         setQuestions([...questions, questionObj]);
     };
-
     const handleRemoveQuestion = (index) => {
         if (index === 0) {
             return;
@@ -67,7 +67,6 @@ export default function CreateTrueOrFalse() {
         q.splice(index, 1);
         setQuestions(q);
     };
-
     const handleQuestionTitleChange = (value, index) => {
         let q = [...questions];
         let question = q[index];
@@ -75,7 +74,6 @@ export default function CreateTrueOrFalse() {
         q.splice(index, 1, question);
         setQuestions(q);
     };
-
     const handleAnswerChange = (index) => {
         let q = [...questions];
         let question = q[index];
@@ -83,16 +81,12 @@ export default function CreateTrueOrFalse() {
         q.splice(index, 1, question);
         setQuestions(q);
     };
-
-    const [open, setOpen] = useState(false);
-
     const handleClose = () => {
         setName('');
         setQuestions([{ title: EditorState.createEmpty(), right: false }]);
         setLayout(1);
-        setOpen(false);
+        setClose();
     };
-
     const handleSubmit = (event) => {
         event.preventDefault();
         let questionsJSON = [];
@@ -109,29 +103,30 @@ export default function CreateTrueOrFalse() {
             layout: layout,
             questions: questionsJSON
         });
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${user_info.token}`
-            }
-        };
-        createGame(
-            'trueorfalse',
-            body,
-            config,
-            user_info.api_address,
-            setAlert,
-            setOpen
-        );
+        mode === 'EDIT'
+            ? editGame(body, 'trueorfalse', trueorfalse.slug, user_info.token)
+            : createGame(body, 'trueorfalse', user_info);
     };
-
-    const [alert, setAlert] = useState('');
+    useEffect(() => {
+        user_info = userInfo();
+        if (mode === 'EDIT') {
+            getGame('trueorfalse', slug);
+            setQuestions(trueorfalse.questions);
+            setName(trueorfalse.name);
+            setLayout(trueorfalse.layout);
+        }
+    }, [trueorfalse.slug]);
 
     return (
         <ThemeProvider theme={theme}>
             <Container component="main">
                 <CssBaseline />
-                <SuccessDialog open={open} handleClose={handleClose} />
+                <SuccessDialog
+                    open={open}
+                    handleClose={handleClose}
+                    type="trueorfalse"
+                    slug={trueorfalse.slug}
+                />
                 <Box
                     sx={{
                         marginTop: 8,
@@ -300,7 +295,7 @@ export default function CreateTrueOrFalse() {
                                 type="submit"
                                 variant="outlined"
                             >
-                                Criar
+                                {mode === 'EDIT' ? 'Editar' : 'Criar'}
                             </Button>
                         </Grid>
                     </Grid>
