@@ -7,11 +7,14 @@ import WordSearchPage from './WordSearchPage';
 import TrueOrFalsePage from './TrueOrFalsePage';
 import MatchUpPage from './MatchUpPage';
 import MemoryGamePage from './MemoryGamePage';
+import HomePage from './HomePage';
 
 function App() {
     return (
         <Router>
             <Routes>
+                {/* Home Route */}
+                <Route path="/create" element={<HomePage />} />
                 {/* Game Routes */}
                 <Route
                     path="/quiz/:slug"

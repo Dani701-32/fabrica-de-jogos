@@ -18,6 +18,10 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+// Home Route
+Route::get('/create', function () {
+    return view('index');
+});
 // Game routes
 Route::get('/wordsearch/{wordsearch}', function (WordSearch $wordsearch) {
     return view('index');
