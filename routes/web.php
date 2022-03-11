@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-// Game page routes
+// Game routes
 Route::get('/wordsearch/{wordsearch}', function (WordSearch $wordsearch) {
     return view('index');
 });
@@ -37,7 +37,7 @@ Route::get('/trueorfalse/{trueorfalse}', function (trueOrFalse $trueorfalse){
 Route::get('/memorygame/{memorygame}', function (MemoryGame $memorygame) {
     return view('index');
 });
-// Creation page routes
+// Creation routes
 Route::get('/create/quiz', function () {
     return view('index');
 });
@@ -54,6 +54,25 @@ Route::get('/create/matchup', function () {
     return view('index');
 });
 Route::get('/create/memorygame', function () {
+    return view('index');
+});
+// Edit routes
+Route::get('/edit/anagram/{anagram}', function (Anagram $anagram) {
+    return view('index');
+});
+Route::get('/edit/matchup/{matchup}', function (Matchup $matchup) {
+    return view('index');
+});
+Route::get('/edit/memorygame/{memorygame}', function (Memorygame $memorygame) {
+    return view('index');
+});
+Route::get('/edit/quiz/{quiz}', function (Quiz $quiz) {
+    return view('index');
+});
+Route::get('/edit/trueorfalse/{trueorfalse}', function (TrueOrFalse $trueOrFalse) {
+    return view('index');
+});
+Route::get('/edit/wordsearch/{wordsearch}', function (Wordsearch $wordsearch) {
     return view('index');
 });
 
