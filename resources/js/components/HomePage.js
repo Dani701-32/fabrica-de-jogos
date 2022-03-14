@@ -55,9 +55,9 @@ export default function HomePage({}) {
                                             <Card
                                                 elevation={5}
                                                 sx={{
-                                                    width: 350,
-                                                    height: 250,
-                                                    borderRadius: 5
+                                                    width: 310,
+                                                    height: 200,
+                                                    borderRadius: 4.5
                                                 }}
                                             >
                                                 <img
