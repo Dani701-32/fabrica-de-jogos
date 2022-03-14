@@ -16,7 +16,6 @@ import {
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import ImageEditor from './layout/ImageEditor';
 import LayoutPicker from './layout/LayoutPicker';
-import userInfo from './utils/userInfo';
 import SuccessDialog from './layout/SuccessDialog';
 import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -29,7 +28,6 @@ const theme = createTheme();
 
 export default function MemoryGamePage({ mode }) {
     const { slug } = useParams();
-    let user_info = {};
     const open = useSelector((state) => state.base.open);
     const alert = useSelector((state) => state.base.alert);
     const memorygame = useSelector((state) => state.game.memorygame);
@@ -39,8 +37,15 @@ export default function MemoryGamePage({ mode }) {
     const [name, setName] = useState(memorygame.name);
     const [layout, setLayout] = useState(memorygame.layout);
     const dispatch = useDispatch();
-    const { createGame, getGame, editGame, setAlert, setClose, setProgress } =
-        bindActionCreators(actionCreators, dispatch);
+    const {
+        createGame,
+        getGame,
+        editGame,
+        setAlert,
+        setClose,
+        setProgress,
+        createEventListener
+    } = bindActionCreators(actionCreators, dispatch);
     const handleSize = (event, newSize) => {
         if (newSize === null) {
             return;
@@ -95,13 +100,12 @@ export default function MemoryGamePage({ mode }) {
                   data,
                   'memorygame',
                   memorygame.slug,
-                  user_info.token,
                   'multipart/form-data'
               )
-            : createGame(data, 'memorygame', user_info, 'multipart/form-data');
+            : createGame(data, 'memorygame', 'multipart/form-data');
     };
     useEffect(() => {
-        user_info = userInfo();
+        createEventListener();
         if (mode === 'EDIT') {
             getGame('memorygame', slug);
             setImages(memorygame.images);

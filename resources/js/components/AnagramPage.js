@@ -15,7 +15,6 @@ import AddIcon from '@mui/icons-material/Add';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import DeleteIcon from '@mui/icons-material/Delete';
 import LayoutPicker from './layout/LayoutPicker';
-import userInfo from './utils/userInfo';
 import SuccessDialog from './layout/SuccessDialog';
 import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -28,7 +27,6 @@ const theme = createTheme();
 
 export default function AnagramPage({ mode }) {
     const { slug } = useParams();
-    let user_info = {};
     const open = useSelector((state) => state.base.open);
     const alert = useSelector((state) => state.base.alert);
     const anagram = useSelector((state) => state.game.anagram);
@@ -43,8 +41,14 @@ export default function AnagramPage({ mode }) {
     }
     const [pages, setPages] = useState(sliceIntoChunks(anagram.words, 4));
     const dispatch = useDispatch();
-    const { createGame, getGame, editGame, setAlert, setClose } =
-        bindActionCreators(actionCreators, dispatch);
+    const {
+        createGame,
+        getGame,
+        editGame,
+        setAlert,
+        setClose,
+        createEventListener
+    } = bindActionCreators(actionCreators, dispatch);
     const handleAddWord = () => {
         if (pages.length >= 8) {
             setAlert('O numero máximo de páginas nesse jogo é 8!');
@@ -100,11 +104,11 @@ export default function AnagramPage({ mode }) {
             words: wordsJSON
         });
         mode === 'EDIT'
-            ? editGame(body, 'anagram', anagram.slug, user_info.token)
-            : createGame(body, 'anagram', user_info);
+            ? editGame(body, 'anagram', anagram.slug)
+            : createGame(body, 'anagram');
     };
     useEffect(() => {
-        user_info = userInfo();
+        createEventListener();
         if (mode === 'EDIT') {
             getGame('anagram', slug);
             setPages(sliceIntoChunks(anagram.words, 4));

@@ -18,7 +18,6 @@ import { EditorState, convertToRaw } from 'draft-js';
 import LayoutPicker from './layout/LayoutPicker';
 import RichTextField from './layout/RichTextField';
 import draftToText from './utils/draftToText';
-import userInfo from './utils/userInfo';
 import SuccessDialog from './layout/SuccessDialog';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -31,7 +30,6 @@ const theme = createTheme();
 
 export default function QuizPage({ mode }) {
     const { slug } = useParams();
-    let user_info = {};
     const open = useSelector((state) => state.base.open);
     const alert = useSelector((state) => state.base.alert);
     const quiz = useSelector((state) => state.game.quiz);
@@ -39,8 +37,14 @@ export default function QuizPage({ mode }) {
     const [name, setName] = useState(quiz.name);
     const [layout, setLayout] = useState(quiz.layout);
     const dispatch = useDispatch();
-    const { createGame, getGame, editGame, setAlert, setClose } =
-        bindActionCreators(actionCreators, dispatch);
+    const {
+        createGame,
+        getGame,
+        editGame,
+        setAlert,
+        setClose,
+        createEventListener
+    } = bindActionCreators(actionCreators, dispatch);
     const questionObj = {
         title: EditorState.createEmpty(),
         answers: ['', '']
@@ -123,11 +127,11 @@ export default function QuizPage({ mode }) {
             questions: questionsJSON
         });
         mode === 'EDIT'
-            ? editGame(body, 'quiz', quiz.slug, user_info.token)
-            : createGame(body, 'quiz', user_info);
+            ? editGame(body, 'quiz', quiz.slug)
+            : createGame(body, 'quiz');
     };
     useEffect(() => {
-        user_info = userInfo();
+        createEventListener();
         if (mode === 'EDIT') {
             getGame('quiz', slug);
             setQuestions(quiz.questions);

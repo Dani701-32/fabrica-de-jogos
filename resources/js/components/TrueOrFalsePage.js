@@ -21,7 +21,6 @@ import { EditorState, convertToRaw } from 'draft-js';
 import LayoutPicker from './layout/LayoutPicker';
 import RichTextField from './layout/RichTextField';
 import draftToText from './utils/draftToText';
-import userInfo from './utils/userInfo';
 import SuccessDialog from './layout/SuccessDialog';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -34,7 +33,6 @@ const theme = createTheme();
 
 export default function TrueOrFalsePage({ mode }) {
     const { slug } = useParams();
-    let user_info = {};
     const open = useSelector((state) => state.base.open);
     const alert = useSelector((state) => state.base.alert);
     const trueorfalse = useSelector((state) => state.game.trueorfalse);
@@ -42,8 +40,14 @@ export default function TrueOrFalsePage({ mode }) {
     const [name, setName] = useState(trueorfalse.name);
     const [layout, setLayout] = useState(trueorfalse.layout);
     const dispatch = useDispatch();
-    const { createGame, getGame, editGame, setAlert, setClose } =
-        bindActionCreators(actionCreators, dispatch);
+    const {
+        createGame,
+        getGame,
+        editGame,
+        setAlert,
+        setClose,
+        createEventListener
+    } = bindActionCreators(actionCreators, dispatch);
     const questionObj = {
         title: EditorState.createEmpty(),
         right: false
@@ -106,11 +110,11 @@ export default function TrueOrFalsePage({ mode }) {
             questions: questionsJSON
         });
         mode === 'EDIT'
-            ? editGame(body, 'trueorfalse', trueorfalse.slug, user_info.token)
-            : createGame(body, 'trueorfalse', user_info);
+            ? editGame(body, 'trueorfalse', trueorfalse.slug)
+            : createGame(body, 'trueorfalse');
     };
     useEffect(() => {
-        user_info = userInfo();
+        createEventListener();
         if (mode === 'EDIT') {
             getGame('trueorfalse', slug);
             setQuestions(trueorfalse.questions);

@@ -17,7 +17,6 @@ import LayoutPicker from './layout/LayoutPicker';
 import RichTextField from './layout/RichTextField';
 import { convertToRaw, EditorState } from 'draft-js';
 import draftToText from './utils/draftToText';
-import userInfo from './utils/userInfo';
 import SuccessDialog from './layout/SuccessDialog';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -30,7 +29,6 @@ const theme = createTheme();
 
 export default function WordSearchPage({ mode }) {
     const { slug } = useParams();
-    let user_info = {};
     const open = useSelector((state) => state.base.open);
     const alert = useSelector((state) => state.base.alert);
     const wordsearch = useSelector((state) => state.game.wordsearch);
@@ -38,8 +36,14 @@ export default function WordSearchPage({ mode }) {
     const [name, setName] = useState(wordsearch.name);
     const [layout, setLayout] = useState(wordsearch.layout);
     const dispatch = useDispatch();
-    const { createGame, getGame, editGame, setAlert, setClose } =
-        bindActionCreators(actionCreators, dispatch);
+    const {
+        createGame,
+        getGame,
+        editGame,
+        setAlert,
+        setClose,
+        createEventListener
+    } = bindActionCreators(actionCreators, dispatch);
     const handleAddWord = () => {
         if (words.length >= 8) {
             setAlert('O numero máximo de palavras nesse jogo é 8!');
@@ -120,11 +124,11 @@ export default function WordSearchPage({ mode }) {
             words: wordsJSON
         });
         mode === 'EDIT'
-            ? editGame(body, 'wordsearch', wordsearch.slug, user_info.token)
-            : createGame(body, 'wordsearch', user_info);
+            ? editGame(body, 'wordsearch', wordsearch.slug)
+            : createGame(body, 'wordsearch');
     };
     useEffect(() => {
-        user_info = userInfo();
+        createEventListener();
         if (mode === 'EDIT') {
             getGame('wordsearch', slug);
             setWords(wordsearch.words);

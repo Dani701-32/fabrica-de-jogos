@@ -1,53 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
+import { createEventListener } from '../store/actions';
 
-export default function GamePage(props) {
-    const { game } = props;
+export default function GamePage({ game }) {
     const { slug } = useParams();
-    let api_address = '';
-    let token = '';
-    window.addEventListener('message', (event) => {
-        if (event.origin !== window.location.origin) {
-            let data = event.data;
-            if (data.loaded) {
-                let game_address =
-                    'https://fabricadejogos.portaleducacional.tec.br';
-                const queryString = window.location.search;
-                const urlParams = new URLSearchParams(queryString);
-                let iframe = document.getElementById('frame');
-                const message = JSON.stringify({
-                    user_token: token ? token : localStorage.getItem('token'),
-                    api_address: api_address
-                        ? api_address
-                        : localStorage.getItem('api_address'),
-                    game_address: game_address,
-                    slug: slug,
-                    aula_id: urlParams.has('aula_id')
-                        ? urlParams.get('aula_id')
-                        : 0,
-                    conteudo_id: urlParams.has('conteudo_id')
-                        ? urlParams.get('conteudo_id')
-                        : 0
-                });
-                iframe.contentWindow.postMessage(message, '*');
-                return;
-            }
-            api_address = data.api_address;
-            token = data.user_token;
-            const config = {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            };
-            axios
-                .get(`${api_address}/api/validate`, config)
-                .then((response) => {
-                    if (response.status === 200) {
-                        console.log('okay');
-                    }
-                });
-        }
+    useEffect(() => {
+        createEventListener(slug);
     });
     let gameAddress = '';
     switch (game) {

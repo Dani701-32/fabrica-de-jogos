@@ -19,7 +19,6 @@ import { EditorState, convertToRaw } from 'draft-js';
 import LayoutPicker from './layout/LayoutPicker';
 import RichTextField from './layout/RichTextField';
 import draftToText from './utils/draftToText';
-import userInfo from './utils/userInfo';
 import SuccessDialog from './layout/SuccessDialog';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -32,7 +31,6 @@ const theme = createTheme();
 
 export default function MatchUpPage({ mode }) {
     const { slug } = useParams();
-    let user_info = {};
     const open = useSelector((state) => state.base.open);
     const alert = useSelector((state) => state.base.alert);
     const matchup = useSelector((state) => state.game.matchup);
@@ -40,8 +38,14 @@ export default function MatchUpPage({ mode }) {
     const [layout, setLayout] = useState(matchup.layout);
     const [pages, setPages] = useState(matchup.pages);
     const dispatch = useDispatch();
-    const { createGame, getGame, editGame, setAlert, setClose } =
-        bindActionCreators(actionCreators, dispatch);
+    const {
+        createGame,
+        getGame,
+        editGame,
+        setAlert,
+        setClose,
+        createEventListener
+    } = bindActionCreators(actionCreators, dispatch);
     const page = [
         {
             word: '',
@@ -125,11 +129,11 @@ export default function MatchUpPage({ mode }) {
             pages: matchUpsJSON
         });
         mode === 'EDIT'
-            ? editGame(body, 'matchup', matchup.slug, user_info.token)
-            : createGame(body, 'matchup', user_info);
+            ? editGame(body, 'matchup', matchup.slug)
+            : createGame(body, 'matchup');
     };
     useEffect(() => {
-        user_info = userInfo();
+        createEventListener();
         if (mode === 'EDIT') {
             getGame('matchup', slug);
             setPages(matchup.pages);

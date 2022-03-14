@@ -1,8 +1,9 @@
 import axios from 'axios';
 
 export const createGame =
-    (obj, type, user_info, content_type = 'application/json') =>
-    (dispatch) => {
+    (obj, type, content_type = 'application/json') =>
+    (dispatch, getState) => {
+        const user_info = getState();
         const config = {
             headers: {
                 'Content-Type': content_type,
@@ -86,12 +87,13 @@ export const getGame = (type, slug) => (dispatch) => {
 };
 
 export const editGame =
-    (obj, type, slug, token, content_type = 'application/json') =>
-    (dispatch) => {
+    (obj, type, slug, content_type = 'application/json') =>
+    (dispatch, getState) => {
+        const user_info = getState();
         const config = {
             headers: {
                 'Content-Type': content_type,
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${user_info.token}`
             },
             onUploadProgress: (event) => {
                 dispatch({
