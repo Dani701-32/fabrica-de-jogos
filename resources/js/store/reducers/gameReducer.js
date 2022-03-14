@@ -119,8 +119,18 @@ const getImageBlobs = (images) => {
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
+        case 'CREATE_ANAGRAM':
+            return {
+                ...state,
+                anagram: { ...initialState.anagram, slug: action.payload.slug }
+            };
         case 'UPDATE_ANAGRAM':
             return { ...state, anagram: action.payload };
+        case 'CREATE_MATCHUP':
+            return {
+                ...state,
+                matchup: { ...initialState.matchup, slug: action.payload.slug }
+            };
         case 'UPDATE_MATCHUP':
             return {
                 ...state,
@@ -129,6 +139,14 @@ const reducer = (state = initialState, action) => {
                     slug: action.payload.slug,
                     layout: action.payload.layout,
                     pages: formatPages(action.payload.pages)
+                }
+            };
+        case 'CREATE_MEMORYGAME':
+            return {
+                ...state,
+                memorygame: {
+                    ...initialState.memorygame,
+                    slug: action.payload.slug
                 }
             };
         case 'UPDATE_MEMORYGAME':
@@ -142,6 +160,11 @@ const reducer = (state = initialState, action) => {
                     size: action.payload.size
                 }
             };
+        case 'CREATE_QUIZ':
+            return {
+                ...state,
+                quiz: { ...initialState.quiz, slug: action.payload.slug }
+            };
         case 'UPDATE_QUIZ':
             return {
                 ...state,
@@ -152,6 +175,14 @@ const reducer = (state = initialState, action) => {
                     questions: formatQuestions(action.payload.questions)
                 }
             };
+        case 'CREATE_TRUEORFALSE':
+            return {
+                ...state,
+                trueorfalse: {
+                    ...initialState.trueorfalse,
+                    slug: action.payload.slug
+                }
+            };
         case 'UPDATE_TRUEORFALSE':
             return {
                 ...state,
@@ -160,6 +191,14 @@ const reducer = (state = initialState, action) => {
                     slug: action.payload.slug,
                     layout: action.payload.layout,
                     questions: formatQuestions(action.payload.questions)
+                }
+            };
+        case 'CREATE_WORDSEARCH':
+            return {
+                ...state,
+                wordsearch: {
+                    ...initialState.wordsearch,
+                    slug: action.payload.slug
                 }
             };
         case 'UPDATE_WORDSEARCH':

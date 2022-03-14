@@ -24,15 +24,11 @@ export const createGame =
                         type: type
                     });
                     dispatch({
-                        type: 'UPDATE_' + type.toUpperCase(),
+                        type: 'CREATE_' + type.toUpperCase(),
                         payload: response.data
                     });
                     dispatch({
                         type: 'OPEN'
-                    });
-                    dispatch({
-                        type: 'SET_PROGRESS',
-                        payload: 0
                     });
                     axios
                         .post(
@@ -80,13 +76,6 @@ export const getGame = (type, slug) => (dispatch) => {
                 type: 'UPDATE_' + type.toUpperCase(),
                 payload: response.data
             });
-            dispatch({
-                type: 'CLOSE'
-            });
-            dispatch({
-                type: 'SET_PROGRESS',
-                payload: 0
-            });
         })
         .catch((error) => {
             dispatch({
@@ -120,10 +109,6 @@ export const editGame =
                 });
                 dispatch({
                     type: 'OPEN'
-                });
-                dispatch({
-                    type: 'SET_PROGRESS',
-                    payload: 0
                 });
             })
             .catch((error) => {
