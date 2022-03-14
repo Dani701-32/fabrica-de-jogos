@@ -8,22 +8,23 @@ import {
     IconButton,
     Paper,
     TextField,
-    Typography,
     Alert
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import DeleteIcon from '@mui/icons-material/Delete';
-import LayoutPicker from './layout/layoutPicker';
-import RichTextField from './layout/richTextField';
+import LayoutPicker from './layout/LayoutPicker';
+import RichTextField from './layout/RichTextField';
 import { convertToRaw, EditorState } from 'draft-js';
 import draftToText from './utils/draftToText';
 import userInfo from './utils/userInfo';
-import SuccessDialog from './layout/successDialog';
+import SuccessDialog from './layout/SuccessDialog';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { actionCreators } from '../store/actionCreators';
+import BackFAButton from './layout/BackFAButton';
+import Copyright from './layout/Copyright';
 
 const theme = createTheme();
 
@@ -136,9 +137,11 @@ export default function WordSearchPage({ mode }) {
         <ThemeProvider theme={theme}>
             <Container component="main">
                 <CssBaseline />
+                <BackFAButton />
                 <SuccessDialog
                     open={open}
                     handleClose={handleClose}
+                    edit={mode === 'EDIT'}
                     slug={wordsearch.slug}
                     type="wordsearch"
                 />
@@ -296,12 +299,7 @@ export default function WordSearchPage({ mode }) {
                     </Grid>
                 </Box>
             </Container>
-            <br />
-            <Typography variant="body2" color="text.secondary" align="center">
-                {'Copyright © '}
-                {new Date().getFullYear()}
-                {'.'}
-            </Typography>
+            <Copyright />
         </ThemeProvider>
     );
 }

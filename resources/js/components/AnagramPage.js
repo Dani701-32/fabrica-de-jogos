@@ -14,13 +14,15 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import DeleteIcon from '@mui/icons-material/Delete';
-import LayoutPicker from './layout/layoutPicker';
+import LayoutPicker from './layout/LayoutPicker';
 import userInfo from './utils/userInfo';
-import SuccessDialog from './layout/successDialog';
+import SuccessDialog from './layout/SuccessDialog';
 import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { actionCreators } from '../store/actionCreators';
 import { useParams } from 'react-router-dom';
+import BackFAButton from './layout/BackFAButton';
+import Copyright from './layout/Copyright';
 
 const theme = createTheme();
 
@@ -115,9 +117,11 @@ export default function AnagramPage({ mode }) {
         <ThemeProvider theme={theme}>
             <Container component="main">
                 <CssBaseline />
+                <BackFAButton />
                 <SuccessDialog
                     open={open}
                     handleClose={handleClose}
+                    edit={mode === 'EDIT'}
                     type="anagram"
                     slug={anagram.slug}
                 />
@@ -273,12 +277,7 @@ export default function AnagramPage({ mode }) {
                     </Grid>
                 </Box>
             </Container>
-            <br />
-            <Typography variant="body2" color="text.secondary" align="center">
-                {'Copyright © '}
-                {new Date().getFullYear()}
-                {'.'}
-            </Typography>
+            <Copyright />
         </ThemeProvider>
     );
 }

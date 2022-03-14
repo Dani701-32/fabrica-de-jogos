@@ -14,14 +14,16 @@ import {
     Alert
 } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import ImageEditor from './layout/imageEditor';
-import LayoutPicker from './layout/layoutPicker';
+import ImageEditor from './layout/ImageEditor';
+import LayoutPicker from './layout/LayoutPicker';
 import userInfo from './utils/userInfo';
-import SuccessDialog from './layout/successDialog';
+import SuccessDialog from './layout/SuccessDialog';
 import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { actionCreators } from '../store/actionCreators';
 import { useParams } from 'react-router-dom';
+import BackFAButton from './layout/BackFAButton';
+import Copyright from './layout/Copyright';
 
 const theme = createTheme();
 
@@ -112,9 +114,11 @@ export default function MemoryGamePage({ mode }) {
         <ThemeProvider theme={theme}>
             <Container component="main">
                 <CssBaseline />
+                <BackFAButton />
                 <SuccessDialog
                     open={open}
                     handleClose={handleClose}
+                    edit={mode === 'EDIT'}
                     type="memorygame"
                     slug={memorygame.slug}
                 />
@@ -223,12 +227,7 @@ export default function MemoryGamePage({ mode }) {
                     </Grid>
                 </Box>
             </Container>
-            <br />
-            <Typography variant="body2" color="text.secondary" align="center">
-                {'Copyright © '}
-                {new Date().getFullYear()}
-                {'.'}
-            </Typography>
+            <Copyright />
         </ThemeProvider>
     );
 }
