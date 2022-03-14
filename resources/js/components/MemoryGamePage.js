@@ -164,7 +164,6 @@ export default function MemoryGamePage({ mode }) {
                                 <ToggleButton value="4">2x4</ToggleButton>
                                 <ToggleButton value="5">2x5</ToggleButton>
                                 <ToggleButton value="6">3x4</ToggleButton>
-                                <ToggleButton value="8">4x4</ToggleButton>
                             </ToggleButtonGroup>
                         </Grid>
                         <Grid item align="center" xs={12}>
