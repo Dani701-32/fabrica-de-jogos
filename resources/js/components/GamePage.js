@@ -1,11 +1,18 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { createGameEventListener, refreshBaseState } from '../store/actions';
+import { bindActionCreators } from 'redux';
+import { actionCreators } from '../store/actionCreators';
+import { useDispatch } from 'react-redux';
 
 export default function GamePage({ game }) {
     const { slug } = useParams();
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
+    const dispatch = useDispatch();
+    const { refreshBaseState, createGameEventListener } = bindActionCreators(
+        actionCreators,
+        dispatch
+    );
     useEffect(() => {
         refreshBaseState();
         createGameEventListener(slug, urlParams);
