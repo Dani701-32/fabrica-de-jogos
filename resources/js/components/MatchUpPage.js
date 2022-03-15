@@ -26,6 +26,7 @@ import { bindActionCreators } from 'redux';
 import { actionCreators } from '../store/actionCreators';
 import BackFAButton from './layout/BackFAButton';
 import Copyright from './layout/Copyright';
+import FillableSelect from './layout/FillableSelect';
 
 const theme = createTheme();
 
@@ -37,15 +38,13 @@ export default function MatchUpPage({ mode }) {
     const [name, setName] = useState(matchup.name);
     const [layout, setLayout] = useState(matchup.layout);
     const [pages, setPages] = useState(matchup.pages);
+    const series = useSelector((state) => state.base.series);
+    const [selectedSerie, setSelectedSerie] = useState('');
+    const disciplinas = useSelector((state) => state.base.disciplinas);
+    const [selectedDiscipline, setSelectedDiscipline] = useState('');
     const dispatch = useDispatch();
-    const {
-        createGame,
-        getGame,
-        editGame,
-        setAlert,
-        setClose,
-        createEventListener
-    } = bindActionCreators(actionCreators, dispatch);
+    const { createGame, getGame, editGame, setAlert, setClose } =
+        bindActionCreators(actionCreators, dispatch);
     const page = [
         {
             word: '',
@@ -106,6 +105,16 @@ export default function MatchUpPage({ mode }) {
         setPages([page]);
         setClose();
     };
+    const seriesChange = (value) => {
+        if (value !== null && value !== selectedSerie) {
+            setSelectedSerie(value);
+        }
+    };
+    const disciplineChange = (value) => {
+        if (value !== null && value !== selectedDiscipline) {
+            setSelectedDiscipline(value);
+        }
+    };
     const handleSubmit = (event) => {
         event.preventDefault();
         let matchUpsJSON = [];
@@ -133,7 +142,6 @@ export default function MatchUpPage({ mode }) {
             : createGame(body, 'matchup');
     };
     useEffect(() => {
-        createEventListener();
         if (mode === 'EDIT') {
             getGame('matchup', slug);
             setPages(matchup.pages);
@@ -179,6 +187,22 @@ export default function MatchUpPage({ mode }) {
                                     setName(event.target.value);
                                 }}
                                 required
+                            />
+                        </Grid>
+                        <Grid item align="center" xs={6}>
+                            <FillableSelect
+                                items={series}
+                                name="Série"
+                                value={selectedSerie}
+                                callBack={seriesChange}
+                            />
+                        </Grid>
+                        <Grid item align="center" xs={6}>
+                            <FillableSelect
+                                items={disciplinas}
+                                name="Disciplinas"
+                                value={selectedDiscipline}
+                                callBack={disciplineChange}
                             />
                         </Grid>
                         <LayoutPicker

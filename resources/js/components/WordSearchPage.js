@@ -24,6 +24,7 @@ import { bindActionCreators } from 'redux';
 import { actionCreators } from '../store/actionCreators';
 import BackFAButton from './layout/BackFAButton';
 import Copyright from './layout/Copyright';
+import FillableSelect from './layout/FillableSelect';
 
 const theme = createTheme();
 
@@ -35,15 +36,13 @@ export default function WordSearchPage({ mode }) {
     const [words, setWords] = useState(wordsearch.words);
     const [name, setName] = useState(wordsearch.name);
     const [layout, setLayout] = useState(wordsearch.layout);
+    const series = useSelector((state) => state.base.series);
+    const [selectedSerie, setSelectedSerie] = useState('');
+    const disciplinas = useSelector((state) => state.base.disciplinas);
+    const [selectedDiscipline, setSelectedDiscipline] = useState('');
     const dispatch = useDispatch();
-    const {
-        createGame,
-        getGame,
-        editGame,
-        setAlert,
-        setClose,
-        createEventListener
-    } = bindActionCreators(actionCreators, dispatch);
+    const { createGame, getGame, editGame, setAlert, setClose } =
+        bindActionCreators(actionCreators, dispatch);
     const handleAddWord = () => {
         if (words.length >= 8) {
             setAlert('O numero máximo de palavras nesse jogo é 8!');
@@ -103,6 +102,16 @@ export default function WordSearchPage({ mode }) {
         setLayout(1);
         setClose();
     };
+    const seriesChange = (value) => {
+        if (value !== null && value !== selectedSerie) {
+            setSelectedSerie(value);
+        }
+    };
+    const disciplineChange = (value) => {
+        if (value !== null && value !== selectedDiscipline) {
+            setSelectedDiscipline(value);
+        }
+    };
     const handleSubmit = (event) => {
         event.preventDefault();
         if (words.length < 3) {
@@ -128,7 +137,6 @@ export default function WordSearchPage({ mode }) {
             : createGame(body, 'wordsearch');
     };
     useEffect(() => {
-        createEventListener();
         if (mode === 'EDIT') {
             getGame('wordsearch', slug);
             setWords(wordsearch.words);
@@ -174,6 +182,22 @@ export default function WordSearchPage({ mode }) {
                                     setName(event.target.value);
                                 }}
                                 required
+                            />
+                        </Grid>
+                        <Grid item align="center" xs={6}>
+                            <FillableSelect
+                                items={series}
+                                name="Série"
+                                value={selectedSerie}
+                                callBack={seriesChange}
+                            />
+                        </Grid>
+                        <Grid item align="center" xs={6}>
+                            <FillableSelect
+                                items={disciplinas}
+                                name="Disciplinas"
+                                value={selectedDiscipline}
+                                callBack={disciplineChange}
                             />
                         </Grid>
                         <LayoutPicker

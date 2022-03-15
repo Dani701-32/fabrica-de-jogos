@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { createEventListener } from '../store/actions';
+import { createGameEventListener } from '../store/actions';
 
 export default function GamePage({ game }) {
     const { slug } = useParams();
     useEffect(() => {
-        createEventListener(slug);
+        createGameEventListener(slug);
     });
     let gameAddress = '';
     switch (game) {

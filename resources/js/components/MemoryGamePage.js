@@ -9,7 +9,6 @@ import {
     Button,
     ToggleButton,
     ToggleButtonGroup,
-    Typography,
     CircularProgress,
     Alert
 } from '@mui/material';
@@ -23,6 +22,7 @@ import { actionCreators } from '../store/actionCreators';
 import { useParams } from 'react-router-dom';
 import BackFAButton from './layout/BackFAButton';
 import Copyright from './layout/Copyright';
+import FillableSelect from './layout/FillableSelect';
 
 const theme = createTheme();
 
@@ -36,16 +36,13 @@ export default function MemoryGamePage({ mode }) {
     const [size, setSize] = useState(memorygame.size);
     const [name, setName] = useState(memorygame.name);
     const [layout, setLayout] = useState(memorygame.layout);
+    const series = useSelector((state) => state.base.series);
+    const [selectedSerie, setSelectedSerie] = useState('');
+    const disciplinas = useSelector((state) => state.base.disciplinas);
+    const [selectedDiscipline, setSelectedDiscipline] = useState('');
     const dispatch = useDispatch();
-    const {
-        createGame,
-        getGame,
-        editGame,
-        setAlert,
-        setClose,
-        setProgress,
-        createEventListener
-    } = bindActionCreators(actionCreators, dispatch);
+    const { createGame, getGame, editGame, setAlert, setClose, setProgress } =
+        bindActionCreators(actionCreators, dispatch);
     const handleSize = (event, newSize) => {
         if (newSize === null) {
             return;
@@ -83,6 +80,16 @@ export default function MemoryGamePage({ mode }) {
         setProgress(0);
         setClose();
     };
+    const seriesChange = (value) => {
+        if (value !== null && value !== selectedSerie) {
+            setSelectedSerie(value);
+        }
+    };
+    const disciplineChange = (value) => {
+        if (value !== null && value !== selectedDiscipline) {
+            setSelectedDiscipline(value);
+        }
+    };
     const handleSubmit = (event) => {
         event.preventDefault();
         if (images.includes(null)) {
@@ -105,7 +112,6 @@ export default function MemoryGamePage({ mode }) {
             : createGame(data, 'memorygame', 'multipart/form-data');
     };
     useEffect(() => {
-        createEventListener();
         if (mode === 'EDIT') {
             getGame('memorygame', slug);
             setImages(memorygame.images);
@@ -149,6 +155,22 @@ export default function MemoryGamePage({ mode }) {
                                 variant="outlined"
                                 value={name}
                                 required
+                            />
+                        </Grid>
+                        <Grid item align="center" xs={6}>
+                            <FillableSelect
+                                items={series}
+                                name="Série"
+                                value={selectedSerie}
+                                callBack={seriesChange}
+                            />
+                        </Grid>
+                        <Grid item align="center" xs={6}>
+                            <FillableSelect
+                                items={disciplinas}
+                                name="Disciplinas"
+                                value={selectedDiscipline}
+                                callBack={disciplineChange}
                             />
                         </Grid>
                         <LayoutPicker
