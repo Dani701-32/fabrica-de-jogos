@@ -112,6 +112,14 @@ export default function TrueOrFalsePage({ mode }) {
     };
     const handleSubmit = (event) => {
         event.preventDefault();
+        if (selectedSerie === '') {
+            setAlert('Selecione uma série!');
+            return;
+        }
+        if (selectedDiscipline === '') {
+            setAlert('Selecione uma disciplina!');
+            return;
+        }
         let questionsJSON = [];
         questions.map((item) => {
             let textJson = convertToRaw(item.title.getCurrentContent());
@@ -169,6 +177,7 @@ export default function TrueOrFalsePage({ mode }) {
                         container
                         align="center"
                         component="form"
+                        justifyContent="center"
                         onSubmit={handleSubmit}
                         spacing={3}
                     >
@@ -184,7 +193,7 @@ export default function TrueOrFalsePage({ mode }) {
                                 required
                             />
                         </Grid>
-                        <Grid item align="center" xs={6}>
+                        <Grid item align="center" xs={3}>
                             <FillableSelect
                                 items={series}
                                 name="Série"
@@ -192,7 +201,7 @@ export default function TrueOrFalsePage({ mode }) {
                                 callBack={seriesChange}
                             />
                         </Grid>
-                        <Grid item align="center" xs={6}>
+                        <Grid item align="center" xs={3}>
                             <FillableSelect
                                 items={disciplinas}
                                 name="Disciplinas"

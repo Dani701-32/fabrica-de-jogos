@@ -105,6 +105,14 @@ export default function MemoryGamePage({ mode }) {
             setAlert('Preencha todos os campos!');
             return;
         }
+        if (selectedSerie === '') {
+            setAlert('Selecione uma série!');
+            return;
+        }
+        if (selectedDiscipline === '') {
+            setAlert('Selecione uma disciplina!');
+            return;
+        }
         const data = new FormData();
         images.map((image) => {
             data.append('images[]', image);
@@ -160,6 +168,7 @@ export default function MemoryGamePage({ mode }) {
                         container
                         align="center"
                         component="form"
+                        justifyContent="center"
                         onSubmit={handleSubmit}
                         spacing={3}
                     >
@@ -173,7 +182,7 @@ export default function MemoryGamePage({ mode }) {
                                 required
                             />
                         </Grid>
-                        <Grid item align="center" xs={6}>
+                        <Grid item align="center" xs={3}>
                             <FillableSelect
                                 items={series}
                                 name="Série"
@@ -181,7 +190,7 @@ export default function MemoryGamePage({ mode }) {
                                 callBack={seriesChange}
                             />
                         </Grid>
-                        <Grid item align="center" xs={6}>
+                        <Grid item align="center" xs={3}>
                             <FillableSelect
                                 items={disciplinas}
                                 name="Disciplinas"

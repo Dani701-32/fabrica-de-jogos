@@ -33,9 +33,9 @@ export default function AnagramPage({ mode }) {
     const alert = useSelector((state) => state.base.alert);
     const anagram = useSelector((state) => state.game.anagram);
     const series = useSelector((state) => state.base.series);
-    const [selectedSerie, setSelectedSerie] = useState('10');
+    const [selectedSerie, setSelectedSerie] = useState('');
     const disciplinas = useSelector((state) => state.base.disciplinas);
-    const [selectedDiscipline, setSelectedDiscipline] = useState('10');
+    const [selectedDiscipline, setSelectedDiscipline] = useState('');
     const [name, setName] = useState(anagram.name);
     const [layout, setLayout] = useState(anagram.layout);
     function sliceIntoChunks(arr, chunkSize) {
@@ -108,6 +108,14 @@ export default function AnagramPage({ mode }) {
         event.preventDefault();
         if (pages.length < 1) {
             setAlert('O jogo deve ter no mínimo 1 página!');
+            return;
+        }
+        if (selectedSerie === '') {
+            setAlert('Selecione uma série!');
+            return;
+        }
+        if (selectedDiscipline === '') {
+            setAlert('Selecione uma disciplina!');
             return;
         }
         let wordsJSON = [];

@@ -7,10 +7,14 @@ const FillableSelect = ({ name, items, value, callBack }) => {
             <FormControl sx={{ m: 1, minWidth: 80 }}>
                 <InputLabel>{name}</InputLabel>
                 <Select
+                    required
                     value={value}
                     onChange={callBack}
                     autoWidth
                     label={name}
+                    sx={{
+                        minWidth: 120
+                    }}
                 >
                     {Object.keys(items).map(function (key, index) {
                         return (

@@ -125,6 +125,14 @@ export default function MatchUpPage({ mode }) {
     };
     const handleSubmit = (event) => {
         event.preventDefault();
+        if (selectedSerie === '') {
+            setAlert('Selecione uma série!');
+            return;
+        }
+        if (selectedDiscipline === '') {
+            setAlert('Selecione uma disciplina!');
+            return;
+        }
         let matchUpsJSON = [];
         pages.map((page) => {
             let matchUps = [];
@@ -183,6 +191,7 @@ export default function MatchUpPage({ mode }) {
                         container
                         align="center"
                         component="form"
+                        justifyContent="center"
                         onSubmit={handleSubmit}
                         spacing={3}
                     >
@@ -198,7 +207,7 @@ export default function MatchUpPage({ mode }) {
                                 required
                             />
                         </Grid>
-                        <Grid item align="center" xs={6}>
+                        <Grid item align="center" xs={3}>
                             <FillableSelect
                                 items={series}
                                 name="Série"
@@ -206,7 +215,7 @@ export default function MatchUpPage({ mode }) {
                                 callBack={seriesChange}
                             />
                         </Grid>
-                        <Grid item align="center" xs={6}>
+                        <Grid item align="center" xs={3}>
                             <FillableSelect
                                 items={disciplinas}
                                 name="Disciplinas"

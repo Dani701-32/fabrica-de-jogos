@@ -126,6 +126,14 @@ export default function WordSearchPage({ mode }) {
             setAlert('O jogo deve ter no mínimo 3 palavras!');
             return;
         }
+        if (selectedSerie === '') {
+            setAlert('Selecione uma série!');
+            return;
+        }
+        if (selectedDiscipline === '') {
+            setAlert('Selecione uma disciplina!');
+            return;
+        }
         let wordsJSON = [];
         words.map((word) => {
             let textJson = convertToRaw(word.tip.getCurrentContent());
@@ -178,6 +186,7 @@ export default function WordSearchPage({ mode }) {
                         container
                         align="center"
                         component="form"
+                        justifyContent="center"
                         onSubmit={handleSubmit}
                         spacing={3}
                     >
@@ -193,7 +202,7 @@ export default function WordSearchPage({ mode }) {
                                 required
                             />
                         </Grid>
-                        <Grid item align="center" xs={6}>
+                        <Grid item align="center" xs={3}>
                             <FillableSelect
                                 items={series}
                                 name="Série"
@@ -201,7 +210,7 @@ export default function WordSearchPage({ mode }) {
                                 callBack={seriesChange}
                             />
                         </Grid>
-                        <Grid item align="center" xs={6}>
+                        <Grid item align="center" xs={3}>
                             <FillableSelect
                                 items={disciplinas}
                                 name="Disciplinas"
