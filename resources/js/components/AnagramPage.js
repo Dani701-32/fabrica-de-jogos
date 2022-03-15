@@ -23,6 +23,7 @@ import { useParams } from 'react-router-dom';
 import BackFAButton from './layout/BackFAButton';
 import Copyright from './layout/Copyright';
 import FillableSelect from './layout/FillableSelect';
+import { refreshBaseState } from '../store/actions';
 
 const theme = createTheme();
 
@@ -32,9 +33,9 @@ export default function AnagramPage({ mode }) {
     const alert = useSelector((state) => state.base.alert);
     const anagram = useSelector((state) => state.game.anagram);
     const series = useSelector((state) => state.base.series);
-    const [selectedSerie, setSelectedSerie] = useState('');
+    const [selectedSerie, setSelectedSerie] = useState('10');
     const disciplinas = useSelector((state) => state.base.disciplinas);
-    const [selectedDiscipline, setSelectedDiscipline] = useState('');
+    const [selectedDiscipline, setSelectedDiscipline] = useState('10');
     const [name, setName] = useState(anagram.name);
     const [layout, setLayout] = useState(anagram.layout);
     function sliceIntoChunks(arr, chunkSize) {
@@ -47,8 +48,14 @@ export default function AnagramPage({ mode }) {
     }
     const [pages, setPages] = useState(sliceIntoChunks(anagram.words, 4));
     const dispatch = useDispatch();
-    const { createGame, getGame, editGame, setAlert, setClose } =
-        bindActionCreators(actionCreators, dispatch);
+    const {
+        createGame,
+        getGame,
+        editGame,
+        setAlert,
+        setClose,
+        refreshBaseState
+    } = bindActionCreators(actionCreators, dispatch);
     const handleAddWord = () => {
         if (pages.length >= 8) {
             setAlert('O numero máximo de páginas nesse jogo é 8!');
@@ -85,12 +92,14 @@ export default function AnagramPage({ mode }) {
         setName('');
         setClose();
     };
-    const seriesChange = (value) => {
+    const seriesChange = (event) => {
+        const value = event.target.value;
         if (value !== null && value !== selectedSerie) {
             setSelectedSerie(value);
         }
     };
-    const disciplineChange = (value) => {
+    const disciplineChange = (event) => {
+        const value = event.target.value;
         if (value !== null && value !== selectedDiscipline) {
             setSelectedDiscipline(value);
         }
@@ -107,16 +116,17 @@ export default function AnagramPage({ mode }) {
                 wordsJSON.push(word);
             });
         });
-        const body = JSON.stringify({
+        const body = {
             name: name,
             layout: layout,
             words: wordsJSON
-        });
+        };
         mode === 'EDIT'
             ? editGame(body, 'anagram', anagram.slug)
-            : createGame(body, 'anagram');
+            : createGame(body, 'anagram', selectedSerie, selectedDiscipline);
     };
     useEffect(() => {
+        refreshBaseState();
         if (mode === 'EDIT') {
             getGame('anagram', slug);
             setPages(sliceIntoChunks(anagram.words, 4));
@@ -148,6 +158,7 @@ export default function AnagramPage({ mode }) {
                     <Grid
                         container
                         align="center"
+                        justifyContent="center"
                         component="form"
                         onSubmit={handleSubmit}
                         spacing={3}
@@ -164,7 +175,7 @@ export default function AnagramPage({ mode }) {
                                 required
                             />
                         </Grid>
-                        <Grid item align="center" xs={6}>
+                        <Grid item align="center" xs={3}>
                             <FillableSelect
                                 items={series}
                                 name="Série"
@@ -172,7 +183,7 @@ export default function AnagramPage({ mode }) {
                                 callBack={seriesChange}
                             />
                         </Grid>
-                        <Grid item align="center" xs={6}>
+                        <Grid item align="center" xs={3}>
                             <FillableSelect
                                 items={disciplinas}
                                 name="Disciplinas"

@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 export const setOpen = () => (dispatch) => {
     dispatch({
         type: 'OPEN'
@@ -23,6 +21,12 @@ export const setProgress = (value) => (dispatch) => {
     dispatch({
         type: 'SET_PROGRESS',
         payload: value
+    });
+};
+
+export const refreshBaseState = () => (dispatch) => {
+    dispatch({
+        type: 'REFRESH_BASE_STATE'
     });
 };
 

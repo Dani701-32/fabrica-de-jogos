@@ -2,11 +2,19 @@ const initialState = {
     open: false,
     alert: '',
     progress: 0,
-    token: localStorage.getItem('token'),
-    api_address: localStorage.getItem('api_address'),
-    origin: localStorage.getItem('origin'),
-    series: JSON.parse(localStorage.getItem('series')),
-    disciplinas: JSON.parse(localStorage.getItem('disciplinas'))
+    token: localStorage.getItem('token') ? localStorage.getItem('token') : '',
+    api_address: localStorage.getItem('api_address')
+        ? localStorage.getItem('api_address')
+        : '',
+    origin: localStorage.getItem('origin')
+        ? localStorage.getItem('origin')
+        : '',
+    series: localStorage.getItem('series')
+        ? JSON.parse(localStorage.getItem('series'))
+        : {},
+    disciplinas: localStorage.getItem('disciplinas')
+        ? JSON.parse(localStorage.getItem('disciplinas'))
+        : {}
 };
 
 const reducer = (state = initialState, action) => {
@@ -19,16 +27,8 @@ const reducer = (state = initialState, action) => {
             return { ...state, alert: action.payload };
         case 'SET_PROGRESS':
             return { ...state, progress: action.payload };
-        case 'VALIDATION_SUCCESS':
-            localStorage.setItem('token', action.payload.token);
-            localStorage.setItem('api_address', action.payload.api_address);
-            return {
-                ...state,
-                token: action.payload.token,
-                api_address: action.payload.api_address
-            };
-        case 'VALIDATION_ERROR':
-            return { ...state };
+        case 'SET_BASE_STATE':
+            return initialState;
         default:
             return state;
     }

@@ -1,9 +1,9 @@
 import axios from 'axios';
 
 export const createGame =
-    (obj, type, content_type = 'application/json') =>
+    (obj, type, serie_id, discipline_id, content_type = 'application/json') =>
     (dispatch, getState) => {
-        const user_info = getState();
+        const user_info = getState().base;
         const config = {
             headers: {
                 'Content-Type': content_type,
@@ -17,31 +17,24 @@ export const createGame =
             }
         };
         axios
-            .post(`/api/${type}`, obj, config)
+            .post(`/api/${type}`, JSON.stringify(obj), config)
             .then((response) => {
+                const data = response.data;
                 if (response.status === 201) {
                     const body = JSON.stringify({
-                        link: `https://www.fabricadejogos.portaleducacional.tec.br/${type}/${response.data.slug}`,
-                        type: type
-                    });
-                    dispatch({
-                        type: 'CREATE_' + type.toUpperCase(),
-                        payload: response.data
-                    });
-                    dispatch({
-                        type: 'OPEN'
+                        name: obj.name,
+                        material: `https://www.fabricadejogos.portaleducacional.tec.br/${type}/${response.data.slug}`,
+                        thumbnail: '',
+                        disciplina_id: discipline_id,
+                        series: serie_id
                     });
                     axios
-                        .post(
-                            `${user_info.api_address}/CREATION_ENDPOINT`,
-                            body,
-                            config
-                        )
+                        .post(`${user_info.api_address}`, body, config)
                         .then((response) => {
-                            if (response.status === 201) {
+                            if (response.status === 200) {
                                 dispatch({
-                                    type: 'UPDATE_' + type.toUpperCase(),
-                                    payload: response.data
+                                    type: 'CREATE_' + type.toUpperCase(),
+                                    payload: data
                                 });
                                 dispatch({
                                     type: 'OPEN'
@@ -89,7 +82,7 @@ export const getGame = (type, slug) => (dispatch) => {
 export const editGame =
     (obj, type, slug, content_type = 'application/json') =>
     (dispatch, getState) => {
-        const user_info = getState();
+        const user_info = getState().base;
         const config = {
             headers: {
                 'Content-Type': content_type,
@@ -103,7 +96,7 @@ export const editGame =
             }
         };
         axios
-            .put(`/api/${type}/${slug}`, obj, config)
+            .put(`/api/${type}/${slug}`, JSON.stringify(obj), config)
             .then((response) => {
                 dispatch({
                     type: 'UPDATE_' + type.toUpperCase(),

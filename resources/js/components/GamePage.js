@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { createGameEventListener } from '../store/actions';
+import { createGameEventListener, refreshBaseState } from '../store/actions';
 
 export default function GamePage({ game }) {
     const { slug } = useParams();
     useEffect(() => {
+        refreshBaseState();
         createGameEventListener(slug);
     });
     let gameAddress = '';

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {
     CssBaseline,
@@ -10,6 +10,9 @@ import {
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import Copyright from './layout/Copyright';
+import { bindActionCreators } from 'redux';
+import { useDispatch } from 'react-redux';
+import { actionCreators } from '../store/actionCreators';
 
 const theme = createTheme();
 
@@ -23,6 +26,11 @@ export default function HomePage({}) {
         { slug: 'trueorfalse', name: 'Verdadeiro ou Falso' },
         { slug: 'wordsearch', name: 'Caça Palavras' }
     ];
+    const dispatch = useDispatch();
+    const { refreshBaseState } = bindActionCreators(actionCreators, dispatch);
+    useEffect(() => {
+        refreshBaseState();
+    }, []);
     return (
         <ThemeProvider theme={theme}>
             <Container

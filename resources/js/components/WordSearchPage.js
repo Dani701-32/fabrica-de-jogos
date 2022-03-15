@@ -41,8 +41,14 @@ export default function WordSearchPage({ mode }) {
     const disciplinas = useSelector((state) => state.base.disciplinas);
     const [selectedDiscipline, setSelectedDiscipline] = useState('');
     const dispatch = useDispatch();
-    const { createGame, getGame, editGame, setAlert, setClose } =
-        bindActionCreators(actionCreators, dispatch);
+    const {
+        createGame,
+        getGame,
+        editGame,
+        setAlert,
+        setClose,
+        refreshBaseState
+    } = bindActionCreators(actionCreators, dispatch);
     const handleAddWord = () => {
         if (words.length >= 8) {
             setAlert('O numero máximo de palavras nesse jogo é 8!');
@@ -102,12 +108,14 @@ export default function WordSearchPage({ mode }) {
         setLayout(1);
         setClose();
     };
-    const seriesChange = (value) => {
+    const seriesChange = (event) => {
+        const value = event.target.value;
         if (value !== null && value !== selectedSerie) {
             setSelectedSerie(value);
         }
     };
-    const disciplineChange = (value) => {
+    const disciplineChange = (event) => {
+        const value = event.target.value;
         if (value !== null && value !== selectedDiscipline) {
             setSelectedDiscipline(value);
         }
@@ -127,16 +135,17 @@ export default function WordSearchPage({ mode }) {
                 word: word.word
             });
         });
-        let body = JSON.stringify({
+        let body = {
             name: name,
             layout: layout,
             words: wordsJSON
-        });
+        };
         mode === 'EDIT'
             ? editGame(body, 'wordsearch', wordsearch.slug)
-            : createGame(body, 'wordsearch');
+            : createGame(body, 'wordsearch', selectedSerie, selectedDiscipline);
     };
     useEffect(() => {
+        refreshBaseState();
         if (mode === 'EDIT') {
             getGame('wordsearch', slug);
             setWords(wordsearch.words);

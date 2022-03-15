@@ -41,8 +41,15 @@ export default function MemoryGamePage({ mode }) {
     const disciplinas = useSelector((state) => state.base.disciplinas);
     const [selectedDiscipline, setSelectedDiscipline] = useState('');
     const dispatch = useDispatch();
-    const { createGame, getGame, editGame, setAlert, setClose, setProgress } =
-        bindActionCreators(actionCreators, dispatch);
+    const {
+        createGame,
+        getGame,
+        editGame,
+        setAlert,
+        setClose,
+        setProgress,
+        refreshBaseState
+    } = bindActionCreators(actionCreators, dispatch);
     const handleSize = (event, newSize) => {
         if (newSize === null) {
             return;
@@ -80,12 +87,14 @@ export default function MemoryGamePage({ mode }) {
         setProgress(0);
         setClose();
     };
-    const seriesChange = (value) => {
+    const seriesChange = (event) => {
+        const value = event.target.value;
         if (value !== null && value !== selectedSerie) {
             setSelectedSerie(value);
         }
     };
-    const disciplineChange = (value) => {
+    const disciplineChange = (event) => {
+        const value = event.target.value;
         if (value !== null && value !== selectedDiscipline) {
             setSelectedDiscipline(value);
         }
@@ -109,9 +118,16 @@ export default function MemoryGamePage({ mode }) {
                   memorygame.slug,
                   'multipart/form-data'
               )
-            : createGame(data, 'memorygame', 'multipart/form-data');
+            : createGame(
+                  data,
+                  'memorygame',
+                  selectedSerie,
+                  selectedDiscipline,
+                  'multipart/form-data'
+              );
     };
     useEffect(() => {
+        refreshBaseState();
         if (mode === 'EDIT') {
             getGame('memorygame', slug);
             setImages(memorygame.images);

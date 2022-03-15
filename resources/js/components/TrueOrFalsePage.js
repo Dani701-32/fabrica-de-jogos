@@ -45,8 +45,14 @@ export default function TrueOrFalsePage({ mode }) {
     const disciplinas = useSelector((state) => state.base.disciplinas);
     const [selectedDiscipline, setSelectedDiscipline] = useState('');
     const dispatch = useDispatch();
-    const { createGame, getGame, editGame, setAlert, setClose } =
-        bindActionCreators(actionCreators, dispatch);
+    const {
+        createGame,
+        getGame,
+        editGame,
+        setAlert,
+        setClose,
+        refreshBaseState
+    } = bindActionCreators(actionCreators, dispatch);
     const questionObj = {
         title: EditorState.createEmpty(),
         right: false
@@ -92,12 +98,14 @@ export default function TrueOrFalsePage({ mode }) {
         setLayout(1);
         setClose();
     };
-    const seriesChange = (value) => {
+    const seriesChange = (event) => {
+        const value = event.target.value;
         if (value !== null && value !== selectedSerie) {
             setSelectedSerie(value);
         }
     };
-    const disciplineChange = (value) => {
+    const disciplineChange = (event) => {
+        const value = event.target.value;
         if (value !== null && value !== selectedDiscipline) {
             setSelectedDiscipline(value);
         }
@@ -113,16 +121,22 @@ export default function TrueOrFalsePage({ mode }) {
                 title: markup
             });
         });
-        let body = JSON.stringify({
+        let body = {
             name: name,
             layout: layout,
             questions: questionsJSON
-        });
+        };
         mode === 'EDIT'
             ? editGame(body, 'trueorfalse', trueorfalse.slug)
-            : createGame(body, 'trueorfalse');
+            : createGame(
+                  body,
+                  'trueorfalse',
+                  selectedSerie,
+                  selectedDiscipline
+              );
     };
     useEffect(() => {
+        refreshBaseState();
         if (mode === 'EDIT') {
             getGame('trueorfalse', slug);
             setQuestions(trueorfalse.questions);
