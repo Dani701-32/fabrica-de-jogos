@@ -26,9 +26,10 @@ export const setProgress = (value) => (dispatch) => {
     });
 };
 
-export const createEventListener =
+export const createGameEventListener =
     (slug = '') =>
     (dispatch, getState) => {
+        console.log('criou listener do jogo');
         window.addEventListener('message', (event) => {
             if (event.origin !== window.location.origin) {
                 const data = event.data;
@@ -53,29 +54,7 @@ export const createEventListener =
                             : 0
                     });
                     iframe.contentWindow.postMessage(message, '*');
-                    return;
                 }
-                const config = {
-                    headers: {
-                        Authorization: `Bearer ${data.token}`
-                    }
-                };
-                axios
-                    .get(`${data.api_address}/api/validate`, config)
-                    .then((response) => {
-                        if (response.status === 200) {
-                            dispatch({
-                                type: 'VALIDATION_SUCCESS',
-                                payload: data
-                            });
-                        }
-                    })
-                    .catch((error) => {
-                        dispatch({
-                            type: 'VALIDATION_ERROR',
-                            payload: error
-                        });
-                    });
             }
         });
     };
