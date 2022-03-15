@@ -183,22 +183,26 @@ export default function AnagramPage({ mode }) {
                                 required
                             />
                         </Grid>
-                        <Grid item align="center" xs={3}>
-                            <FillableSelect
-                                items={series}
-                                name="Série"
-                                value={selectedSerie}
-                                callBack={seriesChange}
-                            />
-                        </Grid>
-                        <Grid item align="center" xs={3}>
-                            <FillableSelect
-                                items={disciplinas}
-                                name="Disciplinas"
-                                value={selectedDiscipline}
-                                callBack={disciplineChange}
-                            />
-                        </Grid>
+                        {mode !== 'EDIT' && (
+                            <>
+                                <Grid item align="center" xs={3}>
+                                    <FillableSelect
+                                        items={series}
+                                        name="Série"
+                                        value={selectedSerie}
+                                        callBack={seriesChange}
+                                    />
+                                </Grid>
+                                <Grid item align="center" xs={3}>
+                                    <FillableSelect
+                                        items={disciplinas}
+                                        name="Disciplinas"
+                                        value={selectedDiscipline}
+                                        callBack={disciplineChange}
+                                    />
+                                </Grid>
+                            </>
+                        )}
                         <LayoutPicker
                             handleLayout={handleLayout}
                             selectedLayout={layout}

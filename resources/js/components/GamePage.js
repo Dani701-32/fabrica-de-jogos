@@ -4,9 +4,11 @@ import { createGameEventListener, refreshBaseState } from '../store/actions';
 
 export default function GamePage({ game }) {
     const { slug } = useParams();
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
     useEffect(() => {
         refreshBaseState();
-        createGameEventListener(slug);
+        createGameEventListener(slug, urlParams);
     });
     let gameAddress = '';
     switch (game) {

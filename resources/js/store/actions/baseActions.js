@@ -31,8 +31,7 @@ export const refreshBaseState = () => (dispatch) => {
 };
 
 export const createGameEventListener =
-    (slug = '') =>
-    (dispatch, getState) => {
+    (slug, urlParams) => (dispatch, getState) => {
         console.log('criou listener do jogo');
         window.addEventListener('message', (event) => {
             if (event.origin !== window.location.origin) {
@@ -42,12 +41,10 @@ export const createGameEventListener =
                     const user_info = getState();
                     let game_address =
                         'https://fabricadejogos.portaleducacional.tec.br';
-                    const queryString = window.location.search;
-                    const urlParams = new URLSearchParams(queryString);
                     let iframe = document.getElementById('frame');
                     const message = JSON.stringify({
                         user_token: user_info.token,
-                        api_address: user_info.api_address,
+                        origin: user_info.origin,
                         game_address: game_address,
                         slug: slug,
                         aula_id: urlParams.has('aula_id')
