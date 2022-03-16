@@ -171,20 +171,20 @@ export default function AnagramPage({ mode }) {
                         onSubmit={handleSubmit}
                         spacing={3}
                     >
-                        <Grid item align="center" xs={12}>
-                            <TextField
-                                label="Nome"
-                                name="name"
-                                variant="outlined"
-                                value={name}
-                                onChange={(event) => {
-                                    setName(event.target.value);
-                                }}
-                                required
-                            />
-                        </Grid>
-                        {mode !== 'EDIT' && (
+                        {mode === 'CREATE' && (
                             <>
+                                <Grid item align="center" xs={12}>
+                                    <TextField
+                                        label="Nome"
+                                        name="name"
+                                        variant="outlined"
+                                        value={name}
+                                        onChange={(event) => {
+                                            setName(event.target.value);
+                                        }}
+                                        required
+                                    />
+                                </Grid>
                                 <Grid item align="center" xs={3}>
                                     <FillableSelect
                                         items={series}

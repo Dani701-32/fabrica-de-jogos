@@ -52,7 +52,6 @@ const richTextField = ({
                         'undo',
                         'redo'
                     ]}
-                    editorState={editorState}
                     defaultValue={JSON.stringify(
                         convertToRaw(editorState.getCurrentContent())
                     )}

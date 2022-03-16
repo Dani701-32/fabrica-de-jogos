@@ -195,34 +195,38 @@ export default function MatchUpPage({ mode }) {
                         onSubmit={handleSubmit}
                         spacing={3}
                     >
-                        <Grid item align="center" xs={12}>
-                            <TextField
-                                label="Nome"
-                                name="name"
-                                variant="outlined"
-                                value={name}
-                                onChange={(event) => {
-                                    setName(event.target.value);
-                                }}
-                                required
-                            />
-                        </Grid>
-                        <Grid item align="center" xs={3}>
-                            <FillableSelect
-                                items={series}
-                                name="Série"
-                                value={selectedSerie}
-                                callBack={seriesChange}
-                            />
-                        </Grid>
-                        <Grid item align="center" xs={3}>
-                            <FillableSelect
-                                items={disciplinas}
-                                name="Disciplinas"
-                                value={selectedDiscipline}
-                                callBack={disciplineChange}
-                            />
-                        </Grid>
+                        {mode === 'CREATE' && (
+                            <>
+                                <Grid item align="center" xs={12}>
+                                    <TextField
+                                        label="Nome"
+                                        name="name"
+                                        variant="outlined"
+                                        value={name}
+                                        onChange={(event) => {
+                                            setName(event.target.value);
+                                        }}
+                                        required
+                                    />
+                                </Grid>
+                                <Grid item align="center" xs={3}>
+                                    <FillableSelect
+                                        items={series}
+                                        name="Série"
+                                        value={selectedSerie}
+                                        callBack={seriesChange}
+                                    />
+                                </Grid>
+                                <Grid item align="center" xs={3}>
+                                    <FillableSelect
+                                        items={disciplinas}
+                                        name="Disciplinas"
+                                        value={selectedDiscipline}
+                                        callBack={disciplineChange}
+                                    />
+                                </Grid>
+                            </>
+                        )}
                         <LayoutPicker
                             handleLayout={handleLayout}
                             selectedLayout={layout}
