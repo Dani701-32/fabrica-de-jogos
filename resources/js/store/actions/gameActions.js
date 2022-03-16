@@ -24,7 +24,7 @@ export const createGame =
                 const data = response.data;
                 if (response.status === 201) {
                     const body = JSON.stringify({
-                        name: obj.name,
+                        name: data.name,
                         material: `https://www.fabricadejogos.portaleducacional.tec.br/${type}/${response.data.slug}`,
                         thumbnail: '',
                         disciplina_id: discipline_id,
