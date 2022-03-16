@@ -16,8 +16,10 @@ export const createGame =
                 });
             }
         };
+        const body =
+            content_type === 'application/json' ? JSON.stringify(obj) : obj;
         axios
-            .post(`/api/${type}`, JSON.stringify(obj), config)
+            .post(`/api/${type}`, body, config)
             .then((response) => {
                 const data = response.data;
                 if (response.status === 201) {
@@ -95,8 +97,10 @@ export const editGame =
                 });
             }
         };
+        const body =
+            content_type === 'application/json' ? JSON.stringify(obj) : obj;
         axios
-            .put(`/api/${type}/${slug}`, JSON.stringify(obj), config)
+            .put(`/api/${type}/${slug}`, body, config)
             .then((response) => {
                 dispatch({
                     type: 'UPDATE_' + type.toUpperCase(),

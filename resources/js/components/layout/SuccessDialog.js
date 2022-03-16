@@ -19,7 +19,7 @@ export default function SuccessDialog({ open, handleClose, edit, type, slug }) {
         dispatch
     );
     return (
-        <Dialog open={open} onClose={edit ? () => {} : handleClose}>
+        <Dialog open={open} onClose={edit ? setClose : handleClose}>
             <DialogTitle>
                 Jogo {edit ? 'editado' : 'criado'} com sucesso
             </DialogTitle>
@@ -28,7 +28,7 @@ export default function SuccessDialog({ open, handleClose, edit, type, slug }) {
                 a uma aula ou trilha de aprendizado!
             </DialogContent>
             <DialogActions>
-                <Button size="small" onClick={setClose}>
+                <Button size="small" onClick={edit ? setClose : handleClose}>
                     OK
                 </Button>
                 {!edit && (

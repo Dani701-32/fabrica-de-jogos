@@ -36,9 +36,8 @@ export const createGameEventListener =
         window.addEventListener('message', (event) => {
             if (event.origin !== window.location.origin) {
                 const data = event.data;
-                console.log(data);
                 if (data.loaded) {
-                    const user_info = getState();
+                    const user_info = getState().base;
                     let game_address =
                         'https://fabricadejogos.portaleducacional.tec.br';
                     let iframe = document.getElementById('frame');
