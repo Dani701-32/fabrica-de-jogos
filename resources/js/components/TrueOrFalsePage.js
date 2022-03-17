@@ -88,9 +88,10 @@ export default function TrueOrFalsePage({ mode }) {
     const handleAnswerChange = (index) => {
         let q = [...questions];
         let question = q[index];
-        question.right = !question.right;
+        question.answer = !question.answer;
         q.splice(index, 1, question);
         setQuestions(q);
+        console.log(question.answer);
     };
     const handleClose = () => {
         setName('');
@@ -127,7 +128,7 @@ export default function TrueOrFalsePage({ mode }) {
             let textJson = convertToRaw(item.title.getCurrentContent());
             let markup = draftToText(textJson);
             questionsJSON.push({
-                answer: item.right,
+                answer: item.answer,
                 title: markup
             });
         });
@@ -332,6 +333,13 @@ export default function TrueOrFalsePage({ mode }) {
                                                                 control={
                                                                     <Switch
                                                                         size="large"
+                                                                        defaultChecked={
+                                                                            trueorfalse
+                                                                                .questions[
+                                                                                index
+                                                                            ]
+                                                                                .answer
+                                                                        }
                                                                         onChange={() => {
                                                                             handleAnswerChange(
                                                                                 index

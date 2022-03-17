@@ -50,7 +50,7 @@ const initialState = {
         name: '',
         slug: '',
         layout: 1,
-        questions: [{ title: EditorState.createEmpty(), right: false }]
+        questions: [{ title: EditorState.createEmpty(), answer: false }]
     },
     wordsearch: {
         name: '',

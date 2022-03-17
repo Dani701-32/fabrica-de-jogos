@@ -42,6 +42,10 @@ export const createGame =
                                 dispatch({
                                     type: 'OPEN'
                                 });
+                                dispatch({
+                                    type: 'SET_PROGRESS',
+                                    payload: 0
+                                });
                             }
                         })
                         .catch((error) => {
@@ -109,6 +113,10 @@ export const editGame =
                 });
                 dispatch({
                     type: 'OPEN'
+                });
+                dispatch({
+                    type: 'SET_PROGRESS',
+                    payload: 0
                 });
             })
             .catch((error) => {
