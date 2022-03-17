@@ -126,13 +126,15 @@ export default function WordSearchPage({ mode }) {
             setAlert('O jogo deve ter no mínimo 3 palavras!');
             return;
         }
-        if (selectedSerie === '') {
-            setAlert('Selecione uma série!');
-            return;
-        }
-        if (selectedDiscipline === '') {
-            setAlert('Selecione uma disciplina!');
-            return;
+        if (mode === 'CREATE') {
+            if (selectedSerie === '') {
+                setAlert('Selecione uma série!');
+                return;
+            }
+            if (selectedDiscipline === '') {
+                setAlert('Selecione uma disciplina!');
+                return;
+            }
         }
         let wordsJSON = [];
         words.map((word) => {
@@ -322,7 +324,7 @@ export default function WordSearchPage({ mode }) {
                                                             editorState={
                                                                 item.tip
                                                             }
-                                                            handleTextChange={
+                                                            onChange={
                                                                 handleTipChange
                                                             }
                                                             label={'Dica'}

@@ -17,7 +17,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { EditorState, convertToRaw } from 'draft-js';
 import LayoutPicker from './layout/LayoutPicker';
-import RichTextField from './layout/RichTextField';
+import RawRichTextField from './layout/RichTextField';
 import draftToText from './utils/draftToText';
 import SuccessDialog from './layout/SuccessDialog';
 import { useParams } from 'react-router-dom';
@@ -125,13 +125,15 @@ export default function MatchUpPage({ mode }) {
     };
     const handleSubmit = (event) => {
         event.preventDefault();
-        if (selectedSerie === '') {
-            setAlert('Selecione uma série!');
-            return;
-        }
-        if (selectedDiscipline === '') {
-            setAlert('Selecione uma disciplina!');
-            return;
+        if (mode === 'CREATE') {
+            if (selectedSerie === '') {
+                setAlert('Selecione uma série!');
+                return;
+            }
+            if (selectedDiscipline === '') {
+                setAlert('Selecione uma disciplina!');
+                return;
+            }
         }
         let matchUpsJSON = [];
         pages.map((page) => {
@@ -356,11 +358,11 @@ export default function MatchUpPage({ mode }) {
                                                                         align="left"
                                                                         xs={7}
                                                                     >
-                                                                        <RichTextField
+                                                                        <RawRichTextField
                                                                             editorState={
                                                                                 matchUp.meaning
                                                                             }
-                                                                            handleTextChange={
+                                                                            onChange={
                                                                                 handleMeaningChange
                                                                             }
                                                                             index={

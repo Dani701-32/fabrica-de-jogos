@@ -112,13 +112,15 @@ export default function TrueOrFalsePage({ mode }) {
     };
     const handleSubmit = (event) => {
         event.preventDefault();
-        if (selectedSerie === '') {
-            setAlert('Selecione uma série!');
-            return;
-        }
-        if (selectedDiscipline === '') {
-            setAlert('Selecione uma disciplina!');
-            return;
+        if (mode === 'CREATE') {
+            if (selectedSerie === '') {
+                setAlert('Selecione uma série!');
+                return;
+            }
+            if (selectedDiscipline === '') {
+                setAlert('Selecione uma disciplina!');
+                return;
+            }
         }
         let questionsJSON = [];
         questions.map((item) => {
@@ -301,7 +303,7 @@ export default function TrueOrFalsePage({ mode }) {
                                                             editorState={
                                                                 item.title
                                                             }
-                                                            handleTextChange={
+                                                            onChange={
                                                                 handleQuestionTitleChange
                                                             }
                                                             index={index}

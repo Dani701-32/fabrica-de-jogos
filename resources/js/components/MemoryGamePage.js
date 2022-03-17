@@ -102,13 +102,15 @@ export default function MemoryGamePage({ mode }) {
             setAlert('Preencha todos os campos!');
             return;
         }
-        if (selectedSerie === '') {
-            setAlert('Selecione uma série!');
-            return;
-        }
-        if (selectedDiscipline === '') {
-            setAlert('Selecione uma disciplina!');
-            return;
+        if (mode === 'CREATE') {
+            if (selectedSerie === '') {
+                setAlert('Selecione uma série!');
+                return;
+            }
+            if (selectedDiscipline === '') {
+                setAlert('Selecione uma disciplina!');
+                return;
+            }
         }
         const data = new FormData();
         images.map((image) => {

@@ -110,14 +110,17 @@ export default function AnagramPage({ mode }) {
             setAlert('O jogo deve ter no mínimo 1 página!');
             return;
         }
-        if (selectedSerie === '') {
-            setAlert('Selecione uma série!');
-            return;
+        if (mode === 'CREATE') {
+            if (selectedSerie === '') {
+                setAlert('Selecione uma série!');
+                return;
+            }
+            if (selectedDiscipline === '') {
+                setAlert('Selecione uma disciplina!');
+                return;
+            }
         }
-        if (selectedDiscipline === '') {
-            setAlert('Selecione uma disciplina!');
-            return;
-        }
+
         let wordsJSON = [];
         pages.map((page) => {
             page.map((word) => {
@@ -292,7 +295,7 @@ export default function AnagramPage({ mode }) {
                                                                     variant="outlined"
                                                                     value={word}
                                                                     inputProps={{
-                                                                        maxLength: 20
+                                                                        maxLength: 16
                                                                     }}
                                                                     onChange={(
                                                                         event

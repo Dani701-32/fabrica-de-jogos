@@ -32,8 +32,8 @@ class AnagramController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'layout' => 'required|integer|max:10',
-            'words' => 'required|array|max:12',
-            'words.*' => 'required|string|max:20'
+            'words' => 'required|array|max:32',
+            'words.*' => 'required|string|max:17'
         ]);
 
 
