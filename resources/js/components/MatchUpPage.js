@@ -330,7 +330,7 @@ export default function MatchUpPage({ mode }) {
                                                                             label="Palavra"
                                                                             required
                                                                             inputProps={{
-                                                                                maxLength: 26
+                                                                                maxLength: 9
                                                                             }}
                                                                             fullWidth
                                                                             value={
