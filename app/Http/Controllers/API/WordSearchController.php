@@ -34,7 +34,7 @@ class WordSearchController extends Controller
             'layout' => 'required|integer|max:10',
             'words' => 'required|array|max:10',
             'words.*.word' => 'required|string|max:10',
-            'words.*.tip' => 'required|string|max:50'
+            'words.*.tip' => 'required|string'
         ]);
         $word_search = new WordSearch();
         $word_search->name = $request->name;

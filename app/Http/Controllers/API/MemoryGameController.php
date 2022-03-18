@@ -8,6 +8,8 @@ use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Resources\MemoryGame as MemoryGameResource;
+use App\Models\Image;
+use Storage;
 
 class MemoryGameController extends Controller
 {
@@ -35,18 +37,10 @@ class MemoryGameController extends Controller
             'images' => 'required|max:6|min:2',
             'images.*' => 'mimes:jpeg,jpg,png'
         ]);
-
-
-        $files = $request->file('images');
-        $images = [];
-        foreach ($files as $file) {
-            $path = $file->store('images', "public");
-            $images[] = $path;
-        }
         $memory = new MemoryGame();
         $memory->name = $request->name;
         $memory->layout = $request->layout;
-        $memory->images = serialize($images);
+        $files = $request->file('images');
         switch (sizeof($files)) {
             case 2:
                 $memory->grid = serialize([2, 2]);
@@ -67,6 +61,20 @@ class MemoryGameController extends Controller
                 return response()->json(['Bad Request'=> 'Invalid number of files'], 400);
         }
         $memory->save();
+        $index = 0;
+        foreach ($files as $file) {
+            $path = "storage/memorygame";
+            $fileName = $memory->slug ."_". $index . "." . $file->getClientOriginalExtension();
+            Storage::disk('s3')->delete($fileName);
+            $file->storeAs($path, $fileName, 's3');
+            $image = new Image();
+            $image->path = $path;
+            $image->name = $fileName;
+            $image->memory_game_id = $memory->id;
+            $image->save();
+            $index++;
+        }
+
         return response()->json(new MemoryGameResource($memory), 201);
     }
 
@@ -103,19 +111,54 @@ class MemoryGameController extends Controller
         if ($memorygame->approved_at){
             return response()->json(["Bad request" => "Memory Game Already Approved!"], 400);
         }
-        $edited = false;
-        foreach ($request->all() as $attr=>$value) {
-            if (in_array($attr, array_keys($memorygame->getAttributes()))) {
-                $edited = true;
-                if (is_array($value)) {
-                    $value =  serialize($value);
+
+        if($request->hasfile('images')){
+            $files = $request->file('images');
+            switch (sizeof($files)) {
+                case 2:
+                    $memorygame->grid = serialize([2, 2]);
+                    break;
+                case 3:
+                    $memorygame->grid = serialize([3, 2]);
+                    break;
+                case 4:
+                    $memorygame->grid = serialize([4, 2]);
+                    break;
+                case 5:
+                    $memorygame->grid = serialize([5, 2]);
+                    break;
+                case 6:
+                    $memorygame->grid = serialize([4, 3]);
+                    break;
+                default:
+                    return response()->json(['Bad Request'=> 'Invalid number of files'], 400);
+            }
+            $index = 0;
+            foreach ($files as $file) {
+                $path = "storage/memorygame";
+                $fileName = $memorygame->slug ."_". $index . ".". $file->getClientOriginalExtension();
+                Storage::disk('s3')->delete($fileName);
+                $file->storeAs($path, $fileName, 's3');
+                $old_images = Image::all()->where('memory_game_id', $memorygame->id);
+                foreach ($old_images as $old_image){
+                    Image::destroy($old_image->id);
                 }
-                $memorygame->$attr = $value;
+                $image = new Image();
+                $image->path = $path;
+                $image->name = $fileName;
+                $image->memory_game_id = $memorygame->id;
+                $image->save();
+                $index++;
             }
         }
-        if ($edited) {
-            $memorygame->save();
+        if($request->name){
+            $memorygame->name = $request->name;
         }
+        if($request->layout){
+            $memorygame->layout = $request->layout;
+        }
+        $memorygame->save();
+
         return response()->json((new MemoryGameResource($memorygame)));
     }
 

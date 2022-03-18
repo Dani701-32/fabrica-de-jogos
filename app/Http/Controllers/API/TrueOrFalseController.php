@@ -34,7 +34,7 @@ class TrueOrFalseController extends Controller
             'name' => 'required|string|max:255',
             'layout' => 'required|integer|max:10',
             'questions' => 'required|array|max:10',
-            'questions.*.title' => 'required|string|max:240',
+            'questions.*.title' => 'required|string',
             'questions.*.answer' => 'required|boolean'
         ]);
         $true_or_false = new TrueOrFalse();
