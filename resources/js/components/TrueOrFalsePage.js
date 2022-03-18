@@ -34,6 +34,7 @@ const theme = createTheme();
 
 export default function TrueOrFalsePage({ mode }) {
     const { slug } = useParams();
+    const token = useSelector((state) => state.base.token);
     const open = useSelector((state) => state.base.open);
     const alert = useSelector((state) => state.base.alert);
     const trueorfalse = useSelector((state) => state.game.trueorfalse);
@@ -147,6 +148,9 @@ export default function TrueOrFalsePage({ mode }) {
               );
     };
     useEffect(() => {
+        if (!token) {
+            window.location.href = '/401';
+        }
         refreshBaseState();
         if (mode === 'EDIT') {
             getGame('trueorfalse', slug);

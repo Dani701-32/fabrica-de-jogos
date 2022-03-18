@@ -29,6 +29,7 @@ const theme = createTheme();
 
 export default function AnagramPage({ mode }) {
     const { slug } = useParams();
+    const token = useSelector((state) => state.base.token);
     const open = useSelector((state) => state.base.open);
     const alert = useSelector((state) => state.base.alert);
     const anagram = useSelector((state) => state.game.anagram);
@@ -137,6 +138,9 @@ export default function AnagramPage({ mode }) {
             : createGame(body, 'anagram', selectedSerie, selectedDiscipline);
     };
     useEffect(() => {
+        if (!token) {
+            window.location.href = '/401';
+        }
         refreshBaseState();
         if (mode === 'EDIT') {
             getGame('anagram', slug);

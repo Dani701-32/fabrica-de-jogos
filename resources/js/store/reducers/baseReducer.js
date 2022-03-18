@@ -2,19 +2,11 @@ const initialState = {
     open: false,
     alert: '',
     progress: 0,
-    token: localStorage.getItem('token') ? localStorage.getItem('token') : '',
-    api_address: localStorage.getItem('api_address')
-        ? localStorage.getItem('api_address')
-        : '',
-    origin: localStorage.getItem('origin')
-        ? localStorage.getItem('origin')
-        : '',
-    series: localStorage.getItem('series')
-        ? JSON.parse(localStorage.getItem('series'))
-        : {},
-    disciplinas: localStorage.getItem('disciplinas')
-        ? JSON.parse(localStorage.getItem('disciplinas'))
-        : {}
+    token: localStorage.getItem('token'),
+    api_address: localStorage.getItem('api_address'),
+    origin: localStorage.getItem('origin'),
+    series: JSON.parse(localStorage.getItem('series')),
+    disciplinas: JSON.parse(localStorage.getItem('disciplinas'))
 };
 
 const reducer = (state = initialState, action) => {

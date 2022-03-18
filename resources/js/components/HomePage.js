@@ -8,16 +8,15 @@ import {
     Card,
     IconButton
 } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
 import Copyright from './layout/Copyright';
 import { bindActionCreators } from 'redux';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { actionCreators } from '../store/actionCreators';
 
 const theme = createTheme();
 
 export default function HomePage({}) {
-    const navigate = useNavigate();
+    const token = useSelector((state) => state.base.token);
     const game_types = [
         { slug: 'anagram', name: 'Anagrama' },
         { slug: 'matchup', name: 'Combinação' },
@@ -29,6 +28,9 @@ export default function HomePage({}) {
     const dispatch = useDispatch();
     const { refreshBaseState } = bindActionCreators(actionCreators, dispatch);
     useEffect(() => {
+        if (!token) {
+            window.location.href = '/401';
+        }
         refreshBaseState();
     }, []);
     return (

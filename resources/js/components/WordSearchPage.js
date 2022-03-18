@@ -30,6 +30,7 @@ const theme = createTheme();
 
 export default function WordSearchPage({ mode }) {
     const { slug } = useParams();
+    const token = useSelector((state) => state.base.token);
     const open = useSelector((state) => state.base.open);
     const alert = useSelector((state) => state.base.alert);
     const wordsearch = useSelector((state) => state.game.wordsearch);
@@ -155,6 +156,9 @@ export default function WordSearchPage({ mode }) {
             : createGame(body, 'wordsearch', selectedSerie, selectedDiscipline);
     };
     useEffect(() => {
+        if (!token) {
+            window.location.href = '/401';
+        }
         refreshBaseState();
         if (mode === 'EDIT') {
             getGame('wordsearch', slug);

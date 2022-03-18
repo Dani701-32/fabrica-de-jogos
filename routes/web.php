@@ -79,4 +79,25 @@ Route::get('/edit/trueorfalse/{trueorfalse}', function (TrueOrFalse $trueOrFalse
 Route::get('/edit/wordsearch/{wordsearch}', function (Wordsearch $wordsearch) {
     return view('index');
 });
-
+// Error routes
+Route::get('/401', function () {
+   return view('errors.401');
+});
+Route::get('/403', function () {
+    return view('errors.403');
+});
+Route::get('/404', function () {
+    return view('errors.404');
+});
+Route::get('/419', function () {
+    return view('errors.419');
+});
+Route::get('/429', function () {
+    return view('errors.429');
+});
+Route::get('/500', function () {
+    return view('errors.500');
+});
+Route::get('/503', function () {
+    return view('errors.503');
+});
