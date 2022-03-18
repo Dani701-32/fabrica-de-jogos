@@ -55,7 +55,7 @@ export default function TrueOrFalsePage({ mode }) {
     } = bindActionCreators(actionCreators, dispatch);
     const questionObj = {
         title: EditorState.createEmpty(),
-        right: false
+        answer: false
     };
     const handleLayout = (event, newLayout) => {
         if (newLayout === null) {

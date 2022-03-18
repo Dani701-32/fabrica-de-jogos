@@ -52,10 +52,15 @@ const ImageEditor = ({ index, callback, defaultImg }) => {
     }, []);
 
     const loadDefaultImg = (defaultImg) => {
-        const ctx = previewCanvasRef.current.getContext('2d');
+        console.log(defaultImg);
+        const canvas = previewCanvasRef.current;
+        const ctx = canvas.getContext('2d');
         let img = new Image();
+        ctx.imageSmoothingQuality = 'high';
         img.src = URL.createObjectURL(defaultImg);
-        ctx.drawImage(img, 0, 0);
+        img.onload = () => {
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        };
     };
 
     useEffect(() => {
@@ -90,13 +95,14 @@ const ImageEditor = ({ index, callback, defaultImg }) => {
             crop.height * scaleY
         );
         generateBlob(previewCanvasRef.current, completedCrop);
-    }, [completedCrop]);
+    }, [completedCrop, defaultImg]);
 
     return (
         <Grid container align="center" spacing={3}>
             <Grid item xs={12}>
                 <Card elevation={5} sx={{ width: 250, height: 250 }}>
                     <canvas
+                        id={`canvas ${index}`}
                         ref={previewCanvasRef}
                         style={{
                             height: '100%',

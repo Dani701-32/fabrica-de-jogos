@@ -38,7 +38,7 @@ const initialState = {
         slug: '',
         layout: 1,
         images: [null, null],
-        size: 2
+        grid: [2, 2]
     },
     quiz: {
         name: '',
@@ -157,7 +157,7 @@ const reducer = (state = initialState, action) => {
                     slug: action.payload.slug,
                     layout: action.payload.layout,
                     images: getImageBlobs(action.payload.images),
-                    size: action.payload.size
+                    grid: action.payload.grid
                 }
             };
         case 'CREATE_QUIZ':

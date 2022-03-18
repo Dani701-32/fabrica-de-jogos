@@ -32,8 +32,11 @@ export default function MemoryGamePage({ mode }) {
     const alert = useSelector((state) => state.base.alert);
     const memorygame = useSelector((state) => state.game.memorygame);
     const progress = useSelector((state) => state.base.progress);
+    const [defaultImages, setDefaultImages] = useState(memorygame.images);
     const [images, setImages] = useState(memorygame.images);
-    const [size, setSize] = useState(memorygame.size);
+    const [size, setSize] = useState(
+        (memorygame.grid[0] * memorygame.grid[1]) / 2
+    );
     const [name, setName] = useState(memorygame.name);
     const [layout, setLayout] = useState(memorygame.layout);
     const series = useSelector((state) => state.base.series);
@@ -137,8 +140,9 @@ export default function MemoryGamePage({ mode }) {
         refreshBaseState();
         if (mode === 'EDIT') {
             getGame('memorygame', slug);
+            setDefaultImages(memorygame.images);
             setImages(memorygame.images);
-            setName(memorygame.name);
+            setSize((memorygame.grid[0] * memorygame.grid[1]) / 2);
             setLayout(memorygame.layout);
         }
     }, [memorygame.slug]);
@@ -215,11 +219,11 @@ export default function MemoryGamePage({ mode }) {
                                 aria-label="text alignment"
                                 color="primary"
                             >
-                                <ToggleButton value="2">2x2</ToggleButton>
-                                <ToggleButton value="3">2x3</ToggleButton>
-                                <ToggleButton value="4">2x4</ToggleButton>
-                                <ToggleButton value="5">2x5</ToggleButton>
-                                <ToggleButton value="6">3x4</ToggleButton>
+                                <ToggleButton value={2}>2x2</ToggleButton>
+                                <ToggleButton value={3}>2x3</ToggleButton>
+                                <ToggleButton value={4}>2x4</ToggleButton>
+                                <ToggleButton value={5}>2x5</ToggleButton>
+                                <ToggleButton value={6}>3x4</ToggleButton>
                             </ToggleButtonGroup>
                         </Grid>
                         <Grid item align="center" xs={12}>
@@ -253,7 +257,9 @@ export default function MemoryGamePage({ mode }) {
                                         >
                                             <ImageEditor
                                                 index={index}
-                                                defaultImg={image}
+                                                defaultImg={
+                                                    defaultImages[index]
+                                                }
                                                 callback={updateImage}
                                             />
                                         </Grid>
