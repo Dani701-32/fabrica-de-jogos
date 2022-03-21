@@ -22,7 +22,7 @@ export default function HomePage({}) {
     const game_types = [
         { slug: 'anagram', name: 'Anagrama' },
         { slug: 'matchup', name: 'Combinação' },
-        { slug: 'memorygame', name: 'Jogo da Memória' },
+        // { slug: 'memorygame', name: 'Jogo da Memória' },
         { slug: 'quiz', name: 'Quiz' },
         { slug: 'trueorfalse', name: 'Verdadeiro ou Falso' },
         { slug: 'wordsearch', name: 'Caça Palavras' }
