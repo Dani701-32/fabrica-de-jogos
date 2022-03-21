@@ -18,6 +18,7 @@ use JetBrains\PhpStorm\ArrayShape;
  * @property array|string $images
  * @property array|string $grid
  * @property string $slug
+ * @property int $id
  */
 class MemoryGame extends Model
 {

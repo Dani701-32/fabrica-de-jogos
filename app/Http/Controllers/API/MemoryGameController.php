@@ -9,7 +9,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Resources\MemoryGame as MemoryGameResource;
 use App\Models\Image;
-use Storage;
+use Illuminate\Support\Facades\Storage;
 
 class MemoryGameController extends Controller
 {
@@ -65,8 +65,7 @@ class MemoryGameController extends Controller
         foreach ($files as $file) {
             $path = "storage/memorygame";
             $fileName = $memory->slug ."_". $index . "." . $file->getClientOriginalExtension();
-            Storage::disk('s3')->delete($path."/".$fileName);
-            $file->storeAs($path, $fileName, 's3');
+            Storage::disk('s3')->put($path."/".$fileName, $file);
             $image = new Image();
             $image->path = $path;
             $image->name = $fileName;
@@ -134,15 +133,17 @@ class MemoryGameController extends Controller
                     return response()->json(['Bad Request'=> 'Invalid number of files'], 400);
             }
             $index = 0;
+            $old_images = Image::all()->where('memory_game_id', $memorygame->id);
+            foreach ($old_images as $old_image){
+                $old_image->delete();
+            }
             foreach ($files as $file) {
                 $path = "storage/memorygame";
                 $fileName = $memorygame->slug ."_". $index . ".". $file->getClientOriginalExtension();
-                Storage::disk('s3')->delete($path."/".$fileName);
-                $file->storeAs($path, $fileName, 's3');
-                $old_images = Image::all()->where('memory_game_id', $memorygame->id);
-                foreach ($old_images as $old_image){
-                    Image::destroy($old_image->id);
+                if (Storage::disk('s3')->exists($path."/".$fileName)) {
+                    Storage::disk('s3')->delete($path."/".$fileName);
                 }
+                Storage::disk('s3')->put($path."/".$fileName, $file);
                 $image = new Image();
                 $image->path = $path;
                 $image->name = $fileName;
