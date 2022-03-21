@@ -160,12 +160,17 @@ export default function WordSearchPage({ mode }) {
             window.location.href = '/401';
         }
         refreshBaseState();
-        if (mode === 'EDIT') {
-            getGame('wordsearch', slug);
-            setWords(wordsearch.words);
-            setName(wordsearch.name);
-            setLayout(wordsearch.layout);
-        }
+        mode === 'EDIT' && getGame('wordsearch', slug);
+    }, []);
+
+    useEffect(() => {
+        wordsearch.approved_at &&
+            setAlert(
+                'Esse jogo já foi aprovado, logo não pode mais ser editado!'
+            );
+        setWords(wordsearch.words);
+        setName(wordsearch.name);
+        setLayout(wordsearch.layout);
     }, [wordsearch.slug]);
 
     return (
@@ -348,6 +353,7 @@ export default function WordSearchPage({ mode }) {
                                 size="large"
                                 type="submit"
                                 variant="outlined"
+                                disabled={!!wordsearch.approved_at}
                             >
                                 {mode === 'EDIT' ? 'Editar' : 'Criar'}
                             </Button>

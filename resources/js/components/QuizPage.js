@@ -163,12 +163,17 @@ export default function QuizPage({ mode }) {
             window.location.href = '/401';
         }
         refreshBaseState();
-        if (mode === 'EDIT') {
-            getGame('quiz', slug);
-            setQuestions(quiz.questions);
-            setName(quiz.name);
-            setLayout(quiz.layout);
-        }
+        mode === 'EDIT' && getGame('quiz', slug);
+    }, []);
+
+    useEffect(() => {
+        quiz.approved_at &&
+            setAlert(
+                'Esse jogo já foi aprovado, logo não pode mais ser editado!'
+            );
+        setQuestions(quiz.questions);
+        setName(quiz.name);
+        setLayout(quiz.layout);
     }, [quiz.slug]);
 
     return (
@@ -512,6 +517,7 @@ export default function QuizPage({ mode }) {
                                 size="large"
                                 type="submit"
                                 variant="outlined"
+                                disabled={!!quiz.approved_at}
                             >
                                 {mode === 'EDIT' ? 'Editar' : 'Criar'}
                             </Button>

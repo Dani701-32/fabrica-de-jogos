@@ -165,12 +165,17 @@ export default function MatchUpPage({ mode }) {
             window.location.href = '/401';
         }
         refreshBaseState();
-        if (mode === 'EDIT') {
-            getGame('matchup', slug);
-            setPages(matchup.pages);
-            setName(matchup.name);
-            setLayout(matchup.layout);
-        }
+        mode === 'EDIT' && getGame('matchup', slug);
+    }, []);
+
+    useEffect(() => {
+        matchup.approved_at &&
+            setAlert(
+                'Esse jogo já foi aprovado, logo não pode mais ser editado!'
+            );
+        setPages(matchup.pages);
+        setName(matchup.name);
+        setLayout(matchup.layout);
     }, [matchup.slug]);
 
     return (
@@ -399,6 +404,7 @@ export default function MatchUpPage({ mode }) {
                                 size="large"
                                 type="submit"
                                 variant="outlined"
+                                disabled={!!matchup.approved_at}
                             >
                                 {mode === 'EDIT' ? 'Editar' : 'Criar'}
                             </Button>

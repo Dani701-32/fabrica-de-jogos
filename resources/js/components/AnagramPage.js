@@ -142,12 +142,16 @@ export default function AnagramPage({ mode }) {
             window.location.href = '/401';
         }
         refreshBaseState();
-        if (mode === 'EDIT') {
-            getGame('anagram', slug);
-            setPages(sliceIntoChunks(anagram.words, 4));
-            setName(anagram.name);
-            setLayout(anagram.layout);
-        }
+        mode === 'EDIT' && getGame('anagram', slug);
+    }, []);
+    useEffect(() => {
+        anagram.approved_at &&
+            setAlert(
+                'Esse jogo já foi aprovado, logo não pode mais ser editado!'
+            );
+        setPages(sliceIntoChunks(anagram.words, 4));
+        setName(anagram.name);
+        setLayout(anagram.layout);
     }, [anagram.slug]);
 
     return (
@@ -328,6 +332,7 @@ export default function AnagramPage({ mode }) {
                                 size="large"
                                 type="submit"
                                 variant="outlined"
+                                disabled={!!anagram.approved_at}
                             >
                                 {mode === 'EDIT' ? 'Editar' : 'Criar'}
                             </Button>

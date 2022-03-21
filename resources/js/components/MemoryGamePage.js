@@ -142,13 +142,18 @@ export default function MemoryGamePage({ mode }) {
             window.location.href = '/401';
         }
         refreshBaseState();
-        if (mode === 'EDIT') {
-            getGame('memorygame', slug);
-            setDefaultImages(memorygame.images);
-            setImages(memorygame.images);
-            setSize((memorygame.grid[0] * memorygame.grid[1]) / 2);
-            setLayout(memorygame.layout);
-        }
+        mode === 'EDIT' && getGame('memorygame', slug);
+    }, []);
+
+    useEffect(() => {
+        memorygame.approved_at &&
+            setAlert(
+                'Esse jogo já foi aprovado, logo não pode mais ser editado!'
+            );
+        setDefaultImages(memorygame.images);
+        setImages(memorygame.images);
+        setSize((memorygame.grid[0] * memorygame.grid[1]) / 2);
+        setLayout(memorygame.layout);
     }, [memorygame.slug]);
 
     return (
@@ -277,6 +282,7 @@ export default function MemoryGamePage({ mode }) {
                                     size="large"
                                     type="submit"
                                     variant="outlined"
+                                    disabled={!!memorygame.approved_at}
                                 >
                                     {mode === 'EDIT' ? 'Editar' : 'Criar'}
                                 </Button>

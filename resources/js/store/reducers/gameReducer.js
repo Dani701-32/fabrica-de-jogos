@@ -6,7 +6,8 @@ const initialState = {
         name: '',
         slug: '',
         layout: 1,
-        words: ['', '', '', '']
+        words: ['', '', '', ''],
+        approved_at: ''
     },
     matchup: {
         name: '',
@@ -31,26 +32,30 @@ const initialState = {
                     meaning: EditorState.createEmpty()
                 }
             ]
-        ]
+        ],
+        approved_at: ''
     },
     memorygame: {
         name: '',
         slug: '',
         layout: 1,
         images: [null, null],
-        grid: [2, 2]
+        grid: [2, 2],
+        approved_at: ''
     },
     quiz: {
         name: '',
         slug: '',
         layout: 1,
-        questions: [{ title: EditorState.createEmpty(), answers: ['', ''] }]
+        questions: [{ title: EditorState.createEmpty(), answers: ['', ''] }],
+        approved_at: ''
     },
     trueorfalse: {
         name: '',
         slug: '',
         layout: 1,
-        questions: [{ title: EditorState.createEmpty(), answer: false }]
+        questions: [{ title: EditorState.createEmpty(), answer: false }],
+        approved_at: ''
     },
     wordsearch: {
         name: '',
@@ -69,7 +74,8 @@ const initialState = {
                 word: '',
                 tip: EditorState.createEmpty()
             }
-        ]
+        ],
+        approved_at: ''
     }
 };
 
@@ -138,7 +144,8 @@ const reducer = (state = initialState, action) => {
                     name: action.payload.name,
                     slug: action.payload.slug,
                     layout: action.payload.layout,
-                    pages: formatPages(action.payload.pages)
+                    pages: formatPages(action.payload.pages),
+                    approved_at: action.payload.approved_at
                 }
             };
         case 'CREATE_MEMORYGAME':
@@ -157,7 +164,8 @@ const reducer = (state = initialState, action) => {
                     slug: action.payload.slug,
                     layout: action.payload.layout,
                     images: getImageBlobs(action.payload.images),
-                    grid: action.payload.grid
+                    grid: action.payload.grid,
+                    approved_at: action.payload.approved_at
                 }
             };
         case 'CREATE_QUIZ':
@@ -172,7 +180,8 @@ const reducer = (state = initialState, action) => {
                     name: action.payload.name,
                     slug: action.payload.slug,
                     layout: action.payload.layout,
-                    questions: formatQuestions(action.payload.questions)
+                    questions: formatQuestions(action.payload.questions),
+                    approved_at: action.payload.approved_at
                 }
             };
         case 'CREATE_TRUEORFALSE':
@@ -190,7 +199,8 @@ const reducer = (state = initialState, action) => {
                     name: action.payload.name,
                     slug: action.payload.slug,
                     layout: action.payload.layout,
-                    questions: formatQuestions(action.payload.questions)
+                    questions: formatQuestions(action.payload.questions),
+                    approved_at: action.payload.approved_at
                 }
             };
         case 'CREATE_WORDSEARCH':
@@ -208,7 +218,8 @@ const reducer = (state = initialState, action) => {
                     name: action.payload.name,
                     slug: action.payload.slug,
                     layout: action.payload.layout,
-                    words: formatTips(action.payload.words)
+                    words: formatTips(action.payload.words),
+                    approved_at: action.payload.approved_at
                 }
             };
         default:

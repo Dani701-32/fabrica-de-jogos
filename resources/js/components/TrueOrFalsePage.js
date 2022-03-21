@@ -86,17 +86,16 @@ export default function TrueOrFalsePage({ mode }) {
         q.splice(index, 1, question);
         setQuestions(q);
     };
-    const handleAnswerChange = (index) => {
+    const handleAnswerChange = (event, index) => {
         let q = [...questions];
         let question = q[index];
-        question.answer = !question.answer;
+        question.answer = event.target.checked;
         q.splice(index, 1, question);
         setQuestions(q);
-        console.log(question.answer);
     };
     const handleClose = () => {
         setName('');
-        setQuestions([{ title: EditorState.createEmpty(), right: false }]);
+        setQuestions([{ title: EditorState.createEmpty(), answer: false }]);
         setLayout(1);
         setClose();
     };
@@ -152,12 +151,16 @@ export default function TrueOrFalsePage({ mode }) {
             window.location.href = '/401';
         }
         refreshBaseState();
-        if (mode === 'EDIT') {
-            getGame('trueorfalse', slug);
-            setQuestions(trueorfalse.questions);
-            setName(trueorfalse.name);
-            setLayout(trueorfalse.layout);
-        }
+        mode === 'EDIT' && getGame('trueorfalse', slug);
+    }, []);
+    useEffect(() => {
+        trueorfalse.approved_at &&
+            setAlert(
+                'Esse jogo já foi aprovado, logo não pode mais ser editado!'
+            );
+        setQuestions(trueorfalse.questions);
+        setName(trueorfalse.name);
+        setLayout(trueorfalse.layout);
     }, [trueorfalse.slug]);
 
     return (
@@ -337,15 +340,14 @@ export default function TrueOrFalsePage({ mode }) {
                                                                 control={
                                                                     <Switch
                                                                         size="large"
-                                                                        defaultChecked={
-                                                                            trueorfalse
-                                                                                .questions[
-                                                                                index
-                                                                            ]
-                                                                                .answer
+                                                                        checked={
+                                                                            item.answer
                                                                         }
-                                                                        onChange={() => {
+                                                                        onChange={(
+                                                                            event
+                                                                        ) => {
                                                                             handleAnswerChange(
+                                                                                event,
                                                                                 index
                                                                             );
                                                                         }}
@@ -367,6 +369,7 @@ export default function TrueOrFalsePage({ mode }) {
                                 size="large"
                                 type="submit"
                                 variant="outlined"
+                                disabled={!!trueorfalse.approved_at}
                             >
                                 {mode === 'EDIT' ? 'Editar' : 'Criar'}
                             </Button>
