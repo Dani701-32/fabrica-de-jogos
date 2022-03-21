@@ -65,7 +65,7 @@ class MemoryGameController extends Controller
         foreach ($files as $file) {
             $path = "storage/memorygame";
             $fileName = $memory->slug ."_". $index . "." . $file->getClientOriginalExtension();
-            Storage::disk('s3')->delete($fileName);
+            Storage::disk('s3')->delete($path."/".$fileName);
             $file->storeAs($path, $fileName, 's3');
             $image = new Image();
             $image->path = $path;
@@ -137,7 +137,7 @@ class MemoryGameController extends Controller
             foreach ($files as $file) {
                 $path = "storage/memorygame";
                 $fileName = $memorygame->slug ."_". $index . ".". $file->getClientOriginalExtension();
-                Storage::disk('s3')->delete($fileName);
+                Storage::disk('s3')->delete($path."/".$fileName);
                 $file->storeAs($path, $fileName, 's3');
                 $old_images = Image::all()->where('memory_game_id', $memorygame->id);
                 foreach ($old_images as $old_image){

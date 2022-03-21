@@ -12,10 +12,12 @@ import Copyright from './layout/Copyright';
 import { bindActionCreators } from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
 import { actionCreators } from '../store/actionCreators';
+import { useNavigate } from 'react-router-dom';
 
 const theme = createTheme();
 
 export default function HomePage({}) {
+    const navigate = useNavigate();
     const token = useSelector((state) => state.base.token);
     const game_types = [
         { slug: 'anagram', name: 'Anagrama' },
