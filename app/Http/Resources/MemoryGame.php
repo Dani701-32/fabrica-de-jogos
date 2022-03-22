@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use JetBrains\PhpStorm\ArrayShape;
@@ -22,13 +23,14 @@ class MemoryGame extends JsonResource
         $images = Image::all()->where('memory_game_id', $this->id);
         $temp_urls = [];
         foreach($images as $image){
-            $expires = \Carbon\Carbon::now()->addMinutes(15);
-            $config = config('filesystems.disks.s3');
-            $uri = $image->path."/".$image->name;
-            $request = "GET\n\n\n{$expires->timestamp}\n/{$config['bucket']}/{$uri}";
-            $signature = urlencode(base64_encode(hash_hmac('sha1', $request, $config['secret'], true)));
-            $temp_urls[] = "{$config['endpoint']}{$config['bucket']}/{$uri}?AWSAccessKeyId={$config['key']}&Expires={$expires->timestamp}&Signature={$signature}";
+            // $expires = Carbon::now()->addMinutes(15);
+            // $config = config('filesystems.disks.s3');
+            // $uri = $image->path."/".$image->name;
+            // $request = "GET\n\n\n$expires->timestamp\n/{$config['bucket']}/$uri";
+            // $signature = urlencode(base64_encode(hash_hmac('sha1', $request, $config['secret'], true)));
+            // $temp_urls[] = "{$config['endpoint']}{$config['bucket']}/$uri?AWSAccessKeyId={$config['key']}&Expires=$expires->timestamp&Signature=$signature";
             // $temp_urls[] = Storage::disk('s3')->temporaryUrl($image->path."/".$image->name, now()->addMinutes(10));
+            $temp_urls[] = Storage::disk('s3')->url($image->path."/".$image->name);
         }
         return [
             'slug' => $this->slug,

@@ -30,9 +30,6 @@ export default function HomePage({}) {
     const dispatch = useDispatch();
     const { refreshBaseState } = bindActionCreators(actionCreators, dispatch);
     useEffect(() => {
-        if (!token) {
-            window.location.href = '/401';
-        }
         refreshBaseState();
     }, []);
     return (
