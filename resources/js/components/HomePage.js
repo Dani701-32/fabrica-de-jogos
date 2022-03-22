@@ -30,6 +30,9 @@ export default function HomePage({}) {
     const dispatch = useDispatch();
     const { refreshBaseState } = bindActionCreators(actionCreators, dispatch);
     useEffect(() => {
+        if (!localStorage.getItem('token')) {
+            window.location.href = '/401';
+        }
         refreshBaseState();
     }, []);
     return (
