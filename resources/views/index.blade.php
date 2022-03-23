@@ -22,8 +22,8 @@
                         localStorage.setItem('token', data.user_token);
                         localStorage.setItem('api_address', data.api_address);
                         localStorage.setItem('origin', data.origin);
-                        localStorage.setItem('series', JSON.stringify(data.series));
-                        localStorage.setItem('disciplinas', JSON.stringify(data.disciplinas));
+                        data.series && localStorage.setItem('series', JSON.stringify(data.series));
+                        data.disciplinas && localStorage.setItem('disciplinas', JSON.stringify(data.disciplinas));
                     }
                 });
             </script>
