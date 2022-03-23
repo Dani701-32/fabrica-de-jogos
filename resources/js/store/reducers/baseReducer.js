@@ -6,11 +6,11 @@ const initialState = {
     api_address: localStorage.getItem('api_address'),
     origin: localStorage.getItem('origin'),
     series:
-        localStorage.getItem('series') !== null
+        typeof localStorage.getItem('series') === 'object'
             ? JSON.parse(localStorage.getItem('series'))
             : { '': 0 },
     disciplinas:
-        localStorage.getItem('disciplinas') !== null
+        typeof localStorage.getItem('disciplinas') === 'object'
             ? JSON.parse(localStorage.getItem('disciplinas'))
             : { '': 0 }
 };
