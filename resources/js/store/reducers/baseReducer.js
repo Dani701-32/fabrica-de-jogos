@@ -5,12 +5,14 @@ const initialState = {
     token: localStorage.getItem('token'),
     api_address: localStorage.getItem('api_address'),
     origin: localStorage.getItem('origin'),
-    series: localStorage.getItem('series')
-        ? JSON.parse(localStorage.getItem('series'))
-        : { '': 0 },
-    disciplinas: localStorage.getItem('disciplinas')
-        ? JSON.parse(localStorage.getItem('disciplinas'))
-        : { '': 0 }
+    series:
+        localStorage.getItem('series') !== null
+            ? JSON.parse(localStorage.getItem('series'))
+            : { '': 0 },
+    disciplinas:
+        localStorage.getItem('disciplinas') !== null
+            ? JSON.parse(localStorage.getItem('disciplinas'))
+            : { '': 0 }
 };
 
 const reducer = (state = initialState, action) => {
