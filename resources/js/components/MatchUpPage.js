@@ -161,10 +161,12 @@ export default function MatchUpPage({ mode }) {
             : createGame(body, 'matchup', selectedSerie, selectedDiscipline);
     };
     useEffect(() => {
-        if (!token) {
-            window.location.href = '/401';
-        }
         refreshBaseState();
+        setTimeout(() => {
+            if (localStorage.getItem('token') === null) {
+                window.location.href = '/401';
+            }
+        }, 2000);
         mode === 'EDIT' && getGame('matchup', slug);
     }, []);
 

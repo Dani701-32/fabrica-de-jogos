@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import Copyright from './layout/Copyright';
 import { bindActionCreators } from 'redux';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { actionCreators } from '../store/actionCreators';
 import { useNavigate } from 'react-router-dom';
 
@@ -18,7 +18,6 @@ const theme = createTheme();
 
 export default function HomePage({}) {
     const navigate = useNavigate();
-    const token = useSelector((state) => state.base.token);
     const game_types = [
         { slug: 'anagram', name: 'Anagrama' },
         { slug: 'matchup', name: 'Combinação' },
@@ -30,10 +29,12 @@ export default function HomePage({}) {
     const dispatch = useDispatch();
     const { refreshBaseState } = bindActionCreators(actionCreators, dispatch);
     useEffect(() => {
-        if (!localStorage.getItem('token')) {
-            window.location.href = '/401';
-        }
         refreshBaseState();
+        setTimeout(() => {
+            if (localStorage.getItem('token') === null) {
+                window.location.href = '/401';
+            }
+        }, 2000);
     }, []);
     return (
         <ThemeProvider theme={theme}>

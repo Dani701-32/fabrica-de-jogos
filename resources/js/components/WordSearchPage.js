@@ -156,10 +156,12 @@ export default function WordSearchPage({ mode }) {
             : createGame(body, 'wordsearch', selectedSerie, selectedDiscipline);
     };
     useEffect(() => {
-        if (!token) {
-            window.location.href = '/401';
-        }
         refreshBaseState();
+        setTimeout(() => {
+            if (localStorage.getItem('token') === null) {
+                window.location.href = '/401';
+            }
+        }, 2000);
         mode === 'EDIT' && getGame('wordsearch', slug);
     }, []);
 
