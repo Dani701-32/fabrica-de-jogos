@@ -29,11 +29,11 @@ export default function HomePage({}) {
     const dispatch = useDispatch();
     const { refreshBaseState } = bindActionCreators(actionCreators, dispatch);
     useEffect(() => {
-        refreshBaseState();
         setTimeout(() => {
             if (localStorage.getItem('token') === null) {
                 window.location.href = '/401';
             }
+            refreshBaseState();
         }, 2000);
     }, []);
     return (

@@ -32,7 +32,6 @@ const theme = createTheme();
 
 export default function MatchUpPage({ mode }) {
     const { slug } = useParams();
-    const token = useSelector((state) => state.base.token);
     const open = useSelector((state) => state.base.open);
     const alert = useSelector((state) => state.base.alert);
     const matchup = useSelector((state) => state.game.matchup);
@@ -161,11 +160,11 @@ export default function MatchUpPage({ mode }) {
             : createGame(body, 'matchup', selectedSerie, selectedDiscipline);
     };
     useEffect(() => {
-        refreshBaseState();
         setTimeout(() => {
             if (localStorage.getItem('token') === null) {
                 window.location.href = '/401';
             }
+            refreshBaseState();
         }, 2000);
         mode === 'EDIT' && getGame('matchup', slug);
     }, []);

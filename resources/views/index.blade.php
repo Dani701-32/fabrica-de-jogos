@@ -19,9 +19,9 @@
                 window.addEventListener('message', (event) => {
                     if (event.origin === event.data.origin) {
                         const data = event.data;
-                        localStorage.setItem('token', data.user_token);
-                        localStorage.setItem('api_address', data.api_address);
-                        localStorage.setItem('origin', data.origin);
+                        data.user_token && localStorage.setItem('token', data.user_token);
+                        data.api_address && localStorage.setItem('api_address', data.api_address);
+                        data.origin && localStorage.setItem('origin', data.origin);
                         data.series && localStorage.setItem('series', JSON.stringify(data.series));
                         data.disciplinas && localStorage.setItem('disciplinas', JSON.stringify(data.disciplinas));
                     }

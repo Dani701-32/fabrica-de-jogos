@@ -31,7 +31,6 @@ const theme = createTheme();
 
 export default function QuizPage({ mode }) {
     const { slug } = useParams();
-    const token = useSelector((state) => state.base.token);
     const open = useSelector((state) => state.base.open);
     const alert = useSelector((state) => state.base.alert);
     const quiz = useSelector((state) => state.game.quiz);
@@ -159,11 +158,11 @@ export default function QuizPage({ mode }) {
             : createGame(body, 'quiz', selectedSerie, selectedDiscipline);
     };
     useEffect(() => {
-        refreshBaseState();
         setTimeout(() => {
             if (localStorage.getItem('token') === null) {
                 window.location.href = '/401';
             }
+            refreshBaseState();
         }, 2000);
         mode === 'EDIT' && getGame('quiz', slug);
     }, []);

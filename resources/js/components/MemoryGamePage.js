@@ -28,7 +28,6 @@ const theme = createTheme();
 
 export default function MemoryGamePage({ mode }) {
     const { slug } = useParams();
-    const token = useSelector((state) => state.base.token);
     const open = useSelector((state) => state.base.open);
     const alert = useSelector((state) => state.base.alert);
     const memorygame = useSelector((state) => state.game.memorygame);
@@ -138,11 +137,11 @@ export default function MemoryGamePage({ mode }) {
               );
     };
     useEffect(() => {
-        refreshBaseState();
         setTimeout(() => {
             if (localStorage.getItem('token') === null) {
                 window.location.href = '/401';
             }
+            refreshBaseState();
         }, 2000);
         mode === 'EDIT' && getGame('memorygame', slug);
     }, []);
