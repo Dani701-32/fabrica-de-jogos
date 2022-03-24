@@ -81,7 +81,7 @@ class MatchUpController extends Controller
         }
         $edited = false;
         foreach ($request->all() as $attr=>$value) {
-            if (in_array($attr, array_keys($matchup->getAttributes()))) {
+            if (array_key_exists($attr, $matchup->getAttributes())) {
                 $edited = true;
                 if (is_array($value)) {
                     $value =  serialize($value);

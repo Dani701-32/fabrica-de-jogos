@@ -81,7 +81,7 @@ class AnagramController extends Controller
         }
         $edited = false;
         foreach ($request->all() as $attr=>$value) {
-            if (in_array($attr, array_keys($anagram->getAttributes()))) {
+            if (array_key_exists($attr, $anagram->getAttributes())) {
                 $edited = true;
                 if (is_array($value)) {
                     $value =  serialize($value);

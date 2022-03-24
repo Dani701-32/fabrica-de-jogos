@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Schema\Builder;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -9,9 +10,9 @@ return new class extends Migration
     /**
      * The database schema.
      *
-     * @var \Illuminate\Database\Schema\Builder
+     * @var Builder
      */
-    protected $schema;
+    protected Builder $schema;
 
     /**
      * Create a new migration instance.
@@ -28,7 +29,7 @@ return new class extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         $this->schema->create('oauth_refresh_tokens', function (Blueprint $table) {
             $table->string('id', 100)->primary();
@@ -43,7 +44,7 @@ return new class extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         $this->schema->dropIfExists('oauth_refresh_tokens');
     }
@@ -53,7 +54,7 @@ return new class extends Migration
      *
      * @return string|null
      */
-    public function getConnection()
+    public function getConnection(): ?string
     {
         return config('passport.storage.database.connection');
     }

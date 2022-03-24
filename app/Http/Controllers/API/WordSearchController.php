@@ -79,7 +79,7 @@ class WordSearchController extends Controller
         }
         $edited = false;
         foreach ($request->all() as $attr=>$value) {
-            if (in_array($attr, array_keys($wordsearch->getAttributes()))) {
+            if (array_key_exists($attr, $wordsearch->getAttributes())) {
                 $edited = true;
                 if (is_array($value)) {
                     $value =  serialize($value);

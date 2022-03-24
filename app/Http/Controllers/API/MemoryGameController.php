@@ -41,7 +41,7 @@ class MemoryGameController extends Controller
         $memory->name = $request->name;
         $memory->layout = $request->layout;
         $files = $request->file('images');
-        switch (sizeof($files)) {
+        switch (count($files)) {
             case 2:
                 $memory->grid = serialize([2, 2]);
                 break;
@@ -113,7 +113,7 @@ class MemoryGameController extends Controller
 
         if($request->hasfile('images')){
             $files = $request->file('images');
-            switch (sizeof($files)) {
+            switch (count($files)) {
                 case 2:
                     $memorygame->grid = serialize([2, 2]);
                     break;

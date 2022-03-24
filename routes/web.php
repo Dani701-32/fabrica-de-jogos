@@ -19,85 +19,85 @@ use Illuminate\Support\Facades\Route;
 |
 */
 // Home Route
-Route::get('/create', function () {
+Route::get('/create', static function () {
     return view('index');
 });
 // Game routes
-Route::get('/wordsearch/{wordsearch}', function (WordSearch $wordsearch) {
+Route::get('/wordsearch/{wordsearch}', static function (WordSearch $wordsearch) {
     return view('index');
 });
-Route::get('/quiz/{quiz}', function (Quiz $quiz) {
+Route::get('/quiz/{quiz}', static function (Quiz $quiz) {
     return view('index');
 });
-Route::get('/anagram/{anagram}', function (Anagram $anagram) {
+Route::get('/anagram/{anagram}', static function (Anagram $anagram) {
     return view('index');
 });
-Route::get('/matchup/{matchup}', function (Matchup $matchup) {
+Route::get('/matchup/{matchup}', static function (Matchup $matchup) {
     return view('index');
 });
-Route::get('/trueorfalse/{trueorfalse}', function (trueOrFalse $trueorfalse){
+Route::get('/trueorfalse/{trueorfalse}', static function (trueOrFalse $trueorfalse){
     return view('index');
 });
-Route::get('/memorygame/{memorygame}', function (MemoryGame $memorygame) {
+Route::get('/memorygame/{memorygame}', static function (MemoryGame $memorygame) {
     return view('index');
 });
 // Creation routes
-Route::get('/create/quiz', function () {
+Route::get('/create/quiz', static function () {
     return view('index');
 });
-Route::get('/create/anagram', function () {
+Route::get('/create/anagram', static function () {
     return view('index');
 });
-Route::get('/create/wordsearch', function () {
+Route::get('/create/wordsearch', static function () {
     return view('index');
 });
-Route::get('/create/trueorfalse', function () {
+Route::get('/create/trueorfalse', static function () {
     return view('index');
 });
-Route::get('/create/matchup', function () {
+Route::get('/create/matchup', static function () {
     return view('index');
 });
-Route::get('/create/memorygame', function () {
+Route::get('/create/memorygame', static function () {
     return view('index');
 });
 // Edit routes
-Route::get('/edit/anagram/{anagram}', function (Anagram $anagram) {
+Route::get('/edit/anagram/{anagram}', static function (Anagram $anagram) {
     return view('index');
 });
-Route::get('/edit/matchup/{matchup}', function (Matchup $matchup) {
+Route::get('/edit/matchup/{matchup}', static function (Matchup $matchup) {
     return view('index');
 });
-Route::get('/edit/memorygame/{memorygame}', function (Memorygame $memorygame) {
+Route::get('/edit/memorygame/{memorygame}', static function (Memorygame $memorygame) {
     return view('index');
 });
-Route::get('/edit/quiz/{quiz}', function (Quiz $quiz) {
+Route::get('/edit/quiz/{quiz}', static function (Quiz $quiz) {
     return view('index');
 });
-Route::get('/edit/trueorfalse/{trueorfalse}', function (TrueOrFalse $trueOrFalse) {
+Route::get('/edit/trueorfalse/{trueorfalse}', static function (TrueOrFalse $trueOrFalse) {
     return view('index');
 });
-Route::get('/edit/wordsearch/{wordsearch}', function (Wordsearch $wordsearch) {
+Route::get('/edit/wordsearch/{wordsearch}', static function (Wordsearch $wordsearch) {
     return view('index');
 });
 // Error routes
-Route::get('/401', function () {
+Route::get('/401', static function () {
    return view('errors.401');
 });
-Route::get('/403', function () {
+Route::get('/403', static function () {
     return view('errors.403');
 });
-Route::get('/404', function () {
+Route::get('/404', static function () {
     return view('errors.404');
 });
-Route::get('/419', function () {
+Route::get('/419', static function () {
     return view('errors.419');
 });
-Route::get('/429', function () {
+Route::get('/429', static function () {
     return view('errors.429');
 });
-Route::get('/500', function () {
+Route::get('/500', static function () {
     return view('errors.500');
 });
-Route::get('/503', function () {
+Route::get('/503', static function () {
     return view('errors.503');
 });
