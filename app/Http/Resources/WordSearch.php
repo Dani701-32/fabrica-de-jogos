@@ -31,7 +31,7 @@ class WordSearch extends JsonResource
             "slug" => $this->slug,
             'name' => $this->name,
             'layout' => $this->layout,
-            "words" => unserialize($this->words, false),
+            "words" => unserialize($this->words, [false]),
             'approved_at' => $this->approved_at,
             'created_at' => $this->created_at->format('d/m/Y H:i:s'),
             'updated_at' => $this->updated_at->format('d/m/Y H:i:s'),

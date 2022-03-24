@@ -15,7 +15,7 @@ const style = {
     borderRadius: 2
 };
 
-const ImageEditor = ({ index, callback, defaultImg }) => {
+const ImageEditor = ({ index, callback, defaultImg = null }) => {
     const [upImg, setUpImg] = useState();
     const imgRef = useRef(null);
     const previewCanvasRef = useRef(null);
@@ -52,7 +52,6 @@ const ImageEditor = ({ index, callback, defaultImg }) => {
     }, []);
 
     const loadDefaultImg = (defaultImg) => {
-        console.log(defaultImg);
         const canvas = previewCanvasRef.current;
         const ctx = canvas.getContext('2d');
         let img = new Image();
@@ -98,62 +97,64 @@ const ImageEditor = ({ index, callback, defaultImg }) => {
     }, [completedCrop, defaultImg]);
 
     return (
-        <Grid container align="center" spacing={3}>
-            <Grid item xs={12}>
-                <Card elevation={5} sx={{ width: 250, height: 250 }}>
-                    <canvas
-                        id={`canvas ${index}`}
-                        ref={previewCanvasRef}
-                        style={{
-                            height: '100%',
-                            width: '100%'
-                        }}
-                    />
-                </Card>
-                <Grid
-                    item
-                    xs={12}
-                    align="center"
-                    sx={{
-                        marginTop: 2
-                    }}
-                >
-                    <label htmlFor={`upload-image${index}`}>
-                        <input
-                            style={{ display: 'none' }}
-                            id={`upload-image${index}`}
-                            name={`upload-image${index}`}
-                            type="file"
-                            accept="image/*"
-                            onChange={onSelectFile}
+        <Grid item xs={6} md={4} lg={3} key={index}>
+            <Grid container align="center" spacing={3}>
+                <Grid item xs={12}>
+                    <Card elevation={5} sx={{ width: 250, height: 250 }}>
+                        <canvas
+                            id={`canvas ${index}`}
+                            ref={previewCanvasRef}
+                            style={{
+                                height: '100%',
+                                width: '100%'
+                            }}
                         />
+                    </Card>
+                    <Grid
+                        item
+                        xs={12}
+                        align="center"
+                        sx={{
+                            marginTop: 2
+                        }}
+                    >
+                        <label htmlFor={`upload-image${index}`}>
+                            <input
+                                style={{ display: 'none' }}
+                                id={`upload-image${index}`}
+                                name={`upload-image${index}`}
+                                type="file"
+                                accept="image/*"
+                                onChange={onSelectFile}
+                            />
 
-                        <Button
-                            size="small"
-                            variant="outlined"
-                            component="span"
-                        >
-                            Selecione uma imagem
-                        </Button>
-                    </label>
+                            <Button
+                                size="small"
+                                variant="outlined"
+                                component="span"
+                            >
+                                Selecione uma imagem
+                            </Button>
+                        </label>
+                    </Grid>
                 </Grid>
+                <Modal
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                >
+                    <Box sx={style}>
+                        <ReactCrop
+                            src={upImg}
+                            onImageLoaded={onLoad}
+                            crop={crop}
+                            onChange={(c) => setCrop(c)}
+                            onComplete={(c) => setCompletedCrop(c)}
+                        />
+                    </Box>
+                </Modal>
             </Grid>
-            <Modal
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
-                <Box sx={style}>
-                    <ReactCrop
-                        src={upImg}
-                        onImageLoaded={onLoad}
-                        crop={crop}
-                        onChange={(c) => setCrop(c)}
-                        onComplete={(c) => setCompletedCrop(c)}
-                    />
-                </Box>
-            </Modal>
         </Grid>
     );
 };

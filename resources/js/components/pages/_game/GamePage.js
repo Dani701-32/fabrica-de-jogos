@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
-import { actionCreators } from '../store/actionCreators';
+import { actionCreators } from '../../../store/actionCreators';
 import { useDispatch } from 'react-redux';
 
 export default function GamePage({ game }) {

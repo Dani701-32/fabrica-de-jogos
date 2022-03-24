@@ -26,7 +26,7 @@ const responsive = {
 };
 const layouts = [1, 2, 3, 4, 5];
 
-const LayoutPicker = ({ handleLayout, selectedLayout }) => {
+const LayoutSelect = ({ handleLayout, selectedLayout }) => {
     return (
         <Grid item align="center" xs={12}>
             <Grid container align="center" alignItems="center">
@@ -83,4 +83,4 @@ const LayoutPicker = ({ handleLayout, selectedLayout }) => {
     );
 };
 
-export default React.memo(LayoutPicker);
+export default React.memo(LayoutSelect);

@@ -31,7 +31,7 @@ class TrueOrFalse extends JsonResource
             'slug' => $this->slug,
             'name' => $this->name,
             'layout' => $this->layout,
-            'questions' => unserialize($this->questions, false),
+            'questions' => unserialize($this->questions, [false]),
             'approved_at' => $this->approved_at,
             'created_at' => $this->created_at->format('d/m/Y H:i:s'),
             'updated_at' => $this->updated_at->format('d/m/Y H:i:s'),

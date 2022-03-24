@@ -48,7 +48,7 @@ class MemoryGame extends JsonResource
             'name' => $this->name,
             'layout' => $this->layout,
             'images' => $temp_urls,
-            'grid' => unserialize($this->grid, false),
+            'grid' => unserialize($this->grid, [false]),
             'approved_at' => $this->approved_at,
             'created_at' => $this->created_at->format('d/m/Y H:i:s'),
             'updated_at' => $this->updated_at->format('d/m/Y H:i:s'),

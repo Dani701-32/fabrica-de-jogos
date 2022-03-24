@@ -8,10 +8,10 @@ import {
     Card,
     IconButton
 } from '@mui/material';
-import Copyright from './layout/Copyright';
+import Copyright from '../../layout/Copyright';
 import { bindActionCreators } from 'redux';
 import { useDispatch } from 'react-redux';
-import { actionCreators } from '../store/actionCreators';
+import { actionCreators } from '../../../store/actionCreators';
 import { useNavigate } from 'react-router-dom';
 
 const theme = createTheme();
