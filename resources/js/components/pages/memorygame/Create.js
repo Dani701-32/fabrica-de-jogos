@@ -16,6 +16,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { actionCreators } from '../../../store/actionCreators';
 import FillableSelect from '../../layout/FillableSelect';
+import Copyright from '../../layout/Copyright';
+import { Box } from '@mui/system';
+import BackFAButton from '../../layout/BackFAButton';
 
 const CreateMemorygame = () => {
     const open = useSelector((state) => state.base.open);
@@ -121,112 +124,123 @@ const CreateMemorygame = () => {
     return (
         <>
             <SuccessDialog open={open} handleClose={handleClose} />
-            <Grid
-                container
-                align="center"
-                component="form"
-                justifyContent="center"
-                onSubmit={handleSubmit}
-                spacing={3}
+            <BackFAButton />
+            <Box
+                sx={{
+                    marginTop: 8,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    flexDirection: 'row'
+                }}
             >
-                <Grid item align="center" xs={12}>
-                    <TextField
-                        label="Nome"
-                        name="name"
-                        variant="outlined"
-                        value={name}
-                        onChange={(event) => {
-                            setName(event.target.value);
-                        }}
-                        required
-                    />
-                </Grid>
-                <Grid item align="center" xs={3}>
-                    <FillableSelect
-                        items={series}
-                        name="Série"
-                        value={selectedSerie}
-                        callBack={seriesChange}
-                    />
-                </Grid>
-                <Grid item align="center" xs={3}>
-                    <FillableSelect
-                        items={disciplinas}
-                        name="Disciplinas"
-                        value={selectedDiscipline}
-                        callBack={disciplineChange}
-                    />
-                </Grid>
-                <LayoutPicker
-                    handleLayout={handleLayout}
-                    selectedLayout={layout}
-                />
-                <Grid item align="center" xs={12}>
-                    <ToggleButtonGroup
-                        value={size}
-                        exclusive
-                        onChange={handleSize}
-                        aria-label="text alignment"
-                        color="primary"
-                    >
-                        <ToggleButton value={2}>2x2</ToggleButton>
-                        <ToggleButton value={3}>2x3</ToggleButton>
-                        <ToggleButton value={4}>2x4</ToggleButton>
-                        <ToggleButton value={5}>2x5</ToggleButton>
-                        <ToggleButton value={6}>3x4</ToggleButton>
-                    </ToggleButtonGroup>
-                </Grid>
-                <Grid item align="center" xs={12}>
-                    <Grid
-                        container
-                        align="center"
-                        alignItems="flex-start"
-                        justifyContent="center"
-                        spacing={3}
-                    >
-                        {alert && (
-                            <Grid item xs={12}>
-                                <Alert
-                                    severity="warning"
-                                    onClick={() => {
-                                        setAlert('');
-                                    }}
-                                >
-                                    {alert}
-                                </Alert>
-                            </Grid>
-                        )}
-                        {images.map((image, index) => {
-                            return (
-                                <ImageEditor
-                                    key={index}
-                                    index={index}
-                                    callback={updateImage}
-                                />
-                            );
-                        })}
-                    </Grid>
-                </Grid>
-                {progress === 0 ? (
+                <Grid
+                    container
+                    align="center"
+                    component="form"
+                    justifyContent="center"
+                    onSubmit={handleSubmit}
+                    spacing={3}
+                >
                     <Grid item align="center" xs={12}>
-                        <Button
-                            size="large"
-                            type="submit"
+                        <TextField
+                            label="Nome"
+                            name="name"
                             variant="outlined"
-                            disabled={!!memorygame.approved_at}
-                        >
-                            Criar
-                        </Button>
-                    </Grid>
-                ) : (
-                    <Grid item align="center" xs={12}>
-                        <CircularProgress
-                            variant="determinate"
-                            value={progress}
+                            value={name}
+                            onChange={(event) => {
+                                setName(event.target.value);
+                            }}
+                            required
                         />
                     </Grid>
-                )}
-            </Grid>
+                    <Grid item align="center" xs={3}>
+                        <FillableSelect
+                            items={series}
+                            name="Série"
+                            value={selectedSerie}
+                            callBack={seriesChange}
+                        />
+                    </Grid>
+                    <Grid item align="center" xs={3}>
+                        <FillableSelect
+                            items={disciplinas}
+                            name="Disciplinas"
+                            value={selectedDiscipline}
+                            callBack={disciplineChange}
+                        />
+                    </Grid>
+                    <LayoutPicker
+                        handleLayout={handleLayout}
+                        selectedLayout={layout}
+                    />
+                    <Grid item align="center" xs={12}>
+                        <ToggleButtonGroup
+                            value={size}
+                            exclusive
+                            onChange={handleSize}
+                            aria-label="text alignment"
+                            color="primary"
+                        >
+                            <ToggleButton value={2}>2x2</ToggleButton>
+                            <ToggleButton value={3}>2x3</ToggleButton>
+                            <ToggleButton value={4}>2x4</ToggleButton>
+                            <ToggleButton value={5}>2x5</ToggleButton>
+                            <ToggleButton value={6}>3x4</ToggleButton>
+                        </ToggleButtonGroup>
+                    </Grid>
+                    <Grid item align="center" xs={12}>
+                        <Grid
+                            container
+                            align="center"
+                            alignItems="flex-start"
+                            justifyContent="center"
+                            spacing={3}
+                        >
+                            {alert && (
+                                <Grid item xs={12}>
+                                    <Alert
+                                        severity="warning"
+                                        onClick={() => {
+                                            setAlert('');
+                                        }}
+                                    >
+                                        {alert}
+                                    </Alert>
+                                </Grid>
+                            )}
+                            {images.map((image, index) => {
+                                return (
+                                    <ImageEditor
+                                        key={index}
+                                        index={index}
+                                        callback={updateImage}
+                                    />
+                                );
+                            })}
+                        </Grid>
+                    </Grid>
+                    {progress === 0 ? (
+                        <Grid item align="center" xs={12}>
+                            <Button
+                                size="large"
+                                type="submit"
+                                variant="outlined"
+                                disabled={!!memorygame.approved_at}
+                            >
+                                Criar
+                            </Button>
+                        </Grid>
+                    ) : (
+                        <Grid item align="center" xs={12}>
+                            <CircularProgress
+                                variant="determinate"
+                                value={progress}
+                            />
+                        </Grid>
+                    )}
+                </Grid>
+            </Box>
+            <Copyright />
         </>
     );
 };

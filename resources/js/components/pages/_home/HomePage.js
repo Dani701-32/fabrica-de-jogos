@@ -33,6 +33,7 @@ export default function HomePage({}) {
                 alignItems="flex-start"
                 justifyContent="center"
                 spacing={3}
+                sx={{ marginTop: 3 }}
             >
                 {game_types.map((type, index) => {
                     return (

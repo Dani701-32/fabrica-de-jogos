@@ -10,6 +10,9 @@ import { bindActionCreators } from 'redux';
 import { actionCreators } from '../../../store/actionCreators';
 import FillableSelect from '../../layout/FillableSelect';
 import WordCard from './layout/WordCard';
+import Copyright from '../../layout/Copyright';
+import { Box } from '@mui/system';
+import BackFAButton from '../../layout/BackFAButton';
 
 const CreateWordSearch = () => {
     const open = useSelector((state) => state.base.open);
@@ -148,99 +151,110 @@ const CreateWordSearch = () => {
     return (
         <>
             <SuccessDialog open={open} handleClose={handleClose} />
-            <Grid
-                container
-                align="center"
-                component="form"
-                justifyContent="center"
-                onSubmit={handleSubmit}
-                spacing={3}
+            <BackFAButton />
+            <Box
+                sx={{
+                    marginTop: 8,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    flexDirection: 'row'
+                }}
             >
-                <Grid item align="center" xs={12}>
-                    <TextField
-                        label="Nome"
-                        name="name"
-                        variant="outlined"
-                        value={name}
-                        onChange={(event) => {
-                            setName(event.target.value);
-                        }}
-                        required
+                <Grid
+                    container
+                    align="center"
+                    component="form"
+                    justifyContent="center"
+                    onSubmit={handleSubmit}
+                    spacing={3}
+                >
+                    <Grid item align="center" xs={12}>
+                        <TextField
+                            label="Nome"
+                            name="name"
+                            variant="outlined"
+                            value={name}
+                            onChange={(event) => {
+                                setName(event.target.value);
+                            }}
+                            required
+                        />
+                    </Grid>
+                    <Grid item align="center" xs={3}>
+                        <FillableSelect
+                            items={series}
+                            name="Série"
+                            value={selectedSerie}
+                            callBack={seriesChange}
+                        />
+                    </Grid>
+                    <Grid item align="center" xs={3}>
+                        <FillableSelect
+                            items={disciplinas}
+                            name="Disciplinas"
+                            value={selectedDiscipline}
+                            callBack={disciplineChange}
+                        />
+                    </Grid>
+                    <LayoutPicker
+                        handleLayout={handleLayout}
+                        selectedLayout={layout}
                     />
-                </Grid>
-                <Grid item align="center" xs={3}>
-                    <FillableSelect
-                        items={series}
-                        name="Série"
-                        value={selectedSerie}
-                        callBack={seriesChange}
-                    />
-                </Grid>
-                <Grid item align="center" xs={3}>
-                    <FillableSelect
-                        items={disciplinas}
-                        name="Disciplinas"
-                        value={selectedDiscipline}
-                        callBack={disciplineChange}
-                    />
-                </Grid>
-                <LayoutPicker
-                    handleLayout={handleLayout}
-                    selectedLayout={layout}
-                />
-                <Grid item align="center" xs={12}>
-                    <Button
-                        onClick={handleAddWord}
-                        endIcon={<AddIcon fontSize="small" />}
-                        variant="contained"
-                    >
-                        Adicionar Palavra
-                    </Button>
-                </Grid>
-                <Grid item lg={12}>
-                    <Grid
-                        container
-                        align="center"
-                        alignItems="flex-start"
-                        justifyContent="center"
-                        spacing={3}
-                    >
-                        {alert && (
-                            <Grid item xs={12}>
-                                <Alert
-                                    severity="warning"
-                                    onClick={() => {
-                                        setAlert('');
-                                    }}
-                                >
-                                    {alert}
-                                </Alert>
-                            </Grid>
-                        )}
-                        {words.map((item, index) => {
-                            return (
-                                <WordCard
-                                    item={item}
-                                    index={index}
-                                    handleWordChange={handleWordChange}
-                                    handleRemoveWord={handleRemoveWord}
-                                    handleTipChange={handleTipChange}
-                                />
-                            );
-                        })}
+                    <Grid item align="center" xs={12}>
+                        <Button
+                            onClick={handleAddWord}
+                            endIcon={<AddIcon fontSize="small" />}
+                            variant="contained"
+                        >
+                            Adicionar Palavra
+                        </Button>
+                    </Grid>
+                    <Grid item lg={12}>
+                        <Grid
+                            container
+                            align="center"
+                            alignItems="flex-start"
+                            justifyContent="center"
+                            spacing={3}
+                        >
+                            {alert && (
+                                <Grid item xs={12}>
+                                    <Alert
+                                        severity="warning"
+                                        onClick={() => {
+                                            setAlert('');
+                                        }}
+                                    >
+                                        {alert}
+                                    </Alert>
+                                </Grid>
+                            )}
+                            {words.map((item, index) => {
+                                return (
+                                    <WordCard
+                                        item={item}
+                                        index={index}
+                                        handleWordChange={handleWordChange}
+                                        handleRemoveWord={handleRemoveWord}
+                                        handleTipChange={handleTipChange}
+                                    />
+                                );
+                            })}
+                        </Grid>
+                    </Grid>
+                    <Grid item align="center" xs={12}>
+                        <Button
+                            size="large"
+                            type="submit"
+                            variant="outlined"
+                            disabled={!!wordsearch.approved_at}
+                        >
+                            Criar
+                        </Button>
                     </Grid>
                 </Grid>
-                <Grid item align="center" xs={12}>
-                    <Button
-                        size="large"
-                        type="submit"
-                        variant="outlined"
-                        disabled={!!wordsearch.approved_at}
-                    >
-                        Criar
-                    </Button>
-                </Grid>
-            </Grid>
+            </Box>
+            <Copyright />
         </>
     );
 };

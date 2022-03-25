@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { actionCreators } from '../../../store/actionCreators';
 import QuestionCard from './layout/QuestionCard';
+import Copyright from '../../layout/Copyright';
 
 const EditQuiz = () => {
     const { slug } = useParams();
@@ -132,76 +133,88 @@ const EditQuiz = () => {
     return (
         <>
             <SuccessDialog open={open} handleClose={setClose} />
-            <Grid
-                container
-                align="center"
-                component="form"
-                justifyContent="center"
-                onSubmit={handleSubmit}
-                spacing={3}
+            <Box
+                sx={{
+                    marginTop: 8,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    flexDirection: 'row'
+                }}
             >
-                <LayoutPicker
-                    handleLayout={handleLayout}
-                    selectedLayout={layout}
-                />
-                <Grid item align="center" xs={12}>
-                    <Button
-                        onClick={handleCreateQuestion}
-                        endIcon={<AddIcon fontSize="small" />}
-                        variant="contained"
-                    >
-                        Adicionar Questão
-                    </Button>
-                </Grid>
-                <Grid item lg={12}>
-                    <Grid
-                        container
-                        align="center"
-                        alignItems="flex-start"
-                        justifyContent="center"
-                        spacing={3}
-                    >
-                        {alert && (
-                            <Grid item xs={12}>
-                                <Alert
-                                    severity="warning"
-                                    onClick={() => {
-                                        setAlert('');
-                                    }}
-                                >
-                                    {alert}
-                                </Alert>
-                            </Grid>
-                        )}
-                        {questions.map((question, index) => {
-                            return (
-                                <QuestionCard
-                                    key={index}
-                                    question={question}
-                                    index={index}
-                                    handleCreateAnswer={handleCreateAnswer}
-                                    handleAnswerChange={handleAnswerChange}
-                                    handleRemoveAnswer={handleRemoveAnswer}
-                                    handleQuestionTitleChange={
-                                        handleQuestionTitleChange
-                                    }
-                                    handleRemoveQuestion={handleRemoveQuestion}
-                                />
-                            );
-                        })}
+                <Grid
+                    container
+                    align="center"
+                    component="form"
+                    justifyContent="center"
+                    onSubmit={handleSubmit}
+                    spacing={3}
+                >
+                    <LayoutPicker
+                        handleLayout={handleLayout}
+                        selectedLayout={layout}
+                    />
+                    <Grid item align="center" xs={12}>
+                        <Button
+                            onClick={handleCreateQuestion}
+                            endIcon={<AddIcon fontSize="small" />}
+                            variant="contained"
+                        >
+                            Adicionar Questão
+                        </Button>
+                    </Grid>
+                    <Grid item lg={12}>
+                        <Grid
+                            container
+                            align="center"
+                            alignItems="flex-start"
+                            justifyContent="center"
+                            spacing={3}
+                        >
+                            {alert && (
+                                <Grid item xs={12}>
+                                    <Alert
+                                        severity="warning"
+                                        onClick={() => {
+                                            setAlert('');
+                                        }}
+                                    >
+                                        {alert}
+                                    </Alert>
+                                </Grid>
+                            )}
+                            {questions.map((question, index) => {
+                                return (
+                                    <QuestionCard
+                                        key={index}
+                                        question={question}
+                                        index={index}
+                                        handleCreateAnswer={handleCreateAnswer}
+                                        handleAnswerChange={handleAnswerChange}
+                                        handleRemoveAnswer={handleRemoveAnswer}
+                                        handleQuestionTitleChange={
+                                            handleQuestionTitleChange
+                                        }
+                                        handleRemoveQuestion={
+                                            handleRemoveQuestion
+                                        }
+                                    />
+                                );
+                            })}
+                        </Grid>
+                    </Grid>
+                    <Grid item align="center" xs={12}>
+                        <Button
+                            size="large"
+                            type="submit"
+                            variant="outlined"
+                            disabled={!!quiz.approved_at}
+                        >
+                            Salvar
+                        </Button>
                     </Grid>
                 </Grid>
-                <Grid item align="center" xs={12}>
-                    <Button
-                        size="large"
-                        type="submit"
-                        variant="outlined"
-                        disabled={!!quiz.approved_at}
-                    >
-                        Salvar
-                    </Button>
-                </Grid>
-            </Grid>
+            </Box>
+            <Copyright />
         </>
     );
 };

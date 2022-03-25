@@ -10,6 +10,9 @@ import { bindActionCreators } from 'redux';
 import { actionCreators } from '../../../store/actionCreators';
 import FillableSelect from '../../layout/FillableSelect';
 import Page from './layout/Page';
+import Copyright from '../../layout/Copyright';
+import { Box } from '@mui/system';
+import BackFAButton from '../../layout/BackFAButton';
 
 const CreateMatchUp = () => {
     const open = useSelector((state) => state.base.open);
@@ -149,100 +152,113 @@ const CreateMatchUp = () => {
     return (
         <>
             <SuccessDialog open={open} handleClose={handleClose} />
-            <Grid
-                container
-                align="center"
-                component="form"
-                justifyContent="center"
-                onSubmit={handleSubmit}
-                spacing={3}
+            <BackFAButton />
+            <Box
+                sx={{
+                    marginTop: 8,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    flexDirection: 'row'
+                }}
             >
-                <Grid item align="center" xs={12}>
-                    <TextField
-                        label="Nome"
-                        name="name"
-                        variant="outlined"
-                        value={name}
-                        onChange={(event) => {
-                            setName(event.target.value);
-                        }}
-                        required
+                <Grid
+                    container
+                    align="center"
+                    component="form"
+                    justifyContent="center"
+                    onSubmit={handleSubmit}
+                    spacing={3}
+                >
+                    <Grid item align="center" xs={12}>
+                        <TextField
+                            label="Nome"
+                            name="name"
+                            variant="outlined"
+                            value={name}
+                            onChange={(event) => {
+                                setName(event.target.value);
+                            }}
+                            required
+                        />
+                    </Grid>
+                    <Grid item align="center" xs={3}>
+                        <FillableSelect
+                            items={series}
+                            name="Série"
+                            value={selectedSerie}
+                            callBack={seriesChange}
+                        />
+                    </Grid>
+                    <Grid item align="center" xs={3}>
+                        <FillableSelect
+                            items={disciplinas}
+                            name="Disciplinas"
+                            value={selectedDiscipline}
+                            callBack={disciplineChange}
+                        />
+                    </Grid>
+                    <LayoutPicker
+                        handleLayout={handleLayout}
+                        selectedLayout={layout}
                     />
-                </Grid>
-                <Grid item align="center" xs={3}>
-                    <FillableSelect
-                        items={series}
-                        name="Série"
-                        value={selectedSerie}
-                        callBack={seriesChange}
-                    />
-                </Grid>
-                <Grid item align="center" xs={3}>
-                    <FillableSelect
-                        items={disciplinas}
-                        name="Disciplinas"
-                        value={selectedDiscipline}
-                        callBack={disciplineChange}
-                    />
-                </Grid>
-                <LayoutPicker
-                    handleLayout={handleLayout}
-                    selectedLayout={layout}
-                />
-                <Grid item align="center" xs={12}>
-                    <Button
-                        onClick={handleCreatePage}
-                        endIcon={<AddIcon fontSize="small" />}
-                        variant="contained"
-                    >
-                        Adicionar página
-                    </Button>
-                </Grid>
-                <Grid item align="center" xs={12}>
-                    <Grid
-                        container
-                        spacing={3}
-                        align="center"
-                        alignItems="flex-start"
-                        justifyContent="center"
-                    >
-                        {alert && (
-                            <Grid item xs={12}>
-                                <Alert
-                                    severity="warning"
-                                    onClick={() => {
-                                        setAlert('');
-                                    }}
-                                >
-                                    {alert}
-                                </Alert>
-                            </Grid>
-                        )}
-                        {pages.map((page, index) => {
-                            return (
-                                <Page
-                                    key={index}
-                                    page={page}
-                                    index={index}
-                                    handleWordChange={handleWordChange}
-                                    handleMeaningChange={handleMeaningChange}
-                                    handleDelete={handleRemovePage}
-                                />
-                            );
-                        })}
+                    <Grid item align="center" xs={12}>
+                        <Button
+                            onClick={handleCreatePage}
+                            endIcon={<AddIcon fontSize="small" />}
+                            variant="contained"
+                        >
+                            Adicionar página
+                        </Button>
+                    </Grid>
+                    <Grid item align="center" xs={12}>
+                        <Grid
+                            container
+                            spacing={3}
+                            align="center"
+                            alignItems="flex-start"
+                            justifyContent="center"
+                        >
+                            {alert && (
+                                <Grid item xs={12}>
+                                    <Alert
+                                        severity="warning"
+                                        onClick={() => {
+                                            setAlert('');
+                                        }}
+                                    >
+                                        {alert}
+                                    </Alert>
+                                </Grid>
+                            )}
+                            {pages.map((page, index) => {
+                                return (
+                                    <Page
+                                        key={index}
+                                        page={page}
+                                        index={index}
+                                        handleWordChange={handleWordChange}
+                                        handleMeaningChange={
+                                            handleMeaningChange
+                                        }
+                                        handleDelete={handleRemovePage}
+                                    />
+                                );
+                            })}
+                        </Grid>
+                    </Grid>
+                    <Grid item align="center" xs={12}>
+                        <Button
+                            size="large"
+                            type="submit"
+                            variant="outlined"
+                            disabled={!!matchup.approved_at}
+                        >
+                            Criar
+                        </Button>
                     </Grid>
                 </Grid>
-                <Grid item align="center" xs={12}>
-                    <Button
-                        size="large"
-                        type="submit"
-                        variant="outlined"
-                        disabled={!!matchup.approved_at}
-                    >
-                        Criar
-                    </Button>
-                </Grid>
-            </Grid>
+            </Box>
+            <Copyright />
         </>
     );
 };

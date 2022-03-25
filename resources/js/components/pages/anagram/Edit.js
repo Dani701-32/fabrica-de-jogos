@@ -9,6 +9,8 @@ import { actionCreators } from '../../../store/actionCreators';
 import { useParams } from 'react-router-dom';
 import { refreshBaseState } from '../../../store/actions';
 import Page from './layout/Page';
+import { Box } from '@mui/system';
+import Copyright from '../../layout/Copyright';
 
 export default function Edit() {
     const { slug } = useParams();
@@ -82,7 +84,7 @@ export default function Edit() {
         getGame('anagram', slug);
         setTimeout(() => {
             if (localStorage.getItem('token') === null) {
-                // window.location.href = '/401';
+                window.location.href = '/401';
             }
             refreshBaseState();
         }, 2000);
@@ -100,71 +102,81 @@ export default function Edit() {
     return (
         <>
             <SuccessDialog open={open} handleClose={setClose} />
-            <Grid
-                container
-                align="center"
-                justifyContent="center"
-                component="form"
-                onSubmit={handleSubmit}
-                spacing={3}
+            <Box
+                sx={{
+                    marginTop: 8,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    flexDirection: 'row'
+                }}
             >
-                <LayoutPicker
-                    handleLayout={handleLayout}
-                    selectedLayout={layout}
-                />
-                <Grid item align="center" xs={12}>
-                    <Button
-                        onClick={handleAddWord}
-                        endIcon={<AddIcon fontSize="small" />}
-                        variant="contained"
-                    >
-                        Adicionar Pagina
-                    </Button>
-                </Grid>
-                <Grid item lg={12}>
-                    <Grid
-                        container
-                        align="center"
-                        alignItems="flex-start"
-                        justifyContent="center"
-                        spacing={3}
-                    >
-                        {alert && (
-                            <Grid item xs={12}>
-                                <Alert
-                                    severity="warning"
-                                    onClick={() => {
-                                        setAlert('');
-                                    }}
-                                >
-                                    {alert}
-                                </Alert>
-                            </Grid>
-                        )}
-                        {pages.map((page, index) => {
-                            return (
-                                <Page
-                                    key={index}
-                                    page={page}
-                                    index={index}
-                                    onChange={handleWordChange}
-                                    handleDelete={handleRemoveWord}
-                                />
-                            );
-                        })}
+                <Grid
+                    container
+                    align="center"
+                    justifyContent="center"
+                    component="form"
+                    onSubmit={handleSubmit}
+                    spacing={3}
+                >
+                    <LayoutPicker
+                        handleLayout={handleLayout}
+                        selectedLayout={layout}
+                    />
+                    <Grid item align="center" xs={12}>
+                        <Button
+                            onClick={handleAddWord}
+                            endIcon={<AddIcon fontSize="small" />}
+                            variant="contained"
+                        >
+                            Adicionar Pagina
+                        </Button>
+                    </Grid>
+                    <Grid item lg={12}>
+                        <Grid
+                            container
+                            align="center"
+                            alignItems="flex-start"
+                            justifyContent="center"
+                            spacing={3}
+                        >
+                            {alert && (
+                                <Grid item xs={12}>
+                                    <Alert
+                                        severity="warning"
+                                        onClick={() => {
+                                            setAlert('');
+                                        }}
+                                    >
+                                        {alert}
+                                    </Alert>
+                                </Grid>
+                            )}
+                            {pages.map((page, index) => {
+                                return (
+                                    <Page
+                                        key={index}
+                                        page={page}
+                                        index={index}
+                                        onChange={handleWordChange}
+                                        handleDelete={handleRemoveWord}
+                                    />
+                                );
+                            })}
+                        </Grid>
+                    </Grid>
+                    <Grid item align="center" xs={12}>
+                        <Button
+                            size="large"
+                            type="submit"
+                            variant="outlined"
+                            disabled={!!anagram.approved_at}
+                        >
+                            Salvar
+                        </Button>
                     </Grid>
                 </Grid>
-                <Grid item align="center" xs={12}>
-                    <Button
-                        size="large"
-                        type="submit"
-                        variant="outlined"
-                        disabled={!!anagram.approved_at}
-                    >
-                        Salvar
-                    </Button>
-                </Grid>
-            </Grid>
+            </Box>
+            <Copyright />
         </>
     );
 }

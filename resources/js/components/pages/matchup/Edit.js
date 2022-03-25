@@ -10,6 +10,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { actionCreators } from '../../../store/actionCreators';
 import Page from './layout/Page';
+import { Box } from '@mui/system';
+import Copyright from '../../layout/Copyright';
 
 const EditMatchUp = () => {
     const { slug } = useParams();
@@ -131,72 +133,84 @@ const EditMatchUp = () => {
     return (
         <>
             <SuccessDialog open={open} handleClose={setClose} />
-            <Grid
-                container
-                align="center"
-                component="form"
-                justifyContent="center"
-                onSubmit={handleSubmit}
-                spacing={3}
+            <Box
+                sx={{
+                    marginTop: 8,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    flexDirection: 'row'
+                }}
             >
-                <LayoutPicker
-                    handleLayout={handleLayout}
-                    selectedLayout={layout}
-                />
-                <Grid item align="center" xs={12}>
-                    <Button
-                        onClick={handleCreatePage}
-                        endIcon={<AddIcon fontSize="small" />}
-                        variant="contained"
-                    >
-                        Adicionar página
-                    </Button>
-                </Grid>
-                <Grid item align="center" xs={12}>
-                    <Grid
-                        container
-                        spacing={3}
-                        align="center"
-                        alignItems="flex-start"
-                        justifyContent="center"
-                    >
-                        {alert && (
-                            <Grid item xs={12}>
-                                <Alert
-                                    severity="warning"
-                                    onClick={() => {
-                                        setAlert('');
-                                    }}
-                                >
-                                    {alert}
-                                </Alert>
-                            </Grid>
-                        )}
-                        {pages.map((page, index) => {
-                            return (
-                                <Page
-                                    key={index}
-                                    page={page}
-                                    index={index}
-                                    handleWordChange={handleWordChange}
-                                    handleMeaningChange={handleMeaningChange}
-                                    handleDelete={handleRemovePage}
-                                />
-                            );
-                        })}
+                <Grid
+                    container
+                    align="center"
+                    component="form"
+                    justifyContent="center"
+                    onSubmit={handleSubmit}
+                    spacing={3}
+                >
+                    <LayoutPicker
+                        handleLayout={handleLayout}
+                        selectedLayout={layout}
+                    />
+                    <Grid item align="center" xs={12}>
+                        <Button
+                            onClick={handleCreatePage}
+                            endIcon={<AddIcon fontSize="small" />}
+                            variant="contained"
+                        >
+                            Adicionar página
+                        </Button>
+                    </Grid>
+                    <Grid item align="center" xs={12}>
+                        <Grid
+                            container
+                            spacing={3}
+                            align="center"
+                            alignItems="flex-start"
+                            justifyContent="center"
+                        >
+                            {alert && (
+                                <Grid item xs={12}>
+                                    <Alert
+                                        severity="warning"
+                                        onClick={() => {
+                                            setAlert('');
+                                        }}
+                                    >
+                                        {alert}
+                                    </Alert>
+                                </Grid>
+                            )}
+                            {pages.map((page, index) => {
+                                return (
+                                    <Page
+                                        key={index}
+                                        page={page}
+                                        index={index}
+                                        handleWordChange={handleWordChange}
+                                        handleMeaningChange={
+                                            handleMeaningChange
+                                        }
+                                        handleDelete={handleRemovePage}
+                                    />
+                                );
+                            })}
+                        </Grid>
+                    </Grid>
+                    <Grid item align="center" xs={12}>
+                        <Button
+                            size="large"
+                            type="submit"
+                            variant="outlined"
+                            disabled={!!matchup.approved_at}
+                        >
+                            Salvar
+                        </Button>
                     </Grid>
                 </Grid>
-                <Grid item align="center" xs={12}>
-                    <Button
-                        size="large"
-                        type="submit"
-                        variant="outlined"
-                        disabled={!!matchup.approved_at}
-                    >
-                        Salvar
-                    </Button>
-                </Grid>
-            </Grid>
+            </Box>
+            <Copyright />
         </>
     );
 };

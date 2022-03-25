@@ -10,6 +10,9 @@ import { bindActionCreators } from 'redux';
 import { actionCreators } from '../../../store/actionCreators';
 import FillableSelect from '../../layout/FillableSelect';
 import QuestionCard from './layout/QuestionCard';
+import Copyright from '../../layout/Copyright';
+import { Box } from '@mui/system';
+import BackFAButton from '../../layout/BackFAButton';
 
 const CreateTrueOrFalse = () => {
     const open = useSelector((state) => state.base.open);
@@ -130,102 +133,115 @@ const CreateTrueOrFalse = () => {
     return (
         <>
             <SuccessDialog open={open} handleClose={handleClose} />
-            <Grid
-                container
-                align="center"
-                component="form"
-                justifyContent="center"
-                onSubmit={handleSubmit}
-                spacing={3}
+            <BackFAButton />
+            <Box
+                sx={{
+                    marginTop: 8,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    flexDirection: 'row'
+                }}
             >
-                <Grid item align="center" xs={12}>
-                    <TextField
-                        label="Nome"
-                        name="name"
-                        variant="outlined"
-                        value={name}
-                        onChange={(event) => {
-                            setName(event.target.value);
-                        }}
-                        required
+                <Grid
+                    container
+                    align="center"
+                    component="form"
+                    justifyContent="center"
+                    onSubmit={handleSubmit}
+                    spacing={3}
+                >
+                    <Grid item align="center" xs={12}>
+                        <TextField
+                            label="Nome"
+                            name="name"
+                            variant="outlined"
+                            value={name}
+                            onChange={(event) => {
+                                setName(event.target.value);
+                            }}
+                            required
+                        />
+                    </Grid>
+                    <Grid item align="center" xs={3}>
+                        <FillableSelect
+                            items={series}
+                            name="Série"
+                            value={selectedSerie}
+                            callBack={seriesChange}
+                        />
+                    </Grid>
+                    <Grid item align="center" xs={3}>
+                        <FillableSelect
+                            items={disciplinas}
+                            name="Disciplinas"
+                            value={selectedDiscipline}
+                            callBack={disciplineChange}
+                        />
+                    </Grid>
+                    <LayoutPicker
+                        handleLayout={handleLayout}
+                        selectedLayout={layout}
                     />
-                </Grid>
-                <Grid item align="center" xs={3}>
-                    <FillableSelect
-                        items={series}
-                        name="Série"
-                        value={selectedSerie}
-                        callBack={seriesChange}
-                    />
-                </Grid>
-                <Grid item align="center" xs={3}>
-                    <FillableSelect
-                        items={disciplinas}
-                        name="Disciplinas"
-                        value={selectedDiscipline}
-                        callBack={disciplineChange}
-                    />
-                </Grid>
-                <LayoutPicker
-                    handleLayout={handleLayout}
-                    selectedLayout={layout}
-                />
-                <Grid item align="center" xs={12}>
-                    <Button
-                        onClick={handleCreateQuestion}
-                        endIcon={<AddIcon fontSize="small" />}
-                        variant="contained"
-                    >
-                        Adicionar Questão
-                    </Button>
-                </Grid>
-                <Grid item lg={12}>
-                    <Grid
-                        container
-                        align="center"
-                        alignItems="flex-start"
-                        justifyContent="center"
-                        spacing={3}
-                    >
-                        {alert && (
-                            <Grid item xs={12}>
-                                <Alert
-                                    severity="warning"
-                                    onClick={() => {
-                                        setAlert('');
-                                    }}
-                                >
-                                    {alert}
-                                </Alert>
-                            </Grid>
-                        )}
-                        {questions.map((question, index) => {
-                            return (
-                                <QuestionCard
-                                    key={index}
-                                    question={question}
-                                    index={index}
-                                    handleRemoveQuestion={handleRemoveQuestion}
-                                    handleQuestionTitleChange={
-                                        handleQuestionTitleChange
-                                    }
-                                    handleAnswerChange={handleAnswerChange}
-                                />
-                            );
-                        })}
+                    <Grid item align="center" xs={12}>
+                        <Button
+                            onClick={handleCreateQuestion}
+                            endIcon={<AddIcon fontSize="small" />}
+                            variant="contained"
+                        >
+                            Adicionar Questão
+                        </Button>
+                    </Grid>
+                    <Grid item lg={12}>
+                        <Grid
+                            container
+                            align="center"
+                            alignItems="flex-start"
+                            justifyContent="center"
+                            spacing={3}
+                        >
+                            {alert && (
+                                <Grid item xs={12}>
+                                    <Alert
+                                        severity="warning"
+                                        onClick={() => {
+                                            setAlert('');
+                                        }}
+                                    >
+                                        {alert}
+                                    </Alert>
+                                </Grid>
+                            )}
+                            {questions.map((question, index) => {
+                                return (
+                                    <QuestionCard
+                                        key={index}
+                                        question={question}
+                                        index={index}
+                                        handleRemoveQuestion={
+                                            handleRemoveQuestion
+                                        }
+                                        handleQuestionTitleChange={
+                                            handleQuestionTitleChange
+                                        }
+                                        handleAnswerChange={handleAnswerChange}
+                                    />
+                                );
+                            })}
+                        </Grid>
+                    </Grid>
+                    <Grid item align="center" xs={12}>
+                        <Button
+                            size="large"
+                            type="submit"
+                            variant="outlined"
+                            disabled={!!trueorfalse.approved_at}
+                        >
+                            Criar
+                        </Button>
                     </Grid>
                 </Grid>
-                <Grid item align="center" xs={12}>
-                    <Button
-                        size="large"
-                        type="submit"
-                        variant="outlined"
-                        disabled={!!trueorfalse.approved_at}
-                    >
-                        Criar
-                    </Button>
-                </Grid>
-            </Grid>
+            </Box>
+            <Copyright />
         </>
     );
 };

@@ -14,11 +14,9 @@ import EditMatchUp from './pages/matchup/Edit';
 import CreateMemorygame from './pages/memorygame/Create';
 import EditMemorygame from './pages/memorygame/Edit';
 import HomePage from './pages/_home/HomePage';
-import { Container, CssBaseline, Box } from '@mui/material';
-import BackFAButton from './layout/BackFAButton';
+import { Container, CssBaseline } from '@mui/material';
 import { ThemeProvider } from '@mui/system';
 import { createTheme } from '@mui/material/styles';
-import Copyright from './layout/Copyright';
 
 const theme = createTheme();
 
@@ -27,99 +25,82 @@ function App() {
         <ThemeProvider theme={theme}>
             <Router>
                 <Container component="main">
-                    <BackFAButton />
                     <CssBaseline />
-                    <Box
-                        sx={{
-                            marginTop: 8,
-                            display: 'flex',
-                            justifyContent: 'center',
-                            flexDirection: 'row'
-                        }}
-                    >
-                        <Routes>
-                            {/* Home Route */}
-                            <Route path="/create" element={<HomePage />} />
-                            {/* Game Routes */}
-                            <Route
-                                path="/quiz/:slug"
-                                element={<GamePage game={'quiz'} />}
-                            />
-                            <Route
-                                path="/anagram/:slug"
-                                element={<GamePage game={'anagram'} />}
-                            />
-                            <Route
-                                path="/wordsearch/:slug"
-                                element={<GamePage game={'wordSearch'} />}
-                            />
-                            <Route
-                                path="/trueorfalse/:slug"
-                                element={<GamePage game={'trueOrFalse'} />}
-                            />
-                            <Route
-                                path="/memorygame/:slug"
-                                element={<GamePage game={'memoryGame'} />}
-                            />
-                            <Route
-                                path="/matchup/:slug"
-                                element={<GamePage game={'matchUp'} />}
-                            />
-                            {/* Create Routes */}
-                            <Route
-                                path="/create/anagram"
-                                element={<CreateAnagram />}
-                            />
-                            <Route
-                                path="/create/matchup"
-                                element={<CreateMatchUp />}
-                            />
-                            <Route
-                                path="/create/memorygame"
-                                element={<CreateMemorygame />}
-                            />
-                            <Route
-                                path="/create/quiz"
-                                element={<CreateQuiz />}
-                            />
-                            <Route
-                                path="/create/trueorfalse"
-                                element={<CreateTrueOrFalse />}
-                            />
-                            <Route
-                                path="/create/wordsearch"
-                                element={<CreateWordSearch />}
-                            />
-                            {/* Edit Routes */}
-                            <Route
-                                path="/edit/anagram/:slug"
-                                element={<EditAnagram />}
-                            />
-                            <Route
-                                path="/edit/matchup/:slug"
-                                element={<EditMatchUp />}
-                            />
-                            <Route
-                                path="/edit/memorygame/:slug"
-                                element={<EditMemorygame />}
-                            />
-                            <Route
-                                path="/edit/quiz/:slug"
-                                element={<EditQuiz />}
-                            />
-                            <Route
-                                path="/edit/trueorfalse/:slug"
-                                element={<EditTrueOrFalse />}
-                            />
-                            <Route
-                                path="/edit/wordsearch/:slug"
-                                element={<EditWordSearch />}
-                            />
-                        </Routes>
-                    </Box>
+                    <Routes>
+                        {/* Home Route */}
+                        <Route path="/create" element={<HomePage />} />
+                        {/* Game Routes */}
+                        <Route
+                            path="/quiz/:slug"
+                            element={<GamePage game={'quiz'} />}
+                        />
+                        <Route
+                            path="/anagram/:slug"
+                            element={<GamePage game={'anagram'} />}
+                        />
+                        <Route
+                            path="/wordsearch/:slug"
+                            element={<GamePage game={'wordSearch'} />}
+                        />
+                        <Route
+                            path="/trueorfalse/:slug"
+                            element={<GamePage game={'trueOrFalse'} />}
+                        />
+                        <Route
+                            path="/memorygame/:slug"
+                            element={<GamePage game={'memoryGame'} />}
+                        />
+                        <Route
+                            path="/matchup/:slug"
+                            element={<GamePage game={'matchUp'} />}
+                        />
+                        {/* Create Routes */}
+                        <Route
+                            path="/create/anagram"
+                            element={<CreateAnagram />}
+                        />
+                        <Route
+                            path="/create/matchup"
+                            element={<CreateMatchUp />}
+                        />
+                        <Route
+                            path="/create/memorygame"
+                            element={<CreateMemorygame />}
+                        />
+                        <Route path="/create/quiz" element={<CreateQuiz />} />
+                        <Route
+                            path="/create/trueorfalse"
+                            element={<CreateTrueOrFalse />}
+                        />
+                        <Route
+                            path="/create/wordsearch"
+                            element={<CreateWordSearch />}
+                        />
+                        {/* Edit Routes */}
+                        <Route
+                            path="/edit/anagram/:slug"
+                            element={<EditAnagram />}
+                        />
+                        <Route
+                            path="/edit/matchup/:slug"
+                            element={<EditMatchUp />}
+                        />
+                        <Route
+                            path="/edit/memorygame/:slug"
+                            element={<EditMemorygame />}
+                        />
+                        <Route path="/edit/quiz/:slug" element={<EditQuiz />} />
+                        <Route
+                            path="/edit/trueorfalse/:slug"
+                            element={<EditTrueOrFalse />}
+                        />
+                        <Route
+                            path="/edit/wordsearch/:slug"
+                            element={<EditWordSearch />}
+                        />
+                    </Routes>
                 </Container>
             </Router>
-            <Copyright />
         </ThemeProvider>
     );
 }

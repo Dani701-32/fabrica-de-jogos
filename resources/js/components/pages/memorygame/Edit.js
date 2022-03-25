@@ -9,6 +9,7 @@ import { bindActionCreators } from 'redux';
 import { actionCreators } from '../../../store/actionCreators';
 import { useParams } from 'react-router-dom';
 import GridSelect from './layout/GridSelect';
+import Copyright from '../../layout/Copyright';
 
 const EditMemoryGame = () => {
     const { slug } = useParams();
@@ -96,71 +97,81 @@ const EditMemoryGame = () => {
     return (
         <>
             <SuccessDialog open={open} handleClose={setClose} />
-            <Grid
-                container
-                align="center"
-                component="form"
-                justifyContent="center"
-                onSubmit={handleSubmit}
-                spacing={3}
+            <Box
+                sx={{
+                    marginTop: 8,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    flexDirection: 'row'
+                }}
             >
-                <LayoutSelect
-                    handleLayout={handleLayout}
-                    selectedLayout={layout}
-                />
-                <GridSelect size={size} handleSize={handleSize} />
-                <Grid item align="center" xs={12}>
-                    <Grid
-                        container
-                        align="center"
-                        alignItems="flex-start"
-                        justifyContent="center"
-                        spacing={3}
-                    >
-                        {alert && (
-                            <Grid item xs={12}>
-                                <Alert
-                                    severity="warning"
-                                    onClick={() => {
-                                        setAlert('');
-                                    }}
-                                >
-                                    {alert}
-                                </Alert>
-                            </Grid>
-                        )}
-                        {images.map((image, index) => {
-                            return (
-                                <ImageEditor
-                                    key={index}
-                                    index={index}
-                                    defaultImg={defaultImages[index]}
-                                    callback={updateImage}
-                                />
-                            );
-                        })}
-                    </Grid>
-                </Grid>
-                {progress === 0 ? (
+                <Grid
+                    container
+                    align="center"
+                    component="form"
+                    justifyContent="center"
+                    onSubmit={handleSubmit}
+                    spacing={3}
+                >
+                    <LayoutSelect
+                        handleLayout={handleLayout}
+                        selectedLayout={layout}
+                    />
+                    <GridSelect size={size} handleSize={handleSize} />
                     <Grid item align="center" xs={12}>
-                        <Button
-                            size="large"
-                            type="submit"
-                            variant="outlined"
-                            disabled={!!memorygame.approved_at}
+                        <Grid
+                            container
+                            align="center"
+                            alignItems="flex-start"
+                            justifyContent="center"
+                            spacing={3}
                         >
-                            Salvar
-                        </Button>
+                            {alert && (
+                                <Grid item xs={12}>
+                                    <Alert
+                                        severity="warning"
+                                        onClick={() => {
+                                            setAlert('');
+                                        }}
+                                    >
+                                        {alert}
+                                    </Alert>
+                                </Grid>
+                            )}
+                            {images.map((image, index) => {
+                                return (
+                                    <ImageEditor
+                                        key={index}
+                                        index={index}
+                                        defaultImg={defaultImages[index]}
+                                        callback={updateImage}
+                                    />
+                                );
+                            })}
+                        </Grid>
                     </Grid>
-                ) : (
-                    <Grid item align="center" xs={12}>
-                        <CircularProgress
-                            variant="determinate"
-                            value={progress}
-                        />
-                    </Grid>
-                )}
-            </Grid>
+                    {progress === 0 ? (
+                        <Grid item align="center" xs={12}>
+                            <Button
+                                size="large"
+                                type="submit"
+                                variant="outlined"
+                                disabled={!!memorygame.approved_at}
+                            >
+                                Salvar
+                            </Button>
+                        </Grid>
+                    ) : (
+                        <Grid item align="center" xs={12}>
+                            <CircularProgress
+                                variant="determinate"
+                                value={progress}
+                            />
+                        </Grid>
+                    )}
+                </Grid>
+            </Box>
+            <Copyright />
         </>
     );
 };
