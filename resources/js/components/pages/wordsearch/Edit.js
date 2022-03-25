@@ -62,25 +62,6 @@ const EditWordSearch = () => {
         }
         setLayout(newLayout);
     };
-    const handleClose = () => {
-        setName('');
-        setWords([
-            {
-                word: '',
-                tip: EditorState.createEmpty()
-            },
-            {
-                word: '',
-                tip: EditorState.createEmpty()
-            },
-            {
-                word: '',
-                tip: EditorState.createEmpty()
-            }
-        ]);
-        setLayout(1);
-        setClose();
-    };
     const handleSubmit = (event) => {
         event.preventDefault();
         if (words.length < 3) {
@@ -135,7 +116,7 @@ const EditWordSearch = () => {
 
     return (
         <>
-            <SuccessDialog open={open} handleClose={handleClose} />
+            <SuccessDialog open={open} handleClose={setClose} />
             <Grid
                 container
                 align="center"

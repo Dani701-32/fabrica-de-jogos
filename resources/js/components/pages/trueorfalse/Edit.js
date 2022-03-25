@@ -61,12 +61,6 @@ const EditTrueOrFalse = () => {
         q.splice(index, 1, question);
         setQuestions(q);
     };
-    const handleClose = () => {
-        setName('');
-        setQuestions([{ title: EditorState.createEmpty(), answer: false }]);
-        setLayout(1);
-        setClose();
-    };
     const handleSubmit = (event) => {
         event.preventDefault();
         let questionsJSON = [];
@@ -116,7 +110,7 @@ const EditTrueOrFalse = () => {
 
     return (
         <>
-            <SuccessDialog open={open} handleClose={handleClose} />
+            <SuccessDialog open={open} handleClose={setClose} />
             <Grid
                 container
                 align="center"

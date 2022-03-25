@@ -58,14 +58,6 @@ const EditMemoryGame = () => {
         i.splice(index, 1, newImage);
         setImages(i);
     };
-    const handleClose = () => {
-        setName('');
-        setLayout(1);
-        setSize(2);
-        setImages([null, null]);
-        setProgress(0);
-        setClose();
-    };
     const handleSubmit = (event) => {
         event.preventDefault();
         if (images.includes(null)) {
@@ -103,7 +95,7 @@ const EditMemoryGame = () => {
 
     return (
         <>
-            <SuccessDialog open={open} handleClose={handleClose} />
+            <SuccessDialog open={open} handleClose={setClose} />
             <Grid
                 container
                 align="center"

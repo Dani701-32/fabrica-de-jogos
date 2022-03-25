@@ -76,12 +76,6 @@ const EditMatchUp = () => {
         }
         setLayout(newLayout);
     };
-    const handleClose = () => {
-        setLayout(1);
-        setName('');
-        setPages([page]);
-        setClose();
-    };
     const handleSubmit = (event) => {
         event.preventDefault();
         let matchUpsJSON = [];
@@ -136,7 +130,7 @@ const EditMatchUp = () => {
 
     return (
         <>
-            <SuccessDialog open={open} handleClose={handleClose} />
+            <SuccessDialog open={open} handleClose={setClose} />
             <Grid
                 container
                 align="center"

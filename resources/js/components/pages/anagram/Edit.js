@@ -59,12 +59,6 @@ export default function Edit() {
         }
         setLayout(newLayout);
     };
-    const handleClose = () => {
-        setPages([['', '', '', '']]);
-        setLayout(1);
-        setName('');
-        setClose();
-    };
     const handleSubmit = (event) => {
         event.preventDefault();
         if (pages.length < 1) {
@@ -88,7 +82,7 @@ export default function Edit() {
         getGame('anagram', slug);
         setTimeout(() => {
             if (localStorage.getItem('token') === null) {
-                window.location.href = '/401';
+                // window.location.href = '/401';
             }
             refreshBaseState();
         }, 2000);
@@ -105,7 +99,7 @@ export default function Edit() {
 
     return (
         <>
-            <SuccessDialog open={open} handleClose={handleClose} />
+            <SuccessDialog open={open} handleClose={setClose} />
             <Grid
                 container
                 align="center"
