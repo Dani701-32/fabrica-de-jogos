@@ -111,14 +111,24 @@ const CreateWordSearch = () => {
             return;
         }
         let wordsJSON = [];
+        let error = false;
         words.map((word) => {
-            let textJson = convertToRaw(word.tip.getCurrentContent());
+            let content = word.tip.getCurrentContent();
+            if (content.getPlainText('').length === 0) {
+                setAlert('Preencha todos os campos!');
+                error = true;
+                return;
+            }
+            let textJson = convertToRaw(content);
             let markup = draftToText(textJson);
             wordsJSON.push({
                 tip: markup,
                 word: word.word
             });
         });
+        if (error) {
+            return;
+        }
         let body = {
             name: name,
             layout: layout,
@@ -137,13 +147,7 @@ const CreateWordSearch = () => {
 
     return (
         <>
-            <SuccessDialog
-                open={open}
-                handleClose={handleClose}
-                edit={false}
-                slug={wordsearch.slug}
-                type="wordsearch"
-            />
+            <SuccessDialog open={open} handleClose={handleClose} />
             <Grid
                 container
                 align="center"

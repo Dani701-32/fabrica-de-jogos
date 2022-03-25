@@ -119,13 +119,7 @@ const Create = () => {
 
     return (
         <>
-            <SuccessDialog
-                open={open}
-                handleClose={handleClose}
-                edit={false}
-                type="anagram"
-                slug={anagram.slug}
-            />
+            <SuccessDialog open={open} handleClose={handleClose} />
             <Grid
                 container
                 align="center"

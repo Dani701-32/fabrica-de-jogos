@@ -93,14 +93,24 @@ const CreateTrueOrFalse = () => {
             return;
         }
         let questionsJSON = [];
+        let error = false;
         questions.map((item) => {
-            let textJson = convertToRaw(item.title.getCurrentContent());
+            let content = item.title.getCurrentContent();
+            if (content.getPlainText('').length === 0) {
+                setAlert('Preencha todos os campos!');
+                error = true;
+                return;
+            }
+            let textJson = convertToRaw(content);
             let markup = draftToText(textJson);
             questionsJSON.push({
                 answer: item.answer,
                 title: markup
             });
         });
+        if (error) {
+            return;
+        }
         let body = {
             name: name,
             layout: layout,
@@ -119,13 +129,7 @@ const CreateTrueOrFalse = () => {
 
     return (
         <>
-            <SuccessDialog
-                open={open}
-                handleClose={handleClose}
-                edit={false}
-                type="trueorfalse"
-                slug={trueorfalse.slug}
-            />
+            <SuccessDialog open={open} handleClose={handleClose} />
             <Grid
                 container
                 align="center"
@@ -198,6 +202,7 @@ const CreateTrueOrFalse = () => {
                         {questions.map((question, index) => {
                             return (
                                 <QuestionCard
+                                    key={index}
                                     question={question}
                                     index={index}
                                     handleRemoveQuestion={handleRemoveQuestion}

@@ -97,7 +97,7 @@ const ImageEditor = ({ index, callback, defaultImg = null }) => {
     }, [completedCrop, defaultImg]);
 
     return (
-        <Grid item xs={6} md={4} lg={3} key={index}>
+        <Grid item xs={6} md={4} lg={3}>
             <Grid container align="center" spacing={3}>
                 <Grid item xs={12}>
                     <Card elevation={5} sx={{ width: 250, height: 250 }}>

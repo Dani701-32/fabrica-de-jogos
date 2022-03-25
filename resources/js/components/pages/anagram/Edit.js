@@ -105,13 +105,7 @@ export default function Edit() {
 
     return (
         <>
-            <SuccessDialog
-                open={open}
-                handleClose={handleClose}
-                edit={true}
-                type="anagram"
-                slug={anagram.slug}
-            />
+            <SuccessDialog open={open} handleClose={handleClose} />
             <Grid
                 container
                 align="center"

@@ -8,7 +8,6 @@ import SuccessDialog from '../../layout/SuccessDialog';
 import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { actionCreators } from '../../../store/actionCreators';
-import Copyright from '../../layout/Copyright';
 import FillableSelect from '../../layout/FillableSelect';
 import Page from './layout/Page';
 
@@ -109,12 +108,17 @@ const CreateMatchUp = () => {
             return;
         }
         let matchUpsJSON = [];
+        let error = false;
         pages.map((page) => {
             let matchUps = [];
             page.map((matchUp) => {
-                let textJson = convertToRaw(
-                    matchUp.meaning.getCurrentContent()
-                );
+                let content = matchUp.meaning.getCurrentContent();
+                if (content.getPlainText('').length === 0) {
+                    setAlert('Preencha todos os campos!');
+                    error = true;
+                    return;
+                }
+                let textJson = convertToRaw(content);
                 let markup = draftToText(textJson);
                 matchUps.push({
                     meaning: markup,
@@ -123,6 +127,9 @@ const CreateMatchUp = () => {
             });
             matchUpsJSON.push(matchUps);
         });
+        if (error) {
+            return;
+        }
         let body = {
             name: name,
             layout: layout,
@@ -141,13 +148,7 @@ const CreateMatchUp = () => {
 
     return (
         <>
-            <SuccessDialog
-                open={open}
-                handleClose={handleClose}
-                edit={false}
-                type="matchup"
-                slug={matchup.slug}
-            />
+            <SuccessDialog open={open} handleClose={handleClose} />
             <Grid
                 container
                 align="center"

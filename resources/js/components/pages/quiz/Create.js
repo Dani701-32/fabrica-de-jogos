@@ -113,14 +113,24 @@ const CreateQuiz = () => {
             return;
         }
         let questionsJSON = [];
+        let error = false;
         questions.map((item) => {
-            let textJson = convertToRaw(item.title.getCurrentContent());
+            const content = item.title.getCurrentContent();
+            if (content.getPlainText('').length === 0) {
+                setAlert('Preencha todos os campos!');
+                error = true;
+                return;
+            }
+            let textJson = convertToRaw(content);
             let markup = draftToText(textJson);
             questionsJSON.push({
                 answers: item.answers,
                 title: markup
             });
         });
+        if (error) {
+            return;
+        }
         let body = {
             name: name,
             layout: layout,
@@ -139,13 +149,7 @@ const CreateQuiz = () => {
 
     return (
         <>
-            <SuccessDialog
-                open={open}
-                handleClose={handleClose}
-                edit={false}
-                slug={quiz.slug}
-                type="quiz"
-            />
+            <SuccessDialog open={open} handleClose={handleClose} />
             <Grid
                 container
                 align="center"

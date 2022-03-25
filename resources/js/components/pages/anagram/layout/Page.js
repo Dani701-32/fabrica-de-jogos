@@ -4,7 +4,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 const Page = ({ page, index, onChange, handleDelete }) => {
     return (
-        <Grid item xs={6} md={4} lg={3} key={index}>
+        <Grid item xs={6} md={4} lg={3}>
             <Paper
                 elevation={5}
                 sx={{

@@ -103,13 +103,7 @@ const EditMemoryGame = () => {
 
     return (
         <>
-            <SuccessDialog
-                open={open}
-                handleClose={handleClose}
-                edit={true}
-                type="memorygame"
-                slug={memorygame.slug}
-            />
+            <SuccessDialog open={open} handleClose={handleClose} />
             <Grid
                 container
                 align="center"

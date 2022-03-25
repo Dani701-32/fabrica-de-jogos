@@ -11,7 +11,7 @@ const WordCard = ({
     handleTipChange
 }) => {
     return (
-        <Grid item xs={8} md={6} lg={4} key={index}>
+        <Grid item xs={8} md={6} lg={4}>
             <Paper
                 elevation={5}
                 sx={{

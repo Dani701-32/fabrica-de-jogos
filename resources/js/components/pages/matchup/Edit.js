@@ -85,12 +85,17 @@ const EditMatchUp = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
         let matchUpsJSON = [];
+        let error = false;
         pages.map((page) => {
             let matchUps = [];
             page.map((matchUp) => {
-                let textJson = convertToRaw(
-                    matchUp.meaning.getCurrentContent()
-                );
+                let content = matchUp.meaning.getCurrentContent();
+                if (content.getPlainText('').length === 0) {
+                    setAlert('Preencha todos os campos!');
+                    error = true;
+                    return;
+                }
+                let textJson = convertToRaw(content);
                 let markup = draftToText(textJson);
                 matchUps.push({
                     meaning: markup,
@@ -99,6 +104,9 @@ const EditMatchUp = () => {
             });
             matchUpsJSON.push(matchUps);
         });
+        if (error) {
+            return;
+        }
         let body = {
             name: name,
             layout: layout,
@@ -128,13 +136,7 @@ const EditMatchUp = () => {
 
     return (
         <>
-            <SuccessDialog
-                open={open}
-                handleClose={handleClose}
-                edit={true}
-                type="matchup"
-                slug={matchup.slug}
-            />
+            <SuccessDialog open={open} handleClose={handleClose} />
             <Grid
                 container
                 align="center"
