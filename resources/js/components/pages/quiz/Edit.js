@@ -11,6 +11,7 @@ import { bindActionCreators } from 'redux';
 import { actionCreators } from '../../../store/actionCreators';
 import QuestionCard from './layout/QuestionCard';
 import Copyright from '../../layout/Copyright';
+import { Box } from '@mui/system';
 
 const EditQuiz = () => {
     const { slug } = useParams();

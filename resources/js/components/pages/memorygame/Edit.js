@@ -10,6 +10,7 @@ import { actionCreators } from '../../../store/actionCreators';
 import { useParams } from 'react-router-dom';
 import GridSelect from './layout/GridSelect';
 import Copyright from '../../layout/Copyright';
+import { Box } from '@mui/system';
 
 const EditMemoryGame = () => {
     const { slug } = useParams();

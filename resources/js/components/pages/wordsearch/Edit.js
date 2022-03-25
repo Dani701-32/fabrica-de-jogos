@@ -11,6 +11,7 @@ import { bindActionCreators } from 'redux';
 import { actionCreators } from '../../../store/actionCreators';
 import WordCard from './layout/WordCard';
 import Copyright from '../../layout/Copyright';
+import { Box } from '@mui/system';
 
 const EditWordSearch = () => {
     const { slug } = useParams();
