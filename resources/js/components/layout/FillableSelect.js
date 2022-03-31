@@ -4,7 +4,7 @@ import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 const FillableSelect = ({ name, items, value, callBack }) => {
     return (
         <>
-            <FormControl sx={{ m: 1, minWidth: 80 }}>
+            <FormControl sx={{ m: 1, minWidth: 140 }}>
                 <InputLabel>{name}</InputLabel>
                 <Select
                     required
@@ -13,7 +13,7 @@ const FillableSelect = ({ name, items, value, callBack }) => {
                     autoWidth
                     label={name}
                     sx={{
-                        minWidth: 120
+                        minWidth: 140
                     }}
                 >
                     {Object.keys(items).map(function (key, index) {
