@@ -191,7 +191,7 @@ const CreateWordSearch = () => {
                     <Grid item align="center" xs={3}>
                         <FillableSelect
                             items={disciplinas}
-                            name="Módulo"
+                            name="Componente"
                             value={selectedDiscipline}
                             callBack={disciplineChange}
                         />
