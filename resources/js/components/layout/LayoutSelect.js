@@ -31,7 +31,7 @@ const LayoutSelect = ({ handleLayout, selectedLayout }) => {
         <Grid item align="center" xs={12}>
             <Grid container align="center" alignItems="center">
                 <Grid item align="center" xs={12}>
-                    <Typography variant="subtitle1">Layout:</Typography>
+                    <Typography variant="subtitle1">Tema:</Typography>
                 </Grid>
                 <Grid item align="center" margin="auto" lg={9} md={12}>
                     <Carousel responsive={responsive} infinite={true}>

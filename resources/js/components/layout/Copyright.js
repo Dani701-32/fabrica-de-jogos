@@ -6,7 +6,7 @@ const Copyright = () => {
         <>
             <br />
             <Typography variant="body2" color="text.secondary" align="center">
-                {'Copyright © '}
+                {'Copyright Portal Educacional© '}
                 {new Date().getFullYear()}
                 {'.'}
             </Typography>

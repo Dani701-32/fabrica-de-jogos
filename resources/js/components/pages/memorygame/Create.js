@@ -156,7 +156,7 @@ const CreateMemorygame = () => {
                     <Grid item align="center" xs={3}>
                         <FillableSelect
                             items={series}
-                            name="Série"
+                            name="Ano/Série"
                             value={selectedSerie}
                             callBack={seriesChange}
                         />
@@ -164,7 +164,7 @@ const CreateMemorygame = () => {
                     <Grid item align="center" xs={3}>
                         <FillableSelect
                             items={disciplinas}
-                            name="Disciplinas"
+                            name="Módulo"
                             value={selectedDiscipline}
                             callBack={disciplineChange}
                         />
