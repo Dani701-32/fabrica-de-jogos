@@ -76,6 +76,12 @@ class AnagramController extends Controller
      */
     public function update(Request $request, Anagram $anagram): JsonResponse
     {
+        $request->validate([
+            'name' => 'string|max:255',
+            'layout' => 'integer|max:10',
+            'words' => 'array|max:32',
+            'words.*' => 'string|max:17'
+        ]);
         if ($anagram->approved_at){
             return response()->json(["Bad request" => "Anagram Game Already Approved!"], 400);
         }

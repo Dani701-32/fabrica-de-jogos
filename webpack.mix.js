@@ -11,11 +11,10 @@ const mix = require('laravel-mix');
  |
  */
 
-mix
-    .js("resources/js/app.js", "public/js")
+mix.ts('resources/js/app.tsx', 'public/js')
     .react()
-    .extract(["react"])
-    .sass("resources/sass/app.scss", "public/css");
+    .extract(['react'])
+    .sass('resources/sass/app.scss', 'public/css');
 
 module.exports = {
     module: {
@@ -24,9 +23,9 @@ module.exports = {
                 test: /\.js$/,
                 exclude: /node_modules/,
                 use: {
-                    loader: "html-loader"
+                    loader: 'html-loader'
                 }
             }
         ]
     }
-}
+};

@@ -27,6 +27,7 @@
                     }
                 });
             </script>
+            <script>var exports = {};</script>
             <!-- Include Frontend Application (webpack mix) -->
             <script defer src="/js/manifest.js"></script>
             <script defer src="/js/vendor.js"></script>
