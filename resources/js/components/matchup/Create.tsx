@@ -11,7 +11,7 @@ import Page from './layout/Page';
 import Copyright from '../_layout/Copyright';
 import { RootState } from '../../store';
 import BackFAButton from '../_layout/BackFAButton';
-import { setOpen, setAlert, setBaseState } from '../../reducers/baseReducer';
+import { setBaseState } from '../../reducers/userReducer';
 import {
     useCreateMatchUpMutation,
     useCreateGameObjectMutation
@@ -22,44 +22,50 @@ const CreateMatchUp = () => {
     const dispatch = useDispatch();
     const [createMatchUp, response] = useCreateMatchUpMutation();
     const [createGameObject] = useCreateGameObjectMutation();
-    const { open, alert, token, api_address } = useSelector(
-        (state: RootState) => state.base
+    const { series, disciplinas, token, api_address } = useSelector(
+        (state: RootState) => state.user
     );
     const [name, setName] = useState('');
     const [layout, setLayout] = useState(1);
-    const page = [
-        {
-            word: '',
-            meaning: EditorState.createEmpty()
-        },
-        {
-            word: '',
-            meaning: EditorState.createEmpty()
-        },
-        {
-            word: '',
-            meaning: EditorState.createEmpty()
-        },
-        {
-            word: '',
-            meaning: EditorState.createEmpty()
-        }
+    const initialState: matchUpPage[] = [
+        [
+            { word: '', meaning: EditorState.createEmpty() },
+            { word: '', meaning: EditorState.createEmpty() },
+            { word: '', meaning: EditorState.createEmpty() },
+            { word: '', meaning: EditorState.createEmpty() }
+        ]
     ];
-    const [pages, setPages] = useState([page]);
-    const series = useSelector((state: RootState) => state.base.series);
+    const [open, setOpen] = useState(false);
+    const [alert, setAlert] = useState('');
+    const [pages, setPages] = useState(initialState);
     const [selectedSerie, setSelectedSerie] = useState('');
-    const disciplinas = useSelector(
-        (state: RootState) => state.base.disciplinas
-    );
     const [selectedDiscipline, setSelectedDiscipline] = useState('');
     const handleCreatePage = () => {
         if (pages.length >= 10) {
-            dispatch(
-                setAlert('O número máximo de páginas para esse jogo é 10!')
-            );
+            setAlert('O número máximo de páginas para esse jogo é 10!');
             return;
         }
-        setPages([...pages, page]);
+        setPages([
+            ...pages,
+            [
+                {
+                    word: '',
+                    meaning: EditorState.createEmpty()
+                },
+                {
+                    word: '',
+                    meaning: EditorState.createEmpty()
+                },
+                {
+                    word: '',
+                    meaning: EditorState.createEmpty()
+                },
+                {
+                    word: '',
+                    meaning: EditorState.createEmpty()
+                }
+            ]
+        ]);
     };
     const handleRemovePage = (index: number) => {
         if (pages.length === 1) {
@@ -107,8 +113,27 @@ const CreateMatchUp = () => {
     const handleClose = () => {
         setLayout(1);
         setName('');
-        setPages([page]);
-        dispatch(setOpen(false));
+        setPages([
+            [
+                {
+                    word: '',
+                    meaning: EditorState.createEmpty()
+                },
+                {
+                    word: '',
+                    meaning: EditorState.createEmpty()
+                },
+                {
+                    word: '',
+                    meaning: EditorState.createEmpty()
+                },
+                {
+                    word: '',
+                    meaning: EditorState.createEmpty()
+                }
+            ]
+        ]);
+        setOpen(false);
     };
     const seriesChange = (event: ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
@@ -125,11 +150,11 @@ const CreateMatchUp = () => {
     const handleSubmit = (event: FormEvent<HTMLInputElement>) => {
         event.preventDefault();
         if (selectedSerie === '') {
-            dispatch(setAlert('Selecione uma série!'));
+            setAlert('Selecione uma série!');
             return;
         }
         if (selectedDiscipline === '') {
-            dispatch(setAlert('Selecione uma disciplina!'));
+            setAlert('Selecione uma disciplina!');
             return;
         }
         let matchUpsJSON: matchUpPage[] = [];
@@ -140,7 +165,7 @@ const CreateMatchUp = () => {
                 const meanings: EditorState = matchUp.meaning as EditorState;
                 let content = meanings.getCurrentContent();
                 if (content.getPlainText('').length === 0) {
-                    dispatch(setAlert('Preencha todos os campos!'));
+                    setAlert('Preencha todos os campos!');
                     error = true;
                     return;
                 }
@@ -184,9 +209,10 @@ const CreateMatchUp = () => {
             };
             // @ts-ignore
             createGameObject({ token, api_address, ...obj }).then(() => {
-                dispatch(setOpen(true));
+                setOpen(true);
             });
         }
+        response.isError && setAlert(`Ocorreu um error: ${response.error}`);
     }, [response.isLoading]);
 
     return (
@@ -266,7 +292,7 @@ const CreateMatchUp = () => {
                                     <Alert
                                         severity="warning"
                                         onClick={() => {
-                                            dispatch(setAlert(''));
+                                            setAlert('');
                                         }}
                                     >
                                         {alert}

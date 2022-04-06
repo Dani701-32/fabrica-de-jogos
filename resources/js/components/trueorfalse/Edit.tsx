@@ -6,11 +6,10 @@ import LayoutPicker from '../_layout/LayoutSelect';
 import draftToText from '../../utils/draftToText';
 import SuccessDialog from '../_layout/SuccessDialog';
 import { useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import QuestionCard from './layout/QuestionCard';
 import Copyright from '../_layout/Copyright';
-import { setOpen, setAlert, setBaseState } from '../../reducers/baseReducer';
-import { RootState } from '../../store';
+import { setBaseState } from '../../reducers/userReducer';
 import {
     useUpdateTrueOrFalseMutation,
     useGetTrueOrFalseBySlugQuery
@@ -20,7 +19,8 @@ import textToDraft from '../../utils/textToDraft';
 
 const EditTrueOrFalse = () => {
     const { slug } = useParams();
-    const { open, alert } = useSelector((state: RootState) => state.base);
+    const [open, setOpen] = useState(false);
+    const [alert, setAlert] = useState('');
     const [name, setName] = useState('');
     const [layout, setLayout] = useState(1);
     const { data, error, isLoading } = useGetTrueOrFalseBySlugQuery(
@@ -28,11 +28,10 @@ const EditTrueOrFalse = () => {
     );
     const [updateTrueOrFalse, response] = useUpdateTrueOrFalseMutation();
     const dispatch = useDispatch();
-    const questionObj: trueOrFalseQuestion = {
-        title: EditorState.createEmpty(),
-        answer: false
-    };
-    const [questions, setQuestions] = useState([questionObj]);
+    const initialState: trueOrFalseQuestion[] = [
+        { title: EditorState.createEmpty(), answer: false }
+    ];
+    const [questions, setQuestions] = useState(initialState);
     const handleLayout = (
         event: ChangeEvent<HTMLInputElement>,
         newLayout: number
@@ -44,12 +43,13 @@ const EditTrueOrFalse = () => {
     };
     const handleCreateQuestion = () => {
         if (questions.length >= 9) {
-            dispatch(
-                setAlert('O número máximo de questões para esse jogo é 9!')
-            );
+            setAlert('O número máximo de questões para esse jogo é 9!');
             return;
         }
-        setQuestions([...questions, questionObj]);
+        setQuestions([
+            ...questions,
+            { title: EditorState.createEmpty(), answer: false }
+        ]);
     };
     const handleRemoveQuestion = (index: number) => {
         if (index === 0) {
@@ -84,7 +84,7 @@ const EditTrueOrFalse = () => {
             const title = item.title as EditorState;
             let content = title.getCurrentContent();
             if (content.getPlainText('').length === 0) {
-                dispatch(setAlert('Preencha todos os campos!'));
+                setAlert('Preencha todos os campos!');
                 error = true;
                 return;
             }
@@ -127,22 +127,20 @@ const EditTrueOrFalse = () => {
     useEffect(() => {
         if (data) {
             data.approved_at &&
-                dispatch(
-                    setAlert(
-                        'Esse jogo já foi aprovado, logo não pode mais ser editado!'
-                    )
+                setAlert(
+                    'Esse jogo já foi aprovado, logo não pode mais ser editado!'
                 );
             let deep_copy = JSON.parse(JSON.stringify(data.questions));
             setQuestions(formatQuestions(deep_copy));
             setName(data.name);
             setLayout(data.layout);
         }
-        error && dispatch(setAlert(error));
+        error && setAlert(`Ocorreu um erro: ${error}`);
     }, [isLoading]);
 
     useEffect(() => {
-        response.isSuccess && dispatch(setOpen(true));
-        response.isError && dispatch(setAlert(response.error));
+        response.isSuccess && setOpen(true);
+        response.isError && setAlert(`Ocorreu um erro: ${response.error}`);
     }, [response.isLoading]);
 
     return (
@@ -150,7 +148,7 @@ const EditTrueOrFalse = () => {
             <SuccessDialog
                 open={open}
                 handleClose={() => {
-                    dispatch(setOpen(false));
+                    setOpen(false);
                 }}
             />
             <Box
@@ -196,7 +194,7 @@ const EditTrueOrFalse = () => {
                                     <Alert
                                         severity="warning"
                                         onClick={() => {
-                                            dispatch(setAlert(''));
+                                            setAlert('');
                                         }}
                                     >
                                         {alert}

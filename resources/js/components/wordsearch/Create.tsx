@@ -16,7 +16,7 @@ import WordCard from './layout/WordCard';
 import Copyright from '../_layout/Copyright';
 import { Box } from '@mui/system';
 import BackFAButton from '../_layout/BackFAButton';
-import { setOpen, setAlert, setBaseState } from '../../reducers/baseReducer';
+import { setBaseState } from '../../reducers/userReducer';
 import { RootState } from '../../store';
 import {
     useCreateWordSearchMutation,
@@ -25,11 +25,26 @@ import {
 import { gameObj, wordObj } from '../../types';
 
 const CreateWordSearch = () => {
-    const { open, alert, disciplinas, series, token, api_address } =
-        useSelector((state: RootState) => state.base);
-    const [words, setWords] = useState([
-        { word: '', tip: EditorState.createEmpty() }
-    ]);
+    const { disciplinas, series, token, api_address } = useSelector(
+        (state: RootState) => state.user
+    );
+    const initialState: wordObj[] = [
+        {
+            word: '',
+            tip: EditorState.createEmpty()
+        },
+        {
+            word: '',
+            tip: EditorState.createEmpty()
+        },
+        {
+            word: '',
+            tip: EditorState.createEmpty()
+        }
+    ];
+    const [open, setOpen] = useState(false);
+    const [alert, setAlert] = useState('');
+    const [words, setWords] = useState(initialState);
     const [name, setName] = useState('');
     const [layout, setLayout] = useState(1);
     const [selectedSerie, setSelectedSerie] = useState('');
@@ -100,7 +115,7 @@ const CreateWordSearch = () => {
             }
         ]);
         setLayout(1);
-        dispatch(setOpen(false));
+        setOpen(false);
     };
     const seriesChange = (event: ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
@@ -178,9 +193,10 @@ const CreateWordSearch = () => {
             };
             // @ts-ignore
             createGameObject({ token, api_address, ...obj }).then(() => {
-                dispatch(setOpen(true));
+                setOpen(true);
             });
         }
+        response.isError && setAlert(`Ocorreu um error: ${response.error}`);
     }, [response.isLoading]);
 
     return (

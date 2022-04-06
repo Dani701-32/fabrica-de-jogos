@@ -6,12 +6,11 @@ import LayoutPicker from '../_layout/LayoutSelect';
 import draftToText from '../../utils/draftToText';
 import SuccessDialog from '../_layout/SuccessDialog';
 import { useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import QuestionCard from './layout/QuestionCard';
 import Copyright from '../_layout/Copyright';
 import { Box } from '@mui/system';
-import { setOpen, setAlert, setBaseState } from '../../reducers/baseReducer';
-import { RootState } from '../../store';
+import { setBaseState } from '../../reducers/userReducer';
 import {
     useUpdateQuizMutation,
     useGetQuizBySlugQuery
@@ -21,15 +20,18 @@ import textToDraft from '../../utils/textToDraft';
 
 const EditQuiz = () => {
     const { slug } = useParams();
-    const { open, alert } = useSelector((state: RootState) => state.base);
+    const [open, setOpen] = useState(false);
+    const [alert, setAlert] = useState('');
     const [name, setName] = useState('');
     const [layout, setLayout] = useState(1);
     const dispatch = useDispatch();
-    const questionObj: quizQuestion = {
-        title: EditorState.createEmpty(),
-        answers: ['', '']
-    };
-    const [questions, setQuestions] = useState([questionObj]);
+    const initialState: quizQuestion[] = [
+        {
+            title: EditorState.createEmpty(),
+            answers: ['', '']
+        }
+    ];
+    const [questions, setQuestions] = useState(initialState);
     const [updateQuiz, response] = useUpdateQuizMutation();
     const { data, error, isLoading } = useGetQuizBySlugQuery(slug as string);
     const handleCreateQuestion = () => {
@@ -37,7 +39,13 @@ const EditQuiz = () => {
             setAlert('O número máximo de questões para esse jogo é 9!');
             return;
         }
-        setQuestions([...questions, questionObj]);
+        setQuestions([
+            ...questions,
+            {
+                title: EditorState.createEmpty(),
+                answers: ['', '']
+            }
+        ]);
     };
     const handleLayout = (
         event: ChangeEvent<HTMLInputElement>,
@@ -137,7 +145,7 @@ const EditQuiz = () => {
     useEffect(() => {
         setTimeout(() => {
             if (localStorage.getItem('token') === null) {
-                // window.location.href = '/401';
+                window.location.href = '/401';
             }
             dispatch(setBaseState());
         }, 2000);
@@ -154,12 +162,12 @@ const EditQuiz = () => {
             setName(data.name);
             setLayout(data.layout);
         }
-        error && dispatch(setAlert(error));
+        error && setAlert(`Ocorreu um error: ${error}`);
     }, [isLoading]);
 
     useEffect(() => {
-        response.isSuccess && dispatch(setOpen(true));
-        response.isError && dispatch(setAlert(response.error));
+        response.isSuccess && setOpen(true);
+        response.isError && setAlert(`Ocorreu um error: ${response.error}`);
     }, [response.isLoading]);
 
     return (
@@ -167,7 +175,7 @@ const EditQuiz = () => {
             <SuccessDialog
                 open={open}
                 handleClose={() => {
-                    dispatch(setOpen(false));
+                    setOpen(false);
                 }}
             />
             <Box

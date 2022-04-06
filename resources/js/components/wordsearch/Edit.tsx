@@ -6,23 +6,36 @@ import { convertToRaw, EditorState } from 'draft-js';
 import draftToText from '../../utils/draftToText';
 import SuccessDialog from '../_layout/SuccessDialog';
 import { useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import WordCard from './layout/WordCard';
 import Copyright from '../_layout/Copyright';
-import { setOpen, setAlert, setBaseState } from '../../reducers/baseReducer';
-import { RootState } from '../../store';
+import { setBaseState } from '../../reducers/userReducer';
 import {
     useUpdateWordSearchMutation,
     useGetWordSearchBySlugQuery
 } from '../../services/games';
-import { trueOrFalseQuestion, wordObj } from '../../types';
+import { wordObj } from '../../types';
 import textToDraft from '../../utils/textToDraft';
 
 const EditWordSearch = () => {
     const { slug } = useParams();
-    const { open, alert } = useSelector((state: RootState) => state.base);
-    const word: wordObj = { word: '', tip: EditorState.createEmpty() };
-    const [words, setWords] = useState([word]);
+    const initialState: wordObj[] = [
+        {
+            word: '',
+            tip: EditorState.createEmpty()
+        },
+        {
+            word: '',
+            tip: EditorState.createEmpty()
+        },
+        {
+            word: '',
+            tip: EditorState.createEmpty()
+        }
+    ];
+    const [open, setOpen] = useState(false);
+    const [alert, setAlert] = useState('');
+    const [words, setWords] = useState(initialState);
     const [name, setName] = useState('');
     const [layout, setLayout] = useState(1);
     const { data, error, isLoading } = useGetWordSearchBySlugQuery(
@@ -36,7 +49,10 @@ const EditWordSearch = () => {
             return;
         }
         let p = [...words];
-        p.push(word);
+        p.push({
+            word: '',
+            tip: EditorState.createEmpty()
+        });
         setWords(p);
     };
     const handleRemoveWord = (index: number) => {
@@ -129,22 +145,20 @@ const EditWordSearch = () => {
     useEffect(() => {
         if (data) {
             data.approved_at &&
-                dispatch(
-                    setAlert(
-                        'Esse jogo já foi aprovado, logo não pode mais ser editado!'
-                    )
+                setAlert(
+                    'Esse jogo já foi aprovado, logo não pode mais ser editado!'
                 );
             let deep_copy = JSON.parse(JSON.stringify(data.words));
             setWords(formatTips(deep_copy));
             setName(data.name);
             setLayout(data.layout);
         }
-        error && dispatch(setAlert(error));
+        error && setAlert(`Ocorreu um erro ${error}`);
     }, [isLoading]);
 
     useEffect(() => {
-        response.isSuccess && dispatch(setOpen(true));
-        response.isError && dispatch(setAlert(response.error));
+        response.isSuccess && setOpen(true);
+        response.isError && setAlert(`Ocorreu um erro ${response.error} `);
     }, [response.isLoading]);
 
     return (

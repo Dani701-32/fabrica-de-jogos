@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
-import baseReducer from './reducers/baseReducer';
+import userReducer from './reducers/userReducer';
 import gameApi from './services/games';
 
 export const store = configureStore({
     reducer: {
-        base: baseReducer,
+        user: userReducer,
         [gameApi.reducerPath]: gameApi.reducer
     },
     middleware: (getDefaultMiddleware) =>

@@ -3,12 +3,11 @@ import { Alert, Button, Grid, Box } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import LayoutPicker from '../_layout/LayoutSelect';
 import SuccessDialog from '../_layout/SuccessDialog';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import Page from './layout/Page';
 import Copyright from '../_layout/Copyright';
-import { RootState } from '../../store';
-import { setAlert, setBaseState, setOpen } from '../../reducers/baseReducer';
+import { setBaseState } from '../../reducers/userReducer';
 import {
     useGetAnagramBySlugQuery,
     useUpdateAnagramMutation
@@ -27,7 +26,8 @@ export default function Edit() {
         }
         return res;
     }
-    const { open, alert } = useSelector((state: RootState) => state.base);
+    const [open, setOpen] = useState(false);
+    const [alert, setAlert] = useState('');
     const [layout, setLayout] = useState(1);
     const [pages, setPages] = useState([['', '', '', '']]);
     const handleAddWord = () => {
@@ -70,7 +70,7 @@ export default function Edit() {
     const handleSubmit = (event: ChangeEvent<HTMLInputElement>) => {
         event.preventDefault();
         if (pages.length < 1) {
-            dispatch(setAlert('O jogo deve ter no mínimo 1 página!'));
+            setAlert('O jogo deve ter no mínimo 1 página!');
             return;
         }
         let wordsJson: string[] = [];
@@ -84,7 +84,7 @@ export default function Edit() {
             words: wordsJson
         };
         useUpdateAnagram({ ...body, slug }).then(() => {
-            dispatch(setOpen(true));
+            setOpen(true);
         });
     };
     useEffect(() => {
@@ -98,28 +98,23 @@ export default function Edit() {
     useEffect(() => {
         if (data) {
             data.approved_at &&
-                dispatch(
-                    setAlert(
-                        'Esse jogo já foi aprovado, logo não pode mais ser editado!'
-                    )
+                setAlert(
+                    'Esse jogo já foi aprovado, logo não pode mais ser editado!'
                 );
             setPages(sliceIntoChunks(data.words as string[], 4));
             setLayout(data.layout);
         }
-        error && dispatch(setAlert(error));
+        error && setAlert(`Ocorreu um erro: ${error}`);
     }, [isLoading]);
 
     useEffect(() => {
-        response.isSuccess && dispatch(setOpen(true));
-        response.isError && dispatch(setAlert(response.error));
+        response.isSuccess && setOpen(true);
+        response.isError && setAlert(`Ocorreu um erro: ${response.error}`);
     }, [response.isLoading]);
 
     return (
         <>
-            <SuccessDialog
-                open={open}
-                handleClose={() => dispatch(setOpen(false))}
-            />
+            <SuccessDialog open={open} handleClose={() => setOpen(false)} />
             <Box
                 sx={{
                     marginTop: 8,
@@ -161,7 +156,7 @@ export default function Edit() {
                                     <Alert
                                         severity="warning"
                                         onClick={() => {
-                                            dispatch(setAlert(''));
+                                            setAlert('');
                                         }}
                                     >
                                         {alert}

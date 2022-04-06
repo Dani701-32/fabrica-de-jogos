@@ -6,11 +6,10 @@ import LayoutPicker from '../_layout/LayoutSelect';
 import draftToText from '../../utils/draftToText';
 import SuccessDialog from '../_layout/SuccessDialog';
 import { useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Page from './layout/Page';
 import Copyright from '../_layout/Copyright';
-import { RootState } from '../../store';
-import { setOpen, setAlert, setBaseState } from '../../reducers/baseReducer';
+import { setBaseState } from '../../reducers/userReducer';
 import {
     useUpdateMatchUpMutation,
     useGetMatchUpBySlugQuery
@@ -21,28 +20,31 @@ import textToDraft from '../../utils/textToDraft';
 const EditMatchUp = () => {
     const { slug } = useParams();
     const dispatch = useDispatch();
-    const { open, alert } = useSelector((state: RootState) => state.base);
+    const [open, setOpen] = useState(false);
+    const [alert, setAlert] = useState('');
     const [name, setName] = useState('');
     const [layout, setLayout] = useState(1);
-    const page: matchUpPage = [
-        {
-            word: '',
-            meaning: EditorState.createEmpty()
-        },
-        {
-            word: '',
-            meaning: EditorState.createEmpty()
-        },
-        {
-            word: '',
-            meaning: EditorState.createEmpty()
-        },
-        {
-            word: '',
-            meaning: EditorState.createEmpty()
-        }
+    const initialState: matchUpPage[] = [
+        [
+            {
+                word: '',
+                meaning: EditorState.createEmpty()
+            },
+            {
+                word: '',
+                meaning: EditorState.createEmpty()
+            },
+            {
+                word: '',
+                meaning: EditorState.createEmpty()
+            },
+            {
+                word: '',
+                meaning: EditorState.createEmpty()
+            }
+        ]
     ];
-    const [pages, setPages] = useState([page]);
+    const [pages, setPages] = useState(initialState);
     const { data, error, isLoading } = useGetMatchUpBySlugQuery(slug as string);
     const [updateMatchUp, response] = useUpdateMatchUpMutation();
     const formatPages = (raw: matchUpPage[]) => {
@@ -61,7 +63,27 @@ const EditMatchUp = () => {
             setAlert('O número máximo de páginas para esse jogo é 10!');
             return;
         }
-        setPages([...pages, page]);
+        setPages([
+            ...pages,
+            [
+                {
+                    word: '',
+                    meaning: EditorState.createEmpty()
+                },
+                {
+                    word: '',
+                    meaning: EditorState.createEmpty()
+                },
+                {
+                    word: '',
+                    meaning: EditorState.createEmpty()
+                },
+                {
+                    word: '',
+                    meaning: EditorState.createEmpty()
+                }
+            ]
+        ]);
     };
     const handleRemovePage = (index: number) => {
         let p = [...pages];
@@ -158,12 +180,12 @@ const EditMatchUp = () => {
             setName(data.name);
             setLayout(data.layout);
         }
-        error && dispatch(setAlert(error));
+        error && setAlert(`Ocorreu um erro: ${error}`);
     }, [isLoading]);
 
     useEffect(() => {
-        response.isSuccess && dispatch(setOpen(true));
-        response.isError && dispatch(setAlert(response.error));
+        response.isSuccess && setOpen(true);
+        response.isError && setAlert(`Ocorreu um erro: ${response.error}`);
     }, [response.isLoading]);
 
     return (
@@ -171,7 +193,7 @@ const EditMatchUp = () => {
             <SuccessDialog
                 open={open}
                 handleClose={() => {
-                    dispatch(setOpen(false));
+                    setOpen(false);
                 }}
             />
             <Box

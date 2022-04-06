@@ -9,9 +9,9 @@ export type gameObj = {
     series: number;
 };
 
-export type baseState = {
-    open: boolean;
-    alert: string;
+export type userState = {
+    name: string;
+    role: string;
     token: string | null;
     api_address: string | null;
     origin: string | null;

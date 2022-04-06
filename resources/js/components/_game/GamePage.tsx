@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { setBaseState } from '../../reducers/baseReducer';
+import { setBaseState } from '../../reducers/userReducer';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 
@@ -12,7 +12,7 @@ type Props = {
 export default function GamePage({ game }: Props) {
     const { slug } = useParams();
     const [open, setOpen] = useState(false);
-    const { token, origin } = useSelector((state: RootState) => state.base);
+    const { token, origin } = useSelector((state: RootState) => state.user);
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const dispatch = useDispatch();

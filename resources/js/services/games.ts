@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import {
     gameObj,
-    baseState,
+    userState,
     anagramState,
     matchUpState,
     memoryGameState,
@@ -18,7 +18,7 @@ export const gameApi = createApi({
     endpoints: (builder) => ({
         createGameObject: builder.mutation<
             gameObj,
-            Partial<gameObj & baseState>
+            Partial<gameObj & userState>
         >({
             query: ({ api_address, token, ...object }) => ({
                 url: `${api_address}`,

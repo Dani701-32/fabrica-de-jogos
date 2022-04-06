@@ -10,7 +10,7 @@ import FillableSelect from '../_layout/FillableSelect';
 import QuestionCard from './layout/QuestionCard';
 import Copyright from '../_layout/Copyright';
 import BackFAButton from '../_layout/BackFAButton';
-import { setOpen, setAlert, setBaseState } from '../../reducers/baseReducer';
+import { setBaseState } from '../../reducers/userReducer';
 import { RootState } from '../../store';
 import {
     useCreateQuizMutation,
@@ -20,17 +20,19 @@ import { gameObj, quizQuestion, quizState } from '../../types';
 
 const CreateQuiz = () => {
     const dispatch = useDispatch();
-    const { open, alert, series, disciplinas, token, api_address } =
-        useSelector((state: RootState) => state.base);
+    const { series, disciplinas, token, api_address } = useSelector(
+        (state: RootState) => state.user
+    );
+    const [open, setOpen] = useState(false);
+    const [alert, setAlert] = useState('');
     const [name, setName] = useState('');
     const [layout, setLayout] = useState(1);
     const [selectedSerie, setSelectedSerie] = useState('');
     const [selectedDiscipline, setSelectedDiscipline] = useState('');
-    const questionObj: quizQuestion = {
-        title: EditorState.createEmpty(),
-        answers: ['', '']
-    };
-    const [questions, setQuestions] = useState([questionObj]);
+    const initialState: quizQuestion[] = [
+        { title: EditorState.createEmpty(), answers: ['', ''] }
+    ];
+    const [questions, setQuestions] = useState(initialState);
     const [createQuiz, response] = useCreateQuizMutation();
     const [createGameObject] = useCreateGameObjectMutation();
     const handleCreateQuestion = () => {
@@ -38,7 +40,10 @@ const CreateQuiz = () => {
             setAlert('O número máximo de questões para esse jogo é 9!');
             return;
         }
-        setQuestions([...questions, questionObj]);
+        setQuestions([
+            ...questions,
+            { title: EditorState.createEmpty(), answers: ['', ''] }
+        ]);
     };
     const handleLayout = (
         event: ChangeEvent<HTMLInputElement>,
@@ -99,7 +104,7 @@ const CreateQuiz = () => {
         setName('');
         setQuestions([{ title: EditorState.createEmpty(), answers: ['', ''] }]);
         setLayout(1);
-        dispatch(setOpen(false));
+        setOpen(false);
     };
     const seriesChange = (event: ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
@@ -116,11 +121,11 @@ const CreateQuiz = () => {
     const handleSubmit = (event: FormEvent<HTMLInputElement>) => {
         event.preventDefault();
         if (selectedSerie === '') {
-            dispatch(setAlert('Selecione uma série!'));
+            setAlert('Selecione uma série!');
             return;
         }
         if (selectedDiscipline === '') {
-            dispatch(setAlert('Selecione uma disciplina!'));
+            setAlert('Selecione uma disciplina!');
             return;
         }
         let questionsJSON: quizQuestion[] = [];
@@ -129,7 +134,7 @@ const CreateQuiz = () => {
             const title = item.title as EditorState;
             const content = title.getCurrentContent();
             if (content.getPlainText('').length === 0) {
-                dispatch(setAlert('Preencha todos os campos!'));
+                setAlert('Preencha todos os campos!');
                 error = true;
                 return;
             }
@@ -153,7 +158,7 @@ const CreateQuiz = () => {
     useEffect(() => {
         setTimeout(() => {
             if (localStorage.getItem('token') === null) {
-                // window.location.href = '/401';
+                window.location.href = '/401';
             }
             dispatch(setBaseState());
         }, 2000);
@@ -171,7 +176,7 @@ const CreateQuiz = () => {
             };
             // @ts-ignore
             createGameObject({ token, api_address, ...obj }).then(() => {
-                dispatch(setOpen(true));
+                setOpen(true);
             });
         }
     }, [response.isLoading]);
@@ -253,7 +258,7 @@ const CreateQuiz = () => {
                                     <Alert
                                         severity="warning"
                                         onClick={() => {
-                                            dispatch(setAlert(''));
+                                            setAlert('');
                                         }}
                                     >
                                         {alert}

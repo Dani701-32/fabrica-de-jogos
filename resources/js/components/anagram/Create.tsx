@@ -9,7 +9,7 @@ import Page from './layout/Page';
 import BackFAButton from '../_layout/BackFAButton';
 import Copyright from '../_layout/Copyright';
 import { RootState } from '../../store';
-import { setOpen, setAlert, setBaseState } from '../../reducers/baseReducer';
+import { setBaseState } from '../../reducers/userReducer';
 import {
     useCreateAnagramMutation,
     useCreateGameObjectMutation
@@ -17,8 +17,11 @@ import {
 import { gameObj } from '../../types';
 
 const Create = () => {
-    const { open, alert, series, disciplinas, token, api_address } =
-        useSelector((state: RootState) => state.base);
+    const { series, disciplinas, token, api_address } = useSelector(
+        (state: RootState) => state.user
+    );
+    const [open, setOpen] = useState(false);
+    const [alert, setAlert] = useState('');
     const [createAnagram, response] = useCreateAnagramMutation();
     const [createGameObject] = useCreateGameObjectMutation();
     const [selectedSerie, setSelectedSerie] = useState('');
@@ -68,7 +71,7 @@ const Create = () => {
         setPages([['', '', '', '']]);
         setLayout(1);
         setName('');
-        dispatch(setOpen(false));
+        setOpen(false);
     };
     const seriesChange = (event: ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
@@ -85,15 +88,15 @@ const Create = () => {
     const handleSubmit = (event: FormEvent<HTMLInputElement>): void => {
         event.preventDefault();
         if (pages.length < 1) {
-            dispatch(setAlert('O jogo deve ter no mínimo 1 página!'));
+            setAlert('O jogo deve ter no mínimo 1 página!');
             return;
         }
         if (selectedSerie === '') {
-            dispatch(setAlert('Selecione uma série!'));
+            setAlert('Selecione uma série!');
             return;
         }
         if (selectedDiscipline === '') {
-            dispatch(setAlert('Selecione uma disciplina!'));
+            setAlert('Selecione uma disciplina!');
             return;
         }
         let wordsJson: string[] = [];
@@ -116,6 +119,7 @@ const Create = () => {
             if (localStorage.getItem('token') === null) {
                 window.location.href = '/401';
             }
+            dispatch(setBaseState());
         }, 2000);
     }, []);
 
@@ -131,10 +135,10 @@ const Create = () => {
             };
             // @ts-ignore
             createGameObject({ token, api_address, ...obj }).then(() => {
-                dispatch(setOpen(true));
+                setOpen(true);
             });
         }
-        response.isError && dispatch(setAlert(response.error));
+        response.isError && setAlert(`Ocorreu um error: ${response.error}`);
     }, [response.isLoading]);
 
     // @ts-ignore
@@ -218,7 +222,7 @@ const Create = () => {
                                     <Alert
                                         severity="warning"
                                         onClick={() => {
-                                            dispatch(setAlert(''));
+                                            setAlert('');
                                         }}
                                     >
                                         {alert}

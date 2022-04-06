@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Grid, Button, Card, IconButton } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { setBaseState } from '../../reducers/baseReducer';
+import { setBaseState } from '../../reducers/userReducer';
 
 export default function HomePage({}) {
     const navigate = useNavigate();
@@ -36,7 +36,8 @@ export default function HomePage({}) {
                     return (
                         <Grid key={index} item xs={6} md={4} lg={4}>
                             <Grid container alignItems="center" spacing={2}>
-                                <Grid item xs={12}>
+                                {/* @ts-ignore */}
+                                <Grid item align="center" xs={12}>
                                     <IconButton
                                         disableRipple={true}
                                         onClick={() =>
@@ -60,8 +61,10 @@ export default function HomePage({}) {
                                         </Card>
                                     </IconButton>
                                 </Grid>
+                                {/* @ts-ignore */}
                                 <Grid
                                     item
+                                    align="center"
                                     xs={12}
                                     alignItems="center"
                                     sx={{

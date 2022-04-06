@@ -15,7 +15,7 @@ import FillableSelect from '../_layout/FillableSelect';
 import QuestionCard from './layout/QuestionCard';
 import Copyright from '../_layout/Copyright';
 import BackFAButton from '../_layout/BackFAButton';
-import { setOpen, setAlert, setBaseState } from '../../reducers/baseReducer';
+import { setBaseState } from '../../reducers/userReducer';
 import { RootState } from '../../store';
 import {
     useCreateTrueOrFalseMutation,
@@ -24,8 +24,11 @@ import {
 import { gameObj, trueOrFalseQuestion } from '../../types';
 
 const CreateTrueOrFalse = () => {
-    const { open, alert, series, disciplinas, token, api_address } =
-        useSelector((state: RootState) => state.base);
+    const { series, disciplinas, token, api_address } = useSelector(
+        (state: RootState) => state.user
+    );
+    const [open, setOpen] = useState(false);
+    const [alert, setAlert] = useState('');
     const [name, setName] = useState('');
     const [layout, setLayout] = useState(1);
     const [selectedSerie, setSelectedSerie] = useState('');
@@ -33,11 +36,10 @@ const CreateTrueOrFalse = () => {
     const [createTrueOrFalse, response] = useCreateTrueOrFalseMutation();
     const [createGameObject] = useCreateGameObjectMutation();
     const dispatch = useDispatch();
-    const questionObj = {
-        title: EditorState.createEmpty(),
-        answer: false
-    };
-    const [questions, setQuestions] = useState([questionObj]);
+    const initialState: trueOrFalseQuestion[] = [
+        { title: EditorState.createEmpty(), answer: false }
+    ];
+    const [questions, setQuestions] = useState(initialState);
     const handleLayout = (
         event: ChangeEvent<HTMLInputElement>,
         newLayout: number
@@ -52,7 +54,10 @@ const CreateTrueOrFalse = () => {
             setAlert('O número máximo de questões para esse jogo é 9!');
             return;
         }
-        setQuestions([...questions, questionObj]);
+        setQuestions([
+            ...questions,
+            { title: EditorState.createEmpty(), answer: false }
+        ]);
     };
     const handleRemoveQuestion = (index: number) => {
         if (index === 0) {
@@ -83,7 +88,7 @@ const CreateTrueOrFalse = () => {
         setName('');
         setQuestions([{ title: EditorState.createEmpty(), answer: false }]);
         setLayout(1);
-        dispatch(setOpen(false));
+        setOpen(false);
     };
     const seriesChange = (event: ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
@@ -158,9 +163,10 @@ const CreateTrueOrFalse = () => {
             };
             // @ts-ignore
             createGameObject({ token, api_address, ...obj }).then(() => {
-                dispatch(setOpen(true));
+                setOpen(true);
             });
         }
+        response.isError && setAlert(`Ocorreu um error: ${response.error}`);
     }, [response.isLoading]);
 
     return (
