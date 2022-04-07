@@ -17,6 +17,7 @@ import HomePage from './_home/HomePage';
 import { Container, CssBaseline } from '@mui/material';
 import { ThemeProvider } from '@mui/system';
 import { createTheme } from '@mui/material/styles';
+import NavBar from './_layout/NavBar';
 
 const theme = createTheme();
 
@@ -24,6 +25,7 @@ function App() {
     return (
         <ThemeProvider theme={theme}>
             <Router>
+                <NavBar />
                 <Container component="main">
                     <CssBaseline />
                     <Routes>

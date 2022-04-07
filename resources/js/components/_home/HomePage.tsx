@@ -18,7 +18,7 @@ export default function HomePage({}) {
     useEffect(() => {
         setTimeout(() => {
             if (localStorage.getItem('token') === null) {
-                window.location.href = '/401';
+                // window.location.href = '/401';
             }
             dispatch(setBaseState());
         }, 2000);

@@ -12,6 +12,9 @@ export type gameObj = {
 export type userState = {
     name: string;
     role: string;
+    pfp: string;
+    prefeitura_nome: string;
+    prefeitura_logo: string;
     token: string | null;
     api_address: string | null;
     origin: string | null;
