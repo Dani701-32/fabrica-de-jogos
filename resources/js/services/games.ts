@@ -11,7 +11,7 @@ import {
 export const gameApi = createApi({
     reducerPath: 'gameApi',
     baseQuery: fetchBaseQuery({
-        baseUrl: 'https://www.fabricadejogos.portaleducacional.tec.br/'
+        baseUrl: 'https://www.fabricadejogos.portaleducacional.tec.br/api/'
     }),
     endpoints: (builder) => ({
         getAnagramBySlug: builder.query<anagramState, string>({
