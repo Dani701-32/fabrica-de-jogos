@@ -6,23 +6,19 @@ import LayoutPicker from '../_layout/LayoutSelect';
 import draftToText from '../../utils/draftToText';
 import SuccessDialog from '../_layout/SuccessDialog';
 import { useDispatch, useSelector } from 'react-redux';
-import FillableSelect from '../_layout/FillableSelect';
 import QuestionCard from './layout/QuestionCard';
 import Copyright from '../_layout/Copyright';
 import BackFAButton from '../_layout/BackFAButton';
 import { setBaseState } from '../../reducers/userReducer';
 import { RootState } from '../../store';
-import {
-    useCreateQuizMutation,
-    useCreateGameObjectMutation
-} from '../../services/games';
+import { useCreateQuizMutation } from '../../services/games';
+import { useCreateGameObjectMutation } from '../../services/portal';
 import { gameObj, quizQuestion, quizState } from '../../types';
+import ObjectPropertiesSelect from '../_layout/ObjectPropertiesSelect';
 
 const CreateQuiz = () => {
     const dispatch = useDispatch();
-    const { series, disciplinas, token, api_address } = useSelector(
-        (state: RootState) => state.user
-    );
+    const { token } = useSelector((state: RootState) => state.user);
     const [open, setOpen] = useState(false);
     const [alert, setAlert] = useState('');
     const [name, setName] = useState('');
@@ -213,24 +209,13 @@ const CreateQuiz = () => {
                             required
                         />
                     </Grid>
-                    {/* @ts-ignore */}
-                    <Grid item align="center" xs={3}>
-                        <FillableSelect
-                            items={series}
-                            name="Ano/Série"
-                            value={selectedSerie}
-                            callBack={seriesChange}
-                        />
-                    </Grid>
-                    {/* @ts-ignore */}
-                    <Grid item align="center" xs={3}>
-                        <FillableSelect
-                            items={disciplinas}
-                            name="Componente"
-                            value={selectedDiscipline}
-                            callBack={disciplineChange}
-                        />
-                    </Grid>
+                    <ObjectPropertiesSelect
+                        token={token as string}
+                        selectedSerie={selectedSerie}
+                        handleSelectSerie={seriesChange}
+                        selectedDiscipline={selectedDiscipline}
+                        handleSelectDiscipline={disciplineChange}
+                    />
                     <LayoutPicker
                         handleLayout={handleLayout}
                         selectedLayout={layout}

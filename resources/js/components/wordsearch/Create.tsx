@@ -11,23 +11,19 @@ import { convertToRaw, EditorState } from 'draft-js';
 import draftToText from '../../utils/draftToText';
 import SuccessDialog from '../_layout/SuccessDialog';
 import { useSelector, useDispatch } from 'react-redux';
-import FillableSelect from '../_layout/FillableSelect';
 import WordCard from './layout/WordCard';
 import Copyright from '../_layout/Copyright';
 import { Box } from '@mui/system';
 import BackFAButton from '../_layout/BackFAButton';
 import { setBaseState } from '../../reducers/userReducer';
 import { RootState } from '../../store';
-import {
-    useCreateWordSearchMutation,
-    useCreateGameObjectMutation
-} from '../../services/games';
+import { useCreateWordSearchMutation } from '../../services/games';
+import { useCreateGameObjectMutation } from '../../services/portal';
 import { gameObj, wordObj } from '../../types';
+import ObjectPropertiesSelect from '../_layout/ObjectPropertiesSelect';
 
 const CreateWordSearch = () => {
-    const { disciplinas, series, token, api_address } = useSelector(
-        (state: RootState) => state.user
-    );
+    const { token } = useSelector((state: RootState) => state.user);
     const initialState: wordObj[] = [
         {
             word: '',
@@ -231,24 +227,13 @@ const CreateWordSearch = () => {
                             required
                         />
                     </Grid>
-                    {/* @ts-ignore */}
-                    <Grid item align="center" xs={3}>
-                        <FillableSelect
-                            items={series}
-                            name="Ano/Série"
-                            value={selectedSerie}
-                            callBack={seriesChange}
-                        />
-                    </Grid>
-                    {/* @ts-ignore */}
-                    <Grid item align="center" xs={3}>
-                        <FillableSelect
-                            items={disciplinas}
-                            name="Componente"
-                            value={selectedDiscipline}
-                            callBack={disciplineChange}
-                        />
-                    </Grid>
+                    <ObjectPropertiesSelect
+                        token={token as string}
+                        selectedSerie={selectedSerie}
+                        handleSelectSerie={seriesChange}
+                        selectedDiscipline={selectedDiscipline}
+                        handleSelectDiscipline={disciplineChange}
+                    />
                     <LayoutPicker
                         handleLayout={handleLayout}
                         selectedLayout={layout}

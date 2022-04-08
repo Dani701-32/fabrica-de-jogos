@@ -10,11 +10,11 @@ import {
 } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
+import { useGetUserInfoQuery } from '../../services/portal';
 
 const NavBar = () => {
-    const { name, role, pfp, prefeitura_nome, prefeitura_logo } = useSelector(
-        (state: RootState) => state.user
-    );
+    const token = useSelector((state: RootState) => state.user.token);
+    const { data, isLoading } = useGetUserInfoQuery(token as string);
     return (
         <>
             <AppBar position="static">
@@ -22,7 +22,7 @@ const NavBar = () => {
                     <Toolbar disableGutters>
                         <Grid sx={{ margin: 2 }}>
                             <img
-                                src={prefeitura_logo}
+                                src="{data?.data.prefeitura_logo}"
                                 alt="logo"
                                 height="50px"
                             />
@@ -35,7 +35,7 @@ const NavBar = () => {
                                 display: { xs: 'none', md: 'flex' }
                             }}
                         >
-                            {prefeitura_nome}
+                            andrinor
                         </Typography>
                     </Toolbar>
                 </Container>
@@ -45,7 +45,7 @@ const NavBar = () => {
                     <Box sx={{ flexGrow: 0 }}>
                         <Avatar
                             alt="avatar"
-                            src={pfp}
+                            src={`https://metech.s3.flexify.io/${data?.data.pfp}`}
                             sx={{ p: 0, margin: 2, height: 50, width: 50 }}
                         />
                     </Box>
@@ -60,7 +60,7 @@ const NavBar = () => {
                                     display: { xs: 'none', md: 'flex' }
                                 }}
                             >
-                                {name}
+                                {data?.data.name}
                             </Typography>
                         </Grid>
                         <Grid item xs={3}>
@@ -73,7 +73,7 @@ const NavBar = () => {
                                     display: { xs: 'none', md: 'flex' }
                                 }}
                             >
-                                {role}
+                                {data?.data.role}
                             </Typography>
                         </Grid>
                     </Grid>

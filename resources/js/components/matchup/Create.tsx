@@ -6,25 +6,21 @@ import LayoutPicker from '../_layout/LayoutSelect';
 import draftToText from '../../utils/draftToText';
 import SuccessDialog from '../_layout/SuccessDialog';
 import { useDispatch, useSelector } from 'react-redux';
-import FillableSelect from '../_layout/FillableSelect';
 import Page from './layout/Page';
 import Copyright from '../_layout/Copyright';
 import { RootState } from '../../store';
 import BackFAButton from '../_layout/BackFAButton';
 import { setBaseState } from '../../reducers/userReducer';
-import {
-    useCreateMatchUpMutation,
-    useCreateGameObjectMutation
-} from '../../services/games';
+import { useCreateMatchUpMutation } from '../../services/games';
+import { useCreateGameObjectMutation } from '../../services/portal';
 import { gameObj, matchUpObj, matchUpPage, matchUpState } from '../../types';
+import ObjectPropertiesSelect from '../_layout/ObjectPropertiesSelect';
 
 const CreateMatchUp = () => {
     const dispatch = useDispatch();
     const [createMatchUp, response] = useCreateMatchUpMutation();
     const [createGameObject] = useCreateGameObjectMutation();
-    const { series, disciplinas, token, api_address } = useSelector(
-        (state: RootState) => state.user
-    );
+    const { token } = useSelector((state: RootState) => state.user);
     const [name, setName] = useState('');
     const [layout, setLayout] = useState(1);
     const initialState: matchUpPage[] = [
@@ -208,7 +204,7 @@ const CreateMatchUp = () => {
                 series: Number(selectedSerie)
             };
             // @ts-ignore
-            createGameObject({ token, api_address, ...obj }).then(() => {
+            createGameObject({ token, ...obj }).then(() => {
                 setOpen(true);
             });
         }
@@ -248,24 +244,13 @@ const CreateMatchUp = () => {
                             required
                         />
                     </Grid>
-                    {/* @ts-ignore */}
-                    <Grid item align="center" xs={3}>
-                        <FillableSelect
-                            items={series}
-                            name="Ano/Série"
-                            value={selectedSerie}
-                            callBack={seriesChange}
-                        />
-                    </Grid>
-                    {/* @ts-ignore */}
-                    <Grid item align="center" xs={3}>
-                        <FillableSelect
-                            items={disciplinas}
-                            name="Componente"
-                            value={selectedDiscipline}
-                            callBack={disciplineChange}
-                        />
-                    </Grid>
+                    <ObjectPropertiesSelect
+                        token={token as string}
+                        selectedSerie={selectedSerie}
+                        handleSelectSerie={seriesChange}
+                        selectedDiscipline={selectedDiscipline}
+                        handleSelectDiscipline={disciplineChange}
+                    />
                     <LayoutPicker
                         handleLayout={handleLayout}
                         selectedLayout={layout}

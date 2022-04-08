@@ -20,14 +20,10 @@
                     if (event.origin === event.data.origin) {
                         const data = event.data;
                         data.user_token && localStorage.setItem('token', data.user_token);
-                        data.api_address && localStorage.setItem('api_address', data.api_address);
                         data.origin && localStorage.setItem('origin', data.origin);
-                        data.series && localStorage.setItem('series', JSON.stringify(data.series));
-                        data.disciplinas && localStorage.setItem('disciplinas', JSON.stringify(data.disciplinas));
                     }
                 });
             </script>
-            <script>var exports = {};</script>
             <!-- Include Frontend Application (webpack mix) -->
             <script defer src="/js/manifest.js"></script>
             <script defer src="/js/vendor.js"></script>

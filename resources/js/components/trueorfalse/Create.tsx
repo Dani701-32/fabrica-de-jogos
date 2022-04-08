@@ -17,16 +17,13 @@ import Copyright from '../_layout/Copyright';
 import BackFAButton from '../_layout/BackFAButton';
 import { setBaseState } from '../../reducers/userReducer';
 import { RootState } from '../../store';
-import {
-    useCreateTrueOrFalseMutation,
-    useCreateGameObjectMutation
-} from '../../services/games';
+import { useCreateTrueOrFalseMutation } from '../../services/games';
+import { useCreateGameObjectMutation } from '../../services/portal';
 import { gameObj, trueOrFalseQuestion } from '../../types';
+import ObjectPropertiesSelect from '../_layout/ObjectPropertiesSelect';
 
 const CreateTrueOrFalse = () => {
-    const { series, disciplinas, token, api_address } = useSelector(
-        (state: RootState) => state.user
-    );
+    const { token } = useSelector((state: RootState) => state.user);
     const [open, setOpen] = useState(false);
     const [alert, setAlert] = useState('');
     const [name, setName] = useState('');
@@ -201,24 +198,13 @@ const CreateTrueOrFalse = () => {
                             required
                         />
                     </Grid>
-                    {/* @ts-ignore */}
-                    <Grid item align="center" xs={3}>
-                        <FillableSelect
-                            items={series}
-                            name="Ano/Série"
-                            value={selectedSerie}
-                            callBack={seriesChange}
-                        />
-                    </Grid>
-                    {/* @ts-ignore */}
-                    <Grid item align="center" xs={3}>
-                        <FillableSelect
-                            items={disciplinas}
-                            name="Componente"
-                            value={selectedDiscipline}
-                            callBack={disciplineChange}
-                        />
-                    </Grid>
+                    <ObjectPropertiesSelect
+                        token={token as string}
+                        selectedSerie={selectedSerie}
+                        handleSelectSerie={seriesChange}
+                        selectedDiscipline={selectedDiscipline}
+                        handleSelectDiscipline={disciplineChange}
+                    />
                     <LayoutPicker
                         handleLayout={handleLayout}
                         selectedLayout={layout}
