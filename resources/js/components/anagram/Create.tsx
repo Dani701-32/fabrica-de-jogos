@@ -15,7 +15,7 @@ import ObjectPropertiesSelect from '../_layout/ObjectPropertiesSelect';
 import { gameObj } from '../../types';
 
 const Create = () => {
-    const { token } = useSelector((state: RootState) => state.user);
+    const { token, origin } = useSelector((state: RootState) => state.user);
     const [open, setOpen] = useState(false);
     const [alert, setAlert] = useState('');
     const [createAnagram, response] = useCreateAnagramMutation();
@@ -130,7 +130,7 @@ const Create = () => {
                 series: Number(selectedSerie)
             };
             // @ts-ignore
-            createGameObject({ token, ...obj }).then(() => {
+            createGameObject({ origin, token, ...obj }).then(() => {
                 setOpen(true);
             });
         }

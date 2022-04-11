@@ -23,7 +23,7 @@ import { gameObj, wordObj } from '../../types';
 import ObjectPropertiesSelect from '../_layout/ObjectPropertiesSelect';
 
 const CreateWordSearch = () => {
-    const { token } = useSelector((state: RootState) => state.user);
+    const { token, origin } = useSelector((state: RootState) => state.user);
     const initialState: wordObj[] = [
         {
             word: '',
@@ -188,7 +188,7 @@ const CreateWordSearch = () => {
                 series: Number(selectedSerie)
             };
             // @ts-ignore
-            createGameObject({ token, ...obj }).then(() => {
+            createGameObject({ token, origin, ...obj }).then(() => {
                 setOpen(true);
             });
         }

@@ -20,7 +20,7 @@ const CreateMatchUp = () => {
     const dispatch = useDispatch();
     const [createMatchUp, response] = useCreateMatchUpMutation();
     const [createGameObject] = useCreateGameObjectMutation();
-    const { token } = useSelector((state: RootState) => state.user);
+    const { token, origin } = useSelector((state: RootState) => state.user);
     const [name, setName] = useState('');
     const [layout, setLayout] = useState(1);
     const initialState: matchUpPage[] = [
@@ -204,7 +204,7 @@ const CreateMatchUp = () => {
                 series: Number(selectedSerie)
             };
             // @ts-ignore
-            createGameObject({ token, ...obj }).then(() => {
+            createGameObject({ token, origin, ...obj }).then(() => {
                 setOpen(true);
             });
         }

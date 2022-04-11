@@ -23,7 +23,7 @@ import { gameObj, trueOrFalseQuestion } from '../../types';
 import ObjectPropertiesSelect from '../_layout/ObjectPropertiesSelect';
 
 const CreateTrueOrFalse = () => {
-    const { token } = useSelector((state: RootState) => state.user);
+    const { token, origin } = useSelector((state: RootState) => state.user);
     const [open, setOpen] = useState(false);
     const [alert, setAlert] = useState('');
     const [name, setName] = useState('');
@@ -159,7 +159,7 @@ const CreateTrueOrFalse = () => {
                 series: Number(selectedSerie)
             };
             // @ts-ignore
-            createGameObject({ token, ...obj }).then(() => {
+            createGameObject({ token, origin, ...obj }).then(() => {
                 setOpen(true);
             });
         }
