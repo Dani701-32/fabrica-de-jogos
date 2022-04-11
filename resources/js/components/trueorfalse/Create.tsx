@@ -159,7 +159,7 @@ const CreateTrueOrFalse = () => {
                 series: Number(selectedSerie)
             };
             // @ts-ignore
-            createGameObject({ token, api_address, ...obj }).then(() => {
+            createGameObject({ token, ...obj }).then(() => {
                 setOpen(true);
             });
         }
