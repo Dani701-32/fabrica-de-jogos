@@ -34,7 +34,7 @@ export const portalApi = createApi({
             Partial<gameObj & userState>
         >({
             query: ({ origin, token, ...object }) => ({
-                url: `${origin}/api/conteudo/create-from-game/`,
+                url: `${origin}/api/conteudo/create-from-game`,
                 method: 'POST',
                 body: object,
                 headers: {
@@ -47,7 +47,7 @@ export const portalApi = createApi({
         editGameObject: builder.mutation<gameObj, Partial<gameObj & userState>>(
             {
                 query: ({ origin, token, ...object }) => ({
-                    url: `${origin}/api/conteudo/edit-from-game/`,
+                    url: `${origin}/api/conteudo/edit-from-game`,
                     method: 'PUT',
                     body: object,
                     headers: {
