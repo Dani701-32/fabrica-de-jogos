@@ -1,5 +1,12 @@
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
-import { Alert, Button, Grid, TextField, Box } from '@mui/material';
+import {
+    Alert,
+    Button,
+    Grid,
+    TextField,
+    Box,
+    SelectChangeEvent
+} from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import LayoutPicker from '../_layout/LayoutSelect';
 import SuccessDialog from '../_layout/SuccessDialog';
@@ -20,7 +27,7 @@ const Create = () => {
     const [alert, setAlert] = useState('');
     const [createAnagram, response] = useCreateAnagramMutation();
     const [createGameObject] = useCreateGameObjectMutation();
-    const [selectedSerie, setSelectedSerie] = useState('');
+    const [selectedSerie, setSelectedSerie] = useState(['']);
     const [selectedDiscipline, setSelectedDiscipline] = useState('');
     const [name, setName] = useState('');
     const [layout, setLayout] = useState(1);
@@ -69,10 +76,12 @@ const Create = () => {
         setName('');
         setOpen(false);
     };
-    const seriesChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const seriesChange = (event: SelectChangeEvent<typeof selectedSerie>) => {
         const value = event.target.value;
-        if (value !== null && value !== selectedSerie) {
-            setSelectedSerie(value);
+        if (value !== null) {
+            setSelectedSerie(
+                typeof value === 'string' ? value.split(',') : value
+            );
         }
     };
     const disciplineChange = (event: ChangeEvent<HTMLInputElement>): void => {
@@ -87,7 +96,7 @@ const Create = () => {
             setAlert('O jogo deve ter no mínimo 1 página!');
             return;
         }
-        if (selectedSerie === '') {
+        if (selectedSerie === ['']) {
             setAlert('Selecione uma série!');
             return;
         }
@@ -113,10 +122,10 @@ const Create = () => {
         setBaseState();
         setTimeout(() => {
             if (localStorage.getItem('token') === null) {
-                window.location.href = '/401';
+                // window.location.href = '/401';
             }
             dispatch(setBaseState());
-        }, 2000);
+        }, 1000);
     }, []);
 
     useEffect(() => {
@@ -125,9 +134,8 @@ const Create = () => {
                 name: response?.data?.name as string,
                 slug: `/anagram/${response?.data?.slug}`,
                 material: `https://www.fabricadejogos.portaleducacional.tec.br/anagram/${response?.data?.slug}`,
-                thumbnail: '',
                 disciplina_id: Number(selectedDiscipline),
-                series: Number(selectedSerie)
+                series: selectedSerie
             };
             // @ts-ignore
             createGameObject({ origin, token, ...obj }).then(() => {

@@ -1,5 +1,12 @@
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import { Button, TextField, Grid, Alert, Box } from '@mui/material';
+import {
+    Button,
+    TextField,
+    Grid,
+    Alert,
+    Box,
+    SelectChangeEvent
+} from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { EditorState, convertToRaw } from 'draft-js';
 import LayoutPicker from '../_layout/LayoutSelect';
@@ -34,7 +41,7 @@ const CreateMatchUp = () => {
     const [open, setOpen] = useState(false);
     const [alert, setAlert] = useState('');
     const [pages, setPages] = useState(initialState);
-    const [selectedSerie, setSelectedSerie] = useState('');
+    const [selectedSerie, setSelectedSerie] = useState(['']);
     const [selectedDiscipline, setSelectedDiscipline] = useState('');
     const handleCreatePage = () => {
         if (pages.length >= 10) {
@@ -131,10 +138,12 @@ const CreateMatchUp = () => {
         ]);
         setOpen(false);
     };
-    const seriesChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const seriesChange = (event: SelectChangeEvent<typeof selectedSerie>) => {
         const value = event.target.value;
-        if (value !== null && value !== selectedSerie) {
-            setSelectedSerie(value);
+        if (value !== null) {
+            setSelectedSerie(
+                typeof value === 'string' ? value.split(',') : value
+            );
         }
     };
     const disciplineChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -145,7 +154,7 @@ const CreateMatchUp = () => {
     };
     const handleSubmit = (event: FormEvent<HTMLInputElement>) => {
         event.preventDefault();
-        if (selectedSerie === '') {
+        if (selectedSerie === ['']) {
             setAlert('Selecione uma série!');
             return;
         }
@@ -190,7 +199,7 @@ const CreateMatchUp = () => {
                 window.location.href = '/401';
             }
             dispatch(setBaseState());
-        }, 2000);
+        }, 1000);
     }, []);
 
     useEffect(() => {
@@ -199,9 +208,8 @@ const CreateMatchUp = () => {
                 name: response?.data?.name as string,
                 slug: `/matchup/${response?.data?.slug}`,
                 material: `https://www.fabricadejogos.portaleducacional.tec.br/matchup/${response?.data?.slug}`,
-                thumbnail: '',
                 disciplina_id: Number(selectedDiscipline),
-                series: Number(selectedSerie)
+                series: selectedSerie
             };
             // @ts-ignore
             createGameObject({ token, origin, ...obj }).then(() => {

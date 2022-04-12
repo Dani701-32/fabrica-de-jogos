@@ -4,7 +4,13 @@ import React, {
     useEffect,
     useState
 } from 'react';
-import { Button, Grid, TextField, Alert } from '@mui/material';
+import {
+    Button,
+    Grid,
+    TextField,
+    Alert,
+    SelectChangeEvent
+} from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import LayoutPicker from '../_layout/LayoutSelect';
 import { convertToRaw, EditorState } from 'draft-js';
@@ -43,7 +49,7 @@ const CreateWordSearch = () => {
     const [words, setWords] = useState(initialState);
     const [name, setName] = useState('');
     const [layout, setLayout] = useState(1);
-    const [selectedSerie, setSelectedSerie] = useState('');
+    const [selectedSerie, setSelectedSerie] = useState(['']);
     const [selectedDiscipline, setSelectedDiscipline] = useState('');
     const [createWordSearch, response] = useCreateWordSearchMutation();
     const [createGameObject] = useCreateGameObjectMutation();
@@ -113,10 +119,12 @@ const CreateWordSearch = () => {
         setLayout(1);
         setOpen(false);
     };
-    const seriesChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const seriesChange = (event: SelectChangeEvent<typeof selectedSerie>) => {
         const value = event.target.value;
-        if (value !== null && value !== selectedSerie) {
-            setSelectedSerie(value);
+        if (value !== null) {
+            setSelectedSerie(
+                typeof value === 'string' ? value.split(',') : value
+            );
         }
     };
     const disciplineChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -133,7 +141,7 @@ const CreateWordSearch = () => {
             setAlert('O jogo deve ter no mínimo 3 palavras!');
             return;
         }
-        if (selectedSerie === '') {
+        if (selectedSerie === ['']) {
             setAlert('Selecione uma série!');
             return;
         }
@@ -174,7 +182,7 @@ const CreateWordSearch = () => {
                 window.location.href = '/401';
             }
             dispatch(setBaseState());
-        }, 2000);
+        }, 1000);
     }, []);
 
     useEffect(() => {
@@ -183,9 +191,8 @@ const CreateWordSearch = () => {
                 name: response?.data?.name as string,
                 slug: `/wordsearch/${response?.data?.slug}`,
                 material: `https://www.fabricadejogos.portaleducacional.tec.br/wordsearch/${response?.data?.slug}`,
-                thumbnail: '',
                 disciplina_id: Number(selectedDiscipline),
-                series: Number(selectedSerie)
+                series: selectedSerie
             };
             // @ts-ignore
             createGameObject({ token, origin, ...obj }).then(() => {

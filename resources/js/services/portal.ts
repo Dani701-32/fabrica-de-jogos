@@ -67,6 +67,9 @@ export const portalApi = createApi({
                     Authorization: `Bearer ${token}`
                 }
             })
+        }),
+        getGameObjectById: builder.query<gameObj, string>({
+            query: (id) => `/api/conteudo/${id}`
         })
     })
 });
@@ -74,7 +77,8 @@ export const portalApi = createApi({
 export const {
     useCreateGameObjectMutation,
     useEditGameObjectMutation,
-    useGetUserInfoQuery
+    useGetUserInfoQuery,
+    useGetGameObjectByIdQuery
 } = portalApi;
 
 export default portalApi;

@@ -11,7 +11,7 @@ import { useGetUserInfoQuery } from '../../services/portal';
 
 type Props = {
     token: string;
-    selectedSerie: string;
+    selectedSerie: string[];
     handleSelectSerie: Function;
     selectedDiscipline: string;
     handleSelectDiscipline: Function;
@@ -34,12 +34,15 @@ const ObjectPropertiesSelect = ({
             ) : data ? (
                 <>
                     <Grid item xs={3}>
-                        <FormControl sx={{ m: 1, minWidth: 140 }}>
+                        <FormControl
+                            sx={{ m: 1, minWidth: 140, maxWidth: 280 }}
+                        >
                             <InputLabel>Ano/Série</InputLabel>
                             <Select
                                 required
                                 value={selectedSerie}
                                 onChange={handleSelectSerie as any}
+                                multiple
                                 autoWidth
                                 label="Ano/Série"
                                 sx={{
