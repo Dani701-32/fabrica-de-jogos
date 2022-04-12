@@ -4,13 +4,19 @@ export type gameObj = {
     name: string;
     slug: string;
     material: string;
+    thumbnail: string;
     disciplina_id: number;
-    series: string[];
+    series: number;
 };
 
 export type userState = {
+    name: string;
+    role: string;
     token: string | null;
+    api_address: string | null;
     origin: string | null;
+    series: object;
+    disciplinas: object;
 };
 
 export type options<T> = {
@@ -24,7 +30,6 @@ export type anagramState = {
     slug?: string;
     layout: number;
     words: string[][] | string[];
-    content_id: number;
     approved_at?: string;
 };
 
@@ -41,7 +46,6 @@ export type matchUpState = {
     layout: number;
     pages: matchUpPage[];
     approved_at: string;
-    content_id: number;
 };
 
 export type memoryGameState = {
@@ -51,7 +55,6 @@ export type memoryGameState = {
     images: Blob[] | string[] | null[];
     grid: number[];
     approved_at: string;
-    content_id: number;
 };
 
 export interface quizQuestion {
@@ -65,7 +68,6 @@ export type quizState = {
     layout: number;
     questions: quizQuestion[];
     approved_at: string;
-    content_id: number;
 };
 
 export interface trueOrFalseQuestion {
@@ -79,7 +81,6 @@ export type trueOrFalseState = {
     layout: number;
     questions: trueOrFalseQuestion[];
     approved_at: string;
-    content_id: number;
 };
 
 export type wordObj = {
@@ -93,5 +94,4 @@ export type wordSearchState = {
     layout: number;
     words: wordObj[];
     approved_at: string;
-    content_id: number;
 };

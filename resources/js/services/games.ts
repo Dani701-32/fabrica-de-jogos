@@ -1,5 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import {
+    gameObj,
+    userState,
     anagramState,
     matchUpState,
     memoryGameState,
@@ -11,9 +13,24 @@ import {
 export const gameApi = createApi({
     reducerPath: 'gameApi',
     baseQuery: fetchBaseQuery({
-        baseUrl: 'https://www.fabricadejogos.portaleducacional.tec.br/api/'
+        baseUrl: 'http://wordwall.test:8080/api/'
     }),
     endpoints: (builder) => ({
+        createGameObject: builder.mutation<
+            gameObj,
+            Partial<gameObj & userState>
+        >({
+            query: ({ api_address, token, ...object }) => ({
+                url: `${api_address}`,
+                method: 'POST',
+                body: object,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                    Authorization: `Bearer ${token}`
+                }
+            })
+        }),
         getAnagramBySlug: builder.query<anagramState, string>({
             query: (slug) => `/anagram/${slug}`
         }),
@@ -128,6 +145,7 @@ export const gameApi = createApi({
 });
 
 export const {
+    useCreateGameObjectMutation,
     useGetAnagramBySlugQuery,
     useCreateAnagramMutation,
     useUpdateAnagramMutation,
