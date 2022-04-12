@@ -1,30 +1,33 @@
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
-import { Alert, Button, Grid, TextField, Box } from '@mui/material';
+import {
+    Alert,
+    Button,
+    Grid,
+    TextField,
+    Box,
+    SelectChangeEvent
+} from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import LayoutPicker from '../_layout/LayoutSelect';
 import SuccessDialog from '../_layout/SuccessDialog';
 import { useDispatch, useSelector } from 'react-redux';
-import FillableSelect from '../_layout/FillableSelect';
 import Page from './layout/Page';
 import BackFAButton from '../_layout/BackFAButton';
 import Copyright from '../_layout/Copyright';
 import { RootState } from '../../store';
 import { setBaseState } from '../../reducers/userReducer';
-import {
-    useCreateAnagramMutation,
-    useCreateGameObjectMutation
-} from '../../services/games';
+import { useCreateAnagramMutation } from '../../services/games';
+import { useCreateGameObjectMutation } from '../../services/portal';
+import ObjectPropertiesSelect from '../_layout/ObjectPropertiesSelect';
 import { gameObj } from '../../types';
 
 const Create = () => {
-    const { series, disciplinas, token, api_address } = useSelector(
-        (state: RootState) => state.user
-    );
+    const { token, origin } = useSelector((state: RootState) => state.user);
     const [open, setOpen] = useState(false);
     const [alert, setAlert] = useState('');
     const [createAnagram, response] = useCreateAnagramMutation();
     const [createGameObject] = useCreateGameObjectMutation();
-    const [selectedSerie, setSelectedSerie] = useState('');
+    const [selectedSerie, setSelectedSerie] = useState(['']);
     const [selectedDiscipline, setSelectedDiscipline] = useState('');
     const [name, setName] = useState('');
     const [layout, setLayout] = useState(1);
@@ -73,10 +76,12 @@ const Create = () => {
         setName('');
         setOpen(false);
     };
-    const seriesChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const seriesChange = (event: SelectChangeEvent<typeof selectedSerie>) => {
         const value = event.target.value;
-        if (value !== null && value !== selectedSerie) {
-            setSelectedSerie(value);
+        if (value !== null) {
+            setSelectedSerie(
+                typeof value === 'string' ? value.split(',') : value
+            );
         }
     };
     const disciplineChange = (event: ChangeEvent<HTMLInputElement>): void => {
@@ -91,7 +96,7 @@ const Create = () => {
             setAlert('O jogo deve ter no mínimo 1 página!');
             return;
         }
-        if (selectedSerie === '') {
+        if (selectedSerie === ['']) {
             setAlert('Selecione uma série!');
             return;
         }
@@ -117,10 +122,10 @@ const Create = () => {
         setBaseState();
         setTimeout(() => {
             if (localStorage.getItem('token') === null) {
-                window.location.href = '/401';
+                // window.location.href = '/401';
             }
             dispatch(setBaseState());
-        }, 2000);
+        }, 1000);
     }, []);
 
     useEffect(() => {
@@ -129,12 +134,11 @@ const Create = () => {
                 name: response?.data?.name as string,
                 slug: `/anagram/${response?.data?.slug}`,
                 material: `https://www.fabricadejogos.portaleducacional.tec.br/anagram/${response?.data?.slug}`,
-                thumbnail: '',
                 disciplina_id: Number(selectedDiscipline),
-                series: Number(selectedSerie)
+                series: selectedSerie
             };
             // @ts-ignore
-            createGameObject({ token, api_address, ...obj }).then(() => {
+            createGameObject({ origin, token, ...obj }).then(() => {
                 setOpen(true);
             });
         }
@@ -176,24 +180,13 @@ const Create = () => {
                             required
                         />
                     </Grid>
-                    {/* @ts-ignore*/}
-                    <Grid item align="center" xs={3}>
-                        <FillableSelect
-                            items={series}
-                            name="Ano/Série"
-                            value={selectedSerie}
-                            callBack={seriesChange}
-                        />
-                    </Grid>
-                    {/* @ts-ignore*/}
-                    <Grid item align="center" xs={3}>
-                        <FillableSelect
-                            items={disciplinas}
-                            name="Componente"
-                            value={selectedDiscipline}
-                            callBack={disciplineChange}
-                        />
-                    </Grid>
+                    <ObjectPropertiesSelect
+                        token={token as string}
+                        selectedSerie={selectedSerie}
+                        handleSelectSerie={seriesChange}
+                        selectedDiscipline={selectedDiscipline}
+                        handleSelectDiscipline={disciplineChange}
+                    />
                     <LayoutPicker
                         handleLayout={handleLayout}
                         selectedLayout={layout}

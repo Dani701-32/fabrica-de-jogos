@@ -122,7 +122,7 @@ const EditTrueOrFalse = () => {
                 window.location.href = '/401';
             }
             dispatch(setBaseState());
-        }, 2000);
+        }, 1000);
     }, []);
     useEffect(() => {
         if (data) {

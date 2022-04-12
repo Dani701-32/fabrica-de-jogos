@@ -4,34 +4,37 @@ import React, {
     useEffect,
     useState
 } from 'react';
-import { Button, TextField, Grid, Alert, Box } from '@mui/material';
+import {
+    Button,
+    TextField,
+    Grid,
+    Alert,
+    Box,
+    SelectChangeEvent
+} from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { EditorState, convertToRaw } from 'draft-js';
 import LayoutPicker from '../_layout/LayoutSelect';
 import draftToText from '../../utils/draftToText';
 import SuccessDialog from '../_layout/SuccessDialog';
 import { useDispatch, useSelector } from 'react-redux';
-import FillableSelect from '../_layout/FillableSelect';
 import QuestionCard from './layout/QuestionCard';
 import Copyright from '../_layout/Copyright';
 import BackFAButton from '../_layout/BackFAButton';
 import { setBaseState } from '../../reducers/userReducer';
 import { RootState } from '../../store';
-import {
-    useCreateTrueOrFalseMutation,
-    useCreateGameObjectMutation
-} from '../../services/games';
+import { useCreateTrueOrFalseMutation } from '../../services/games';
+import { useCreateGameObjectMutation } from '../../services/portal';
 import { gameObj, trueOrFalseQuestion } from '../../types';
+import ObjectPropertiesSelect from '../_layout/ObjectPropertiesSelect';
 
 const CreateTrueOrFalse = () => {
-    const { series, disciplinas, token, api_address } = useSelector(
-        (state: RootState) => state.user
-    );
+    const { token, origin } = useSelector((state: RootState) => state.user);
     const [open, setOpen] = useState(false);
     const [alert, setAlert] = useState('');
     const [name, setName] = useState('');
     const [layout, setLayout] = useState(1);
-    const [selectedSerie, setSelectedSerie] = useState('');
+    const [selectedSerie, setSelectedSerie] = useState(['']);
     const [selectedDiscipline, setSelectedDiscipline] = useState('');
     const [createTrueOrFalse, response] = useCreateTrueOrFalseMutation();
     const [createGameObject] = useCreateGameObjectMutation();
@@ -90,10 +93,12 @@ const CreateTrueOrFalse = () => {
         setLayout(1);
         setOpen(false);
     };
-    const seriesChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const seriesChange = (event: SelectChangeEvent<typeof selectedSerie>) => {
         const value = event.target.value;
-        if (value !== null && value !== selectedSerie) {
-            setSelectedSerie(value);
+        if (value !== null) {
+            setSelectedSerie(
+                typeof value === 'string' ? value.split(',') : value
+            );
         }
     };
     const disciplineChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -106,7 +111,7 @@ const CreateTrueOrFalse = () => {
         event: React.FormEvent<HTMLInputElement>
     ) => {
         event.preventDefault();
-        if (selectedSerie === '') {
+        if (selectedSerie === ['']) {
             setAlert('Selecione uma série!');
             return;
         }
@@ -148,7 +153,7 @@ const CreateTrueOrFalse = () => {
                 window.location.href = '/401';
             }
             dispatch(setBaseState());
-        }, 2000);
+        }, 1000);
     }, []);
 
     useEffect(() => {
@@ -157,12 +162,11 @@ const CreateTrueOrFalse = () => {
                 name: response?.data?.name as string,
                 slug: `/trueorfalse/${response?.data?.slug}`,
                 material: `https://www.fabricadejogos.portaleducacional.tec.br/trueorfalse/${response?.data?.slug}`,
-                thumbnail: '',
                 disciplina_id: Number(selectedDiscipline),
-                series: Number(selectedSerie)
+                series: selectedSerie
             };
             // @ts-ignore
-            createGameObject({ token, api_address, ...obj }).then(() => {
+            createGameObject({ token, origin, ...obj }).then(() => {
                 setOpen(true);
             });
         }
@@ -201,24 +205,13 @@ const CreateTrueOrFalse = () => {
                             required
                         />
                     </Grid>
-                    {/* @ts-ignore */}
-                    <Grid item align="center" xs={3}>
-                        <FillableSelect
-                            items={series}
-                            name="Ano/Série"
-                            value={selectedSerie}
-                            callBack={seriesChange}
-                        />
-                    </Grid>
-                    {/* @ts-ignore */}
-                    <Grid item align="center" xs={3}>
-                        <FillableSelect
-                            items={disciplinas}
-                            name="Componente"
-                            value={selectedDiscipline}
-                            callBack={disciplineChange}
-                        />
-                    </Grid>
+                    <ObjectPropertiesSelect
+                        token={token as string}
+                        selectedSerie={selectedSerie}
+                        handleSelectSerie={seriesChange}
+                        selectedDiscipline={selectedDiscipline}
+                        handleSelectDiscipline={disciplineChange}
+                    />
                     <LayoutPicker
                         handleLayout={handleLayout}
                         selectedLayout={layout}

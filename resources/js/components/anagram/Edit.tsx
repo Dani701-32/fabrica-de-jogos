@@ -1,9 +1,16 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
-import { Alert, Button, Grid, Box } from '@mui/material';
+import {
+    Alert,
+    Button,
+    Grid,
+    Box,
+    TextField,
+    SelectChangeEvent
+} from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import LayoutPicker from '../_layout/LayoutSelect';
 import SuccessDialog from '../_layout/SuccessDialog';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import Page from './layout/Page';
 import Copyright from '../_layout/Copyright';
@@ -12,12 +19,20 @@ import {
     useGetAnagramBySlugQuery,
     useUpdateAnagramMutation
 } from '../../services/games';
+import {
+    useEditGameObjectMutation,
+    useGetGameObjectByIdQuery
+} from '../../services/portal';
+import ObjectPropertiesSelect from '../_layout/ObjectPropertiesSelect';
+import { RootState } from '../../store';
 
 export default function Edit() {
     const { slug } = useParams();
     const dispatch = useDispatch();
     const { data, error, isLoading } = useGetAnagramBySlugQuery(slug as string);
-    const [useUpdateAnagram, response] = useUpdateAnagramMutation();
+    const { token, origin } = useSelector((state: RootState) => state.user);
+    const [updateAnagram, response] = useUpdateAnagramMutation();
+    const [editGameObject] = useEditGameObjectMutation();
     function sliceIntoChunks(arr: string[], chunkSize: number): string[][] {
         const res = [];
         for (let i = 0; i < arr.length; i += chunkSize) {
@@ -28,8 +43,11 @@ export default function Edit() {
     }
     const [open, setOpen] = useState(false);
     const [alert, setAlert] = useState('');
+    const [name, setName] = useState('');
     const [layout, setLayout] = useState(1);
     const [pages, setPages] = useState([['', '', '', '']]);
+    const [selectedSerie, setSelectedSerie] = useState(['']);
+    const [selectedDiscipline, setSelectedDiscipline] = useState('');
     const handleAddWord = () => {
         if (pages.length >= 8) {
             setAlert('O numero máximo de páginas nesse jogo é 8!');
@@ -67,6 +85,20 @@ export default function Edit() {
         }
         setLayout(newLayout);
     };
+    const seriesChange = (event: SelectChangeEvent<typeof selectedSerie>) => {
+        const value = event.target.value;
+        if (value !== null) {
+            setSelectedSerie(
+                typeof value === 'string' ? value.split(',') : value
+            );
+        }
+    };
+    const disciplineChange = (event: ChangeEvent<HTMLInputElement>) => {
+        const value = event.target.value;
+        if (value !== null && value !== selectedDiscipline) {
+            setSelectedDiscipline(value);
+        }
+    };
     const handleSubmit = (event: ChangeEvent<HTMLInputElement>) => {
         event.preventDefault();
         if (pages.length < 1) {
@@ -83,7 +115,7 @@ export default function Edit() {
             layout: layout,
             words: wordsJson
         };
-        useUpdateAnagram({ ...body, slug }).then(() => {
+        updateAnagram({ ...body, slug }).then(() => {
             setOpen(true);
         });
     };
@@ -93,7 +125,7 @@ export default function Edit() {
                 window.location.href = '/401';
             }
             dispatch(setBaseState());
-        }, 2000);
+        }, 1000);
     }, []);
     useEffect(() => {
         if (data) {
@@ -108,7 +140,14 @@ export default function Edit() {
     }, [isLoading]);
 
     useEffect(() => {
-        response.isSuccess && setOpen(true);
+        if (response.isSuccess) {
+            const obj = {
+                name: name,
+                series: selectedSerie,
+                disciplina_id: Number(selectedDiscipline)
+            };
+            editGameObject({ token, origin, ...obj }).then(() => setOpen(true));
+        }
         response.isError && setAlert(`Ocorreu um erro: ${response.error}`);
     }, [response.isLoading]);
 
@@ -130,6 +169,26 @@ export default function Edit() {
                     onSubmit={handleSubmit as any}
                     spacing={3}
                 >
+                    {/* @ts-ignore */}
+                    <Grid item align="center" xs={12}>
+                        <TextField
+                            label="Nome"
+                            name="name"
+                            variant="outlined"
+                            value={name}
+                            onChange={(event) => {
+                                setName(event.target.value);
+                            }}
+                            required
+                        />
+                    </Grid>
+                    <ObjectPropertiesSelect
+                        token={token as string}
+                        selectedSerie={selectedSerie}
+                        handleSelectSerie={seriesChange}
+                        selectedDiscipline={selectedDiscipline}
+                        handleSelectDiscipline={disciplineChange}
+                    />
                     <LayoutPicker
                         handleLayout={handleLayout}
                         selectedLayout={layout}
