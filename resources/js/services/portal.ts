@@ -1,25 +1,12 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react';
-import { gameObj, userState } from '../types';
+import { gameObj, userState, userInfoData } from '../types';
 import { RootState } from '../store';
-
-type userInfoData = {
-    success: boolean;
-    data: {
-        series: object[];
-        disciplinas: object[];
-        name: string;
-        role: string;
-        pfp: string;
-        prefeitura_nome: string;
-        prefeitura_logo: string;
-    };
-};
 
 export const portalApi = createApi({
     reducerPath: 'portalApi',
     baseQuery: fetchBaseQuery({
-        baseUrl: 'https://dev.edutecbrasil.com.br',
+        baseUrl: 'https://portaleducacional.tec.br',
         prepareHeaders: (headers, { getState }) => {
             const token = (getState() as RootState).user.token;
             if (token) {

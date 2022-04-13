@@ -21,7 +21,7 @@ export default function HomePage({}) {
                 window.location.href = '/401';
             }
             dispatch(setBaseState());
-        }, 2000);
+        }, 500);
     }, []);
     return (
         <>

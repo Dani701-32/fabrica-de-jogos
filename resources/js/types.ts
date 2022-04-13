@@ -8,6 +8,19 @@ export type gameObj = {
     series: string[];
 };
 
+export type userInfoData = {
+    success: boolean;
+    data: {
+        series: object[];
+        disciplinas: object[];
+        name: string;
+        role: string;
+        pfp: string;
+        prefeitura_nome: string;
+        prefeitura_logo: string;
+    };
+};
+
 export type userState = {
     token: string | null;
     origin: string | null;

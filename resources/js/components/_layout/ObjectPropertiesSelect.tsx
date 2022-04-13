@@ -53,11 +53,13 @@ const ObjectPropertiesSelect = ({
                                     (key: string) => {
                                         return (
                                             <MenuItem key={key} value={key}>
-                                                {
-                                                    data.data.series[
-                                                        key as keyof typeof data.data.series
-                                                    ]
-                                                }
+                                                <>
+                                                    {
+                                                        data.data.series[
+                                                            key as keyof typeof data.data.series
+                                                        ]
+                                                    }
+                                                </>
                                             </MenuItem>
                                         );
                                     }
@@ -82,11 +84,13 @@ const ObjectPropertiesSelect = ({
                                     (key: string) => {
                                         return (
                                             <MenuItem key={key} value={key}>
-                                                {
-                                                    data.data.disciplinas[
-                                                        key as keyof typeof data.data.disciplinas
-                                                    ]
-                                                }
+                                                <>
+                                                    {
+                                                        data.data.disciplinas[
+                                                            key as keyof typeof data.data.disciplinas
+                                                        ]
+                                                    }
+                                                </>
                                             </MenuItem>
                                         );
                                     }

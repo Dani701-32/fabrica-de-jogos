@@ -46,7 +46,7 @@ export default function GamePage({ game }: Props) {
                 }
             });
             setOpen(true);
-        }, 1000);
+        }, 500);
     }, [localStorage.getItem('token')]);
     let gameAddress = '';
     switch (game) {

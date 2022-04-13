@@ -125,7 +125,7 @@ export default function Edit() {
                 window.location.href = '/401';
             }
             dispatch(setBaseState());
-        }, 1000);
+        }, 500);
     }, []);
     useEffect(() => {
         if (data) {
