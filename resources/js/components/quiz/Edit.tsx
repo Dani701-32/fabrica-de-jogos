@@ -57,7 +57,7 @@ const EditQuiz = () => {
         setLayout(newLayout);
     };
     const handleRemoveQuestion = (index: number) => {
-        if (index === 0) {
+        if (questions.length === 1) {
             return;
         }
         let q = [...questions];
