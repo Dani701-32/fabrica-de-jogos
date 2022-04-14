@@ -236,6 +236,7 @@ const CreateWordSearch = () => {
                     </Grid>
                     <ObjectPropertiesSelect
                         token={token as string}
+                        origin={origin as string}
                         selectedSerie={selectedSerie}
                         handleSelectSerie={seriesChange}
                         selectedDiscipline={selectedDiscipline}

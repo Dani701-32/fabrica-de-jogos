@@ -11,6 +11,7 @@ import { useGetUserInfoQuery } from '../../services/portal';
 
 type Props = {
     token: string;
+    origin: string;
     selectedSerie: string[];
     handleSelectSerie: Function;
     selectedDiscipline: string;
@@ -19,12 +20,13 @@ type Props = {
 
 const ObjectPropertiesSelect = ({
     token,
+    origin,
     selectedSerie,
     handleSelectSerie,
     selectedDiscipline,
     handleSelectDiscipline
 }: Props) => {
-    const { data, isLoading } = useGetUserInfoQuery(token);
+    const { data, isLoading } = useGetUserInfoQuery({ token, origin });
     return (
         <>
             {isLoading ? ( // @ts-ignore

@@ -45,9 +45,9 @@ export const portalApi = createApi({
                 })
             }
         ),
-        getUserInfo: builder.query<userInfoData, string>({
-            query: (token) => ({
-                url: `/api/validate`,
+        getUserInfo: builder.query<userInfoData, Partial<userState>>({
+            query: ({ token, origin }) => ({
+                url: `${origin}/api/validate`,
                 headers: {
                     'Content-Type': 'application/json',
                     Accept: 'application/json',
