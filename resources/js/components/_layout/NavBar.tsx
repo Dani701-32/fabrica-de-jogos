@@ -30,7 +30,7 @@ const NavBar = () => {
                     <Toolbar disableGutters>
                         <Grid sx={{ margin: 2 }}>
                             <img
-                                src={data?.data.prefeitura_logo}
+                                src={`https://metech.s3.flexify.io/${data?.data.prefeitura_logo}`}
                                 alt="logo"
                                 height="50px"
                             />
