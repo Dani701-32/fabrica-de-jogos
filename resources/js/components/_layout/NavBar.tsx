@@ -43,7 +43,7 @@ const NavBar = () => {
                                 display: { xs: 'none', md: 'flex' }
                             }}
                         >
-                            {data?.data.prefeitura_nome}
+                            {/* data?.data.prefeitura_nome*/}
                         </Typography>
                     </Toolbar>
                 </Container>
