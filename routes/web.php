@@ -19,6 +19,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 // Home Route
+Route::get('/',static function () {
+    return redirect('/create');
+});
 Route::get('/create', static function () {
     return view('index');
 });
