@@ -11,7 +11,8 @@ const BackFAButton = ({}) => {
             onClick={() => navigate('/create')}
             sx={{
                 marginTop: 2,
-                position: 'absolute'
+                position: 'absolute',
+                display: { xs: 'none', sm: 'block' }
             }}
         >
             <ArrowBackIcon />

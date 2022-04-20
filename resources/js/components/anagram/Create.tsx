@@ -1,4 +1,10 @@
-import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
+import React, {
+    useState,
+    useEffect,
+    ChangeEvent,
+    FormEvent,
+    FormEventHandler
+} from 'react';
 import {
     Alert,
     Button,
@@ -27,7 +33,7 @@ const Create = () => {
     const [alert, setAlert] = useState('');
     const [createAnagram, response] = useCreateAnagramMutation();
     const [createGameObject] = useCreateGameObjectMutation();
-    const [selectedSerie, setSelectedSerie] = useState(['']);
+    const [selectedSerie, setSelectedSerie] = useState([] as string[]);
     const [selectedDiscipline, setSelectedDiscipline] = useState('');
     const [name, setName] = useState('');
     const [layout, setLayout] = useState(1);
@@ -76,7 +82,7 @@ const Create = () => {
         setName('');
         setOpen(false);
     };
-    const seriesChange = (event: SelectChangeEvent<typeof selectedSerie>) => {
+    const seriesChange = (event: SelectChangeEvent<string[]>) => {
         const value = event.target.value;
         if (value !== null) {
             setSelectedSerie(
@@ -84,13 +90,15 @@ const Create = () => {
             );
         }
     };
-    const disciplineChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    const disciplineChange = (event: SelectChangeEvent): void => {
         const value = event.target.value;
         if (value !== null && value !== selectedDiscipline) {
             setSelectedDiscipline(value);
         }
     };
-    const handleSubmit = (event: FormEvent<HTMLInputElement>): void => {
+    const handleSubmit: FormEventHandler = (
+        event: FormEvent<HTMLInputElement>
+    ): void => {
         event.preventDefault();
         if (pages.length < 1) {
             setAlert('O jogo deve ter no mínimo 1 página!');
@@ -164,7 +172,7 @@ const Create = () => {
                     align="center"
                     justifyContent="center"
                     component="form"
-                    onSubmit={handleSubmit as any}
+                    onSubmit={handleSubmit}
                     spacing={3}
                 >
                     {/* @ts-ignore*/}
@@ -177,21 +185,26 @@ const Create = () => {
                             onChange={(event) => {
                                 setName(event.target.value);
                             }}
+                            sx={{ minWidth: { xs: 280, sm: 296 } }}
                             required
                         />
                     </Grid>
-                    <ObjectPropertiesSelect
-                        token={token as string}
-                        origin={origin as string}
-                        selectedSerie={selectedSerie}
-                        handleSelectSerie={seriesChange}
-                        selectedDiscipline={selectedDiscipline}
-                        handleSelectDiscipline={disciplineChange}
-                    />
-                    <LayoutPicker
-                        handleLayout={handleLayout}
-                        selectedLayout={layout}
-                    />
+                    <Grid item xs={12}>
+                        <ObjectPropertiesSelect
+                            token={token as string}
+                            origin={origin as string}
+                            selectedSerie={selectedSerie}
+                            handleSelectSerie={seriesChange}
+                            selectedDiscipline={selectedDiscipline}
+                            handleSelectDiscipline={disciplineChange}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <LayoutPicker
+                            handleLayout={handleLayout}
+                            selectedLayout={layout}
+                        />
+                    </Grid>
                     {/* @ts-ignore*/}
                     <Grid item align="center" xs={12}>
                         <Button
@@ -202,14 +215,14 @@ const Create = () => {
                             Adicionar Pagina
                         </Button>
                     </Grid>
-                    <Grid item lg={12}>
+                    <Grid item xs={12}>
                         {/* @ts-ignore*/}
                         <Grid
                             container
                             align="center"
                             alignItems="flex-start"
                             justifyContent="center"
-                            spacing={3}
+                            spacing={5}
                         >
                             {alert && (
                                 <Grid item xs={12}>

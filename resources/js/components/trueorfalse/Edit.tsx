@@ -1,5 +1,10 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
-import { Button, Grid, Alert, Box } from '@mui/material';
+import React, {
+    ChangeEvent,
+    FormEventHandler,
+    useEffect,
+    useState
+} from 'react';
+import { Button, Grid, Alert, Box, CircularProgress } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { EditorState, convertToRaw } from 'draft-js';
 import LayoutPicker from '../_layout/LayoutSelect';
@@ -76,7 +81,9 @@ const EditTrueOrFalse = () => {
         q.splice(index, 1, question);
         setQuestions(q);
     };
-    const handleSubmit = (event: ChangeEvent<HTMLInputElement>) => {
+    const handleSubmit: FormEventHandler = (
+        event: ChangeEvent<HTMLInputElement>
+    ) => {
         event.preventDefault();
         let questionsJSON: trueOrFalseQuestion[] = [];
         let error = false;
@@ -143,6 +150,18 @@ const EditTrueOrFalse = () => {
         response.isError && setAlert(`Ocorreu um erro: ${response.error}`);
     }, [response.isLoading]);
 
+    if (isLoading)
+        return (
+            <CircularProgress
+                sx={{
+                    position: 'absolute',
+                    left: '50%',
+                    top: '50%',
+                    transform: 'translate(-50%, -50%)'
+                }}
+            />
+        );
+
     return (
         <>
             <SuccessDialog
@@ -163,7 +182,7 @@ const EditTrueOrFalse = () => {
                     container
                     component="form"
                     justifyContent="center"
-                    onSubmit={handleSubmit as any}
+                    onSubmit={handleSubmit}
                     spacing={3}
                 >
                     <LayoutPicker

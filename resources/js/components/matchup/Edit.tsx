@@ -1,5 +1,5 @@
 import React, { FormEventHandler, useEffect, useState } from 'react';
-import { Button, Grid, Alert, Box } from '@mui/material';
+import { Button, Grid, Alert, Box, CircularProgress } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { EditorState, convertToRaw } from 'draft-js';
 import LayoutPicker from '../_layout/LayoutSelect';
@@ -187,6 +187,18 @@ const EditMatchUp = () => {
         response.isSuccess && setOpen(true);
         response.isError && setAlert(`Ocorreu um erro: ${response.error}`);
     }, [response.isLoading]);
+
+    if (isLoading)
+        return (
+            <CircularProgress
+                sx={{
+                    position: 'absolute',
+                    left: '50%',
+                    top: '50%',
+                    transform: 'translate(-50%, -50%)'
+                }}
+            />
+        );
 
     return (
         <>

@@ -34,7 +34,7 @@ const QuestionCard = ({
 }: Props) => {
     return (
         /* @ts-ignore */
-        <Grid item align="center" xs={8} md={6} lg={4}>
+        <Grid item align="center" xs={12} sm={6} md={4} lg={3}>
             <Paper
                 elevation={5}
                 sx={{

@@ -1,4 +1,10 @@
-import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import React, {
+    ChangeEvent,
+    FormEvent,
+    FormEventHandler,
+    useEffect,
+    useState
+} from 'react';
 import {
     Button,
     TextField,
@@ -41,7 +47,7 @@ const CreateMatchUp = () => {
     const [open, setOpen] = useState(false);
     const [alert, setAlert] = useState('');
     const [pages, setPages] = useState(initialState);
-    const [selectedSerie, setSelectedSerie] = useState(['']);
+    const [selectedSerie, setSelectedSerie] = useState([] as string[]);
     const [selectedDiscipline, setSelectedDiscipline] = useState('');
     const handleCreatePage = () => {
         if (pages.length >= 10) {
@@ -138,7 +144,7 @@ const CreateMatchUp = () => {
         ]);
         setOpen(false);
     };
-    const seriesChange = (event: SelectChangeEvent<typeof selectedSerie>) => {
+    const seriesChange = (event: SelectChangeEvent<string[]>) => {
         const value = event.target.value;
         if (value !== null) {
             setSelectedSerie(
@@ -146,13 +152,15 @@ const CreateMatchUp = () => {
             );
         }
     };
-    const disciplineChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const disciplineChange = (event: SelectChangeEvent) => {
         const value = event.target.value;
         if (value !== null && value !== selectedDiscipline) {
             setSelectedDiscipline(value);
         }
     };
-    const handleSubmit = (event: FormEvent<HTMLInputElement>) => {
+    const handleSubmit: FormEventHandler = (
+        event: FormEvent<HTMLInputElement>
+    ) => {
         event.preventDefault();
         if (selectedSerie === ['']) {
             setAlert('Selecione uma série!');
@@ -233,10 +241,12 @@ const CreateMatchUp = () => {
             >
                 <Grid
                     container
+                    // @ts-ignore
+                    align="center"
                     component="form"
                     justifyContent="center"
                     alignItems="center"
-                    onSubmit={handleSubmit as any}
+                    onSubmit={handleSubmit}
                     spacing={3}
                 >
                     {/* @ts-ignore */}
@@ -249,21 +259,26 @@ const CreateMatchUp = () => {
                             onChange={(event) => {
                                 setName(event.target.value);
                             }}
+                            sx={{ minWidth: { xs: 280, sm: 296 } }}
                             required
                         />
                     </Grid>
-                    <ObjectPropertiesSelect
-                        token={token as string}
-                        origin={origin as string}
-                        selectedSerie={selectedSerie}
-                        handleSelectSerie={seriesChange}
-                        selectedDiscipline={selectedDiscipline}
-                        handleSelectDiscipline={disciplineChange}
-                    />
-                    <LayoutPicker
-                        handleLayout={handleLayout}
-                        selectedLayout={layout}
-                    />
+                    <Grid item xs={12}>
+                        <ObjectPropertiesSelect
+                            token={token as string}
+                            origin={origin as string}
+                            selectedSerie={selectedSerie}
+                            handleSelectSerie={seriesChange}
+                            selectedDiscipline={selectedDiscipline}
+                            handleSelectDiscipline={disciplineChange}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <LayoutPicker
+                            handleLayout={handleLayout}
+                            selectedLayout={layout}
+                        />
+                    </Grid>
                     {/* @ts-ignore */}
                     <Grid item align="center" xs={12}>
                         <Button

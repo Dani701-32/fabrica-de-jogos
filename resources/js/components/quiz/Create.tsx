@@ -1,4 +1,10 @@
-import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import React, {
+    ChangeEvent,
+    FormEvent,
+    FormEventHandler,
+    useEffect,
+    useState
+} from 'react';
 import {
     Button,
     TextField,
@@ -30,7 +36,7 @@ const CreateQuiz = () => {
     const [alert, setAlert] = useState('');
     const [name, setName] = useState('');
     const [layout, setLayout] = useState(1);
-    const [selectedSerie, setSelectedSerie] = useState(['']);
+    const [selectedSerie, setSelectedSerie] = useState([] as string[]);
     const [selectedDiscipline, setSelectedDiscipline] = useState('');
     const initialState: quizQuestion[] = [
         { title: EditorState.createEmpty(), answers: ['', ''] }
@@ -39,8 +45,8 @@ const CreateQuiz = () => {
     const [createQuiz, response] = useCreateQuizMutation();
     const [createGameObject] = useCreateGameObjectMutation();
     const handleCreateQuestion = () => {
-        if (questions.length >= 9) {
-            setAlert('O número máximo de questões para esse jogo é 9!');
+        if (questions.length >= 8) {
+            setAlert('O número máximo de questões para esse jogo é 8!');
             return;
         }
         setQuestions([
@@ -109,7 +115,7 @@ const CreateQuiz = () => {
         setLayout(1);
         setOpen(false);
     };
-    const seriesChange = (event: SelectChangeEvent<typeof selectedSerie>) => {
+    const seriesChange = (event: SelectChangeEvent<string[]>): void => {
         const value = event.target.value;
         if (value !== null) {
             setSelectedSerie(
@@ -117,13 +123,15 @@ const CreateQuiz = () => {
             );
         }
     };
-    const disciplineChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const disciplineChange = (event: SelectChangeEvent) => {
         const value = event.target.value;
         if (value !== null && value !== selectedDiscipline) {
             setSelectedDiscipline(value);
         }
     };
-    const handleSubmit = (event: FormEvent<HTMLInputElement>) => {
+    const handleSubmit: FormEventHandler = (
+        event: FormEvent<HTMLInputElement>
+    ) => {
         event.preventDefault();
         if (selectedSerie === ['']) {
             setAlert('Selecione uma série!');
@@ -201,7 +209,7 @@ const CreateQuiz = () => {
                     container
                     component="form"
                     justifyContent="center"
-                    onSubmit={handleSubmit as any}
+                    onSubmit={handleSubmit}
                     spacing={3}
                 >
                     {/* @ts-ignore */}
@@ -214,21 +222,28 @@ const CreateQuiz = () => {
                             onChange={(event) => {
                                 setName(event.target.value);
                             }}
+                            sx={{ minWidth: { xs: 280, sm: 296 } }}
                             required
                         />
                     </Grid>
-                    <ObjectPropertiesSelect
-                        token={token as string}
-                        origin={origin as string}
-                        selectedSerie={selectedSerie}
-                        handleSelectSerie={seriesChange}
-                        selectedDiscipline={selectedDiscipline}
-                        handleSelectDiscipline={disciplineChange}
-                    />
-                    <LayoutPicker
-                        handleLayout={handleLayout}
-                        selectedLayout={layout}
-                    />
+                    {/* @ts-ignore */}
+                    <Grid item align="center" xs={12}>
+                        <ObjectPropertiesSelect
+                            token={token as string}
+                            origin={origin as string}
+                            selectedSerie={selectedSerie}
+                            handleSelectSerie={seriesChange}
+                            selectedDiscipline={selectedDiscipline}
+                            handleSelectDiscipline={disciplineChange}
+                        />
+                    </Grid>
+                    {/* @ts-ignore */}
+                    <Grid item align="center" xs={12}>
+                        <LayoutPicker
+                            handleLayout={handleLayout}
+                            selectedLayout={layout}
+                        />
+                    </Grid>
                     {/* @ts-ignore */}
                     <Grid item align="center" xs={12}>
                         <Button

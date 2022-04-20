@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Grid, Alert, Box } from '@mui/material';
+import React, { FormEventHandler, useEffect, useState } from 'react';
+import { Button, Grid, Alert, Box, CircularProgress } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import LayoutPicker from '../_layout/LayoutSelect';
 import { convertToRaw, EditorState } from 'draft-js';
@@ -89,7 +89,9 @@ const EditWordSearch = () => {
         }
         setLayout(newLayout);
     };
-    const handleSubmit = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleSubmit: FormEventHandler = (
+        e: React.ChangeEvent<HTMLInputElement>
+    ) => {
         e.preventDefault();
         if (words.length < 3) {
             setAlert('O jogo deve ter no mínimo 3 palavras!');
@@ -161,6 +163,18 @@ const EditWordSearch = () => {
         response.isError && setAlert(`Ocorreu um erro ${response.error} `);
     }, [response.isLoading]);
 
+    if (isLoading)
+        return (
+            <CircularProgress
+                sx={{
+                    position: 'absolute',
+                    left: '50%',
+                    top: '50%',
+                    transform: 'translate(-50%, -50%)'
+                }}
+            />
+        );
+
     return (
         <>
             <SuccessDialog
@@ -181,7 +195,7 @@ const EditWordSearch = () => {
                     container
                     component="form"
                     justifyContent="center"
-                    onSubmit={handleSubmit as any}
+                    onSubmit={handleSubmit}
                     spacing={3}
                 >
                     <LayoutPicker

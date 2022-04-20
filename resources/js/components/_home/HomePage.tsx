@@ -35,7 +35,7 @@ export default function HomePage({}) {
                 {game_types.map((type, index) => {
                     return (
                         <Grid key={index} item xs={6} md={4} lg={4}>
-                            <Grid container alignItems="center" spacing={2}>
+                            <Grid container alignItems="center" spacing={1}>
                                 {/* @ts-ignore */}
                                 <Grid item align="center" xs={12}>
                                     <IconButton

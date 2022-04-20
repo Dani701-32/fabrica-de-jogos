@@ -5,7 +5,7 @@ import {
     InputLabel,
     MenuItem,
     Select,
-    CircularProgress
+    SelectChangeEvent
 } from '@mui/material';
 import { useGetUserInfoQuery } from '../../services/portal';
 
@@ -13,9 +13,9 @@ type Props = {
     token: string;
     origin: string;
     selectedSerie: string[];
-    handleSelectSerie: Function;
+    handleSelectSerie: (event: SelectChangeEvent<string[]>) => void;
     selectedDiscipline: string;
-    handleSelectDiscipline: Function;
+    handleSelectDiscipline: (event: SelectChangeEvent) => void;
 };
 
 const ObjectPropertiesSelect = ({
@@ -26,82 +26,90 @@ const ObjectPropertiesSelect = ({
     selectedDiscipline,
     handleSelectDiscipline
 }: Props) => {
-    const { data, isLoading } = useGetUserInfoQuery({ token, origin });
+    const { data } = useGetUserInfoQuery({ token, origin });
     return (
         <>
-            {isLoading ? ( // @ts-ignore
-                <Grid item align="center">
-                    <CircularProgress />
-                </Grid>
-            ) : data ? (
-                <>
-                    <Grid item xs={3}>
-                        <FormControl
-                            sx={{ m: 1, minWidth: 140, maxWidth: 280 }}
+            <Grid container>
+                <Grid
+                    item
+                    xs={12}
+                    md={6}
+                    sx={{
+                        display: { md: 'flex', xs: 'block' },
+                        justifyContent: { md: 'flex-end', xs: 'none' }
+                    }}
+                >
+                    <FormControl sx={{ m: 1, minWidth: 140, maxWidth: 280 }}>
+                        <InputLabel>Ano/Série</InputLabel>
+                        <Select
+                            required
+                            value={selectedSerie}
+                            onChange={handleSelectSerie}
+                            multiple
+                            autoWidth
+                            label="Ano/Série"
+                            sx={{
+                                minWidth: 140
+                            }}
                         >
-                            <InputLabel>Ano/Série</InputLabel>
-                            <Select
-                                required
-                                value={selectedSerie}
-                                onChange={handleSelectSerie as any}
-                                multiple
-                                autoWidth
-                                label="Ano/Série"
-                                sx={{
-                                    minWidth: 140
-                                }}
-                            >
-                                {Object.keys(data.data.series).map(
-                                    (key: string) => {
-                                        return (
-                                            <MenuItem key={key} value={key}>
-                                                <>
-                                                    {
-                                                        data.data.series[
-                                                            key as keyof typeof data.data.series
-                                                        ]
-                                                    }
-                                                </>
-                                            </MenuItem>
-                                        );
-                                    }
-                                )}
-                            </Select>
-                        </FormControl>
-                    </Grid>
-                    <Grid item xs={3}>
-                        <FormControl sx={{ m: 1, minWidth: 140 }}>
-                            <InputLabel>Componente</InputLabel>
-                            <Select
-                                required
-                                value={selectedDiscipline}
-                                onChange={handleSelectDiscipline as any}
-                                autoWidth
-                                label="Componente"
-                                sx={{
-                                    minWidth: 140
-                                }}
-                            >
-                                {Object.keys(data.data.disciplinas).map(
-                                    (key: string) => {
-                                        return (
-                                            <MenuItem key={key} value={key}>
-                                                <>
-                                                    {
-                                                        data.data.disciplinas[
-                                                            key as keyof typeof data.data.disciplinas
-                                                        ]
-                                                    }
-                                                </>
-                                            </MenuItem>
-                                        );
-                                    }
-                                )}
-                            </Select>
-                        </FormControl>
-                    </Grid>
-                </>
-            ) : null}
+                            {Object.keys(data?.data.series ?? {}).map(
+                                (key: string) => {
+                                    return (
+                                        <MenuItem key={key} value={key}>
+                                            <>
+                                                {
+                                                    data?.data.series[
+                                                        key as keyof typeof data.data.series
+                                                    ]
+                                                }
+                                            </>
+                                        </MenuItem>
+                                    );
+                                }
+                            )}
+                        </Select>
+                    </FormControl>
+                </Grid>
+                <Grid
+                    item
+                    xs={12}
+                    md={6}
+                    sx={{
+                        display: { md: 'flex', xs: 'block' },
+                        justifyContent: { md: 'flex-start', xs: 'none' }
+                    }}
+                >
+                    <FormControl sx={{ m: 1, minWidth: 140, maxWidth: 280 }}>
+                        <InputLabel>Componente</InputLabel>
+                        <Select
+                            required
+                            value={selectedDiscipline}
+                            onChange={handleSelectDiscipline}
+                            autoWidth
+                            label="Componente"
+                            sx={{
+                                minWidth: 140
+                            }}
+                        >
+                            {Object.keys(data?.data.disciplinas ?? {}).map(
+                                (key: string) => {
+                                    return (
+                                        <MenuItem key={key} value={key}>
+                                            <>
+                                                {
+                                                    data?.data.disciplinas[
+                                                        key as keyof typeof data.data.disciplinas
+                                                    ]
+                                                }
+                                            </>
+                                        </MenuItem>
+                                    );
+                                }
+                            )}
+                        </Select>
+                    </FormControl>
+                </Grid>
+            </Grid>
         </>
     );
 };

@@ -14,19 +14,58 @@ import EditMatchUp from './matchup/Edit';
 //import CreateMemorygame from './memorygame/Create';
 //import EditMemorygame from './memorygame/Edit';
 import HomePage from './_home/HomePage';
-import { Container, CssBaseline } from '@mui/material';
-import { ThemeProvider } from '@mui/system';
-import { createTheme } from '@mui/material/styles';
+import { CircularProgress, Container, CssBaseline } from '@mui/material';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 import NavBar from './_layout/NavBar';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store';
+import { useGetUserInfoQuery } from '../services/portal';
 
-const theme = createTheme();
+const theme = createTheme({
+    components: {
+        MuiButton: {
+            styleOverrides: {
+                outlined: {
+                    background: 'white'
+                }
+            }
+        },
+        MuiTextField: {
+            styleOverrides: {
+                root: {
+                    background: 'white'
+                }
+            }
+        },
+        MuiSelect: {
+            styleOverrides: {
+                outlined: {
+                    background: 'white'
+                }
+            }
+        }
+    }
+});
 
 function App() {
+    const { token, origin } = useSelector((state: RootState) => state.user);
+    const { data, isLoading } = useGetUserInfoQuery({ token, origin });
+    if (isLoading)
+        return (
+            <CircularProgress
+                sx={{
+                    position: 'absolute',
+                    left: '50%',
+                    top: '50%',
+                    transform: 'translate(-50%, -50%)'
+                }}
+            />
+        );
     return (
         <ThemeProvider theme={theme}>
             <Router>
-                <NavBar />
-                <Container component="main">
+                <NavBar data={data} />
+                <Container maxWidth="xl" component="main">
                     <CssBaseline />
                     <Routes>
                         {/* Home Route */}

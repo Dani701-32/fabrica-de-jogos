@@ -29,7 +29,7 @@ const QuestionCard = ({
     handleAnswerChange
 }: Props) => {
     return (
-        <Grid item xs={8} md={6} lg={4}>
+        <Grid item xs={12} sm={6} md={4} lg={3}>
             <Paper
                 elevation={5}
                 sx={{

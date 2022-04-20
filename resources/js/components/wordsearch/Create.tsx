@@ -49,7 +49,7 @@ const CreateWordSearch = () => {
     const [words, setWords] = useState(initialState);
     const [name, setName] = useState('');
     const [layout, setLayout] = useState(1);
-    const [selectedSerie, setSelectedSerie] = useState(['']);
+    const [selectedSerie, setSelectedSerie] = useState([] as string[]);
     const [selectedDiscipline, setSelectedDiscipline] = useState('');
     const [createWordSearch, response] = useCreateWordSearchMutation();
     const [createGameObject] = useCreateGameObjectMutation();
@@ -127,7 +127,7 @@ const CreateWordSearch = () => {
             );
         }
     };
-    const disciplineChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const disciplineChange = (event: SelectChangeEvent) => {
         const value = event.target.value;
         if (value !== null && value !== selectedDiscipline) {
             setSelectedDiscipline(value);
@@ -231,21 +231,28 @@ const CreateWordSearch = () => {
                             onChange={(event) => {
                                 setName(event.target.value);
                             }}
+                            sx={{ minWidth: { xs: 280, sm: 296 } }}
                             required
                         />
                     </Grid>
-                    <ObjectPropertiesSelect
-                        token={token as string}
-                        origin={origin as string}
-                        selectedSerie={selectedSerie}
-                        handleSelectSerie={seriesChange}
-                        selectedDiscipline={selectedDiscipline}
-                        handleSelectDiscipline={disciplineChange}
-                    />
-                    <LayoutPicker
-                        handleLayout={handleLayout}
-                        selectedLayout={layout}
-                    />
+                    {/* @ts-ignore */}
+                    <Grid item align="center" xs={12}>
+                        <ObjectPropertiesSelect
+                            token={token as string}
+                            origin={origin as string}
+                            selectedSerie={selectedSerie}
+                            handleSelectSerie={seriesChange}
+                            selectedDiscipline={selectedDiscipline}
+                            handleSelectDiscipline={disciplineChange}
+                        />
+                    </Grid>
+                    {/* @ts-ignore */}
+                    <Grid item align="center" xs={12}>
+                        <LayoutPicker
+                            handleLayout={handleLayout}
+                            selectedLayout={layout}
+                        />
+                    </Grid>
                     {/* @ts-ignore */}
                     <Grid item align="center" xs={12}>
                         <Button

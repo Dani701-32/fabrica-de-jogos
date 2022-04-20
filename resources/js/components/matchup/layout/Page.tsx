@@ -24,7 +24,7 @@ const Page = ({
 }: Props) => {
     return (
         // @ts-ignore
-        <Grid item align="center" xs={12} md={6} lg={6}>
+        <Grid item align="center" xs={12} md={6} lg={4}>
             <Paper
                 elevation={5}
                 sx={{

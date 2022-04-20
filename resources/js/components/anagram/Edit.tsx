@@ -1,5 +1,17 @@
-import React, { useState, useEffect, ChangeEvent } from 'react';
-import { Alert, Button, Grid, Box, TextField } from '@mui/material';
+import React, {
+    useState,
+    useEffect,
+    ChangeEvent,
+    FormEventHandler
+} from 'react';
+import {
+    Alert,
+    Button,
+    Grid,
+    Box,
+    TextField,
+    CircularProgress
+} from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import LayoutPicker from '../_layout/LayoutSelect';
 import SuccessDialog from '../_layout/SuccessDialog';
@@ -68,7 +80,9 @@ export default function Edit() {
         }
         setLayout(newLayout);
     };
-    const handleSubmit = (event: ChangeEvent<HTMLInputElement>) => {
+    const handleSubmit: FormEventHandler = (
+        event: ChangeEvent<HTMLInputElement>
+    ) => {
         event.preventDefault();
         if (pages.length < 1) {
             setAlert('O jogo deve ter no mínimo 1 página!');
@@ -113,6 +127,18 @@ export default function Edit() {
         response.isError && setAlert(`Ocorreu um erro: ${response.error}`);
     }, [response.isLoading]);
 
+    if (isLoading)
+        return (
+            <CircularProgress
+                sx={{
+                    position: 'absolute',
+                    left: '50%',
+                    top: '50%',
+                    transform: 'translate(-50%, -50%)'
+                }}
+            />
+        );
+
     return (
         <>
             <SuccessDialog open={open} handleClose={() => setOpen(false)} />
@@ -128,22 +154,9 @@ export default function Edit() {
                     container
                     justifyContent="center"
                     component="form"
-                    onSubmit={handleSubmit as any}
+                    onSubmit={handleSubmit}
                     spacing={3}
                 >
-                    {/* @ts-ignore */}
-                    <Grid item align="center" xs={12}>
-                        <TextField
-                            label="Nome"
-                            name="name"
-                            variant="outlined"
-                            value={name}
-                            onChange={(event) => {
-                                setName(event.target.value);
-                            }}
-                            required
-                        />
-                    </Grid>
                     <LayoutPicker
                         handleLayout={handleLayout}
                         selectedLayout={layout}

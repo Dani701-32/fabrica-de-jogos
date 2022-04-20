@@ -2,7 +2,7 @@ import { Box, Card, Grid, ToggleButton, Typography } from '@mui/material';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import React from 'react';
-import { styled } from '@mui/material/styles';
+import { styled } from '@mui/system';
 
 const ImageToggleButton = styled(ToggleButton)({
     '&.Mui-selected': {
@@ -11,17 +11,21 @@ const ImageToggleButton = styled(ToggleButton)({
 });
 
 const responsive = {
+    superLargeDesktop: {
+        breakpoint: { max: 3000, min: 1440 },
+        items: 4
+    },
     desktop: {
-        breakpoint: { max: 3000, min: 1024 },
+        breakpoint: { max: 1440, min: 1100 },
         items: 3
     },
     tablet: {
-        breakpoint: { max: 1024, min: 464 },
-        items: 3
+        breakpoint: { max: 1100, min: 600 },
+        items: 2
     },
     mobile: {
-        breakpoint: { max: 464, min: 0 },
-        items: 2
+        breakpoint: { max: 600, min: 0 },
+        items: 1
     }
 };
 const layouts = [1, 2, 3, 4, 5];
@@ -41,12 +45,15 @@ const LayoutSelect = ({ handleLayout, selectedLayout }: Props) => {
                         <Typography variant="subtitle1">Tema:</Typography>
                     </Grid>
                     {/* @ts-ignore*/}
-                    <Grid item align="center" margin="auto" lg={9} md={12}>
+                    <Grid item align="center" margin="auto" xs={12} md={9}>
                         <Carousel responsive={responsive} infinite={true}>
                             {layouts.map((layout, i) => {
                                 return (
                                     <Box
-                                        sx={{ width: 250, height: 145 }}
+                                        sx={{
+                                            width: { sx: 180, sm: 250 },
+                                            height: 145
+                                        }}
                                         key={i}
                                     >
                                         <ImageToggleButton

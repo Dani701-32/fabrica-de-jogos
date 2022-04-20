@@ -1,5 +1,10 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
-import { Button, Grid, Alert } from '@mui/material';
+import React, {
+    ChangeEvent,
+    FormEventHandler,
+    useEffect,
+    useState
+} from 'react';
+import { Button, Grid, Alert, CircularProgress } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { EditorState, convertToRaw } from 'draft-js';
 import LayoutPicker from '../_layout/LayoutSelect';
@@ -35,8 +40,8 @@ const EditQuiz = () => {
     const [updateQuiz, response] = useUpdateQuizMutation();
     const { data, error, isLoading } = useGetQuizBySlugQuery(slug as string);
     const handleCreateQuestion = () => {
-        if (questions.length >= 9) {
-            setAlert('O número máximo de questões para esse jogo é 9!');
+        if (questions.length >= 8) {
+            setAlert('O número máximo de questões para esse jogo é 8!');
             return;
         }
         setQuestions([
@@ -102,7 +107,9 @@ const EditQuiz = () => {
         q.splice(index, 1, question);
         setQuestions(q);
     };
-    const handleSubmit = (event: ChangeEvent<HTMLInputElement>) => {
+    const handleSubmit: FormEventHandler = (
+        event: ChangeEvent<HTMLInputElement>
+    ) => {
         event.preventDefault();
         let questionsJSON: quizQuestion[] = [];
         let error = false;
@@ -170,6 +177,18 @@ const EditQuiz = () => {
         response.isError && setAlert(`Ocorreu um error: ${response.error}`);
     }, [response.isLoading]);
 
+    if (isLoading)
+        return (
+            <CircularProgress
+                sx={{
+                    position: 'absolute',
+                    left: '50%',
+                    top: '50%',
+                    transform: 'translate(-50%, -50%)'
+                }}
+            />
+        );
+
     return (
         <>
             <SuccessDialog
@@ -190,7 +209,7 @@ const EditQuiz = () => {
                     container
                     component="form"
                     justifyContent="center"
-                    onSubmit={handleSubmit as any}
+                    onSubmit={handleSubmit}
                     spacing={3}
                 >
                     <LayoutPicker
