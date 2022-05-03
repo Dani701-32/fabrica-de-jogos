@@ -11,10 +11,8 @@ import LayoutPicker from '../_layout/LayoutSelect';
 import draftToText from '../../utils/draftToText';
 import SuccessDialog from '../_layout/SuccessDialog';
 import { useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import QuestionCard from './layout/QuestionCard';
 import Copyright from '../_layout/Copyright';
-import { setBaseState } from '../../reducers/userReducer';
 import {
     useUpdateTrueOrFalseMutation,
     useGetTrueOrFalseBySlugQuery
@@ -32,7 +30,6 @@ const EditTrueOrFalse = () => {
         slug as string
     );
     const [updateTrueOrFalse, response] = useUpdateTrueOrFalseMutation();
-    const dispatch = useDispatch();
     const initialState: trueOrFalseQuestion[] = [
         { title: EditorState.createEmpty(), answer: false }
     ];
@@ -123,14 +120,6 @@ const EditTrueOrFalse = () => {
         return raw;
     };
 
-    useEffect(() => {
-        setTimeout(() => {
-            if (localStorage.getItem('token') === null) {
-                window.location.href = '/401';
-            }
-            dispatch(setBaseState());
-        }, 500);
-    }, []);
     useEffect(() => {
         if (data) {
             data.approved_at &&

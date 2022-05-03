@@ -18,19 +18,17 @@ import { EditorState, convertToRaw } from 'draft-js';
 import LayoutPicker from '../_layout/LayoutSelect';
 import draftToText from '../../utils/draftToText';
 import SuccessDialog from '../_layout/SuccessDialog';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import Page from './layout/Page';
 import Copyright from '../_layout/Copyright';
 import { RootState } from '../../store';
 import BackFAButton from '../_layout/BackFAButton';
-import { setBaseState } from '../../reducers/userReducer';
 import { useCreateMatchUpMutation } from '../../services/games';
 import { useCreateGameObjectMutation } from '../../services/portal';
 import { gameObj, matchUpObj, matchUpPage, matchUpState } from '../../types';
 import ObjectPropertiesSelect from '../_layout/ObjectPropertiesSelect';
 
 const CreateMatchUp = () => {
-    const dispatch = useDispatch();
     const [createMatchUp, response] = useCreateMatchUpMutation();
     const [createGameObject] = useCreateGameObjectMutation();
     const { token, origin } = useSelector((state: RootState) => state.user);
@@ -201,14 +199,6 @@ const CreateMatchUp = () => {
         };
         createMatchUp(body);
     };
-    useEffect(() => {
-        setTimeout(() => {
-            if (localStorage.getItem('token') === null) {
-                window.location.href = '/401';
-            }
-            dispatch(setBaseState());
-        }, 500);
-    }, []);
 
     useEffect(() => {
         if (response.isSuccess) {

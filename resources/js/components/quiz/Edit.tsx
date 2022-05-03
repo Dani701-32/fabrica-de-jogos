@@ -11,11 +11,9 @@ import LayoutPicker from '../_layout/LayoutSelect';
 import draftToText from '../../utils/draftToText';
 import SuccessDialog from '../_layout/SuccessDialog';
 import { useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import QuestionCard from './layout/QuestionCard';
 import Copyright from '../_layout/Copyright';
 import { Box } from '@mui/system';
-import { setBaseState } from '../../reducers/userReducer';
 import {
     useUpdateQuizMutation,
     useGetQuizBySlugQuery
@@ -29,7 +27,6 @@ const EditQuiz = () => {
     const [alert, setAlert] = useState('');
     const [name, setName] = useState('');
     const [layout, setLayout] = useState(1);
-    const dispatch = useDispatch();
     const initialState: quizQuestion[] = [
         {
             title: EditorState.createEmpty(),
@@ -148,15 +145,6 @@ const EditQuiz = () => {
         });
         return raw;
     };
-
-    useEffect(() => {
-        setTimeout(() => {
-            if (localStorage.getItem('token') === null) {
-                window.location.href = '/401';
-            }
-            dispatch(setBaseState());
-        }, 500);
-    }, []);
 
     useEffect(() => {
         if (data) {

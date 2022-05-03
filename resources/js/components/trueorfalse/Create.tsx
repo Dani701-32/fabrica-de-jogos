@@ -17,11 +17,10 @@ import { EditorState, convertToRaw } from 'draft-js';
 import LayoutPicker from '../_layout/LayoutSelect';
 import draftToText from '../../utils/draftToText';
 import SuccessDialog from '../_layout/SuccessDialog';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import QuestionCard from './layout/QuestionCard';
 import Copyright from '../_layout/Copyright';
 import BackFAButton from '../_layout/BackFAButton';
-import { setBaseState } from '../../reducers/userReducer';
 import { RootState } from '../../store';
 import { useCreateTrueOrFalseMutation } from '../../services/games';
 import { useCreateGameObjectMutation } from '../../services/portal';
@@ -38,7 +37,6 @@ const CreateTrueOrFalse = () => {
     const [selectedDiscipline, setSelectedDiscipline] = useState('');
     const [createTrueOrFalse, response] = useCreateTrueOrFalseMutation();
     const [createGameObject] = useCreateGameObjectMutation();
-    const dispatch = useDispatch();
     const initialState: trueOrFalseQuestion[] = [
         { title: EditorState.createEmpty(), answer: false }
     ];
@@ -147,14 +145,6 @@ const CreateTrueOrFalse = () => {
 
         createTrueOrFalse(body);
     };
-    useEffect(() => {
-        setTimeout(() => {
-            if (localStorage.getItem('token') === null) {
-                window.location.href = '/401';
-            }
-            dispatch(setBaseState());
-        }, 500);
-    }, []);
 
     useEffect(() => {
         if (response.isSuccess) {

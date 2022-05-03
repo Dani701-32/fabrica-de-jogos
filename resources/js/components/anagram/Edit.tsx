@@ -4,22 +4,13 @@ import React, {
     ChangeEvent,
     FormEventHandler
 } from 'react';
-import {
-    Alert,
-    Button,
-    Grid,
-    Box,
-    TextField,
-    CircularProgress
-} from '@mui/material';
+import { Alert, Button, Grid, Box, CircularProgress } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import LayoutPicker from '../_layout/LayoutSelect';
 import SuccessDialog from '../_layout/SuccessDialog';
-import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import Page from './layout/Page';
 import Copyright from '../_layout/Copyright';
-import { setBaseState } from '../../reducers/userReducer';
 import {
     useGetAnagramBySlugQuery,
     useUpdateAnagramMutation
@@ -27,7 +18,6 @@ import {
 
 export default function Edit() {
     const { slug } = useParams();
-    const dispatch = useDispatch();
     const { data, error, isLoading } = useGetAnagramBySlugQuery(slug as string);
     const [updateAnagram, response] = useUpdateAnagramMutation();
     function sliceIntoChunks(arr: string[], chunkSize: number): string[][] {
@@ -40,7 +30,6 @@ export default function Edit() {
     }
     const [open, setOpen] = useState(false);
     const [alert, setAlert] = useState('');
-    const [name, setName] = useState('');
     const [layout, setLayout] = useState(1);
     const [pages, setPages] = useState([['', '', '', '']]);
     const handleAddWord = () => {
@@ -102,14 +91,7 @@ export default function Edit() {
             setOpen(true);
         });
     };
-    useEffect(() => {
-        setTimeout(() => {
-            if (localStorage.getItem('token') === null) {
-                window.location.href = '/401';
-            }
-            dispatch(setBaseState());
-        }, 500);
-    }, []);
+
     useEffect(() => {
         if (data) {
             data.approved_at &&

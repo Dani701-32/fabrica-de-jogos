@@ -16,12 +16,11 @@ import LayoutPicker from '../_layout/LayoutSelect';
 import { convertToRaw, EditorState } from 'draft-js';
 import draftToText from '../../utils/draftToText';
 import SuccessDialog from '../_layout/SuccessDialog';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import WordCard from './layout/WordCard';
 import Copyright from '../_layout/Copyright';
 import { Box } from '@mui/system';
 import BackFAButton from '../_layout/BackFAButton';
-import { setBaseState } from '../../reducers/userReducer';
 import { RootState } from '../../store';
 import { useCreateWordSearchMutation } from '../../services/games';
 import { useCreateGameObjectMutation } from '../../services/portal';
@@ -53,7 +52,6 @@ const CreateWordSearch = () => {
     const [selectedDiscipline, setSelectedDiscipline] = useState('');
     const [createWordSearch, response] = useCreateWordSearchMutation();
     const [createGameObject] = useCreateGameObjectMutation();
-    const dispatch = useDispatch();
     const handleAddWord = () => {
         if (words.length >= 8) {
             setAlert('O numero máximo de palavras nesse jogo é 8!');
@@ -176,14 +174,6 @@ const CreateWordSearch = () => {
         };
         createWordSearch(body);
     };
-    useEffect(() => {
-        setTimeout(() => {
-            if (localStorage.getItem('token') === null) {
-                window.location.href = '/401';
-            }
-            dispatch(setBaseState());
-        }, 500);
-    }, []);
 
     useEffect(() => {
         if (response.isSuccess) {

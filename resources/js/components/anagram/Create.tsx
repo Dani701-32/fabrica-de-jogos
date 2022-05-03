@@ -16,12 +16,11 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import LayoutPicker from '../_layout/LayoutSelect';
 import SuccessDialog from '../_layout/SuccessDialog';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import Page from './layout/Page';
 import BackFAButton from '../_layout/BackFAButton';
 import Copyright from '../_layout/Copyright';
 import { RootState } from '../../store';
-import { setBaseState } from '../../reducers/userReducer';
 import { useCreateAnagramMutation } from '../../services/games';
 import { useCreateGameObjectMutation } from '../../services/portal';
 import ObjectPropertiesSelect from '../_layout/ObjectPropertiesSelect';
@@ -38,7 +37,6 @@ const Create = () => {
     const [name, setName] = useState('');
     const [layout, setLayout] = useState(1);
     const [pages, setPages] = useState([['', '', '', '']]);
-    const dispatch = useDispatch();
     const handleAddWord = () => {
         if (pages.length >= 8) {
             setAlert('O numero máximo de páginas nesse jogo é 8!');
@@ -126,15 +124,6 @@ const Create = () => {
         };
         createAnagram(body);
     };
-    useEffect(() => {
-        setBaseState();
-        setTimeout(() => {
-            if (localStorage.getItem('token') === null) {
-                window.location.href = '/401';
-            }
-            dispatch(setBaseState());
-        }, 500);
-    }, []);
 
     useEffect(() => {
         if (response.isSuccess) {

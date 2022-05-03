@@ -1,8 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Grid, Button, Card, IconButton } from '@mui/material';
-import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { setBaseState } from '../../reducers/userReducer';
 
 export default function HomePage({}) {
     const navigate = useNavigate();
@@ -14,15 +12,7 @@ export default function HomePage({}) {
         { slug: 'trueorfalse', name: 'Verdadeiro ou Falso' },
         { slug: 'wordsearch', name: 'Caça Palavras' }
     ];
-    const dispatch = useDispatch();
-    useEffect(() => {
-        setTimeout(() => {
-            if (localStorage.getItem('token') === null) {
-                window.location.href = '/401';
-            }
-            dispatch(setBaseState());
-        }, 500);
-    }, []);
+
     return (
         <>
             <Grid

@@ -52,11 +52,11 @@ export default function GamePage({ game }: Props) {
     switch (game) {
         case 'quiz':
             gameAddress =
-                'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/Quiz%20%281%29/index.html';
+                'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/QuizFDJ/index.html';
             break;
         case 'wordSearch':
             gameAddress =
-                'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/Caca-Palavras%20%281%29/index.html';
+                'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/WordSearchFDJ/index.html';
             break;
         case 'anagram':
             gameAddress =
@@ -64,15 +64,15 @@ export default function GamePage({ game }: Props) {
             break;
         case 'trueOrFalse':
             gameAddress =
-                'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/VerdadeiroOuFalso%20%282%29/index.html';
+                'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/TrueFalseFDJ/index.html';
             break;
         case 'matchUp':
             gameAddress =
-                'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/SignificadosDasPalavras%20%281%29/index.html';
+                'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/MatchUpFDJ/index.html';
             break;
         case 'memoryGame':
             gameAddress =
-                'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/JogoDaMemória%20%281%29/index.html';
+                'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/MemoryGameFDJ/index.html';
             break;
     }
     return (

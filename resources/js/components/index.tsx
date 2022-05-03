@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import GamePage from './_game/GamePage';
 import CreateQuiz from './quiz/Create';
@@ -17,9 +17,10 @@ import HomePage from './_home/HomePage';
 import { CircularProgress, Container, CssBaseline } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import NavBar from './_layout/NavBar';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store';
 import { useGetUserInfoQuery } from '../services/portal';
+import { setBaseState } from '../reducers/userReducer';
 
 const theme = createTheme({
     components: {
@@ -49,7 +50,21 @@ const theme = createTheme({
 
 function App() {
     const { token, origin } = useSelector((state: RootState) => state.user);
-    const { data, isLoading } = useGetUserInfoQuery({ token, origin });
+    const { data, error, isLoading } = useGetUserInfoQuery({ token, origin });
+    const dispatch = useDispatch();
+
+    if (error) dispatch(setBaseState());
+
+    useEffect(() => {
+        setBaseState();
+        setTimeout(() => {
+            if (localStorage.getItem('token') === null) {
+                window.location.href = '/401';
+            }
+            dispatch(setBaseState());
+        }, 500);
+    }, []);
+
     if (isLoading)
         return (
             <CircularProgress
@@ -61,6 +76,7 @@ function App() {
                 }}
             />
         );
+
     return (
         <ThemeProvider theme={theme}>
             <Router>

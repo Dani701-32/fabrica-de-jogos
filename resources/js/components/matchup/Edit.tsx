@@ -6,10 +6,8 @@ import LayoutPicker from '../_layout/LayoutSelect';
 import draftToText from '../../utils/draftToText';
 import SuccessDialog from '../_layout/SuccessDialog';
 import { useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import Page from './layout/Page';
 import Copyright from '../_layout/Copyright';
-import { setBaseState } from '../../reducers/userReducer';
 import {
     useUpdateMatchUpMutation,
     useGetMatchUpBySlugQuery
@@ -19,7 +17,6 @@ import textToDraft from '../../utils/textToDraft';
 
 const EditMatchUp = () => {
     const { slug } = useParams();
-    const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
     const [alert, setAlert] = useState('');
     const [name, setName] = useState('');
@@ -160,14 +157,6 @@ const EditMatchUp = () => {
         };
         updateMatchUp({ ...body, slug });
     };
-    useEffect(() => {
-        setTimeout(() => {
-            if (localStorage.getItem('token') === null) {
-                window.location.href = '/401';
-            }
-            dispatch(setBaseState());
-        }, 500);
-    }, []);
 
     useEffect(() => {
         if (data) {

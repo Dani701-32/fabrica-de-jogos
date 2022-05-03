@@ -18,11 +18,10 @@ import { EditorState, convertToRaw } from 'draft-js';
 import LayoutPicker from '../_layout/LayoutSelect';
 import draftToText from '../../utils/draftToText';
 import SuccessDialog from '../_layout/SuccessDialog';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import QuestionCard from './layout/QuestionCard';
 import Copyright from '../_layout/Copyright';
 import BackFAButton from '../_layout/BackFAButton';
-import { setBaseState } from '../../reducers/userReducer';
 import { RootState } from '../../store';
 import { useCreateQuizMutation } from '../../services/games';
 import { useCreateGameObjectMutation } from '../../services/portal';
@@ -30,7 +29,6 @@ import { gameObj, quizQuestion, quizState } from '../../types';
 import ObjectPropertiesSelect from '../_layout/ObjectPropertiesSelect';
 
 const CreateQuiz = () => {
-    const dispatch = useDispatch();
     const { token, origin } = useSelector((state: RootState) => state.user);
     const [open, setOpen] = useState(false);
     const [alert, setAlert] = useState('');
@@ -168,14 +166,6 @@ const CreateQuiz = () => {
         };
         createQuiz(body);
     };
-    useEffect(() => {
-        setTimeout(() => {
-            if (localStorage.getItem('token') === null) {
-                window.location.href = '/401';
-            }
-            dispatch(setBaseState());
-        }, 500);
-    }, []);
 
     useEffect(() => {
         if (response.isSuccess) {

@@ -6,10 +6,8 @@ import { convertToRaw, EditorState } from 'draft-js';
 import draftToText from '../../utils/draftToText';
 import SuccessDialog from '../_layout/SuccessDialog';
 import { useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import WordCard from './layout/WordCard';
 import Copyright from '../_layout/Copyright';
-import { setBaseState } from '../../reducers/userReducer';
 import {
     useUpdateWordSearchMutation,
     useGetWordSearchBySlugQuery
@@ -42,7 +40,6 @@ const EditWordSearch = () => {
         slug as string
     );
     const [updateWordSearch, response] = useUpdateWordSearchMutation();
-    const dispatch = useDispatch();
     const handleAddWord = () => {
         if (words.length >= 8) {
             setAlert('O numero máximo de palavras nesse jogo é 8!');
@@ -134,15 +131,6 @@ const EditWordSearch = () => {
         });
         return raw;
     };
-
-    useEffect(() => {
-        setTimeout(() => {
-            if (localStorage.getItem('token') === null) {
-                window.location.href = '/401';
-            }
-            dispatch(setBaseState());
-        }, 500);
-    }, []);
 
     useEffect(() => {
         if (data) {
