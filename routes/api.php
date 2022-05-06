@@ -1,12 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\API\QuizController;
-use App\Http\Controllers\API\MatchUpController;
-use App\Http\Controllers\API\AnagramController;
-use App\Http\Controllers\API\TrueOrFalseController;
-use App\Http\Controllers\API\WordSearchController;
-use App\Http\Controllers\API\MemoryGameController;
 use App\Http\Controllers\API\GameController;
 
 /*
@@ -20,16 +14,8 @@ use App\Http\Controllers\API\GameController;
 |
 */
 
-Route::resource('quiz', QuizController::class);
-Route::put('quiz/{quiz}/approve', [QuizController::class, 'approve']);
-Route::resource('matchup', MatchUpController::class);
-Route::put('matchup/{matchup}/approve', [MatchUpController::class, 'approve']);
-Route::resource('anagram', AnagramController::class);
-Route::put('anagram/{anagram}/approve', [AnagramController::class, 'approve']);
-Route::resource('trueorfalse', TrueOrFalseController::class);
-Route::put('trueorfalse/{trueorfalse}/approve', [TrueOrFalseController::class, 'approve']);
-Route::resource('wordsearch', WordSearchController::class);
-Route::put('wordsearch/{wordsearch}/approve', [WordSearchController::class, 'approve']);
-Route::resource('memorygame', MemoryGameController::class);
-Route::put('memorygame/{memorygame}/approve', [MemoryGameController::class, 'approve']);
-Route::get('games/{origin?}/{user_id?}', [GameController::class, 'index']);
+Route::post('{gamecategory}', [GameController::class, 'store']);
+Route::get('{gamecategory}/{game}', [GameController::class, 'show'])->scopeBindings();
+Route::put('{gamecategory}/{game}', [GameController::class, 'update'])->scopeBindings();
+Route::delete('{gamecategory}/{game}', [GameController::class, 'delete'])->scopeBindings();
+Route::put('{gamecategory}/{game}/approve', [GameController::class, 'approve'])->scopeBindings();

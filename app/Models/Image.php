@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * @property string $path
  * @property string $name
- * @property int $memory_game_id
+ * @property int $game_id
  */
 class Image extends Model
 {
@@ -24,8 +24,8 @@ class Image extends Model
         'name', 'path'
     ];
 
-    public function memorygame(): BelongsTo
+    public function game(): BelongsTo
     {
-        return $this->belongsTo('memorygame');
+        return $this->belongsTo('game');
     }
 }

@@ -2,36 +2,29 @@
 
 namespace App\Http\Resources;
 
-use DateTime;
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use JetBrains\PhpStorm\ArrayShape;
+use JsonSerializable;
 
-/**
- * @property string $slug
- * @property string $name
- * @property int $layout
- * @property string $questions
- * @property datetime $approved_at
- * @property datetime $created_at
- * @property datetime $updated_at
- */
-class Quiz extends JsonResource
+class Game extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
      * @param  Request  $request
-     * @return array
+     * @return array|Arrayable|JsonSerializable
      */
-    #[ArrayShape(['slug' => "string", 'name' => "string", 'layout' => "int", 'questions' => "array", 'approved_at' => "date", 'created_at' => "datetime", 'updated_at' => "datetime"])]
-    public function toArray($request): array
+    #[ArrayShape(['slug' => 'string', 'name' => "string", 'layout' => "int", 'category' => "string", 'options' => "array", 'approved_at' => "datetime", 'created_at' => "datetime", 'updated_at' => "datetime"])]
+    public function toArray($request): array|JsonSerializable|Arrayable
     {
         return [
             'slug' => $this->slug,
             'name' => $this->name,
             'layout' => $this->layout,
-            'questions' => unserialize($this->questions, [false]),
+            'category' => $this->gameCategory->name,
+            'options' => unserialize($this->options, [false]),
             'approved_at' => $this->approved_at,
             'created_at' => $this->created_at->format('d/m/Y H:i:s'),
             'updated_at' => $this->updated_at->format('d/m/Y H:i:s'),

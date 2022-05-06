@@ -5,19 +5,20 @@ namespace App\Models;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use JetBrains\PhpStorm\ArrayShape;
 
 /**
- * @property string $name
- * @property int $layout
- * @property int $user_id
- * @property int $client_id
- * @property string $origin
- * @property array|string $questions
+ * @method static create(array $array)
+ * @property  $approved_at
+ * @property mixed $name
  */
-class TrueOrFalse extends Model
+class Game extends Model
 {
     use HasFactory;
+    use SoftDeletes;
     use Sluggable;
 
     /**
@@ -26,7 +27,7 @@ class TrueOrFalse extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'type', 'layout', 'client_id', 'user_id', 'origin', 'questions', 'answers'
+        'name', 'layout', 'options'
     ];
 
     #[ArrayShape(['slug' => "string[]"])]
@@ -34,7 +35,7 @@ class TrueOrFalse extends Model
     {
         return [
             'slug' => [
-                'source' => ['name']
+                'source' => ['name', 'category.name']
             ]
         ];
     }
@@ -42,5 +43,15 @@ class TrueOrFalse extends Model
     public function getRouteKeyName(): string
     {
         return 'slug';
+    }
+
+    public function gameCategory(): BelongsTo
+    {
+        return $this->belongsTo(GameCategory::class);
+    }
+
+    public function images(): hasMany
+    {
+        return $this->hasMany(Image::class);
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Game;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,15 +14,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('anagrams', static function (Blueprint $table) {
+        Schema::create('images', static function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('layout');
-            $table->string('slug')->unique();
-            $table->string('words', 5096);
-            $table->dateTime('approved_at')->nullable();
+            $table->string('path');
+            $table->foreignIdFor(Game::class)->constrained();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -32,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('anagrams');
+        Schema::dropIfExists('images');
     }
 };

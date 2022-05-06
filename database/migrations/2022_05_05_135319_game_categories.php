@@ -13,15 +13,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('memory_games', static function (Blueprint $table) {
+        Schema::create('game_categories', static function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('layout');
-            $table->string('slug')->unique();
-            $table->string('grid');
-            $table->dateTime('approved_at')->nullable();
-            $table->timestamps();
-            $table->softDeletes();
+            $table->string('slug');
+            $table->string('description', 511);
         });
     }
 
@@ -32,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('memory_games');
+        Schema::dropIfExists('game_category');
     }
 };
