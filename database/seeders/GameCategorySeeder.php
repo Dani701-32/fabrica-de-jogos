@@ -32,10 +32,10 @@ class GameCategorySeeder extends Seeder
             'description' => 'Caça palavras',
             'creation_rules' => serialize(['options' => 'required|array|max:10',
                 'options.*.word' => 'required|string|max:10',
-                'options.*.tip' => 'required|string|200']),
+                'options.*.tip' => 'required|string|max:200']),
             'update_rules' => serialize(['options' => 'array|max:10',
                 'options.*.word' => 'string|max:10',
-                'options.*.tip' => 'string|200'])
+                'options.*.tip' => 'string|max:200'])
         ]);
 
         DB::table('game_categories')->insert([

@@ -35,7 +35,11 @@ export const gameApi = createApi({
             query: ({ slug, ...body }) => ({
                 url: `/anagram/${slug}`,
                 method: 'PUT',
-                body: body
+                body: body,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json'
+                }
             })
         }),
         getMatchUpBySlug: builder.query<matchUpState, string>({
@@ -45,7 +49,11 @@ export const gameApi = createApi({
             query: (body: matchUpState) => ({
                 url: '/match-up',
                 method: 'POST',
-                body: body
+                body: body,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json'
+                }
             })
         }),
         updateMatchUp: builder.mutation<
@@ -55,7 +63,11 @@ export const gameApi = createApi({
             query: ({ slug, ...body }) => ({
                 url: `/match-up/${slug}`,
                 method: 'PUT',
-                body: body
+                body: body,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json'
+                }
             })
         }),
         getQuizBySlug: builder.query<quizState, string>({
@@ -65,7 +77,11 @@ export const gameApi = createApi({
             query: (body: quizState) => ({
                 url: '/quiz',
                 method: 'POST',
-                body: body
+                body: body,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json'
+                }
             })
         }),
         updateQuiz: builder.mutation<
@@ -75,7 +91,11 @@ export const gameApi = createApi({
             query: ({ slug, ...body }) => ({
                 url: `/quiz/${slug}`,
                 method: 'PUT',
-                body: body
+                body: body,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json'
+                }
             })
         }),
         getTrueOrFalseBySlug: builder.query<trueOrFalseState, string>({
@@ -88,7 +108,11 @@ export const gameApi = createApi({
             query: (body: trueOrFalseState) => ({
                 url: '/true-or-false',
                 method: 'POST',
-                body: body
+                body: body,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json'
+                }
             })
         }),
         updateTrueOrFalse: builder.mutation<
@@ -98,7 +122,11 @@ export const gameApi = createApi({
             query: ({ slug, ...body }) => ({
                 url: `/true-or-false/${slug}`,
                 method: 'PUT',
-                body: body
+                body: body,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json'
+                }
             })
         }),
         getWordSearchBySlug: builder.query<wordSearchState, string>({
@@ -111,7 +139,11 @@ export const gameApi = createApi({
             query: (body: wordSearchState) => ({
                 url: '/word-search',
                 method: 'POST',
-                body: body
+                body: body,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json'
+                }
             })
         }),
         updateWordSearch: builder.mutation<
@@ -121,7 +153,11 @@ export const gameApi = createApi({
             query: ({ slug, ...body }) => ({
                 url: `/word-search/${slug}`,
                 method: 'PUT',
-                body: body
+                body: body,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json'
+                }
             })
         })
     })
