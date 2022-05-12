@@ -21,7 +21,7 @@ Route::get('/create', static function () {
     return view('index');
 });
 // Game routes
-Route::get('/wordsearch/{wordsearch}', static function (Game $wordsearch) {
+Route::get('/word-search/{wordsearch}', static function (Game $wordsearch) {
     return view('index');
 });
 Route::get('/quiz/{quiz}', static function (Game $quiz) {
@@ -30,13 +30,13 @@ Route::get('/quiz/{quiz}', static function (Game $quiz) {
 Route::get('/anagram/{anagram}', static function (Game $anagram) {
     return view('index');
 });
-Route::get('/matchup/{matchup}', static function (Game $matchup) {
+Route::get('/match-up/{matchup}', static function (Game $matchup) {
     return view('index');
 });
-Route::get('/trueorfalse/{trueorfalse}', static function (Game $trueorfalse){
+Route::get('/true-or-false/{trueorfalse}', static function (Game $trueorfalse){
     return view('index');
 });
-Route::get('/memorygame/{memorygame}', static function (Game $memorygame) {
+Route::get('/memory-game/{memorygame}', static function (Game $memorygame) {
     return view('index');
 });
 // Creation routes
@@ -46,35 +46,35 @@ Route::get('/create/quiz', static function () {
 Route::get('/create/anagram', static function () {
     return view('index');
 });
-Route::get('/create/wordsearch', static function () {
+Route::get('/create/word-search', static function () {
     return view('index');
 });
-Route::get('/create/trueorfalse', static function () {
+Route::get('/create/true-or-false', static function () {
     return view('index');
 });
-Route::get('/create/matchup', static function () {
+Route::get('/create/match-up', static function () {
     return view('index');
 });
-Route::get('/create/memorygame', static function () {
+Route::get('/create/memory-game', static function () {
     return view('index');
 });
 // Edit routes
 Route::get('/edit/anagram/{anagram}', static function (Game $anagram) {
     return view('index');
 });
-Route::get('/edit/matchup/{matchup}', static function (Game $matchup) {
+Route::get('/edit/match-up/{matchup}', static function (Game $matchup) {
     return view('index');
 });
-Route::get('/edit/memorygame/{memorygame}', static function (Game $memorygame) {
+Route::get('/edit/memory-game/{memorygame}', static function (Game $memorygame) {
     return view('index');
 });
 Route::get('/edit/quiz/{quiz}', static function (Game $quiz) {
     return view('index');
 });
-Route::get('/edit/trueorfalse/{trueorfalse}', static function (Game $trueOrFalse) {
+Route::get('/edit/true-or-false/{trueorfalse}', static function (Game $trueOrFalse) {
     return view('index');
 });
-Route::get('/edit/wordsearch/{wordsearch}', static function (Game $wordsearch) {
+Route::get('/edit/word-search/{wordsearch}', static function (Game $wordsearch) {
     return view('index');
 });
 // Error routes
