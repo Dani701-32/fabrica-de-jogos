@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import {
     anagramState,
     matchUpState,
-    memoryGameState,
+    // memoryGameState,
     quizState,
     trueOrFalseState,
     wordSearchState
@@ -39,11 +39,11 @@ export const gameApi = createApi({
             })
         }),
         getMatchUpBySlug: builder.query<matchUpState, string>({
-            query: (slug) => `/matchup/${slug}`
+            query: (slug) => `/match-up/${slug}`
         }),
         createMatchUp: builder.mutation<matchUpState, Partial<matchUpState>>({
             query: (body: matchUpState) => ({
-                url: '/matchup',
+                url: '/match-up',
                 method: 'POST',
                 body: body
             })
@@ -53,7 +53,7 @@ export const gameApi = createApi({
             Partial<matchUpState> & Pick<matchUpState, 'slug'>
         >({
             query: ({ slug, ...body }) => ({
-                url: `/matchup/${slug}`,
+                url: `/match-up/${slug}`,
                 method: 'PUT',
                 body: body
             })
@@ -79,14 +79,14 @@ export const gameApi = createApi({
             })
         }),
         getTrueOrFalseBySlug: builder.query<trueOrFalseState, string>({
-            query: (slug) => `/trueorfalse/${slug}`
+            query: (slug) => `/true-or-false/${slug}`
         }),
         createTrueOrFalse: builder.mutation<
             trueOrFalseState,
             Partial<trueOrFalseState>
         >({
             query: (body: trueOrFalseState) => ({
-                url: '/trueorfalse',
+                url: '/true-or-false',
                 method: 'POST',
                 body: body
             })
@@ -96,20 +96,20 @@ export const gameApi = createApi({
             Partial<trueOrFalseState> & Pick<trueOrFalseState, 'slug'>
         >({
             query: ({ slug, ...body }) => ({
-                url: `/trueorfalse/${slug}`,
+                url: `/true-or-false/${slug}`,
                 method: 'PUT',
                 body: body
             })
         }),
         getWordSearchBySlug: builder.query<wordSearchState, string>({
-            query: (slug) => `/wordsearch/${slug}`
+            query: (slug) => `/word-search/${slug}`
         }),
         createWordSearch: builder.mutation<
             wordSearchState,
             Partial<wordSearchState>
         >({
             query: (body: wordSearchState) => ({
-                url: '/wordsearch',
+                url: '/word-search',
                 method: 'POST',
                 body: body
             })
@@ -119,7 +119,7 @@ export const gameApi = createApi({
             Partial<wordSearchState> & Pick<wordSearchState, 'slug'>
         >({
             query: ({ slug, ...body }) => ({
-                url: `/wordsearch/${slug}`,
+                url: `/word-search/${slug}`,
                 method: 'PUT',
                 body: body
             })

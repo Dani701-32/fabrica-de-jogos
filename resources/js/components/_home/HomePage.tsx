@@ -6,11 +6,11 @@ export default function HomePage({}) {
     const navigate = useNavigate();
     const game_types = [
         { slug: 'anagram', name: 'Anagrama' },
-        { slug: 'matchup', name: 'Combinação' },
-        // { slug: 'memorygame', name: 'Jogo da Memória' },
+        { slug: 'match-up', name: 'Combinação' },
+        // { slug: 'memory-game', name: 'Jogo da Memória' },
         { slug: 'quiz', name: 'Quiz' },
-        { slug: 'trueorfalse', name: 'Verdadeiro ou Falso' },
-        { slug: 'wordsearch', name: 'Caça Palavras' }
+        { slug: 'true-or-false', name: 'Verdadeiro ou Falso' },
+        { slug: 'word-search', name: 'Caça Palavras' }
     ];
 
     return (
@@ -19,12 +19,12 @@ export default function HomePage({}) {
                 container
                 alignItems="flex-start"
                 justifyContent="center"
-                spacing={3}
+                spacing={1}
                 sx={{ marginTop: 3 }}
             >
                 {game_types.map((type, index) => {
                     return (
-                        <Grid key={index} item xs={6} md={4} lg={4}>
+                        <Grid key={index} item xs={6} md={4} lg={3}>
                             <Grid container alignItems="center" spacing={1}>
                                 {/* @ts-ignore */}
                                 <Grid item align="center" xs={12}>

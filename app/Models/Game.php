@@ -13,7 +13,10 @@ use JetBrains\PhpStorm\ArrayShape;
 /**
  * @method static create(array $array)
  * @property  $approved_at
- * @property mixed $name
+ * @property string $name
+ * @property int $layout
+ * @property array|string $options
+ * @property int $game_category_id
  */
 class Game extends Model
 {

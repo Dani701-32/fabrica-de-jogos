@@ -25,21 +25,22 @@ class GameController extends Controller
     /**
      * Store a newly created game in database.
      *
-     * @param GameCategory $gamecategory
+     * @param GameCategory $gameCategory
      * @param Request $request
      * @return JsonResponse
      */
-    public function store(GameCategory $gamecategory, Request $request): JsonResponse
+    public function store(GameCategory $gameCategory, Request $request): JsonResponse
     {
-        $name = $request->get('name');
-        $layout = $request->get('layout');
-        $options = serialize($request->get('options'));
-        $gameCategory_id = $gamecategory->id;
+        $validationOptions = array_merge([
+            'name' => 'required|string|max:255',
+            'layout' => 'required|int|max:8'
+        ], unserialize($gameCategory->creation_rules, [false]));
+        $validatedData = $request->validate($validationOptions);
         $game = new Game();
-        $game->name = $name;
-        $game->layout = $layout;
-        $game->options = $options;
-        $game->game_category_id = $gameCategory_id;
+        $game->name = $validatedData['name'];
+        $game->layout = $validatedData['layout'];
+        $game->options = serialize($validatedData['options']);
+        $game->game_category_id = $gameCategory->id;
         $game->save();
         return response()->json(new GameResource($game));
     }
@@ -47,11 +48,11 @@ class GameController extends Controller
     /**
      * Display the specified game.
      *
-     * @param GameCategory $gamecategory
+     * @param GameCategory $gameCategory
      * @param Game $game
      * @return JsonResponse
      */
-    public function show(GameCategory $gamecategory, Game $game): JsonResponse
+    public function show(GameCategory $gameCategory, Game $game): JsonResponse
     {
         return response()->json(new GameResource($game));
     }
@@ -59,11 +60,11 @@ class GameController extends Controller
     /**
      * Approve the specified game.
      *
-     * @param GameCategory $gamecategory
+     * @param GameCategory $gameCategory
      * @param Game $game
      * @return JsonResponse
      */
-    public function approve(GameCategory $gamecategory, Game $game): JsonResponse
+    public function approve(GameCategory $gameCategory, Game $game): JsonResponse
     {
         if ($game->approved_at){
             return response()->json(["Bad request" => "Game Already Approved!"], 400);
@@ -75,18 +76,23 @@ class GameController extends Controller
     /**
      * Update the specified resource in database.
      *
-     * @param GameCategory $gamecategory
+     * @param GameCategory $gameCategory
      * @param Request $request
      * @param Game $game
      * @return JsonResponse
      */
-    public function update(GameCategory $gamecategory, Request $request, Game $game): JsonResponse
+    public function update(GameCategory $gameCategory, Request $request, Game $game): JsonResponse
     {
         if ($game->approved_at){
             return response()->json(["Bad request" => "Anagram Game Already Approved!"], 400);
         }
+        $validationOptions = array_merge([
+            'name' => 'required|string|max:255',
+            'layout' => 'required|int|max:8'
+        ], unserialize($gameCategory->update_rules, [false]));
+        $validatedData = $request->validate($validationOptions);
         $edited = false;
-        foreach ($request->all() as $attr=>$value) {
+        foreach ($validatedData as $attr=>$value) {
             if (array_key_exists($attr, $game->getAttributes())) {
                 $edited = true;
                 if (is_array($value)) {
@@ -104,11 +110,11 @@ class GameController extends Controller
     /**
      * Remove the specified game from database.
      *
-     * @param GameCategory $gamecategory
+     * @param GameCategory $gameCategory
      * @param Game $game
      * @return JsonResponse
      */
-    public function destroy(GameCategory $gamecategory, Game $game): JsonResponse
+    public function destroy(GameCategory $gameCategory, Game $game): JsonResponse
     {
         $game->delete();
         return response()->json(['Success' => 'Game Deleted Successfully!']);

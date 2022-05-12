@@ -15,10 +15,10 @@ type Props = {
 export default function SuccessDialog({ open, handleClose }: Props) {
     return (
         <Dialog open={open} onClose={() => handleClose()}>
-            <DialogTitle>Jogo salvo com sucesso</DialogTitle>
+            <DialogTitle>Jogo salvo com sucesso!</DialogTitle>
             <DialogContent>
-                Ele ja está salvo na sua lista de objetos e pode ser adicionado
-                a uma aula ou trilha de aprendizado!
+                Seu jogo já está salvo em sua lista de objetos e pode ser
+                adicionado a uma aula ou trilha de aprendizagem!
             </DialogContent>
             <DialogActions>
                 <Button size="small" onClick={() => handleClose()}>

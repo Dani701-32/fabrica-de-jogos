@@ -14,8 +14,8 @@ use App\Http\Controllers\API\GameController;
 |
 */
 
-Route::post('{gamecategory}', [GameController::class, 'store']);
-Route::get('{gamecategory}/{game}', [GameController::class, 'show'])->scopeBindings();
-Route::put('{gamecategory}/{game}', [GameController::class, 'update'])->scopeBindings();
-Route::delete('{gamecategory}/{game}', [GameController::class, 'delete'])->scopeBindings();
-Route::put('{gamecategory}/{game}/approve', [GameController::class, 'approve'])->scopeBindings();
+Route::post('{gameCategory}', [GameController::class, 'store']);
+Route::get('{gameCategory}/{game}', [GameController::class, 'show'])->scopeBindings();
+Route::put('{gameCategory}/{game}', [GameController::class, 'update'])->scopeBindings();
+Route::delete('{gameCategory}/{game}', [GameController::class, 'delete'])->scopeBindings();
+Route::put('{gameCategory}/{game}/approve', [GameController::class, 'approve'])->scopeBindings();

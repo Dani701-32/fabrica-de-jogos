@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug');
             $table->string('description', 511);
+            $table->string('creation_rules', 1023);
+            $table->string('update_rules', 1023);
         });
     }
 

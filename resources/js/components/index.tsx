@@ -5,14 +5,14 @@ import CreateQuiz from './quiz/Create';
 import EditQuiz from './quiz/Edit';
 import CreateAnagram from './anagram/Create';
 import EditAnagram from './anagram/Edit';
-import CreateWordSearch from './wordsearch/Create';
-import EditWordSearch from './wordsearch/Edit';
-import CreateTrueOrFalse from './trueorfalse/Create';
-import EditTrueOrFalse from './trueorfalse/Edit';
-import CreateMatchUp from './matchup/Create';
-import EditMatchUp from './matchup/Edit';
-//import CreateMemorygame from './memorygame/Create';
-//import EditMemorygame from './memorygame/Edit';
+import CreateWordSearch from './word-search/Create';
+import EditWordSearch from './word-search/Edit';
+import CreateTrueOrFalse from './true-or-false/Create';
+import EditTrueOrFalse from './true-or-false/Edit';
+import CreateMatchUp from './match-up/Create';
+import EditMatchUp from './match-up/Edit';
+import CreateMemorygame from './memory-game/Create';
+import EditMemorygame from './memory-game/Edit';
 import HomePage from './_home/HomePage';
 import { CircularProgress, Container, CssBaseline } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -96,19 +96,19 @@ function App() {
                             element={<GamePage game={'anagram'} />}
                         />
                         <Route
-                            path="/wordsearch/:slug"
+                            path="/word-search/:slug"
                             element={<GamePage game={'wordSearch'} />}
                         />
                         <Route
-                            path="/trueorfalse/:slug"
+                            path="/true-or-false/:slug"
                             element={<GamePage game={'trueOrFalse'} />}
                         />
                         <Route
-                            path="/memorygame/:slug"
+                            path="/memory-game/:slug"
                             element={<GamePage game={'memoryGame'} />}
                         />
                         <Route
-                            path="/matchup/:slug"
+                            path="/match-up/:slug"
                             element={<GamePage game={'matchUp'} />}
                         />
                         {/* Create Routes */}
@@ -117,20 +117,20 @@ function App() {
                             element={<CreateAnagram />}
                         />
                         <Route
-                            path="/create/matchup"
+                            path="/create/match-up"
                             element={<CreateMatchUp />}
                         />
-                        {/*<Route
-                            path="/create/memorygame"
+                        <Route
+                            path="/create/memory-game"
                             element={<CreateMemorygame />}
-                        />*/}
+                        />
                         <Route path="/create/quiz" element={<CreateQuiz />} />
                         <Route
-                            path="/create/trueorfalse"
+                            path="/create/true-or-false"
                             element={<CreateTrueOrFalse />}
                         />
                         <Route
-                            path="/create/wordsearch"
+                            path="/create/word-search"
                             element={<CreateWordSearch />}
                         />
                         {/* Edit Routes */}
@@ -139,20 +139,20 @@ function App() {
                             element={<EditAnagram />}
                         />
                         <Route
-                            path="/edit/matchup/:slug"
+                            path="/edit/match-up/:slug"
                             element={<EditMatchUp />}
                         />
-                        {/*<Route
-                            path="/edit/memorygame/:slug"
+                        <Route
+                            path="/edit/memory-game/:slug"
                             element={<EditMemorygame />}
-                        />*/}
+                        />
                         <Route path="/edit/quiz/:slug" element={<EditQuiz />} />
                         <Route
-                            path="/edit/trueorfalse/:slug"
+                            path="/edit/true-or-false/:slug"
                             element={<EditTrueOrFalse />}
                         />
                         <Route
-                            path="/edit/wordsearch/:slug"
+                            path="/edit/word-search/:slug"
                             element={<EditWordSearch />}
                         />
                     </Routes>

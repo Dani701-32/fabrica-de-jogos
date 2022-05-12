@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property int $id
+ * @property string $slug
+ * @property array|string $update_rules
+ * @property array|string $creation_rules
  */
 class GameCategory extends Model
 {
