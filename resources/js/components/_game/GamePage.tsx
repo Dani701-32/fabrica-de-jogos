@@ -52,7 +52,7 @@ export default function GamePage({ game }: Props) {
     switch (game) {
         case 'quiz':
             gameAddress =
-                'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/QuizFDJ/index.html';
+                'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/QuizFDJ--/index.html';
             break;
         case 'wordSearch':
             gameAddress =
