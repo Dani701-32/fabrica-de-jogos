@@ -11,8 +11,8 @@ import CreateTrueOrFalse from './true-or-false/Create';
 import EditTrueOrFalse from './true-or-false/Edit';
 import CreateMatchUp from './match-up/Create';
 import EditMatchUp from './match-up/Edit';
-import CreateMemorygame from './memory-game/Create';
-import EditMemorygame from './memory-game/Edit';
+// import CreateMemorygame from './memory-game/Create';
+// import EditMemorygame from './memory-game/Edit';
 import HomePage from './_home/HomePage';
 import { CircularProgress, Container, CssBaseline } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -103,10 +103,12 @@ function App() {
                             path="/true-or-false/:slug"
                             element={<GamePage game={'trueOrFalse'} />}
                         />
-                        <Route
-                            path="/memory-game/:slug"
-                            element={<GamePage game={'memoryGame'} />}
-                        />
+                        {/*
+                            <Route
+                                path="/memory-game/:slug"
+                                element={<GamePage game={'memoryGame'} />}
+                            />
+                        */}
                         <Route
                             path="/match-up/:slug"
                             element={<GamePage game={'matchUp'} />}
@@ -120,10 +122,12 @@ function App() {
                             path="/create/match-up"
                             element={<CreateMatchUp />}
                         />
-                        <Route
-                            path="/create/memory-game"
-                            element={<CreateMemorygame />}
-                        />
+                        {/*
+                            <Route
+                                path="/create/memory-game"
+                                element={<CreateMemorygame />}
+                            />
+                        */}
                         <Route path="/create/quiz" element={<CreateQuiz />} />
                         <Route
                             path="/create/true-or-false"
@@ -142,10 +146,12 @@ function App() {
                             path="/edit/match-up/:slug"
                             element={<EditMatchUp />}
                         />
-                        <Route
-                            path="/edit/memory-game/:slug"
-                            element={<EditMemorygame />}
-                        />
+                        {/*
+                            <Route
+                                path="/edit/memory-game/:slug"
+                                element={<EditMemorygame />}
+                            />
+                        */}
                         <Route path="/edit/quiz/:slug" element={<EditQuiz />} />
                         <Route
                             path="/edit/true-or-false/:slug"
