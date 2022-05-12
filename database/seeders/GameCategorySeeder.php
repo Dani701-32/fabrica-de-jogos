@@ -43,14 +43,14 @@ class GameCategorySeeder extends Seeder
             'name' => 'Match Up',
             'slug' => 'match-up',
             'description' => 'Combinação',
-            'creation_rules' => serialize(['options' => 'required|array|max:8',
-                'options.*' => 'required|array|max:4',
-                'options.*.word' => 'required|string|max:12',
-                'options.*.meaning' => 'required|string|max:64']),
-            'update_rules' => serialize(['options' => 'required|array|max:8',
-                'options.*' => 'required|array|max:4',
-                'options.*.word' => 'required|string|max:12',
-                'options.*.meaning' => 'required|string|max:64'])
+            'creation_rules' => serialize(['options' => 'required|array|max:4',
+            'options.*' => 'required|array|max:4',
+            'options.*.*.word' => 'required|string',
+            'options.*.*.meaning' => 'required|string']),
+            'update_rules' => serialize(['options' => 'array|max:4',
+                'options.*' => 'array|max:4',
+                'options.*.*.word' => 'string|max:12',
+                'options.*.*.meaning' => 'string|max:64'])
         ]);
 
         DB::table('game_categories')->insert([
