@@ -131,7 +131,7 @@ const EditQuiz = () => {
         let body = {
             name: name,
             layout: layout,
-            questions: questionsJSON
+            options: questionsJSON
         };
         updateQuiz({ slug, ...body });
     };
@@ -152,7 +152,7 @@ const EditQuiz = () => {
                 setAlert(
                     'Esse jogo já foi aprovado, logo não pode mais ser editado!'
                 );
-            let deep_copy = JSON.parse(JSON.stringify(data.questions));
+            let deep_copy = JSON.parse(JSON.stringify(data.options));
             setQuestions(formatQuestions(deep_copy));
             setName(data.name);
             setLayout(data.layout);

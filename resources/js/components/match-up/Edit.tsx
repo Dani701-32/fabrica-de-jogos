@@ -153,7 +153,7 @@ const EditMatchUp = () => {
         let body = {
             name: name,
             layout: layout,
-            pages: matchUpsJSON
+            options: matchUpsJSON
         };
         updateMatchUp({ ...body, slug });
     };
@@ -164,7 +164,7 @@ const EditMatchUp = () => {
                 setAlert(
                     'Esse jogo já foi aprovado, logo não pode mais ser editado!'
                 );
-            let deep_copy = JSON.parse(JSON.stringify(data.pages));
+            let deep_copy = JSON.parse(JSON.stringify(data.options));
             setPages(formatPages(deep_copy));
             setName(data.name);
             setLayout(data.layout);

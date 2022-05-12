@@ -117,7 +117,7 @@ const EditWordSearch = () => {
         let body = {
             name: name,
             layout: layout,
-            words: wordsJSON
+            options: wordsJSON
         };
         updateWordSearch({ slug, ...body });
     };
@@ -138,7 +138,7 @@ const EditWordSearch = () => {
                 setAlert(
                     'Esse jogo já foi aprovado, logo não pode mais ser editado!'
                 );
-            let deep_copy = JSON.parse(JSON.stringify(data.words));
+            let deep_copy = JSON.parse(JSON.stringify(data.options));
             setWords(formatTips(deep_copy));
             setName(data.name);
             setLayout(data.layout);

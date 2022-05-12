@@ -195,7 +195,7 @@ const CreateMatchUp = () => {
         let body: Partial<matchUpState> = {
             name: name,
             layout: layout,
-            pages: matchUpsJSON
+            options: matchUpsJSON
         };
         createMatchUp(body);
     };

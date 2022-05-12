@@ -85,7 +85,7 @@ export default function Edit() {
         });
         const body = {
             layout: layout,
-            words: wordsJson
+            options: wordsJson
         };
         updateAnagram({ ...body, slug }).then(() => {
             setOpen(true);
@@ -98,7 +98,7 @@ export default function Edit() {
                 setAlert(
                     'Esse jogo já foi aprovado, logo não pode mais ser editado!'
                 );
-            setPages(sliceIntoChunks(data.words as string[], 4));
+            setPages(sliceIntoChunks(data.options as string[], 4));
             setLayout(data.layout);
         }
         error && setAlert(`Ocorreu um erro: ${error}`);

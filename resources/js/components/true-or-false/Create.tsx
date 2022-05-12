@@ -140,7 +140,7 @@ const CreateTrueOrFalse = () => {
         let body = {
             name: name,
             layout: layout,
-            questions: questionsJSON
+            options: questionsJSON
         };
 
         createTrueOrFalse(body);

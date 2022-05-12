@@ -170,7 +170,7 @@ const CreateWordSearch = () => {
         let body = {
             name: name,
             layout: layout,
-            words: wordsJSON
+            options: wordsJSON
         };
         createWordSearch(body);
     };

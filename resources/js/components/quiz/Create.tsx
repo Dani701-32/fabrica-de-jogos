@@ -162,7 +162,7 @@ const CreateQuiz = () => {
         let body: Partial<quizState> = {
             name: name,
             layout: layout,
-            questions: questionsJSON
+            options: questionsJSON
         };
         createQuiz(body);
     };

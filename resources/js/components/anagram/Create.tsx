@@ -120,7 +120,7 @@ const Create = () => {
         const body = {
             name: name,
             layout: layout,
-            words: wordsJson
+            options: wordsJson
         };
         createAnagram(body);
     };

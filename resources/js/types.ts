@@ -36,8 +36,7 @@ export type anagramState = {
     name: string;
     slug?: string;
     layout: number;
-    words: string[][] | string[];
-    content_id: number;
+    options: string[][] | string[];
     approved_at?: string;
 };
 
@@ -52,7 +51,7 @@ export type matchUpState = {
     name: string;
     slug?: string;
     layout: number;
-    pages: matchUpPage[];
+    options: matchUpPage[];
     approved_at: string;
     content_id: number;
 };
@@ -76,7 +75,7 @@ export type quizState = {
     name: string;
     slug?: string;
     layout: number;
-    questions: quizQuestion[];
+    options: quizQuestion[];
     approved_at: string;
     content_id: number;
 };
@@ -90,7 +89,7 @@ export type trueOrFalseState = {
     name: string;
     slug?: string;
     layout: number;
-    questions: trueOrFalseQuestion[];
+    options: trueOrFalseQuestion[];
     approved_at: string;
     content_id: number;
 };
@@ -104,7 +103,7 @@ export type wordSearchState = {
     name: string;
     slug?: string;
     layout: number;
-    words: wordObj[];
+    options: wordObj[];
     approved_at: string;
     content_id: number;
 };
