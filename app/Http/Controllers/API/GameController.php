@@ -87,8 +87,8 @@ class GameController extends Controller
             return response()->json(["Bad request" => "Anagram Game Already Approved!"], 400);
         }
         $validationOptions = array_merge([
-            'name' => 'required|string|max:255',
-            'layout' => 'required|int|max:8'
+            'name' => 'string|max:255',
+            'layout' => 'int|max:8'
         ], unserialize($gameCategory->update_rules, [false]));
         $validatedData = $request->validate($validationOptions);
         $edited = false;
