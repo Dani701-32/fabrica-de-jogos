@@ -25,7 +25,6 @@ const EditQuiz = () => {
     const { slug } = useParams();
     const [open, setOpen] = useState(false);
     const [alert, setAlert] = useState('');
-    const [name, setName] = useState('');
     const [layout, setLayout] = useState(1);
     const initialState: quizQuestion[] = [
         {
@@ -129,7 +128,6 @@ const EditQuiz = () => {
             return;
         }
         let body = {
-            name: name,
             layout: layout,
             options: questionsJSON
         };
@@ -154,7 +152,6 @@ const EditQuiz = () => {
                 );
             let deep_copy = JSON.parse(JSON.stringify(data.options));
             setQuestions(formatQuestions(deep_copy));
-            setName(data.name);
             setLayout(data.layout);
         }
         error && setAlert(`Ocorreu um error: ${error}`);

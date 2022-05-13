@@ -34,7 +34,6 @@ const EditWordSearch = () => {
     const [open, setOpen] = useState(false);
     const [alert, setAlert] = useState('');
     const [words, setWords] = useState(initialState);
-    const [name, setName] = useState('');
     const [layout, setLayout] = useState(1);
     const { data, error, isLoading } = useGetWordSearchBySlugQuery(
         slug as string
@@ -115,7 +114,6 @@ const EditWordSearch = () => {
             return;
         }
         let body = {
-            name: name,
             layout: layout,
             options: wordsJSON
         };
@@ -140,7 +138,6 @@ const EditWordSearch = () => {
                 );
             let deep_copy = JSON.parse(JSON.stringify(data.options));
             setWords(formatTips(deep_copy));
-            setName(data.name);
             setLayout(data.layout);
         }
         error && setAlert(`Ocorreu um erro ${error}`);

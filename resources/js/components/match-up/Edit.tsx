@@ -19,7 +19,6 @@ const EditMatchUp = () => {
     const { slug } = useParams();
     const [open, setOpen] = useState(false);
     const [alert, setAlert] = useState('');
-    const [name, setName] = useState('');
     const [layout, setLayout] = useState(1);
     const initialState: matchUpPage[] = [
         [
@@ -151,7 +150,6 @@ const EditMatchUp = () => {
             return;
         }
         let body = {
-            name: name,
             layout: layout,
             options: matchUpsJSON
         };
@@ -166,7 +164,6 @@ const EditMatchUp = () => {
                 );
             let deep_copy = JSON.parse(JSON.stringify(data.options));
             setPages(formatPages(deep_copy));
-            setName(data.name);
             setLayout(data.layout);
         }
         error && setAlert(`Ocorreu um erro: ${error}`);

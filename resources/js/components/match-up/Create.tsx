@@ -204,7 +204,7 @@ const CreateMatchUp = () => {
         if (response.isSuccess) {
             const obj: gameObj = {
                 name: response?.data?.name as string,
-                slug: `/matchup/${response?.data?.slug}`,
+                slug: `/match-up/${response?.data?.slug}`,
                 material: `https://www.fabricadejogos.portaleducacional.tec.br/match-up/${response?.data?.slug}`,
                 disciplina_id: Number(selectedDiscipline),
                 series: selectedSerie

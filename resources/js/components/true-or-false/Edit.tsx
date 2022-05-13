@@ -24,7 +24,6 @@ const EditTrueOrFalse = () => {
     const { slug } = useParams();
     const [open, setOpen] = useState(false);
     const [alert, setAlert] = useState('');
-    const [name, setName] = useState('');
     const [layout, setLayout] = useState(1);
     const { data, error, isLoading } = useGetTrueOrFalseBySlugQuery(
         slug as string
@@ -103,7 +102,6 @@ const EditTrueOrFalse = () => {
             return;
         }
         let body = {
-            name: name,
             layout: layout,
             options: questionsJSON
         };
@@ -128,7 +126,6 @@ const EditTrueOrFalse = () => {
                 );
             let deep_copy = JSON.parse(JSON.stringify(data.options));
             setQuestions(formatQuestions(deep_copy));
-            setName(data.name);
             setLayout(data.layout);
         }
         error && setAlert(`Ocorreu um erro: ${error}`);

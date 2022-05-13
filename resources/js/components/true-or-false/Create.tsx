@@ -150,7 +150,7 @@ const CreateTrueOrFalse = () => {
         if (response.isSuccess) {
             const obj: gameObj = {
                 name: response?.data?.name as string,
-                slug: `/trueorfalse/${response?.data?.slug}`,
+                slug: `/true-or-false/${response?.data?.slug}`,
                 material: `https://www.fabricadejogos.portaleducacional.tec.br/true-or-false/${response?.data?.slug}`,
                 disciplina_id: Number(selectedDiscipline),
                 series: selectedSerie
