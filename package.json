@@ -37,20 +37,24 @@
         "ts-loader": "^9.3.0"
     },
     "dependencies": {
+        "@babel/core": "^7.17.12",
         "@mui/icons-material": "^5.6.2",
         "@mui/material": "^5.7.0",
         "@mui/system": "^5.7.0",
         "@reduxjs/toolkit": "^1.8.1",
         "draft-js": "^0.11.7",
         "draftjs-to-html": "^0.9.1",
+        "eslint": "^8.15.0",
         "html-to-draftjs": "^1.5.0",
+        "immutable": "^4.0.0",
         "react": "^18.1.0",
         "react-dom": "^18.1.0",
         "react-image-crop": "^10.0.1",
         "react-multi-carousel": "^2.8.0",
         "react-redux": "^8.0.1",
         "react-router-dom": "^6.3.0",
-        "typescript": "^4.6.4"
+        "typescript": "^4.6.4",
+        "webpack": "^5.72.1"
     },
     "prettier": {
         "trailingComma": "none",
