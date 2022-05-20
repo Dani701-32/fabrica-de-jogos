@@ -101,16 +101,16 @@ class GameCategorySeeder extends Seeder
             'name' => 'Balloons',
             'slug' => 'bloons',
             'description' => 'Jogo do macaco',
-            'creation_rules' => serialize(['options' => 'required|json',
+            'creation_rules' => serialize(['options' => 'required|array',
                 'options.title' => 'required|string|max:127',
                 'options.answers' => 'required|array|max:8',
                 'options.answers.*' => 'required|array|max:5',
-                'options.answers.*.' => 'required|string|max:12']),
-            'update_rules' => serialize(['options' => 'json',
+                'options.answers.*.*' => 'required|string|max:12']),
+            'update_rules' => serialize(['options' => 'array',
                 'options.title' => 'string|max:127',
                 'options.answers' => 'array|max:8',
                 'options.answers.*' => 'array|max:5',
-                'options.answers.*.' => 'string|max:12'])
+                'options.answers.*.*' => 'string|max:12'])
         ]);
 
         DB::table('game_categories')->insert([
