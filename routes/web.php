@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Game;
+use App\Models\GameCategory;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,69 +15,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 // Home Route
-Route::get('/',static function () {
-    return redirect('/create');
-});
-Route::get('/create', static function () {
+Route::get('/', static function () {
     return view('index');
 });
 // Game routes
-Route::get('/word-search/{wordsearch}', static function (Game $wordsearch) {
+Route::get('/game/{gameCategory}/{game}', static function (GameCategory $gameCategory, Game $game) {
     return view('index');
-});
-Route::get('/quiz/{quiz}', static function (Game $quiz) {
-    return view('index');
-});
-Route::get('/anagram/{anagram}', static function (Game $anagram) {
-    return view('index');
-});
-Route::get('/match-up/{matchup}', static function (Game $matchup) {
-    return view('index');
-});
-Route::get('/true-or-false/{trueorfalse}', static function (Game $trueorfalse){
-    return view('index');
-});
-Route::get('/memory-game/{memorygame}', static function (Game $memorygame) {
-    return view('index');
-});
+})->scopeBindings();
 // Creation routes
-Route::get('/create/quiz', static function () {
-    return view('index');
-});
-Route::get('/create/anagram', static function () {
-    return view('index');
-});
-Route::get('/create/word-search', static function () {
-    return view('index');
-});
-Route::get('/create/true-or-false', static function () {
-    return view('index');
-});
-Route::get('/create/match-up', static function () {
-    return view('index');
-});
-Route::get('/create/memory-game', static function () {
+Route::get('/create/{gameCategory}', static function (GameCategory $gameCategory) {
     return view('index');
 });
 // Edit routes
-Route::get('/edit/anagram/{anagram}', static function (Game $anagram) {
+Route::get('/edit/{gameCategory}/{game}', static function (GameCategory $gameCategory, Game $game) {
     return view('index');
-});
-Route::get('/edit/match-up/{matchup}', static function (Game $matchup) {
-    return view('index');
-});
-Route::get('/edit/memory-game/{memorygame}', static function (Game $memorygame) {
-    return view('index');
-});
-Route::get('/edit/quiz/{quiz}', static function (Game $quiz) {
-    return view('index');
-});
-Route::get('/edit/true-or-false/{trueorfalse}', static function (Game $trueOrFalse) {
-    return view('index');
-});
-Route::get('/edit/word-search/{wordsearch}', static function (Game $wordsearch) {
-    return view('index');
-});
+})->scopeBindings();
 // Error routes
 Route::get('/401', static function () {
    return view('errors.401');
