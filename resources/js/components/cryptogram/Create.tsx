@@ -179,8 +179,8 @@ export default function CreateCryptogram({}) {
         if (response.isSuccess) {
             const obj: gameObj = {
                 name: response?.data?.name as string,
-                slug: `/word-search/${response?.data?.slug}`,
-                material: `https://www.fabricadejogos.portaleducacional.tec.br/game/word-search/${response?.data?.slug}`,
+                slug: `/cryptogram/${response?.data?.slug}`,
+                material: `https://www.fabricadejogos.portaleducacional.tec.br/game/cryptogram/${response?.data?.slug}`,
                 disciplina_id: Number(discipline),
                 series: serie
             };
