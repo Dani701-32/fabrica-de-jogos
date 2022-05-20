@@ -4,33 +4,34 @@ import React, {
     useEffect,
     useState
 } from 'react';
-import {
-    Button,
-    Grid,
-    TextField,
-    Alert,
-    SelectChangeEvent
-} from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
+import { cryptogramObj, gameObj, wordObj } from '../../types';
 import { convertToRaw, EditorState } from 'draft-js';
+import { useCreateCryptogramMutation } from '../../services/games';
+import { useCreateGameObjectMutation } from '../../services/portal';
+import {
+    Alert,
+    Button,
+    CircularProgress,
+    Grid,
+    SelectChangeEvent,
+    TextField
+} from '@mui/material';
 import draftToText from '../../utils/draftToText';
 import SuccessDialog from '../_layout/SuccessDialog';
-import { useSelector } from 'react-redux';
-import WordCard from './layout/WordCard';
-import Copyright from '../_layout/Copyright';
-import { Box } from '@mui/system';
 import BackFAButton from '../_layout/BackFAButton';
-import { RootState } from '../../store';
-import { useCreateWordSearchMutation } from '../../services/games';
-import { useCreateGameObjectMutation } from '../../services/portal';
-import { gameObj, wordObj } from '../../types';
+import { Box } from '@mui/system';
 import SeriesSelect from '../_layout/SeriesSelect';
 import DisciplineSelect from '../_layout/DisciplineSelect';
 import LayoutSelect from '../_layout/LayoutSelect';
+import AddIcon from '@mui/icons-material/Add';
+import WordCard from '../word-search/layout/WordCard';
+import Copyright from '../_layout/Copyright';
 
-const CreateWordSearch = () => {
+export default function CreateCryptogram({}) {
     const { token, origin } = useSelector((state: RootState) => state.user);
-    const initialState: wordObj[] = [
+    const initialState: cryptogramObj[] = [
         {
             word: '',
             tip: EditorState.createEmpty()
@@ -51,8 +52,8 @@ const CreateWordSearch = () => {
     const [layout, setLayout] = useState<number>(1);
     const [serie, setSerie] = useState<string[]>([]);
     const [discipline, setDiscipline] = useState<string>('');
-    const [createWordSearch, response] = useCreateWordSearchMutation();
-    const [createGameObject] = useCreateGameObjectMutation();
+    const [createCryptogram, response] = useCreateCryptogramMutation();
+    const [createGameObject, responsePortal] = useCreateGameObjectMutation();
     const handleAddWord = () => {
         if (words.length >= 8) {
             setAlert('O numero máximo de palavras nesse jogo é 8!');
@@ -171,7 +172,7 @@ const CreateWordSearch = () => {
             layout: layout,
             options: wordsJSON
         };
-        createWordSearch(body);
+        createCryptogram(body);
     };
 
     useEffect(() => {
@@ -183,13 +184,16 @@ const CreateWordSearch = () => {
                 disciplina_id: Number(discipline),
                 series: serie
             };
-            // @ts-ignore
-            createGameObject({ token, origin, ...obj }).then(() => {
-                setOpen(true);
-            });
+            createGameObject({ token, origin, ...obj });
         }
         response.isError && setAlert(`Ocorreu um error: ${response.error}`);
     }, [response.isLoading]);
+
+    useEffect(() => {
+        responsePortal.isSuccess && setOpen(true);
+        responsePortal.isError &&
+            setAlert(`Ocorreu um error: ${response.error}`);
+    }, [responsePortal.isLoading]);
 
     return (
         <>
@@ -321,15 +325,21 @@ const CreateWordSearch = () => {
                     </Grid>
                     {/* @ts-ignore */}
                     <Grid item align="center" xs={12}>
-                        <Button size="large" type="submit" variant="outlined">
-                            Criar
-                        </Button>
+                        {response.isLoading || responsePortal.isLoading ? (
+                            <CircularProgress />
+                        ) : (
+                            <Button
+                                size="large"
+                                type="submit"
+                                variant="outlined"
+                            >
+                                Salvar
+                            </Button>
+                        )}
                     </Grid>
                 </Grid>
             </Box>
             <Copyright />
         </>
     );
-};
-
-export default CreateWordSearch;
+}

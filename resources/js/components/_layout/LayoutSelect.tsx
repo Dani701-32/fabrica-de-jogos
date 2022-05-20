@@ -31,11 +31,11 @@ const responsive = {
 const layouts = [1, 2, 3, 4, 5, 6, 7];
 
 type Props = {
-    handleLayout: Function;
+    callback: Function;
     selectedLayout: Number;
 };
 
-const LayoutSelect = ({ handleLayout, selectedLayout }: Props) => {
+const LayoutSelect = ({ callback, selectedLayout }: Props) => {
     return (
         <>
             {/* @ts-ignore*/}
@@ -65,7 +65,7 @@ const LayoutSelect = ({ handleLayout, selectedLayout }: Props) => {
                                                 padding: 0
                                             }}
                                             onChange={(event, value) => {
-                                                handleLayout(event, value);
+                                                callback(event, value);
                                             }}
                                         >
                                             <Card

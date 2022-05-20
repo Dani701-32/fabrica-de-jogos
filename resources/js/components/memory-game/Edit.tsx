@@ -4,32 +4,31 @@ import { Grid, Button, CircularProgress, Alert } from '@mui/material';
 import ImageEditor from './layout/ImageEditor';
 import LayoutSelect from '../_layout/LayoutSelect';
 import SuccessDialog from '../_layout/SuccessDialog';
-import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import GridSelect from './layout/GridSelect';
 import Copyright from '../_layout/Copyright';
 import { Box } from '@mui/system';
+import {
+    useUpdateMemoryGameMutation,
+    useGetMemoryGameBySlugQuery
+} from '../../services/games';
 
 const EditMemoryGame = () => {
     const { slug } = useParams();
-    const open = useSelector((state) => state.base.open);
-    const alert = useSelector((state) => state.base.alert);
-    const memorygame = useSelector((state) => state.game.memorygame);
-    const progress = useSelector((state) => state.base.progress);
-    const [defaultImages, setDefaultImages] = useState(memorygame.images);
-    const [images, setImages] = useState(memorygame.images);
-    const [size, setSize] = useState(
-        (memorygame.grid[0] * memorygame.grid[1]) / 2
+    const [updateMemoryGame, response] = useUpdateMemoryGameMutation();
+    const { data, error, isLoading } = useGetMemoryGameBySlugQuery(
+        slug as string
     );
-    const [layout, setLayout] = useState(memorygame.layout);
-    const dispatch = useDispatch();
-    const { getGame, editGame, setAlert, setClose, refreshBaseState } =
-        bindActionCreators(actionCreators, dispatch);
+    const [open, setOpen] = useState<boolean>(false);
+    const [alert, setAlert] = useState<string>('');
+    const [images, setImages] = useState<Blob[]>([new Blob(), new Blob()]);
+    const [size, setSize] = useState<number>(2);
+    const [layout, setLayout] = useState<number>(1);
     const handleSize = (
         event: ChangeEvent<HTMLInputElement>,
         newSize: number
     ) => {
-        if (newSize === null) {
+        if (newSize !== null) {
             return;
         }
         setSize(newSize);
@@ -38,7 +37,7 @@ const EditMemoryGame = () => {
         } else if (newSize > images.length) {
             let img = [...images];
             for (let i = 0; i < newSize - images.length; i++) {
-                img.push(null);
+                img.push(new Blob());
             }
             setImages(img);
         }
@@ -59,41 +58,34 @@ const EditMemoryGame = () => {
     };
     const handleSubmit = (event: ChangeEvent<HTMLInputElement>) => {
         event.preventDefault();
-        if (images.includes(null)) {
-            setAlert('Preencha todos os campos!');
-            return;
-        }
         const data = new FormData();
         images.map((image: Blob) => {
             data.append('images[]', image);
         });
         data.append('layout', layout.toString());
-        editGame(data, 'memorygame', memorygame.slug, 'multipart/form-data');
+        updateMemoryGame(data);
     };
-    useEffect(() => {
-        getGame('memorygame', slug as string);
-        setTimeout(() => {
-            if (localStorage.getItem('token') === null) {
-                window.location.href = '/401';
-            }
-            refreshBaseState();
-        }, 2000);
-    }, []);
 
     useEffect(() => {
-        memorygame.approved_at &&
-            setAlert(
-                'Esse jogo já foi aprovado, logo não pode mais ser editado!'
-            );
-        setDefaultImages(memorygame.images);
-        setImages(memorygame.images);
-        setSize((memorygame.grid[0] * memorygame.grid[1]) / 2);
-        setLayout(memorygame.layout);
-    }, [memorygame.slug]);
+        if (data) {
+            data.approved_at &&
+                setAlert(
+                    'Esse jogo já foi aprovado, logo não pode mais ser editado!'
+                );
+            setImages(data.options.images as Blob[]);
+            setLayout(data.layout);
+        }
+        error && setAlert(`Ocorreu um erro: ${error}`);
+    }, [isLoading]);
+
+    useEffect(() => {
+        response.isSuccess && setOpen(true);
+        response.isError && setAlert(`Ocorreu um erro: ${response.error}`);
+    }, [response.isLoading]);
 
     return (
         <>
-            <SuccessDialog open={open} handleClose={setClose} />
+            <SuccessDialog open={open} handleClose={() => setOpen(false)} />
             <Box
                 sx={{
                     marginTop: 8,
@@ -110,7 +102,7 @@ const EditMemoryGame = () => {
                     spacing={3}
                 >
                     <LayoutSelect
-                        handleLayout={handleLayout}
+                        callback={handleLayout}
                         selectedLayout={layout}
                     />
                     <GridSelect size={size} handleSize={handleSize} />
@@ -138,30 +130,24 @@ const EditMemoryGame = () => {
                                     <ImageEditor
                                         key={index}
                                         index={index}
-                                        defaultImg={defaultImages[index]}
                                         callback={updateImage}
                                     />
                                 );
                             })}
                         </Grid>
                     </Grid>
-                    {progress === 0 ? (
+                    {response.isLoading ? (
+                        <CircularProgress />
+                    ) : (
                         <Grid item xs={12}>
                             <Button
                                 size="large"
                                 type="submit"
                                 variant="outlined"
-                                disabled={!!memorygame.approved_at}
+                                disabled={Boolean(data?.approved_at)}
                             >
                                 Salvar
                             </Button>
-                        </Grid>
-                    ) : (
-                        <Grid item xs={12}>
-                            <CircularProgress
-                                variant="determinate"
-                                value={progress}
-                            />
                         </Grid>
                     )}
                 </Grid>

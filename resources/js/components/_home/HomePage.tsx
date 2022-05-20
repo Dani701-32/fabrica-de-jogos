@@ -6,6 +6,9 @@ export default function HomePage({}) {
     const navigate = useNavigate();
     const game_types = [
         { slug: 'anagram', name: 'Anagrama' },
+        { slug: 'bloons', name: 'Estoura Balões' },
+        { slug: 'cryptogram', name: 'Criptograma' },
+        { slug: 'group-sort', name: 'Agrupamentos' },
         { slug: 'match-up', name: 'Combinação' },
         // { slug: 'memory-game', name: 'Jogo da Memória' },
         { slug: 'quiz', name: 'Quiz' },

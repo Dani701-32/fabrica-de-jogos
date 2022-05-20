@@ -1,116 +1,80 @@
 import React, { FormEventHandler, useEffect, useState } from 'react';
-import { Button, Grid, Alert, Box, CircularProgress } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import { EditorState, convertToRaw } from 'draft-js';
-import LayoutPicker from '../_layout/LayoutSelect';
-import draftToText from '../../utils/draftToText';
-import SuccessDialog from '../_layout/SuccessDialog';
 import { useParams } from 'react-router-dom';
-import Page from './layout/Page';
-import Copyright from '../_layout/Copyright';
+import { wordObj } from '../../types';
+import { convertToRaw, EditorState } from 'draft-js';
 import {
-    useUpdateMatchUpMutation,
-    useGetMatchUpBySlugQuery
+    useGetCryptogramBySlugQuery,
+    useUpdateCryptogramMutation
 } from '../../services/games';
-import { matchUpPage } from '../../types';
+import draftToText from '../../utils/draftToText';
 import textToDraft from '../../utils/textToDraft';
+import { Alert, Box, Button, CircularProgress, Grid } from '@mui/material';
+import SuccessDialog from '../_layout/SuccessDialog';
+import LayoutPicker from '../_layout/LayoutSelect';
+import AddIcon from '@mui/icons-material/Add';
+import WordCard from '../word-search/layout/WordCard';
+import Copyright from '../_layout/Copyright';
 
-const EditMatchUp = () => {
+export default function EditCryptogram({}) {
     const { slug } = useParams();
+    const initialState: wordObj[] = [
+        {
+            word: '',
+            tip: EditorState.createEmpty()
+        },
+        {
+            word: '',
+            tip: EditorState.createEmpty()
+        },
+        {
+            word: '',
+            tip: EditorState.createEmpty()
+        }
+    ];
     const [open, setOpen] = useState(false);
     const [alert, setAlert] = useState('');
+    const [words, setWords] = useState(initialState);
     const [layout, setLayout] = useState(1);
-    const initialState: matchUpPage[] = [
-        [
-            {
-                word: '',
-                meaning: EditorState.createEmpty()
-            },
-            {
-                word: '',
-                meaning: EditorState.createEmpty()
-            },
-            {
-                word: '',
-                meaning: EditorState.createEmpty()
-            },
-            {
-                word: '',
-                meaning: EditorState.createEmpty()
-            }
-        ]
-    ];
-    const [pages, setPages] = useState(initialState);
-    const { data, error, isLoading } = useGetMatchUpBySlugQuery(slug as string);
-    const [updateMatchUp, response] = useUpdateMatchUpMutation();
-    const formatPages = (raw: matchUpPage[]) => {
-        raw.map((page) => {
-            page.map((matchup) => {
-                if (typeof matchup.meaning !== 'string') {
-                    return;
-                }
-                matchup.meaning = textToDraft(matchup.meaning);
-            });
-        });
-        return raw;
-    };
-    const handleCreatePage = () => {
-        if (pages.length >= 10) {
-            setAlert('O número máximo de páginas para esse jogo é 10!');
+    const { data, error, isLoading } = useGetCryptogramBySlugQuery(
+        slug as string
+    );
+    const [updateCryptogram, response] = useUpdateCryptogramMutation();
+    const handleAddWord = () => {
+        if (words.length >= 8) {
+            setAlert('O numero máximo de palavras nesse jogo é 8!');
             return;
         }
-        setPages([
-            ...pages,
-            [
-                {
-                    word: '',
-                    meaning: EditorState.createEmpty()
-                },
-                {
-                    word: '',
-                    meaning: EditorState.createEmpty()
-                },
-                {
-                    word: '',
-                    meaning: EditorState.createEmpty()
-                },
-                {
-                    word: '',
-                    meaning: EditorState.createEmpty()
-                }
-            ]
-        ]);
+        let p = [...words];
+        p.push({
+            word: '',
+            tip: EditorState.createEmpty()
+        });
+        setWords(p);
     };
-    const handleRemovePage = (index: number) => {
-        let p = [...pages];
+    const handleRemoveWord = (index: number) => {
+        if (words.length === 1) {
+            return;
+        }
+        let p = [...words];
         p.splice(index, 1);
-        setPages(p);
+        setWords(p);
     };
     const handleWordChange = (
         event: React.ChangeEvent<HTMLInputElement>,
-        index: number,
-        i: number
+        index: number
     ) => {
-        let p = [...pages];
-        let page = p[index];
-        let matchUp = page[i];
-        matchUp.word = event.target.value;
-        page.splice(i, 1, matchUp);
-        p.splice(index, 1, page);
-        setPages(p);
+        let p = [...words];
+        let word = p[index];
+        word.word = event.target.value;
+        p.splice(index, 1, word);
+        setWords(p);
     };
-    const handleMeaningChange = (
-        editorState: EditorState,
-        index: number,
-        i: number
-    ) => {
-        let p = [...pages];
-        let page = p[index];
-        let matchUp = page[i];
-        matchUp.meaning = editorState;
-        page.splice(i, 1, matchUp);
-        p.splice(index, 1, page);
-        setPages(p);
+    const handleTipChange = (editorState: EditorState, index: number) => {
+        let p = [...words];
+        let word = p[index];
+        word.tip = editorState;
+        p.splice(index, 1, word);
+        setWords(p);
     };
     const handleLayout = (
         event: React.ChangeEvent<HTMLInputElement>,
@@ -122,38 +86,48 @@ const EditMatchUp = () => {
         setLayout(newLayout);
     };
     const handleSubmit: FormEventHandler = (
-        event: React.FormEvent<HTMLInputElement>
+        e: React.ChangeEvent<HTMLInputElement>
     ) => {
-        event.preventDefault();
-        let matchUpsJSON: matchUpPage[] = [];
+        e.preventDefault();
+        if (words.length < 3) {
+            setAlert('O jogo deve ter no mínimo 3 palavras!');
+            return;
+        }
+        let wordsJSON: wordObj[] = [];
         let error = false;
-        pages.map((page: matchUpPage) => {
-            let matchUps: matchUpPage = [];
-            page.map((matchUp) => {
-                const meaning = matchUp.meaning as EditorState;
-                let content = meaning.getCurrentContent();
-                if (content.getPlainText('').length === 0) {
-                    setAlert('Preencha todos os campos!');
-                    error = true;
-                    return;
-                }
-                let textJson = convertToRaw(content);
-                let markup = draftToText(textJson);
-                matchUps.push({
-                    meaning: markup,
-                    word: matchUp.word
-                });
+        words.map((word: wordObj) => {
+            const tip = word.tip as EditorState;
+            let content = tip.getCurrentContent();
+            if (content.getPlainText('').length === 0) {
+                setAlert('Preencha todos os campos!');
+                error = true;
+                return;
+            }
+            let textJson = convertToRaw(content);
+            let markup = draftToText(textJson);
+            wordsJSON.push({
+                tip: markup,
+                word: word.word
             });
-            matchUpsJSON.push(matchUps);
         });
         if (error) {
             return;
         }
         let body = {
             layout: layout,
-            options: matchUpsJSON
+            options: wordsJSON
         };
-        updateMatchUp({ ...body, slug });
+        updateCryptogram({ slug, ...body });
+    };
+
+    const formatTips = (raw: wordObj[]): wordObj[] => {
+        raw.map((word: wordObj) => {
+            if (typeof word.tip !== 'string') {
+                return;
+            }
+            word.tip = textToDraft(word.tip);
+        });
+        return raw;
     };
 
     useEffect(() => {
@@ -163,15 +137,15 @@ const EditMatchUp = () => {
                     'Esse jogo já foi aprovado, logo não pode mais ser editado!'
                 );
             let deep_copy = JSON.parse(JSON.stringify(data.options));
-            setPages(formatPages(deep_copy));
+            setWords(formatTips(deep_copy));
             setLayout(data.layout);
         }
-        error && setAlert(`Ocorreu um erro: ${error}`);
+        error && setAlert(`Ocorreu um erro ${error}`);
     }, [isLoading]);
 
     useEffect(() => {
         response.isSuccess && setOpen(true);
-        response.isError && setAlert(`Ocorreu um erro: ${response.error}`);
+        response.isError && setAlert(`Ocorreu um erro ${response.error} `);
     }, [response.isLoading]);
 
     if (isLoading)
@@ -216,23 +190,24 @@ const EditMatchUp = () => {
                     {/* @ts-ignore*/}
                     <Grid item align="center" xs={12}>
                         <Button
-                            onClick={handleCreatePage}
+                            onClick={handleAddWord}
                             endIcon={<AddIcon fontSize="small" />}
                             variant="contained"
                         >
-                            Adicionar página
+                            Adicionar Palavra
                         </Button>
                     </Grid>
                     {/* @ts-ignore*/}
-                    <Grid item align="center" xs={12}>
+                    <Grid item align="center" lg={12}>
                         <Grid
                             container
-                            spacing={3}
                             alignItems="flex-start"
                             justifyContent="center"
+                            spacing={3}
                         >
                             {alert && (
-                                <Grid item xs={12}>
+                                /* @ts-ignore*/
+                                <Grid item align="center" xs={12}>
                                     <Alert
                                         severity="warning"
                                         onClick={() => {
@@ -243,17 +218,15 @@ const EditMatchUp = () => {
                                     </Alert>
                                 </Grid>
                             )}
-                            {pages.map((page: matchUpPage, index: number) => {
+                            {words.map((item: wordObj, index: number) => {
                                 return (
-                                    <Page
+                                    <WordCard
+                                        item={item}
                                         key={index}
-                                        page={page}
                                         index={index}
                                         handleWordChange={handleWordChange}
-                                        handleMeaningChange={
-                                            handleMeaningChange
-                                        }
-                                        handleDelete={handleRemovePage}
+                                        handleRemoveWord={handleRemoveWord}
+                                        handleTipChange={handleTipChange}
                                     />
                                 );
                             })}
@@ -281,6 +254,4 @@ const EditMatchUp = () => {
             <Copyright />
         </>
     );
-};
-
-export default EditMatchUp;
+}

@@ -14,7 +14,6 @@ import {
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { EditorState, convertToRaw } from 'draft-js';
-import LayoutPicker from '../_layout/LayoutSelect';
 import draftToText from '../../utils/draftToText';
 import SuccessDialog from '../_layout/SuccessDialog';
 import { useSelector } from 'react-redux';
@@ -24,17 +23,24 @@ import BackFAButton from '../_layout/BackFAButton';
 import { RootState } from '../../store';
 import { useCreateTrueOrFalseMutation } from '../../services/games';
 import { useCreateGameObjectMutation } from '../../services/portal';
-import { gameObj, trueOrFalseQuestion } from '../../types';
-import ObjectPropertiesSelect from '../_layout/ObjectPropertiesSelect';
+import {
+    gameObj,
+    gameState,
+    trueOrFalseOptions,
+    trueOrFalseQuestion
+} from '../../types';
+import SeriesSelect from '../_layout/SeriesSelect';
+import DisciplineSelect from '../_layout/DisciplineSelect';
+import LayoutSelect from '../_layout/LayoutSelect';
 
 const CreateTrueOrFalse = () => {
     const { token, origin } = useSelector((state: RootState) => state.user);
     const [open, setOpen] = useState(false);
     const [alert, setAlert] = useState('');
-    const [name, setName] = useState('');
-    const [layout, setLayout] = useState(1);
-    const [selectedSerie, setSelectedSerie] = useState([] as string[]);
-    const [selectedDiscipline, setSelectedDiscipline] = useState('');
+    const [name, setName] = useState<string>('');
+    const [layout, setLayout] = useState<number>(1);
+    const [serie, setSerie] = useState<string[]>([]);
+    const [discipline, setDiscipline] = useState<string>('');
     const [createTrueOrFalse, response] = useCreateTrueOrFalseMutation();
     const [createGameObject] = useCreateGameObjectMutation();
     const initialState: trueOrFalseQuestion[] = [
@@ -94,26 +100,24 @@ const CreateTrueOrFalse = () => {
     const seriesChange = (event: SelectChangeEvent<string[]>) => {
         const value = event.target.value;
         if (value !== null) {
-            setSelectedSerie(
-                typeof value === 'string' ? value.split(',') : value
-            );
+            setSerie(typeof value === 'string' ? value.split(',') : value);
         }
     };
     const disciplineChange = (event: SelectChangeEvent) => {
         const value = event.target.value;
-        if (value !== null && value !== selectedDiscipline) {
-            setSelectedDiscipline(value);
+        if (value !== null && value !== discipline) {
+            setDiscipline(value);
         }
     };
     const handleSubmit: FormEventHandler = (
         event: React.FormEvent<HTMLInputElement>
     ) => {
         event.preventDefault();
-        if (selectedSerie === ['']) {
+        if (serie === ['']) {
             setAlert('Selecione uma série!');
             return;
         }
-        if (selectedDiscipline === '') {
+        if (discipline === '') {
             setAlert('Selecione uma disciplina!');
             return;
         }
@@ -137,12 +141,11 @@ const CreateTrueOrFalse = () => {
         if (error) {
             return;
         }
-        let body = {
+        let body: gameState<trueOrFalseOptions> = {
             name: name,
             layout: layout,
             options: questionsJSON
         };
-
         createTrueOrFalse(body);
     };
 
@@ -151,9 +154,9 @@ const CreateTrueOrFalse = () => {
             const obj: gameObj = {
                 name: response?.data?.name as string,
                 slug: `/true-or-false/${response?.data?.slug}`,
-                material: `https://www.fabricadejogos.portaleducacional.tec.br/true-or-false/${response?.data?.slug}`,
-                disciplina_id: Number(selectedDiscipline),
-                series: selectedSerie
+                material: `https://www.fabricadejogos.portaleducacional.tec.br/game/true-or-false/${response?.data?.slug}`,
+                disciplina_id: Number(discipline),
+                series: serie
             };
             // @ts-ignore
             createGameObject({ token, origin, ...obj }).then(() => {
@@ -182,37 +185,69 @@ const CreateTrueOrFalse = () => {
                     onSubmit={handleSubmit}
                     spacing={3}
                 >
-                    {/* @ts-ignore */}
-                    <Grid item align="center" xs={12}>
-                        <TextField
-                            label="Nome"
-                            name="name"
-                            variant="outlined"
-                            value={name}
-                            onChange={(event) => {
-                                setName(event.target.value);
-                            }}
-                            sx={{ minWidth: { xs: 280, sm: 296 } }}
-                            required
-                        />
-                    </Grid>
-                    {/* @ts-ignore */}
-                    <Grid item align="center" xs={12}>
-                        <ObjectPropertiesSelect
-                            token={token as string}
-                            origin={origin as string}
-                            selectedSerie={selectedSerie}
-                            handleSelectSerie={seriesChange}
-                            selectedDiscipline={selectedDiscipline}
-                            handleSelectDiscipline={disciplineChange}
-                        />
-                    </Grid>
-                    {/* @ts-ignore */}
-                    <Grid item align="center" xs={12}>
-                        <LayoutPicker
-                            handleLayout={handleLayout}
-                            selectedLayout={layout}
-                        />
+                    <Grid item xs={12}>
+                        <Grid
+                            container
+                            justifyContent="center"
+                            spacing={1}
+                            display="flex"
+                        >
+                            {/* @ts-ignore*/}
+                            <Grid
+                                align="center"
+                                item
+                                xl={4}
+                                lg={3}
+                                md={12}
+                                justifyContent={{ lg: 'flex-end', md: 'none' }}
+                                display={{ lg: 'flex', md: 'block' }}
+                            >
+                                <SeriesSelect
+                                    serie={serie}
+                                    callback={seriesChange}
+                                />
+                            </Grid>
+                            {/* @ts-ignore*/}
+                            <Grid item align="center" xl={4} lg={3}>
+                                <TextField
+                                    label="Nome"
+                                    name="name"
+                                    variant="outlined"
+                                    value={name}
+                                    onChange={(event) =>
+                                        setName(event.target.value)
+                                    }
+                                    required
+                                    sx={{ minWidth: { sm: 290, xs: 260 } }}
+                                    fullWidth
+                                />
+                            </Grid>
+                            {/* @ts-ignore*/}
+                            <Grid
+                                align="center"
+                                item
+                                justifyContent={{
+                                    lg: 'flex-start',
+                                    md: 'none'
+                                }}
+                                display={{ lg: 'flex', md: 'block' }}
+                                xl={4}
+                                lg={3}
+                                md={12}
+                            >
+                                <DisciplineSelect
+                                    discipline={discipline}
+                                    callback={disciplineChange}
+                                />
+                            </Grid>
+                            {/* @ts-ignore*/}
+                            <Grid item align="center" xs={12}>
+                                <LayoutSelect
+                                    callback={handleLayout}
+                                    selectedLayout={layout}
+                                />
+                            </Grid>
+                        </Grid>
                     </Grid>
                     {/* @ts-ignore */}
                     <Grid item align="center" xs={12}>

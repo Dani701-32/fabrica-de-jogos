@@ -5,17 +5,56 @@ import { setBaseState } from '../../reducers/userReducer';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 
-type Props = {
-    game: String;
-};
-
-export default function GamePage({ game }: Props) {
-    const { slug } = useParams();
+export default function GamePage() {
+    const { slug, category } = useParams();
     const [open, setOpen] = useState(false);
     const { token, origin } = useSelector((state: RootState) => state.user);
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const dispatch = useDispatch();
+    let gameAddress = '';
+    switch (category) {
+        case 'quiz':
+            gameAddress =
+                'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/QuizFDJ--/index.html';
+            break;
+        case 'word-search':
+            gameAddress =
+                'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/WordSearchFDJ/index.html';
+            break;
+        case 'anagram':
+            gameAddress =
+                'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/Anagrama%20%281%29/index.html';
+            break;
+        case 'true-or-false':
+            gameAddress =
+                'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/TrueFalseFDJ/index.html';
+            break;
+        case 'match-up':
+            gameAddress =
+                'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/MatchUpFDJ/index.html';
+            break;
+        case 'memory-game':
+            gameAddress =
+                'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/MemoryGameFDJ/index.html';
+            break;
+        case 'group-sort':
+            gameAddress =
+                'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/GroupSortFDJ/index.html';
+            break;
+        case 'bloons':
+            gameAddress =
+                'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/BaloonsFDJ/index.html';
+            break;
+        case 'cryptogram':
+            gameAddress =
+                'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/CryptogramFDJ/index.html';
+            break;
+        default:
+            window.location.href = '/404';
+            break;
+    }
+
     useEffect(() => {
         dispatch(setBaseState());
         setTimeout(() => {
@@ -48,33 +87,6 @@ export default function GamePage({ game }: Props) {
             setOpen(true);
         }, 500);
     }, [localStorage.getItem('token')]);
-    let gameAddress = '';
-    switch (game) {
-        case 'quiz':
-            gameAddress =
-                'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/QuizFDJ--/index.html';
-            break;
-        case 'wordSearch':
-            gameAddress =
-                'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/WordSearchFDJ/index.html';
-            break;
-        case 'anagram':
-            gameAddress =
-                'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/Anagrama%20%281%29/index.html';
-            break;
-        case 'trueOrFalse':
-            gameAddress =
-                'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/TrueFalseFDJ/index.html';
-            break;
-        case 'matchUp':
-            gameAddress =
-                'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/MatchUpFDJ/index.html';
-            break;
-        case 'memoryGame':
-            gameAddress =
-                'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/MemoryGameFDJ/index.html';
-            break;
-    }
     return (
         <div>
             {open && (

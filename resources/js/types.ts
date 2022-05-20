@@ -11,8 +11,8 @@ export type gameObj = {
 export type userInfoData = {
     success: boolean;
     data: {
-        series: object[];
-        disciplinas: object[];
+        series: { [key: string]: string };
+        disciplinas: { [key: string]: string };
         name: string;
         role: string;
         pfp: string;
@@ -32,78 +32,69 @@ export type options<T> = {
     serie_id?: number;
 };
 
-export type anagramState = {
+// Base game obj
+export type gameState<T> = {
     name: string;
     slug?: string;
     layout: number;
-    options: string[][] | string[];
+    options: T;
     approved_at?: string;
 };
 
-export type matchUpObj = {
-    word: string;
-    meaning: EditorState | string;
-};
-
-export type matchUpPage = matchUpObj[];
-
-export type matchUpState = {
-    name: string;
-    slug?: string;
-    layout: number;
-    options: matchUpPage[];
-    approved_at: string;
-    content_id: number;
-};
-
-export type memoryGameState = {
-    name: string;
-    slug?: string;
-    layout: number;
+// Memory-Game
+export type memoryGameOptions = {
     images: Blob[] | string[] | null[];
     grid: number[];
-    approved_at: string;
-    content_id: number;
 };
 
+// Quiz
 export interface quizQuestion {
     title: EditorState | string;
     answers: string[];
 }
+export type quizOptions = quizQuestion[];
 
-export type quizState = {
-    name: string;
-    slug?: string;
-    layout: number;
-    options: quizQuestion[];
-    approved_at: string;
-    content_id: number;
-};
-
+// True-or-False
 export interface trueOrFalseQuestion {
     title: EditorState | string;
     answer: boolean;
 }
+export type trueOrFalseOptions = trueOrFalseQuestion[];
 
-export type trueOrFalseState = {
-    name: string;
-    slug?: string;
-    layout: number;
-    options: trueOrFalseQuestion[];
-    approved_at: string;
-    content_id: number;
-};
-
+// Word-Search
 export type wordObj = {
     word: string;
     tip: EditorState | string;
 };
+export type wordSearchOptions = wordObj[];
 
-export type wordSearchState = {
-    name: string;
-    slug?: string;
-    layout: number;
-    options: wordObj[];
-    approved_at: string;
-    content_id: number;
+// Group-Sort
+export type groupObj = {
+    title: string;
+    items: string[];
 };
+export type groupSortOptions = groupObj[];
+
+// Anagram
+export type anagramOptions = string[][] | string[];
+
+// Match-Up
+export type matchUpObj = {
+    word: string;
+    meaning: EditorState | string;
+};
+export type matchUpPage = matchUpObj[];
+export type matchUpOptions = matchUpPage[];
+
+// Balloons
+export type balloonOptions = {
+    title: string | EditorState;
+    answers: string[][];
+};
+
+// Cryptogram
+export type cryptogramObj = {
+    word: string;
+    tip: string | EditorState;
+};
+export type cryptogramOptions = cryptogramObj[];

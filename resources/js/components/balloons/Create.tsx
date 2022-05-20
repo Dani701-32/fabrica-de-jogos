@@ -1,94 +1,56 @@
 import React, {
     ChangeEvent,
+    FormEvent,
     FormEventHandler,
     useEffect,
     useState
 } from 'react';
-import {
-    Button,
-    Grid,
-    TextField,
-    Alert,
-    SelectChangeEvent
-} from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import { convertToRaw, EditorState } from 'draft-js';
-import draftToText from '../../utils/draftToText';
 import SuccessDialog from '../_layout/SuccessDialog';
-import { useSelector } from 'react-redux';
-import WordCard from './layout/WordCard';
-import Copyright from '../_layout/Copyright';
-import { Box } from '@mui/system';
 import BackFAButton from '../_layout/BackFAButton';
-import { RootState } from '../../store';
-import { useCreateWordSearchMutation } from '../../services/games';
-import { useCreateGameObjectMutation } from '../../services/portal';
-import { gameObj, wordObj } from '../../types';
+import {
+    Alert,
+    Box,
+    Button,
+    CircularProgress,
+    Grid,
+    SelectChangeEvent,
+    TextField
+} from '@mui/material';
 import SeriesSelect from '../_layout/SeriesSelect';
 import DisciplineSelect from '../_layout/DisciplineSelect';
 import LayoutSelect from '../_layout/LayoutSelect';
+import AddIcon from '@mui/icons-material/Add';
+import { balloonOptions, gameObj, gameState } from '../../types';
+import Page from './layout/Page';
+import Copyright from '../_layout/Copyright';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
+import { convertToRaw, EditorState } from 'draft-js';
+import { useCreateBalloonsMutation } from '../../services/games';
+import { useCreateGameObjectMutation } from '../../services/portal';
+import draftToText from '../../utils/draftToText';
+import RichTextField from '../_layout/RichTextField';
 
-const CreateWordSearch = () => {
+export default function CreateBalloons({}) {
     const { token, origin } = useSelector((state: RootState) => state.user);
-    const initialState: wordObj[] = [
-        {
-            word: '',
-            tip: EditorState.createEmpty()
-        },
-        {
-            word: '',
-            tip: EditorState.createEmpty()
-        },
-        {
-            word: '',
-            tip: EditorState.createEmpty()
-        }
-    ];
     const [open, setOpen] = useState(false);
     const [alert, setAlert] = useState('');
-    const [words, setWords] = useState(initialState);
     const [name, setName] = useState<string>('');
     const [layout, setLayout] = useState<number>(1);
     const [serie, setSerie] = useState<string[]>([]);
     const [discipline, setDiscipline] = useState<string>('');
-    const [createWordSearch, response] = useCreateWordSearchMutation();
-    const [createGameObject] = useCreateGameObjectMutation();
-    const handleAddWord = () => {
-        if (words.length >= 8) {
-            setAlert('O numero máximo de palavras nesse jogo é 8!');
+    const [question, setQuestion] = useState<EditorState>(
+        EditorState.createEmpty()
+    );
+    const [answers, setAnswers] = useState<string[][]>([['', '', '', '', '']]);
+    const [createBalloons, response] = useCreateBalloonsMutation();
+    const [createGameObject, responsePortal] = useCreateGameObjectMutation();
+    const handleAddPage = () => {
+        if (answers.length >= 8) {
+            setAlert('O número máximo de questões para esse jogo é 8!');
             return;
         }
-        let p = [...words];
-        p.push({
-            word: '',
-            tip: EditorState.createEmpty()
-        });
-        setWords(p);
-    };
-    const handleRemoveWord = (index: number) => {
-        if (words.length === 1) {
-            return;
-        }
-        let p = [...words];
-        p.splice(index, 1);
-        setWords(p);
-    };
-    const handleWordChange = (
-        event: ChangeEvent<HTMLInputElement>,
-        index: number
-    ) => {
-        let p = [...words];
-        let word = p[index];
-        word.word = event.target.value;
-        p.splice(index, 1, word);
-        setWords(p);
-    };
-    const handleTipChange = (editorState: EditorState, index: number) => {
-        let p = [...words];
-        let word = p[index];
-        word.tip = editorState;
-        p.splice(index, 1, word);
-        setWords(p);
+        setAnswers([...answers, ['', '', '', '', '']]);
     };
     const handleLayout = (
         event: ChangeEvent<HTMLInputElement>,
@@ -99,26 +61,33 @@ const CreateWordSearch = () => {
         }
         setLayout(newLayout);
     };
+    const handleRemovePage = (index: number) => {
+        if (answers.length === 1) {
+            return;
+        }
+        let q = [...answers];
+        q.splice(index, 1);
+        setAnswers(q);
+    };
+    const handleAnswerChange = (
+        event: ChangeEvent<HTMLInputElement>,
+        index: number,
+        i: number
+    ) => {
+        let a = [...answers];
+        let answer = a[index];
+        answer[i] = event.target.value;
+        a.splice(index, 1, answer);
+        setAnswers(a);
+    };
     const handleClose = () => {
         setName('');
-        setWords([
-            {
-                word: '',
-                tip: EditorState.createEmpty()
-            },
-            {
-                word: '',
-                tip: EditorState.createEmpty()
-            },
-            {
-                word: '',
-                tip: EditorState.createEmpty()
-            }
-        ]);
+        setQuestion(EditorState.createEmpty());
+        setAnswers([['', '', '', '', '']]);
         setLayout(1);
         setOpen(false);
     };
-    const seriesChange = (event: SelectChangeEvent<typeof serie>) => {
+    const seriesChange = (event: SelectChangeEvent<string[]>): void => {
         const value = event.target.value;
         if (value !== null) {
             setSerie(typeof value === 'string' ? value.split(',') : value);
@@ -131,13 +100,9 @@ const CreateWordSearch = () => {
         }
     };
     const handleSubmit: FormEventHandler = (
-        event: ChangeEvent<HTMLInputElement>
+        event: FormEvent<HTMLInputElement>
     ) => {
         event.preventDefault();
-        if (words.length < 3) {
-            setAlert('O jogo deve ter no mínimo 3 palavras!');
-            return;
-        }
         if (serie === ['']) {
             setAlert('Selecione uma série!');
             return;
@@ -146,51 +111,38 @@ const CreateWordSearch = () => {
             setAlert('Selecione uma disciplina!');
             return;
         }
-        let wordsJSON: wordObj[] = [];
-        let error = false;
-        words.map((word: wordObj) => {
-            const tip = word.tip as EditorState;
-            let content = tip.getCurrentContent();
-            if (content.getPlainText('').length === 0) {
-                setAlert('Preencha todos os campos!');
-                error = true;
-                return;
-            }
-            let textJson = convertToRaw(content);
-            let markup = draftToText(textJson);
-            wordsJSON.push({
-                tip: markup,
-                word: word.word
-            });
-        });
-        if (error) {
-            return;
-        }
-        let body = {
+        let textJson = convertToRaw(question.getCurrentContent());
+        let markup = draftToText(textJson);
+        const questionsJSON: balloonOptions = {
+            title: markup,
+            answers: answers
+        };
+        let body: gameState<balloonOptions> = {
             name: name,
             layout: layout,
-            options: wordsJSON
+            options: questionsJSON
         };
-        createWordSearch(body);
+        createBalloons(body);
     };
 
     useEffect(() => {
         if (response.isSuccess) {
             const obj: gameObj = {
                 name: response?.data?.name as string,
-                slug: `/word-search/${response?.data?.slug}`,
-                material: `https://www.fabricadejogos.portaleducacional.tec.br/game/word-search/${response?.data?.slug}`,
+                slug: `/bloons/${response?.data?.slug}`,
+                material: `https://www.fabricadejogos.portaleducacional.tec.br/game/bloons/${response?.data?.slug}`,
                 disciplina_id: Number(discipline),
                 series: serie
             };
-            // @ts-ignore
-            createGameObject({ token, origin, ...obj }).then(() => {
-                setOpen(true);
-            });
+            createGameObject({ token, origin, ...obj });
         }
-        response.isError && setAlert(`Ocorreu um error: ${response.error}`);
     }, [response.isLoading]);
 
+    useEffect(() => {
+        responsePortal.isSuccess && setOpen(true);
+        responsePortal.isError &&
+            setAlert(`Ocorreu um error: ${response.error}`);
+    }, [responsePortal.isLoading]);
     return (
         <>
             <SuccessDialog open={open} handleClose={handleClose} />
@@ -210,7 +162,8 @@ const CreateWordSearch = () => {
                     onSubmit={handleSubmit}
                     spacing={3}
                 >
-                    <Grid item xs={12}>
+                    {/* @ts-ignore */}
+                    <Grid item align="center" xs={12}>
                         <Grid
                             container
                             justifyContent="center"
@@ -275,13 +228,24 @@ const CreateWordSearch = () => {
                         </Grid>
                     </Grid>
                     {/* @ts-ignore */}
+                    <Grid item align="left" xs={3}>
+                        <RichTextField
+                            editorState={question}
+                            onChange={(value: EditorState) =>
+                                setQuestion(value)
+                            }
+                            label={'Enunciado'}
+                            maxLength={160}
+                        />
+                    </Grid>
+                    {/* @ts-ignore */}
                     <Grid item align="center" xs={12}>
                         <Button
-                            onClick={handleAddWord}
+                            onClick={handleAddPage}
                             endIcon={<AddIcon fontSize="small" />}
                             variant="contained"
                         >
-                            Adicionar Palavra
+                            Adicionar Questão
                         </Button>
                     </Grid>
                     {/* @ts-ignore */}
@@ -293,8 +257,7 @@ const CreateWordSearch = () => {
                             spacing={3}
                         >
                             {alert && (
-                                /* @ts-ignore */
-                                <Grid item align="center" xs={12}>
+                                <Grid item xs={12}>
                                     <Alert
                                         severity="warning"
                                         onClick={() => {
@@ -305,15 +268,14 @@ const CreateWordSearch = () => {
                                     </Alert>
                                 </Grid>
                             )}
-                            {words.map((item: wordObj, index: number) => {
+                            {answers.map((answers: string[], index: number) => {
                                 return (
-                                    <WordCard
-                                        item={item}
+                                    <Page
                                         key={index}
+                                        answers={answers}
                                         index={index}
-                                        handleWordChange={handleWordChange}
-                                        handleRemoveWord={handleRemoveWord}
-                                        handleTipChange={handleTipChange}
+                                        handleAnswerChange={handleAnswerChange}
+                                        handleRemoveQuestion={handleRemovePage}
                                     />
                                 );
                             })}
@@ -321,15 +283,21 @@ const CreateWordSearch = () => {
                     </Grid>
                     {/* @ts-ignore */}
                     <Grid item align="center" xs={12}>
-                        <Button size="large" type="submit" variant="outlined">
-                            Criar
-                        </Button>
+                        {response.isLoading || responsePortal.isLoading ? (
+                            <CircularProgress />
+                        ) : (
+                            <Button
+                                size="large"
+                                type="submit"
+                                variant="outlined"
+                            >
+                                Salvar
+                            </Button>
+                        )}
                     </Grid>
                 </Grid>
             </Box>
             <Copyright />
         </>
     );
-};
-
-export default CreateWordSearch;
+}

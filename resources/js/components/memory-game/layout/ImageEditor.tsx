@@ -54,7 +54,7 @@ export default function App({ index, callback }: Props) {
     const [crop, setCrop] = useState<Crop>();
     const [completedCrop, setCompletedCrop] = useState<PixelCrop>();
     const [open, setOpen] = useState(Boolean(completedCrop));
-    const [aspect, setAspect] = useState<number | undefined>(16 / 9);
+    const [aspect, setAspect] = useState<number | undefined>(1);
 
     function onSelectFile(e: React.ChangeEvent<HTMLInputElement>) {
         if (e.target.files && e.target.files.length > 0) {
@@ -99,19 +99,18 @@ export default function App({ index, callback }: Props) {
     );
 
     return (
-        <Grid item xs={6} md={4} lg={3}>
+        <Grid item xs={12} sm={6} md={4} lg={3}>
             {/*@ts-ignore*/}
-            <Grid container align="center" spacing={3}>
+            <Grid container align="center" spacing={1}>
                 <Grid item xs={12}>
                     <Card elevation={5} sx={{ width: 250, height: 250 }}>
                         {Boolean(completedCrop) && (
                             <canvas
                                 ref={previewCanvasRef}
                                 style={{
-                                    border: '1px solid black',
                                     objectFit: 'contain',
-                                    width: completedCrop?.width,
-                                    height: completedCrop?.height
+                                    width: 250,
+                                    height: 250
                                 }}
                             />
                         )}

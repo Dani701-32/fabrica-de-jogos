@@ -12,6 +12,8 @@ export const portalApi = createApi({
             if (token) {
                 headers.set('authorization', `Bearer ${token}`);
             }
+            headers.set('content-type', 'application/json');
+            headers.set('accept', 'application/json');
             return headers;
         }
     }),
@@ -46,13 +48,8 @@ export const portalApi = createApi({
             }
         ),
         getUserInfo: builder.query<userInfoData, Partial<userState>>({
-            query: ({ token, origin }) => ({
-                url: `${origin}/api/validate`,
-                headers: {
-                    'Content-Type': 'application/json',
-                    Accept: 'application/json',
-                    Authorization: `Bearer ${token}`
-                }
+            query: ({ origin }) => ({
+                url: `${origin}/api/validate`
             })
         }),
         getGameObjectById: builder.query<gameObj, string>({

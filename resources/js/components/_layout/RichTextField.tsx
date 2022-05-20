@@ -14,7 +14,7 @@ import {
 type Props = {
     editorState: EditorState;
     onChange: Function;
-    index: number;
+    index?: number;
     i?: number;
     label: string;
     maxLength: number;
@@ -24,7 +24,7 @@ const RichTextField = ({
     editorState,
     onChange,
     index,
-    i = 0,
+    i,
     label,
     maxLength
 }: Props) => {

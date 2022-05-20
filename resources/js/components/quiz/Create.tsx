@@ -11,11 +11,11 @@ import {
     Grid,
     Alert,
     Box,
-    SelectChangeEvent
+    SelectChangeEvent,
+    CircularProgress
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { EditorState, convertToRaw } from 'draft-js';
-import LayoutPicker from '../_layout/LayoutSelect';
 import draftToText from '../../utils/draftToText';
 import SuccessDialog from '../_layout/SuccessDialog';
 import { useSelector } from 'react-redux';
@@ -25,23 +25,25 @@ import BackFAButton from '../_layout/BackFAButton';
 import { RootState } from '../../store';
 import { useCreateQuizMutation } from '../../services/games';
 import { useCreateGameObjectMutation } from '../../services/portal';
-import { gameObj, quizQuestion, quizState } from '../../types';
-import ObjectPropertiesSelect from '../_layout/ObjectPropertiesSelect';
+import { gameObj, quizQuestion, quizOptions, gameState } from '../../types';
+import SeriesSelect from '../_layout/SeriesSelect';
+import DisciplineSelect from '../_layout/DisciplineSelect';
+import LayoutSelect from '../_layout/LayoutSelect';
 
 const CreateQuiz = () => {
     const { token, origin } = useSelector((state: RootState) => state.user);
     const [open, setOpen] = useState(false);
     const [alert, setAlert] = useState('');
-    const [name, setName] = useState('');
-    const [layout, setLayout] = useState(1);
-    const [selectedSerie, setSelectedSerie] = useState([] as string[]);
-    const [selectedDiscipline, setSelectedDiscipline] = useState('');
+    const [name, setName] = useState<string>('');
+    const [layout, setLayout] = useState<number>(1);
+    const [serie, setSerie] = useState<string[]>([]);
+    const [discipline, setDiscipline] = useState<string>('');
     const initialState: quizQuestion[] = [
         { title: EditorState.createEmpty(), answers: ['', ''] }
     ];
     const [questions, setQuestions] = useState(initialState);
     const [createQuiz, response] = useCreateQuizMutation();
-    const [createGameObject] = useCreateGameObjectMutation();
+    const [createGameObject, responsePortal] = useCreateGameObjectMutation();
     const handleCreateQuestion = () => {
         if (questions.length >= 8) {
             setAlert('O número máximo de questões para esse jogo é 8!');
@@ -116,26 +118,24 @@ const CreateQuiz = () => {
     const seriesChange = (event: SelectChangeEvent<string[]>): void => {
         const value = event.target.value;
         if (value !== null) {
-            setSelectedSerie(
-                typeof value === 'string' ? value.split(',') : value
-            );
+            setSerie(typeof value === 'string' ? value.split(',') : value);
         }
     };
     const disciplineChange = (event: SelectChangeEvent) => {
         const value = event.target.value;
-        if (value !== null && value !== selectedDiscipline) {
-            setSelectedDiscipline(value);
+        if (value !== null && value !== discipline) {
+            setDiscipline(value);
         }
     };
     const handleSubmit: FormEventHandler = (
         event: FormEvent<HTMLInputElement>
     ) => {
         event.preventDefault();
-        if (selectedSerie === ['']) {
+        if (serie === ['']) {
             setAlert('Selecione uma série!');
             return;
         }
-        if (selectedDiscipline === '') {
+        if (discipline === '') {
             setAlert('Selecione uma disciplina!');
             return;
         }
@@ -159,7 +159,7 @@ const CreateQuiz = () => {
         if (error) {
             return;
         }
-        let body: Partial<quizState> = {
+        let body: gameState<quizOptions> = {
             name: name,
             layout: layout,
             options: questionsJSON
@@ -172,16 +172,19 @@ const CreateQuiz = () => {
             const obj: gameObj = {
                 name: response?.data?.name as string,
                 slug: `/quiz/${response?.data?.slug}`,
-                material: `https://www.fabricadejogos.portaleducacional.tec.br/quiz/${response?.data?.slug}`,
-                disciplina_id: Number(selectedDiscipline),
-                series: selectedSerie
+                material: `https://www.fabricadejogos.portaleducacional.tec.br/game/quiz/${response?.data?.slug}`,
+                disciplina_id: Number(discipline),
+                series: serie
             };
-            // @ts-ignore
-            createGameObject({ token, origin, ...obj }).then(() => {
-                setOpen(true);
-            });
+            createGameObject({ token, origin, ...obj });
         }
     }, [response.isLoading]);
+
+    useEffect(() => {
+        responsePortal.isSuccess && setOpen(true);
+        responsePortal.isError &&
+            setAlert(`Ocorreu um error: ${response.error}`);
+    }, [responsePortal.isLoading]);
 
     return (
         <>
@@ -204,35 +207,68 @@ const CreateQuiz = () => {
                 >
                     {/* @ts-ignore */}
                     <Grid item align="center" xs={12}>
-                        <TextField
-                            label="Nome"
-                            name="name"
-                            variant="outlined"
-                            value={name}
-                            onChange={(event) => {
-                                setName(event.target.value);
-                            }}
-                            sx={{ minWidth: { xs: 280, sm: 296 } }}
-                            required
-                        />
-                    </Grid>
-                    {/* @ts-ignore */}
-                    <Grid item align="center" xs={12}>
-                        <ObjectPropertiesSelect
-                            token={token as string}
-                            origin={origin as string}
-                            selectedSerie={selectedSerie}
-                            handleSelectSerie={seriesChange}
-                            selectedDiscipline={selectedDiscipline}
-                            handleSelectDiscipline={disciplineChange}
-                        />
-                    </Grid>
-                    {/* @ts-ignore */}
-                    <Grid item align="center" xs={12}>
-                        <LayoutPicker
-                            handleLayout={handleLayout}
-                            selectedLayout={layout}
-                        />
+                        <Grid
+                            container
+                            justifyContent="center"
+                            spacing={1}
+                            display="flex"
+                        >
+                            {/* @ts-ignore*/}
+                            <Grid
+                                align="center"
+                                item
+                                xl={4}
+                                lg={3}
+                                md={12}
+                                justifyContent={{ lg: 'flex-end', md: 'none' }}
+                                display={{ lg: 'flex', md: 'block' }}
+                            >
+                                <SeriesSelect
+                                    serie={serie}
+                                    callback={seriesChange}
+                                />
+                            </Grid>
+                            {/* @ts-ignore*/}
+                            <Grid item align="center" xl={4} lg={3}>
+                                <TextField
+                                    label="Nome"
+                                    name="name"
+                                    variant="outlined"
+                                    value={name}
+                                    onChange={(event) =>
+                                        setName(event.target.value)
+                                    }
+                                    required
+                                    sx={{ minWidth: { sm: 290, xs: 260 } }}
+                                    fullWidth
+                                />
+                            </Grid>
+                            {/* @ts-ignore*/}
+                            <Grid
+                                align="center"
+                                item
+                                justifyContent={{
+                                    lg: 'flex-start',
+                                    md: 'none'
+                                }}
+                                display={{ lg: 'flex', md: 'block' }}
+                                xl={4}
+                                lg={3}
+                                md={12}
+                            >
+                                <DisciplineSelect
+                                    discipline={discipline}
+                                    callback={disciplineChange}
+                                />
+                            </Grid>
+                            {/* @ts-ignore*/}
+                            <Grid item align="center" xs={12}>
+                                <LayoutSelect
+                                    callback={handleLayout}
+                                    selectedLayout={layout}
+                                />
+                            </Grid>
+                        </Grid>
                     </Grid>
                     {/* @ts-ignore */}
                     <Grid item align="center" xs={12}>
@@ -294,9 +330,17 @@ const CreateQuiz = () => {
                     </Grid>
                     {/* @ts-ignore */}
                     <Grid item align="center" xs={12}>
-                        <Button size="large" type="submit" variant="outlined">
-                            Criar
-                        </Button>
+                        {response.isLoading || responsePortal.isLoading ? (
+                            <CircularProgress />
+                        ) : (
+                            <Button
+                                size="large"
+                                type="submit"
+                                variant="outlined"
+                            >
+                                Salvar
+                            </Button>
+                        )}
                     </Grid>
                 </Grid>
             </Box>

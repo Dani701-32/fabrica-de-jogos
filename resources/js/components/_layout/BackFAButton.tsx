@@ -8,7 +8,7 @@ const BackFAButton = ({}) => {
     return (
         <Fab
             color="primary"
-            onClick={() => navigate('/create')}
+            onClick={() => navigate('/')}
             sx={{
                 marginTop: 2,
                 position: 'absolute',

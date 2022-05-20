@@ -11,8 +11,8 @@ import CreateTrueOrFalse from './true-or-false/Create';
 import EditTrueOrFalse from './true-or-false/Edit';
 import CreateMatchUp from './match-up/Create';
 import EditMatchUp from './match-up/Edit';
-// import CreateMemorygame from './memory-game/Create';
-// import EditMemorygame from './memory-game/Edit';
+import CreateMemorygame from './memory-game/Create';
+import EditMemorygame from './memory-game/Edit';
 import HomePage from './_home/HomePage';
 import { CircularProgress, Container, CssBaseline } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -21,12 +21,25 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store';
 import { useGetUserInfoQuery } from '../services/portal';
 import { setBaseState } from '../reducers/userReducer';
+import CreateGroupSort from './group-sort/Create';
+import EditGroupSort from './group-sort/Edit';
+import CreateBalloons from './balloons/Create';
+import EditBalloons from './balloons/Edit';
+import CreateCryptogram from './cryptogram/Create';
+import EditCryptogram from './cryptogram/Edit';
 
 const theme = createTheme({
     components: {
         MuiButton: {
             styleOverrides: {
                 outlined: {
+                    background: 'white'
+                }
+            }
+        },
+        MuiToggleButton: {
+            styleOverrides: {
+                root: {
                     background: 'white'
                 }
             }
@@ -85,33 +98,11 @@ function App() {
                     <CssBaseline />
                     <Routes>
                         {/* Home Route */}
-                        <Route path="/create" element={<HomePage />} />
+                        <Route path="/" element={<HomePage />} />
                         {/* Game Routes */}
                         <Route
-                            path="/quiz/:slug"
-                            element={<GamePage game={'quiz'} />}
-                        />
-                        <Route
-                            path="/anagram/:slug"
-                            element={<GamePage game={'anagram'} />}
-                        />
-                        <Route
-                            path="/word-search/:slug"
-                            element={<GamePage game={'wordSearch'} />}
-                        />
-                        <Route
-                            path="/true-or-false/:slug"
-                            element={<GamePage game={'trueOrFalse'} />}
-                        />
-                        {/*
-                            <Route
-                                path="/memory-game/:slug"
-                                element={<GamePage game={'memoryGame'} />}
-                            />
-                        */}
-                        <Route
-                            path="/match-up/:slug"
-                            element={<GamePage game={'matchUp'} />}
+                            path="/game/:category/:slug"
+                            element={<GamePage />}
                         />
                         {/* Create Routes */}
                         <Route
@@ -119,15 +110,25 @@ function App() {
                             element={<CreateAnagram />}
                         />
                         <Route
+                            path="/create/bloons"
+                            element={<CreateBalloons />}
+                        />
+                        <Route
+                            path="/create/cryptogram"
+                            element={<CreateCryptogram />}
+                        />
+                        <Route
+                            path="/create/group-sort"
+                            element={<CreateGroupSort />}
+                        />
+                        <Route
                             path="/create/match-up"
                             element={<CreateMatchUp />}
                         />
-                        {/*
-                            <Route
-                                path="/create/memory-game"
-                                element={<CreateMemorygame />}
-                            />
-                        */}
+                        <Route
+                            path="/create/memory-game"
+                            element={<CreateMemorygame />}
+                        />
                         <Route path="/create/quiz" element={<CreateQuiz />} />
                         <Route
                             path="/create/true-or-false"
@@ -143,16 +144,27 @@ function App() {
                             element={<EditAnagram />}
                         />
                         <Route
+                            path="/edit/bloons/:slug"
+                            element={<EditBalloons />}
+                        />
+                        <Route
+                            path="/edit/cryptogram/:slug"
+                            element={<EditCryptogram />}
+                        />
+                        <Route
+                            path="/edit/group-sort/:slug"
+                            element={<EditGroupSort />}
+                        />
+                        <Route
                             path="/edit/match-up/:slug"
                             element={<EditMatchUp />}
                         />
-                        {/*
-                            <Route
-                                path="/edit/memory-game/:slug"
-                                element={<EditMemorygame />}
-                            />
-                        */}
+                        <Route
+                            path="/edit/memory-game/:slug"
+                            element={<EditMemorygame />}
+                        />
                         <Route path="/edit/quiz/:slug" element={<EditQuiz />} />
+
                         <Route
                             path="/edit/true-or-false/:slug"
                             element={<EditTrueOrFalse />}

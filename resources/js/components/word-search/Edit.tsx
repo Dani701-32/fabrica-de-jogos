@@ -184,7 +184,7 @@ const EditWordSearch = () => {
                     spacing={3}
                 >
                     <LayoutPicker
-                        handleLayout={handleLayout}
+                        callback={handleLayout}
                         selectedLayout={layout}
                     />
                     {/* @ts-ignore*/}
@@ -234,14 +234,20 @@ const EditWordSearch = () => {
                     </Grid>
                     {/* @ts-ignore*/}
                     <Grid item align="center" xs={12}>
-                        <Button
-                            size="large"
-                            type="submit"
-                            variant="outlined"
-                            disabled={!!data?.approved_at}
-                        >
-                            Salvar
-                        </Button>
+                        {response.isLoading ? (
+                            <CircularProgress />
+                        ) : (
+                            <Grid item xs={12}>
+                                <Button
+                                    size="large"
+                                    type="submit"
+                                    variant="outlined"
+                                    disabled={Boolean(data?.approved_at)}
+                                >
+                                    Salvar
+                                </Button>
+                            </Grid>
+                        )}
                     </Grid>
                 </Grid>
             </Box>
