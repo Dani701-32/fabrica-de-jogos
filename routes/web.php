@@ -18,6 +18,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', static function () {
     return view('index');
 });
+Route::get('/create', static function () {
+    return redirect('/');
+});
 // Game routes
 Route::get('/game/{gameCategory}/{game}', static function (GameCategory $gameCategory, Game $game) {
     return view('index');
