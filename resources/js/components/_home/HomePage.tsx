@@ -6,7 +6,7 @@ export default function HomePage({}) {
     const navigate = useNavigate();
     const game_types = [
         { slug: 'anagram', name: 'Anagrama' },
-        { slug: 'bloons', name: 'Estoura Balões' },
+        // { slug: 'bloons', name: 'Estoura Balões' },
         { slug: 'cryptogram', name: 'Criptograma' },
         { slug: 'group-sort', name: 'Agrupamentos' },
         { slug: 'match-up', name: 'Combinação' },

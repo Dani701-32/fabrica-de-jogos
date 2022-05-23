@@ -14,7 +14,8 @@ import {
     CircularProgress,
     Grid,
     SelectChangeEvent,
-    TextField
+    TextField,
+    Typography
 } from '@mui/material';
 import SeriesSelect from '../_layout/SeriesSelect';
 import DisciplineSelect from '../_layout/DisciplineSelect';
@@ -162,6 +163,11 @@ export default function CreateBalloons({}) {
                     onSubmit={handleSubmit}
                     spacing={3}
                 >
+                    <Grid item alignSelf="center" textAlign="center" xs={12}>
+                        <Typography color="primary" variant="h2" component="h2">
+                            <b>Estoura Balões</b>
+                        </Typography>
+                    </Grid>
                     {/* @ts-ignore */}
                     <Grid item align="center" xs={12}>
                         <Grid

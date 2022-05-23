@@ -16,7 +16,8 @@ import {
     CircularProgress,
     Grid,
     SelectChangeEvent,
-    TextField
+    TextField,
+    Typography
 } from '@mui/material';
 import draftToText from '../../utils/draftToText';
 import SuccessDialog from '../_layout/SuccessDialog';
@@ -214,6 +215,11 @@ export default function CreateCryptogram({}) {
                     onSubmit={handleSubmit}
                     spacing={3}
                 >
+                    <Grid item alignSelf="center" textAlign="center" xs={12}>
+                        <Typography color="primary" variant="h2" component="h2">
+                            <b>Criptograma</b>
+                        </Typography>
+                    </Grid>
                     <Grid item xs={12}>
                         <Grid
                             container

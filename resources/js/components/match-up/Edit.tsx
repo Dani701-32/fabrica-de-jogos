@@ -1,5 +1,12 @@
 import React, { FormEventHandler, useEffect, useState } from 'react';
-import { Button, Grid, Alert, Box, CircularProgress } from '@mui/material';
+import {
+    Button,
+    Grid,
+    Alert,
+    Box,
+    CircularProgress,
+    Typography
+} from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { EditorState, convertToRaw } from 'draft-js';
 import LayoutPicker from '../_layout/LayoutSelect';
@@ -202,6 +209,11 @@ const EditMatchUp = () => {
                     flexDirection: 'row'
                 }}
             >
+                <Grid item alignSelf="center" textAlign="center" xs={12}>
+                    <Typography color="primary" variant="h2" component="h2">
+                        <b>Combinação</b>
+                    </Typography>
+                </Grid>
                 <Grid
                     container
                     component="form"

@@ -12,7 +12,8 @@ import {
     Alert,
     Box,
     SelectChangeEvent,
-    CircularProgress
+    CircularProgress,
+    Typography
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { EditorState, convertToRaw } from 'draft-js';
@@ -205,6 +206,11 @@ const CreateQuiz = () => {
                     onSubmit={handleSubmit}
                     spacing={3}
                 >
+                    <Grid item alignSelf="center" textAlign="center" xs={12}>
+                        <Typography color="primary" variant="h2" component="h2">
+                            <b>Quiz</b>
+                        </Typography>
+                    </Grid>
                     {/* @ts-ignore */}
                     <Grid item align="center" xs={12}>
                         <Grid

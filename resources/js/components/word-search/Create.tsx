@@ -9,7 +9,8 @@ import {
     Grid,
     TextField,
     Alert,
-    SelectChangeEvent
+    SelectChangeEvent,
+    Typography
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { convertToRaw, EditorState } from 'draft-js';
@@ -210,6 +211,11 @@ const CreateWordSearch = () => {
                     onSubmit={handleSubmit}
                     spacing={3}
                 >
+                    <Grid item alignSelf="center" textAlign="center" xs={12}>
+                        <Typography color="primary" variant="h2" component="h2">
+                            <b>Caça Palavras</b>
+                        </Typography>
+                    </Grid>
                     <Grid item xs={12}>
                         <Grid
                             container

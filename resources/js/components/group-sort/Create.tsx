@@ -12,7 +12,8 @@ import {
     CircularProgress,
     Grid,
     SelectChangeEvent,
-    TextField
+    TextField,
+    Typography
 } from '@mui/material';
 import SuccessDialog from '../_layout/SuccessDialog';
 import BackFAButton from '../_layout/BackFAButton';
@@ -170,6 +171,11 @@ export default function CreateGroupSort({}) {
                     onSubmit={handleSubmit}
                     spacing={3}
                 >
+                    <Grid item alignSelf="center" textAlign="center" xs={12}>
+                        <Typography color="primary" variant="h2" component="h2">
+                            <b>Agrupamentos</b>
+                        </Typography>
+                    </Grid>
                     <Grid item xs={12}>
                         <Grid
                             container

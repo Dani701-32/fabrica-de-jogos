@@ -8,7 +8,14 @@ import {
 } from '../../services/games';
 import draftToText from '../../utils/draftToText';
 import textToDraft from '../../utils/textToDraft';
-import { Alert, Box, Button, CircularProgress, Grid } from '@mui/material';
+import {
+    Alert,
+    Box,
+    Button,
+    CircularProgress,
+    Grid,
+    Typography
+} from '@mui/material';
 import SuccessDialog from '../_layout/SuccessDialog';
 import LayoutPicker from '../_layout/LayoutSelect';
 import AddIcon from '@mui/icons-material/Add';
@@ -183,6 +190,11 @@ export default function EditCryptogram({}) {
                     onSubmit={handleSubmit}
                     spacing={3}
                 >
+                    <Grid item alignSelf="center" textAlign="center" xs={12}>
+                        <Typography color="primary" variant="h2" component="h2">
+                            <b>Criptograma</b>
+                        </Typography>
+                    </Grid>
                     <LayoutPicker
                         callback={handleLayout}
                         selectedLayout={layout}

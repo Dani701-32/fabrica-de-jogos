@@ -27,6 +27,10 @@ import CreateBalloons from './balloons/Create';
 import EditBalloons from './balloons/Edit';
 import CreateCryptogram from './cryptogram/Create';
 import EditCryptogram from './cryptogram/Edit';
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
 
 const theme = createTheme({
     components: {

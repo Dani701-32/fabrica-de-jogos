@@ -1,6 +1,12 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import 'react-image-crop/dist/ReactCrop.css';
-import { Grid, Button, CircularProgress, Alert } from '@mui/material';
+import {
+    Grid,
+    Button,
+    CircularProgress,
+    Alert,
+    Typography
+} from '@mui/material';
 import ImageEditor from './layout/ImageEditor';
 import LayoutSelect from '../_layout/LayoutSelect';
 import SuccessDialog from '../_layout/SuccessDialog';
@@ -101,6 +107,11 @@ const EditMemoryGame = () => {
                     onSubmit={handleSubmit as any}
                     spacing={3}
                 >
+                    <Grid item alignSelf="center" textAlign="center" xs={12}>
+                        <Typography color="primary" variant="h2" component="h2">
+                            <b>Jogo da Memória</b>
+                        </Typography>
+                    </Grid>
                     <LayoutSelect
                         callback={handleLayout}
                         selectedLayout={layout}

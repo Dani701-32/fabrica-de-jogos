@@ -4,7 +4,13 @@ import React, {
     useEffect,
     useState
 } from 'react';
-import { Button, Grid, Alert, CircularProgress } from '@mui/material';
+import {
+    Button,
+    Grid,
+    Alert,
+    CircularProgress,
+    Typography
+} from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { EditorState, convertToRaw } from 'draft-js';
 import LayoutPicker from '../_layout/LayoutSelect';
@@ -190,6 +196,11 @@ const EditQuiz = () => {
                     flexDirection: 'row'
                 }}
             >
+                <Grid item alignSelf="center" textAlign="center" xs={12}>
+                    <Typography color="primary" variant="h2" component="h2">
+                        <b>Quiz</b>
+                    </Typography>
+                </Grid>
                 <Grid
                     container
                     component="form"

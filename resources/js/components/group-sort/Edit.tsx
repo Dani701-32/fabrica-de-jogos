@@ -6,7 +6,14 @@ import React, {
     useState
 } from 'react';
 import SuccessDialog from '../_layout/SuccessDialog';
-import { Alert, Box, Button, CircularProgress, Grid } from '@mui/material';
+import {
+    Alert,
+    Box,
+    Button,
+    CircularProgress,
+    Grid,
+    Typography
+} from '@mui/material';
 import LayoutSelect from '../_layout/LayoutSelect';
 import Group from './layout/Group';
 import { gameState, groupSortOptions } from '../../types';
@@ -136,6 +143,11 @@ export default function EditGroupSort({}) {
                     onSubmit={handleSubmit}
                     spacing={3}
                 >
+                    <Grid item alignSelf="center" textAlign="center" xs={12}>
+                        <Typography color="primary" variant="h2" component="h2">
+                            <b>Agrupamentos</b>
+                        </Typography>
+                    </Grid>
                     {/* @ts-ignore*/}
                     <Grid item align="center" xs={12}>
                         <LayoutSelect

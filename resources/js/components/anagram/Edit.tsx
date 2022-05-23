@@ -4,7 +4,14 @@ import React, {
     ChangeEvent,
     FormEventHandler
 } from 'react';
-import { Alert, Button, Grid, Box, CircularProgress } from '@mui/material';
+import {
+    Alert,
+    Button,
+    Grid,
+    Box,
+    CircularProgress,
+    Typography
+} from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import LayoutPicker from '../_layout/LayoutSelect';
 import SuccessDialog from '../_layout/SuccessDialog';
@@ -137,6 +144,11 @@ export default function Edit() {
                     onSubmit={handleSubmit}
                     spacing={3}
                 >
+                    <Grid item alignSelf="center" textAlign="center" xs={12}>
+                        <Typography color="primary" variant="h2" component="h2">
+                            <b>Anagrama</b>
+                        </Typography>
+                    </Grid>
                     <LayoutPicker
                         callback={handleLayout}
                         selectedLayout={layout}
