@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,11 +13,13 @@ use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * @method static create(array $array)
- * @property  $approved_at
+ * @property Carbon $approved_at
  * @property string $name
  * @property int $layout
  * @property array|string $options
  * @property int $game_category_id
+ * @property int $id
+ * @property string $slug
  */
 class Game extends Model
 {

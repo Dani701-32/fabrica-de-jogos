@@ -5,10 +5,12 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Game;
 use App\Models\GameCategory;
+use App\Models\Image;
 use Illuminate\Http\JsonResponse;
 use App\Http\Resources\Game as GameResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Storage;
 
 class GameController extends Controller
 {
@@ -39,9 +41,25 @@ class GameController extends Controller
         $game = new Game();
         $game->name = $validatedData['name'];
         $game->layout = $validatedData['layout'];
-        $game->options = serialize($validatedData['options']);
         $game->game_category_id = $gameCategory->id;
+
+        $images = $request->file('options');
+        $game->options = !$images ? serialize($validatedData['options']): '';
         $game->save();
+        if ($gameCategory->id === 9) {
+            $index = 0;
+            foreach ($images as $image) {
+                $path = "storage/memorygame/";
+                $fileName = $game->slug ."_". $index . "." . $image->getClientOriginalExtension();
+                Storage::disk('s3')->putFileAs($path, $image, $fileName);
+                $imageObj = new Image();
+                $imageObj->path = $path;
+                $imageObj->name = $fileName;
+                $imageObj->game_id = $game->id;
+                $imageObj->save();
+                $index++;
+            }
+        }
         return response()->json(new GameResource($game));
     }
 

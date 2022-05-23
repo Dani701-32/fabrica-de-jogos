@@ -125,5 +125,16 @@ class GameCategorySeeder extends Seeder
                 'options.*.word' => 'string|max:10',
                 'options.*.tip' => 'string|max:45'])
         ]);
+
+        DB::table('game_categories')->insert([
+            'id' => 9,
+            'name' => 'Memory Game',
+            'slug' => 'memory-game',
+            'description' => 'Jogo da Memória',
+            'creation_rules' => serialize(['options' => 'required|array|max:12',
+                'options.*' => 'required|image|max:8000']),
+            'update_rules' => serialize(['options' => 'array|max:12',
+                'options.*' => 'image|max:8000'])
+        ]);
     }
 }
