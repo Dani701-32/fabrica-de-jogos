@@ -5,6 +5,7 @@ specifiers:
   '@babel/preset-react': ^7.16.7
   '@emotion/react': ^11.9.0
   '@emotion/styled': ^11.8.1
+  '@fontsource/roboto': ^4.5.7
   '@mui/icons-material': ^5.6.2
   '@mui/material': ^5.7.0
   '@mui/system': ^5.7.0
@@ -47,6 +48,7 @@ specifiers:
 
 dependencies:
   '@babel/core': 7.17.12
+  '@fontsource/roboto': 4.5.7
   '@mui/icons-material': 5.6.2_gs4txqvbg6wy3z27cqyhc6rvwe
   '@mui/material': 5.7.0_4xriuibr7qayay6mzcpq5f43me
   '@mui/system': 5.7.0_2f7y4c3dlygqpuszd3d43oslwi
@@ -1508,6 +1510,10 @@ packages:
       strip-json-comments: 3.1.1
     transitivePeerDependencies:
       - supports-color
+    dev: false
+
+  /@fontsource/roboto/4.5.7:
+    resolution: {integrity: sha512-m57UMER23Mk6Drg9OjtHW1Y+0KPGyZfE5XJoPTOsLARLar6013kJj4X2HICt+iFLJqIgTahA/QAvSn9lwF1EEw==}
     dev: false
 
   /@humanwhocodes/config-array/0.9.5:
@@ -6263,7 +6269,7 @@ packages:
       serialize-javascript: 6.0.0
       source-map: 0.6.1
       terser: 5.12.0
-      webpack: 5.72.1
+      webpack: 5.72.1_webpack-cli@4.9.2
 
   /terser/4.8.0:
     resolution: {integrity: sha512-EAPipTNeWsb/3wLPeup1tVPaXfIaU68xMnVdPafIL1TV05OhASArYyIfFvnvJCNrR2NIOvDVNNTFRa+Re2MWyw==}
