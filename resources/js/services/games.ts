@@ -13,6 +13,11 @@ import {
 } from '../types';
 import { RootState } from '../store';
 
+type updateMemoryGameInput = {
+    slug?: string;
+    data: FormData;
+};
+
 export const gameApi = createApi({
     reducerPath: 'gameApi',
     baseQuery: fetchBaseQuery({
@@ -22,7 +27,6 @@ export const gameApi = createApi({
             if (token) {
                 headers.set('authorization', `Bearer ${token}`);
             }
-            headers.set('content-type', 'application/json');
             headers.set('accept', 'application/json');
             return headers;
         }
@@ -175,17 +179,17 @@ export const gameApi = createApi({
             query: (body: FormData) => ({
                 url: '/memory-game',
                 method: 'POST',
-                body: body,
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
+                body: body
             })
         }),
-        updateMemoryGame: builder.mutation<gameState<memoryGameOptions>, any>({
-            query: ({ slug, body }) => ({
+        updateMemoryGame: builder.mutation<
+            gameState<memoryGameOptions>,
+            updateMemoryGameInput
+        >({
+            query: ({ slug, data }) => ({
                 url: `memory-game/${slug}`,
                 method: 'PUT',
-                body: body
+                body: data
             })
         }),
         // Group Sort

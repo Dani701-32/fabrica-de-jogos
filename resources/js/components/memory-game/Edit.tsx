@@ -66,10 +66,26 @@ const EditMemoryGame = () => {
         event.preventDefault();
         const data = new FormData();
         images.map((image: Blob) => {
-            data.append('images[]', image);
+            data.append('options[]', image);
         });
         data.append('layout', layout.toString());
-        updateMemoryGame(data);
+        updateMemoryGame({ slug, data });
+    };
+
+    const getImageBlobs = (images: string[]) => {
+        let blobs: Blob[] = [];
+        images.map((image) => {
+            fetch(image, {
+                headers: {
+                    Mode: 'no-cors'
+                }
+            })
+                .then((res) => res.blob()) // Gets the response and returns it as a blob
+                .then((blob) => {
+                    blobs.push(blob);
+                });
+        });
+        return blobs;
     };
 
     useEffect(() => {
@@ -78,7 +94,7 @@ const EditMemoryGame = () => {
                 setAlert(
                     'Esse jogo já foi aprovado, logo não pode mais ser editado!'
                 );
-            setImages(data.options.images as Blob[]);
+            setImages(getImageBlobs(data.options as string[]));
             setLayout(data.layout);
         }
         error && setAlert(`Ocorreu um erro: ${error}`);

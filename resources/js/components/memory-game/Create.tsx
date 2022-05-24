@@ -108,7 +108,7 @@ const CreateMemorygame = () => {
         }
         const data = new FormData();
         images.map((image: Blob) => {
-            data.append('images[]', image);
+            data.append('options[]', image);
         });
         data.append('name', name);
         data.append('layout', layout.toString());
@@ -125,7 +125,6 @@ const CreateMemorygame = () => {
                 disciplina_id: Number(discipline),
                 series: serie
             };
-            // @ts-ignore
             createGameObject({ origin, token, ...obj });
         }
         response.isError && setAlert(`Ocorreu um error: ${response.error}`);

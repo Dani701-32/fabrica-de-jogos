@@ -42,10 +42,7 @@ export type gameState<T> = {
 };
 
 // Memory-Game
-export type memoryGameOptions = {
-    images: Blob[] | string[] | null[];
-    grid: number[];
-};
+export type memoryGameOptions = Blob[] | string[] | null[];
 
 // Quiz
 export interface quizQuestion {

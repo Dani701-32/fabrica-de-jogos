@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import ReactCrop, {
     centerCrop,
     makeAspectCrop,
@@ -77,6 +77,20 @@ export default function App({ index, callback }: Props) {
         console.log(e);
     }
 
+    function generateBlob(crop: Crop, canvas?: HTMLCanvasElement) {
+        if (!crop || !canvas) {
+            return;
+        }
+
+        canvas.toBlob(
+            (blob) => {
+                callback(blob, index);
+            },
+            'image/png',
+            1
+        );
+    }
+
     useDebounceEffect(
         async () => {
             if (
@@ -90,13 +104,20 @@ export default function App({ index, callback }: Props) {
                     previewCanvasRef.current,
                     completedCrop
                 );
-                console.log('debounce');
-                callback(previewCanvasRef.current);
             }
         },
         100,
         [completedCrop]
     );
+
+    useEffect(() => {
+        if (completedCrop) {
+            generateBlob(
+                completedCrop,
+                previewCanvasRef.current ?? new HTMLCanvasElement()
+            );
+        }
+    }, [completedCrop]);
 
     return (
         <Grid item xs={12} sm={6} md={4} lg={3}>

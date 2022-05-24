@@ -43,7 +43,11 @@ export default function CreateBalloons({}) {
     const [question, setQuestion] = useState<EditorState>(
         EditorState.createEmpty()
     );
-    const [answers, setAnswers] = useState<string[][]>([['', '', '', '', '']]);
+    const [answers, setAnswers] = useState<string[][]>([
+        ['', '', '', '', ''],
+        ['', '', '', '', ''],
+        ['', '', '', '', '']
+    ]);
     const [createBalloons, response] = useCreateBalloonsMutation();
     const [createGameObject, responsePortal] = useCreateGameObjectMutation();
     const handleAddPage = () => {
@@ -84,7 +88,11 @@ export default function CreateBalloons({}) {
     const handleClose = () => {
         setName('');
         setQuestion(EditorState.createEmpty());
-        setAnswers([['', '', '', '', '']]);
+        setAnswers([
+            ['', '', '', '', ''],
+            ['', '', '', '', ''],
+            ['', '', '', '', '']
+        ]);
         setLayout(1);
         setOpen(false);
     };
@@ -110,6 +118,10 @@ export default function CreateBalloons({}) {
         }
         if (discipline === '') {
             setAlert('Selecione uma disciplina!');
+            return;
+        }
+        if (answers.length < 3) {
+            setAlert('Selecione um mínimo de 3 páginas!');
             return;
         }
         let textJson = convertToRaw(question.getCurrentContent());
