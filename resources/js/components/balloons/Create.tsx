@@ -31,6 +31,7 @@ import { useCreateBalloonsMutation } from '../../services/games';
 import { useCreateGameObjectMutation } from '../../services/portal';
 import draftToText from '../../utils/draftToText';
 import RichTextField from '../_layout/RichTextField';
+import { getError } from '../../utils/errors';
 
 export default function CreateBalloons({}) {
     const { token, origin } = useSelector((state: RootState) => state.user);
@@ -149,12 +150,12 @@ export default function CreateBalloons({}) {
             };
             createGameObject({ token, origin, ...obj });
         }
+        response.isError && setAlert(getError(response.error));
     }, [response.isLoading]);
 
     useEffect(() => {
         responsePortal.isSuccess && setOpen(true);
-        responsePortal.isError &&
-            setAlert(`Ocorreu um error: ${response.error}`);
+        responsePortal.isError && setAlert(getError(responsePortal.error));
     }, [responsePortal.isLoading]);
     return (
         <>

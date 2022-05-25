@@ -36,6 +36,7 @@ import {
 import SeriesSelect from '../_layout/SeriesSelect';
 import DisciplineSelect from '../_layout/DisciplineSelect';
 import LayoutSelect from '../_layout/LayoutSelect';
+import { getError } from '../../utils/errors';
 
 const CreateMatchUp = () => {
     const [createMatchUp, response] = useCreateMatchUpMutation();
@@ -216,16 +217,14 @@ const CreateMatchUp = () => {
                 disciplina_id: Number(discipline),
                 series: serie
             };
-            // @ts-ignore
             createGameObject({ token, origin, ...obj });
         }
-        response.isError && setAlert(`Ocorreu um error: ${response.error}`);
+        response.isError && setAlert(getError(response.error));
     }, [response.isLoading]);
 
     useEffect(() => {
         responsePortal.isSuccess && setOpen(true);
-        responsePortal.isError &&
-            setAlert(`Ocorreu um error: ${response.error}`);
+        responsePortal.isError && setAlert(getError(responsePortal.error));
     }, [responsePortal.isLoading]);
 
     return (

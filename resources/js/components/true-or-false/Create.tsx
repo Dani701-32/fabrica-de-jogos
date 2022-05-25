@@ -33,6 +33,7 @@ import {
 import SeriesSelect from '../_layout/SeriesSelect';
 import DisciplineSelect from '../_layout/DisciplineSelect';
 import LayoutSelect from '../_layout/LayoutSelect';
+import { getError } from '../../utils/errors';
 
 const CreateTrueOrFalse = () => {
     const { token, origin } = useSelector((state: RootState) => state.user);
@@ -43,7 +44,7 @@ const CreateTrueOrFalse = () => {
     const [serie, setSerie] = useState<string[]>([]);
     const [discipline, setDiscipline] = useState<string>('');
     const [createTrueOrFalse, response] = useCreateTrueOrFalseMutation();
-    const [createGameObject] = useCreateGameObjectMutation();
+    const [createGameObject, responsePortal] = useCreateGameObjectMutation();
     const initialState: trueOrFalseQuestion[] = [
         { title: EditorState.createEmpty(), answer: false }
     ];
@@ -159,13 +160,15 @@ const CreateTrueOrFalse = () => {
                 disciplina_id: Number(discipline),
                 series: serie
             };
-            // @ts-ignore
-            createGameObject({ token, origin, ...obj }).then(() => {
-                setOpen(true);
-            });
+            createGameObject({ token, origin, ...obj });
         }
-        response.isError && setAlert(`Ocorreu um error: ${response.error}`);
+        response.isError && setAlert(getError(response.error));
     }, [response.isLoading]);
+
+    useEffect(() => {
+        responsePortal.isSuccess && setOpen(true);
+        responsePortal.isError && setAlert(getError(responsePortal.error));
+    }, [responsePortal.isLoading]);
 
     return (
         <>

@@ -29,6 +29,7 @@ import draftToText from '../../utils/draftToText';
 import RichTextField from '../_layout/RichTextField';
 import { useParams } from 'react-router-dom';
 import textToDraft from '../../utils/textToDraft';
+import { getError } from '../../utils/errors';
 
 export default function EditBalloons({}) {
     const { slug } = useParams();
@@ -106,12 +107,12 @@ export default function EditBalloons({}) {
             setQuestion(textToDraft(deep_copy.title as string));
             setLayout(data.layout);
         }
-        error && setAlert(`Ocorreu um erro: ${error}`);
+        error && setAlert(getError(error));
     }, [isLoading]);
 
     useEffect(() => {
         response.isSuccess && setOpen(true);
-        response.isError && setAlert(`Ocorreu um erro: ${response.error}`);
+        response.isError && setAlert(getError(response.error));
     }, [response.isLoading]);
 
     if (isLoading)

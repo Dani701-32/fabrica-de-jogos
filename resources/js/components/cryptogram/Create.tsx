@@ -29,6 +29,7 @@ import LayoutSelect from '../_layout/LayoutSelect';
 import AddIcon from '@mui/icons-material/Add';
 import WordCard from '../word-search/layout/WordCard';
 import Copyright from '../_layout/Copyright';
+import { getError } from '../../utils/errors';
 
 export default function CreateCryptogram({}) {
     const { token, origin } = useSelector((state: RootState) => state.user);
@@ -187,13 +188,12 @@ export default function CreateCryptogram({}) {
             };
             createGameObject({ token, origin, ...obj });
         }
-        response.isError && setAlert(`Ocorreu um error: ${response.error}`);
+        response.isError && setAlert(getError(response.error));
     }, [response.isLoading]);
 
     useEffect(() => {
         responsePortal.isSuccess && setOpen(true);
-        responsePortal.isError &&
-            setAlert(`Ocorreu um error: ${response.error}`);
+        responsePortal.isError && setAlert(getError(responsePortal.error));
     }, [responsePortal.isLoading]);
 
     return (

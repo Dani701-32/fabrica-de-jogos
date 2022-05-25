@@ -30,6 +30,7 @@ import { gameObj, quizQuestion, quizOptions, gameState } from '../../types';
 import SeriesSelect from '../_layout/SeriesSelect';
 import DisciplineSelect from '../_layout/DisciplineSelect';
 import LayoutSelect from '../_layout/LayoutSelect';
+import { getError } from '../../utils/errors';
 
 const CreateQuiz = () => {
     const { token, origin } = useSelector((state: RootState) => state.user);
@@ -179,12 +180,12 @@ const CreateQuiz = () => {
             };
             createGameObject({ token, origin, ...obj });
         }
+        response.isError && setAlert(getError(response.error));
     }, [response.isLoading]);
 
     useEffect(() => {
         responsePortal.isSuccess && setOpen(true);
-        responsePortal.isError &&
-            setAlert(`Ocorreu um error: ${response.error}`);
+        responsePortal.isError && setAlert(getError(responsePortal.error));
     }, [responsePortal.isLoading]);
 
     return (

@@ -28,6 +28,7 @@ import { gameObj, wordObj } from '../../types';
 import SeriesSelect from '../_layout/SeriesSelect';
 import DisciplineSelect from '../_layout/DisciplineSelect';
 import LayoutSelect from '../_layout/LayoutSelect';
+import { getError } from '../../utils/errors';
 
 const CreateWordSearch = () => {
     const { token, origin } = useSelector((state: RootState) => state.user);
@@ -53,7 +54,7 @@ const CreateWordSearch = () => {
     const [serie, setSerie] = useState<string[]>([]);
     const [discipline, setDiscipline] = useState<string>('');
     const [createWordSearch, response] = useCreateWordSearchMutation();
-    const [createGameObject] = useCreateGameObjectMutation();
+    const [createGameObject, responsePortal] = useCreateGameObjectMutation();
     const handleAddWord = () => {
         if (words.length >= 8) {
             setAlert('O numero máximo de palavras nesse jogo é 8!');
@@ -184,13 +185,15 @@ const CreateWordSearch = () => {
                 disciplina_id: Number(discipline),
                 series: serie
             };
-            // @ts-ignore
-            createGameObject({ token, origin, ...obj }).then(() => {
-                setOpen(true);
-            });
+            createGameObject({ token, origin, ...obj });
         }
-        response.isError && setAlert(`Ocorreu um error: ${response.error}`);
+        response.isError && setAlert(getError(response.error));
     }, [response.isLoading]);
+
+    useEffect(() => {
+        responsePortal.isSuccess && setOpen(true);
+        responsePortal.isError && setAlert(getError(responsePortal.error));
+    }, [responsePortal.isLoading]);
 
     return (
         <>

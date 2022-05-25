@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, FunctionComponent } from 'react';
 import ReactCrop, {
     centerCrop,
     makeAspectCrop,
@@ -43,11 +43,16 @@ function centerAspectCrop(
 }
 
 type Props = {
+    image: Blob;
     index: number;
     callback: Function;
 };
 
-export default function App({ index, callback }: Props) {
+export const ImageEditor: FunctionComponent<Props> = ({
+    image,
+    index,
+    callback
+}) => {
     const [imgSrc, setImgSrc] = useState('');
     const previewCanvasRef = useRef<HTMLCanvasElement>(null);
     const imgRef = useRef<HTMLImageElement>(null);
@@ -66,7 +71,6 @@ export default function App({ index, callback }: Props) {
             );
             reader.readAsDataURL(e.target.files[0]);
         }
-        console.log(e);
     }
 
     function onImageLoad(e: React.SyntheticEvent<HTMLImageElement>) {
@@ -74,7 +78,6 @@ export default function App({ index, callback }: Props) {
             const { width, height } = e.currentTarget;
             setCrop(centerAspectCrop(width, height, aspect));
         }
-        console.log(e);
     }
 
     function generateBlob(crop: Crop, canvas?: HTMLCanvasElement) {
@@ -109,6 +112,25 @@ export default function App({ index, callback }: Props) {
         100,
         [completedCrop]
     );
+
+    useEffect(() => {
+        const canvas = previewCanvasRef.current;
+        const ctx = canvas?.getContext('2d');
+        if (ctx) {
+            let img = new Image();
+            ctx.imageSmoothingQuality = 'high';
+            img.src = URL.createObjectURL(image);
+            img.onload = () => {
+                ctx.drawImage(
+                    img,
+                    0,
+                    0,
+                    canvas?.width ?? 0,
+                    canvas?.height ?? 0
+                );
+            };
+        }
+    }, []);
 
     useEffect(() => {
         if (completedCrop) {
@@ -190,4 +212,6 @@ export default function App({ index, callback }: Props) {
             </Grid>
         </Grid>
     );
-}
+};
+
+export default ImageEditor;

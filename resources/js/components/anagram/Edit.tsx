@@ -22,6 +22,7 @@ import {
     useGetAnagramBySlugQuery,
     useUpdateAnagramMutation
 } from '../../services/games';
+import { getError } from '../../utils/errors';
 
 export default function Edit() {
     const { slug } = useParams();
@@ -106,12 +107,12 @@ export default function Edit() {
             setPages(sliceIntoChunks(data.options as string[], 4));
             setLayout(data.layout);
         }
-        error && setAlert(`Ocorreu um erro: ${error}`);
+        error && setAlert(getError(error));
     }, [isLoading]);
 
     useEffect(() => {
         response.isSuccess && setOpen(true);
-        response.isError && setAlert(`Ocorreu um erro: ${response.error}`);
+        response.isError && setAlert(getError(response.error));
     }, [response.isLoading]);
 
     if (isLoading)

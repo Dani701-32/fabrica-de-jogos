@@ -21,6 +21,7 @@ import LayoutPicker from '../_layout/LayoutSelect';
 import AddIcon from '@mui/icons-material/Add';
 import WordCard from '../word-search/layout/WordCard';
 import Copyright from '../_layout/Copyright';
+import { getError } from '../../utils/errors';
 
 export default function EditCryptogram({}) {
     const { slug } = useParams();
@@ -147,12 +148,12 @@ export default function EditCryptogram({}) {
             setWords(formatTips(deep_copy));
             setLayout(data.layout);
         }
-        error && setAlert(`Ocorreu um erro ${error}`);
+        error && setAlert(getError(error));
     }, [isLoading]);
 
     useEffect(() => {
         response.isSuccess && setOpen(true);
-        response.isError && setAlert(`Ocorreu um erro ${response.error} `);
+        response.isError && setAlert(getError(response.error));
     }, [response.isLoading]);
 
     if (isLoading)

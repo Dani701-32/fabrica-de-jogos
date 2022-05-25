@@ -18,6 +18,7 @@ import {
     useUpdateMemoryGameMutation,
     useGetMemoryGameBySlugQuery
 } from '../../services/games';
+import { getError } from '../../utils/errors';
 
 const EditMemoryGame = () => {
     const { slug } = useParams();
@@ -75,11 +76,7 @@ const EditMemoryGame = () => {
     const getImageBlobs = (images: string[]) => {
         let blobs: Blob[] = [];
         images.map((image) => {
-            fetch(image, {
-                headers: {
-                    Mode: 'no-cors'
-                }
-            })
+            fetch(image)
                 .then((res) => res.blob()) // Gets the response and returns it as a blob
                 .then((blob) => {
                     blobs.push(blob);
@@ -97,13 +94,25 @@ const EditMemoryGame = () => {
             setImages(getImageBlobs(data.options as string[]));
             setLayout(data.layout);
         }
-        error && setAlert(`Ocorreu um erro: ${error}`);
+        error && setAlert(getError(error));
     }, [isLoading]);
 
     useEffect(() => {
         response.isSuccess && setOpen(true);
-        response.isError && setAlert(`Ocorreu um erro: ${response.error}`);
+        response.isError && setAlert(getError(response.error));
     }, [response.isLoading]);
+
+    if (isLoading)
+        return (
+            <CircularProgress
+                sx={{
+                    position: 'absolute',
+                    left: '50%',
+                    top: '50%',
+                    transform: 'translate(-50%, -50%)'
+                }}
+            />
+        );
 
     return (
         <>
@@ -128,11 +137,17 @@ const EditMemoryGame = () => {
                             <b>Jogo da Memória</b>
                         </Typography>
                     </Grid>
-                    <LayoutSelect
-                        callback={handleLayout}
-                        selectedLayout={layout}
-                    />
-                    <GridSelect size={size} handleSize={handleSize} />
+                    {/* @ts-ignore*/}
+                    <Grid item align="center" xs={12}>
+                        <LayoutSelect
+                            callback={handleLayout}
+                            selectedLayout={layout}
+                        />
+                    </Grid>
+                    {/*@ts-ignore*/}
+                    <Grid item align="center" xs={12}>
+                        <GridSelect size={size} handleSize={handleSize} />
+                    </Grid>
                     <Grid item xs={12}>
                         <Grid
                             container
@@ -156,6 +171,7 @@ const EditMemoryGame = () => {
                                 return (
                                     <ImageEditor
                                         key={index}
+                                        image={image}
                                         index={index}
                                         callback={updateImage}
                                     />
@@ -163,10 +179,11 @@ const EditMemoryGame = () => {
                             })}
                         </Grid>
                     </Grid>
-                    {response.isLoading ? (
-                        <CircularProgress />
-                    ) : (
-                        <Grid item xs={12}>
+                    {/*@ts-ignore*/}
+                    <Grid item align="center" xs={12}>
+                        {response.isLoading ? (
+                            <CircularProgress />
+                        ) : (
                             <Button
                                 size="large"
                                 type="submit"
@@ -175,8 +192,8 @@ const EditMemoryGame = () => {
                             >
                                 Salvar
                             </Button>
-                        </Grid>
-                    )}
+                        )}
+                    </Grid>
                 </Grid>
             </Box>
             <Copyright />

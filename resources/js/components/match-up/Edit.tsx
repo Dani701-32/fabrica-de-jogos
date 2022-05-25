@@ -21,6 +21,7 @@ import {
 } from '../../services/games';
 import { matchUpPage } from '../../types';
 import textToDraft from '../../utils/textToDraft';
+import { getError } from '../../utils/errors';
 
 const EditMatchUp = () => {
     const { slug } = useParams();
@@ -173,12 +174,12 @@ const EditMatchUp = () => {
             setPages(formatPages(deep_copy));
             setLayout(data.layout);
         }
-        error && setAlert(`Ocorreu um erro: ${error}`);
+        error && setAlert(getError(error));
     }, [isLoading]);
 
     useEffect(() => {
         response.isSuccess && setOpen(true);
-        response.isError && setAlert(`Ocorreu um erro: ${response.error}`);
+        response.isError && setAlert(getError(response.error));
     }, [response.isLoading]);
 
     if (isLoading)

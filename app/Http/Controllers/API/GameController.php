@@ -50,7 +50,7 @@ class GameController extends Controller
             $index = 0;
             foreach ($images as $image) {
                 $path = "storage/memorygame/";
-                $fileName = $game->slug ."_". $index . "." . $image->getClientOriginalExtension();
+                $fileName = $game->slug ."_". $index . "." . 'png';
                 Storage::disk('s3')->putFileAs($path, $image, $fileName);
                 $imageObj = new Image();
                 $imageObj->path = $path;

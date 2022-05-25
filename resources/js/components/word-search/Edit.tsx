@@ -21,6 +21,7 @@ import {
 } from '../../services/games';
 import { wordObj } from '../../types';
 import textToDraft from '../../utils/textToDraft';
+import { getError } from '../../utils/errors';
 
 const EditWordSearch = () => {
     const { slug } = useParams();
@@ -147,12 +148,12 @@ const EditWordSearch = () => {
             setWords(formatTips(deep_copy));
             setLayout(data.layout);
         }
-        error && setAlert(`Ocorreu um erro ${error}`);
+        error && setAlert(getError(error));
     }, [isLoading]);
 
     useEffect(() => {
         response.isSuccess && setOpen(true);
-        response.isError && setAlert(`Ocorreu um erro ${response.error} `);
+        response.isError && setAlert(getError(response.error));
     }, [response.isLoading]);
 
     if (isLoading)

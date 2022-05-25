@@ -30,6 +30,8 @@ import { useCreateGameObjectMutation } from '../../services/portal';
 import SeriesSelect from '../_layout/SeriesSelect';
 import DisciplineSelect from '../_layout/DisciplineSelect';
 import LayoutSelect from '../_layout/LayoutSelect';
+import { getError } from '../../utils/errors';
+import GridSelect from './layout/GridSelect';
 
 const CreateMemorygame = () => {
     const { token, origin } = useSelector((state: RootState) => state.user);
@@ -79,8 +81,11 @@ const CreateMemorygame = () => {
     const handleClose = () => {
         setName('');
         setLayout(1);
+        setSerie([]);
+        setDiscipline('');
         setSize(2);
-        setImages([]);
+        setImages([new Blob(), new Blob()]);
+        setOpen(false);
     };
     const seriesChange = (event: SelectChangeEvent<string[]>) => {
         const value = event.target.value;
@@ -127,13 +132,12 @@ const CreateMemorygame = () => {
             };
             createGameObject({ origin, token, ...obj });
         }
-        response.isError && setAlert(`Ocorreu um error: ${response.error}`);
+        response.isError && setAlert(getError(response.error));
     }, [response.isLoading]);
 
     useEffect(() => {
         responsePortal.isSuccess && setOpen(true);
-        responsePortal.isError &&
-            setAlert(`Ocorreu um error: ${response.error}`);
+        responsePortal.isError && setAlert(getError(responsePortal.error));
     }, [responsePortal.isLoading]);
 
     return (
@@ -229,19 +233,7 @@ const CreateMemorygame = () => {
                     </Grid>
                     {/*@ts-ignore*/}
                     <Grid item align="center" xs={12}>
-                        <ToggleButtonGroup
-                            value={size}
-                            exclusive
-                            onChange={handleSize as any}
-                            aria-label="text alignment"
-                            color="primary"
-                        >
-                            <ToggleButton value={2}>2x2</ToggleButton>
-                            <ToggleButton value={3}>2x3</ToggleButton>
-                            <ToggleButton value={4}>2x4</ToggleButton>
-                            <ToggleButton value={5}>2x5</ToggleButton>
-                            <ToggleButton value={6}>3x4</ToggleButton>
-                        </ToggleButtonGroup>
+                        <GridSelect size={size} handleSize={handleSize} />
                     </Grid>
                     <Grid item xs={12}>
                         <Grid
@@ -266,6 +258,7 @@ const CreateMemorygame = () => {
                                 return (
                                     <ImageEditor
                                         key={index}
+                                        image={image}
                                         index={index}
                                         callback={updateImage}
                                     />

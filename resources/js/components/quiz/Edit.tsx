@@ -26,6 +26,7 @@ import {
 } from '../../services/games';
 import { quizQuestion as questionObj, quizQuestion } from '../../types';
 import textToDraft from '../../utils/textToDraft';
+import { getError } from '../../utils/errors';
 
 const EditQuiz = () => {
     const { slug } = useParams();
@@ -160,12 +161,12 @@ const EditQuiz = () => {
             setQuestions(formatQuestions(deep_copy));
             setLayout(data.layout);
         }
-        error && setAlert(`Ocorreu um error: ${error}`);
+        error && setAlert(getError(error));
     }, [isLoading]);
 
     useEffect(() => {
         response.isSuccess && setOpen(true);
-        response.isError && setAlert(`Ocorreu um error: ${response.error}`);
+        response.isError && setAlert(getError(response.error));
     }, [response.isLoading]);
 
     if (isLoading)

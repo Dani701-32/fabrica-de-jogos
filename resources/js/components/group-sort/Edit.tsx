@@ -22,6 +22,7 @@ import {
     useUpdateGroupSortMutation,
     useGetGroupSortBySlugQuery
 } from '../../services/games';
+import { getError } from '../../utils/errors';
 
 export default function EditGroupSort({}) {
     const { slug } = useParams();
@@ -105,12 +106,12 @@ export default function EditGroupSort({}) {
             setGroups(deep_copy);
             setLayout(data.layout);
         }
-        error && setAlert(`Ocorreu um erro: ${error}`);
+        error && setAlert(getError(error));
     }, [isLoading]);
 
     useEffect(() => {
         response.isSuccess && setOpen(true);
-        response.isError && setAlert(`Ocorreu um erro: ${response.error}`);
+        response.isError && setAlert(getError(response.error));
     }, [response.isLoading]);
 
     if (isLoading)
