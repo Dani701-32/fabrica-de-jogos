@@ -27,6 +27,8 @@ import CreateBalloons from './balloons/Create';
 import EditBalloons from './balloons/Edit';
 import CreateCryptogram from './cryptogram/Create';
 import EditCryptogram from './cryptogram/Edit';
+import CreateDragNDrop from './drag-drop/Create';
+import EditDragNDrop from './drag-drop/Edit';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
@@ -122,6 +124,10 @@ function App() {
                             element={<CreateCryptogram />}
                         />
                         <Route
+                            path="/create/drag-drop"
+                            element={<CreateDragNDrop />}
+                        />
+                        <Route
                             path="/create/group-sort"
                             element={<CreateGroupSort />}
                         />
@@ -154,6 +160,10 @@ function App() {
                         <Route
                             path="/edit/cryptogram/:slug"
                             element={<EditCryptogram />}
+                        />
+                        <Route
+                            path="/edit/drag-drop/:slug"
+                            element={<EditDragNDrop />}
                         />
                         <Route
                             path="/edit/group-sort/:slug"

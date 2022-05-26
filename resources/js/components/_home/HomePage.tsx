@@ -8,6 +8,7 @@ export default function HomePage({}) {
         { slug: 'anagram', name: 'Anagrama' },
         { slug: 'bloons', name: 'Estoura Balões' },
         { slug: 'cryptogram', name: 'Criptograma' },
+        { slug: 'drag-drop', name: 'Arraste e Solte' },
         { slug: 'group-sort', name: 'Agrupamentos' },
         { slug: 'match-up', name: 'Combinação' },
         // { slug: 'memory-game', name: 'Jogo da Memória' },

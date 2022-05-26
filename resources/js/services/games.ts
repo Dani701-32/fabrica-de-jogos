@@ -268,6 +268,29 @@ export const gameApi = createApi({
                 method: 'PUT',
                 body: body
             })
+        }),
+        getDragNDropBySlug: builder.query<gameState<number[]>, string>({
+            query: (slug) => `drag-drop/${slug}`
+        }),
+        createDragNDrop: builder.mutation<
+            gameState<number[]>,
+            Partial<gameState<number[]>>
+        >({
+            query: (body: gameState<number[]>) => ({
+                url: 'drag-drop',
+                method: 'POST',
+                body: body
+            })
+        }),
+        updateDragNDrop: builder.mutation<
+            gameState<number>,
+            Partial<gameState<number[]>> & Pick<gameState<number[]>, 'slug'>
+        >({
+            query: ({ slug, ...body }) => ({
+                url: `drag-drop/${slug}`,
+                method: 'PUT',
+                body: body
+            })
         })
     })
 });
@@ -299,7 +322,10 @@ export const {
     useUpdateBalloonsMutation,
     useGetCryptogramBySlugQuery,
     useCreateCryptogramMutation,
-    useUpdateCryptogramMutation
+    useUpdateCryptogramMutation,
+    useGetDragNDropBySlugQuery,
+    useCreateDragNDropMutation,
+    useUpdateDragNDropMutation
 } = gameApi;
 
 export default gameApi;

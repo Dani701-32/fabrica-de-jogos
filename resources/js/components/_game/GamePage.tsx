@@ -50,6 +50,10 @@ export default function GamePage() {
             gameAddress =
                 'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/CryptogramFDJ/index.html';
             break;
+        case 'drag-drop':
+            gameAddress =
+                'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/DragInDropFDJ/index.html';
+            break;
         default:
             window.location.href = '/404';
             break;
