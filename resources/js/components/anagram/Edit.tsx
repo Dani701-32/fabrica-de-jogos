@@ -215,7 +215,6 @@ export default function Edit() {
                     </Grid>
                 </Grid>
             </Box>
-            <Copyright />
         </>
     );
 }

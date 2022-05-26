@@ -290,7 +290,6 @@ const EditQuiz = () => {
                     </Grid>
                 </Grid>
             </Box>
-            <Copyright />
         </>
     );
 };

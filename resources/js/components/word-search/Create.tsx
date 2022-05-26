@@ -336,7 +336,6 @@ const CreateWordSearch = () => {
                     </Grid>
                 </Grid>
             </Box>
-            <Copyright />
         </>
     );
 };

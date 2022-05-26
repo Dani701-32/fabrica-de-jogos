@@ -291,7 +291,6 @@ const EditMatchUp = () => {
                     </Grid>
                 </Grid>
             </Box>
-            <Copyright />
         </>
     );
 };

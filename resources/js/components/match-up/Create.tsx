@@ -380,7 +380,6 @@ const CreateMatchUp = () => {
                     </Grid>
                 </Grid>
             </Box>
-            <Copyright />
         </>
     );
 };

@@ -264,7 +264,6 @@ export default function EditCryptogram({}) {
                     </Grid>
                 </Grid>
             </Box>
-            <Copyright />
         </>
     );
 }

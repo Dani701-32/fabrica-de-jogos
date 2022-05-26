@@ -229,7 +229,6 @@ export default function EditBalloons({}) {
                     </Grid>
                 </Grid>
             </Box>
-            <Copyright />
         </>
     );
 }

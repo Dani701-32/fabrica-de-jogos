@@ -282,7 +282,6 @@ const CreateMemorygame = () => {
                     </Grid>
                 </Grid>
             </Box>
-            <Copyright />
         </>
     );
 };

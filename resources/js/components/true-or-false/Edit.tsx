@@ -263,7 +263,6 @@ const EditTrueOrFalse = () => {
                     </Grid>
                 </Grid>
             </Box>
-            <Copyright />
         </>
     );
 };

@@ -316,7 +316,6 @@ export default function CreateBalloons({}) {
                     </Grid>
                 </Grid>
             </Box>
-            <Copyright />
         </>
     );
 }

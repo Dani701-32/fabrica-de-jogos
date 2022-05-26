@@ -291,7 +291,6 @@ const Create = () => {
                     </Grid>
                 </Grid>
             </Box>
-            <Copyright />
         </>
     );
 };

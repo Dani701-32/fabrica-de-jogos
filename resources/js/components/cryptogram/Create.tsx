@@ -345,7 +345,6 @@ export default function CreateCryptogram({}) {
                     </Grid>
                 </Grid>
             </Box>
-            <Copyright />
         </>
     );
 }

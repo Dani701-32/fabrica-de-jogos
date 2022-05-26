@@ -321,7 +321,6 @@ const CreateTrueOrFalse = () => {
                     </Grid>
                 </Grid>
             </Box>
-            <Copyright />
         </>
     );
 };

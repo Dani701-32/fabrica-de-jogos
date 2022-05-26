@@ -351,7 +351,6 @@ const CreateQuiz = () => {
                     </Grid>
                 </Grid>
             </Box>
-            <Copyright />
         </>
     );
 };

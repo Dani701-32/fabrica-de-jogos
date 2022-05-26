@@ -196,7 +196,6 @@ const EditMemoryGame = () => {
                     </Grid>
                 </Grid>
             </Box>
-            <Copyright />
         </>
     );
 };

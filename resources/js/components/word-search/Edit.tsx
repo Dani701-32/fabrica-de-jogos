@@ -264,7 +264,6 @@ const EditWordSearch = () => {
                     </Grid>
                 </Grid>
             </Box>
-            <Copyright />
         </>
     );
 };
