@@ -291,6 +291,29 @@ export const gameApi = createApi({
                 method: 'PUT',
                 body: body
             })
+        }),
+        getPuzzleBySlug: builder.query<gameState<number[]>, string>({
+            query: (slug) => `puzzle/${slug}`
+        }),
+        createPuzzle: builder.mutation<
+            gameState<number[]>,
+            Partial<gameState<number[]>>
+        >({
+            query: (body: gameState<number[]>) => ({
+                url: '/puzzle',
+                method: 'POST',
+                body: body
+            })
+        }),
+        updatePuzzle: builder.mutation<
+            gameState<number[]>,
+            Partial<gameState<number[]>> & Pick<gameState<number[]>, 'slug'>
+        >({
+            query: ({ slug, ...body }) => ({
+                url: `puzzle/${slug}`,
+                method: 'PUT',
+                body: body
+            })
         })
     })
 });
@@ -325,7 +348,10 @@ export const {
     useUpdateCryptogramMutation,
     useGetDragNDropBySlugQuery,
     useCreateDragNDropMutation,
-    useUpdateDragNDropMutation
+    useUpdateDragNDropMutation,
+    useGetPuzzleBySlugQuery,
+    useCreatePuzzleMutation,
+    useUpdatePuzzleMutation
 } = gameApi;
 
 export default gameApi;

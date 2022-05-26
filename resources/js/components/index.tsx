@@ -29,6 +29,8 @@ import CreateCryptogram from './cryptogram/Create';
 import EditCryptogram from './cryptogram/Edit';
 import CreateDragNDrop from './drag-drop/Create';
 import EditDragNDrop from './drag-drop/Edit';
+import CreatePuzzle from './puzzle/Create';
+import EditPuzzle from './puzzle/Edit';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
@@ -148,6 +150,10 @@ function App() {
                             path="/create/word-search"
                             element={<CreateWordSearch />}
                         />
+                        <Route
+                            path="/create/puzzle"
+                            element={<CreatePuzzle />}
+                        />
                         {/* Edit Routes */}
                         <Route
                             path="/edit/anagram/:slug"
@@ -186,6 +192,10 @@ function App() {
                         <Route
                             path="/edit/word-search/:slug"
                             element={<EditWordSearch />}
+                        />
+                        <Route
+                            path="/edit/puzzle/:slug"
+                            element={<EditPuzzle />}
                         />
                     </Routes>
                 </Container>
