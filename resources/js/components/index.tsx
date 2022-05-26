@@ -35,6 +35,7 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
+import Copyright from './_layout/Copyright';
 
 const theme = createTheme({
     components: {
@@ -199,6 +200,7 @@ function App() {
                         />
                     </Routes>
                 </Container>
+                <Copyright />
             </Router>
         </ThemeProvider>
     );
