@@ -101,8 +101,8 @@ const CreateDragNDrop: FunctionComponent = ({}) => {
         if (response.isSuccess) {
             const obj: gameObj = {
                 name: response?.data?.name as string,
-                slug: `/anagram/${response?.data?.slug}`,
-                material: `https://www.fabricadejogos.portaleducacional.tec.br/game/anagram/${response?.data?.slug}`,
+                slug: `/drag-drop/${response?.data?.slug}`,
+                material: `https://www.fabricadejogos.portaleducacional.tec.br/game/drag-drop/${response?.data?.slug}`,
                 disciplina_id: Number(discipline),
                 series: serie
             };

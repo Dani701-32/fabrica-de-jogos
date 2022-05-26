@@ -113,7 +113,7 @@ const EditDragNDrop: FunctionComponent = ({}) => {
                 >
                     <Grid item alignSelf="center" textAlign="center" xs={12}>
                         <Typography color="primary" variant="h2" component="h2">
-                            <b>Anagrama</b>
+                            <b>Arrasta e Solta</b>
                         </Typography>
                     </Grid>
                     <LayoutPicker
