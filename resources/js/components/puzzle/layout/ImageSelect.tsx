@@ -58,7 +58,7 @@ const ImageSelect = ({ callback, selectedImage }: Props) => {
                                     <Box
                                         sx={{
                                             width: { xs: 180, sm: 280 },
-                                            height: 289
+                                            height: 300
                                         }}
                                         key={i}
                                     >
