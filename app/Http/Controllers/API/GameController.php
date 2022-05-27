@@ -113,10 +113,7 @@ class GameController extends Controller
         foreach ($validatedData as $attr=>$value) {
             if (array_key_exists($attr, $game->getAttributes())) {
                 $edited = true;
-                if (is_array($value)) {
-                    $value =  serialize($value);
-                }
-                $game->$attr = $value;
+                $game->$attr = is_array($value) ? serialize($value): $value;
             }
         }
         if ($edited) {
