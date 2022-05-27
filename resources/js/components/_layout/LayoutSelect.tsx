@@ -46,7 +46,11 @@ const LayoutSelect = ({ callback, selectedLayout }: Props) => {
                     </Grid>
                     {/* @ts-ignore*/}
                     <Grid item align="center" margin="auto" xs={12} md={9}>
-                        <Carousel responsive={responsive} infinite={true}>
+                        <Carousel
+                            responsive={responsive}
+                            infinite={true}
+                            shouldResetAutoplay={false}
+                        >
                             {layouts.map((layout, i) => {
                                 return (
                                     <Box

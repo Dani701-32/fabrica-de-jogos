@@ -60,7 +60,7 @@ const WordCard = ({
                             onChange={handleTipChange}
                             label={'Dica'}
                             index={index}
-                            maxLength={200}
+                            maxLength={45}
                         />
                     </Grid>
                 </Grid>

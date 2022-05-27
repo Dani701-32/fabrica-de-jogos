@@ -19,7 +19,6 @@ import LayoutSelect from '../_layout/LayoutSelect';
 import AddIcon from '@mui/icons-material/Add';
 import { balloonOptions, gameState } from '../../types';
 import Page from './layout/Page';
-import Copyright from '../_layout/Copyright';
 import { convertToRaw, EditorState } from 'draft-js';
 import {
     useUpdateBalloonsMutation,

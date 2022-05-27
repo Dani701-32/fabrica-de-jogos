@@ -38,6 +38,9 @@ export default function Group({
                             onChange={(event) =>
                                 handleTitleChange(event, index)
                             }
+                            inputProps={{
+                                maxLength: 185
+                            }}
                             fullWidth
                             required
                         />
@@ -70,7 +73,7 @@ export default function Group({
                                             fullWidth
                                             size="small"
                                             inputProps={{
-                                                maxLength: 31
+                                                maxLength: 12
                                             }}
                                             value={item}
                                             onChange={(event) =>

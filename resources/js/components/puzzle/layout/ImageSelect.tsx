@@ -48,7 +48,11 @@ const ImageSelect = ({ callback, selectedImage }: Props) => {
                     </Grid>
                     {/* @ts-ignore*/}
                     <Grid item align="center" margin="auto" xs={12} md={9}>
-                        <Carousel responsive={responsive} infinite={true}>
+                        <Carousel
+                            responsive={responsive}
+                            infinite={true}
+                            shouldResetAutoplay={false}
+                        >
                             {images.map((image, i) => {
                                 return (
                                     <Box

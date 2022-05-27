@@ -61,7 +61,7 @@ export default function Page({
                                                         size="small"
                                                         required
                                                         inputProps={{
-                                                            maxLength: 31
+                                                            maxLength: 12
                                                         }}
                                                         focused
                                                         fullWidth
