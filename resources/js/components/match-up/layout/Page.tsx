@@ -57,7 +57,7 @@ const Page = ({
                                             label="Palavra"
                                             required
                                             inputProps={{
-                                                maxLength: 9
+                                                maxLength: 12
                                             }}
                                             fullWidth
                                             value={matchUp.word}
