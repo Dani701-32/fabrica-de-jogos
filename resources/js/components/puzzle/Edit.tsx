@@ -123,7 +123,7 @@ const EditPuzzle: FunctionComponent = ({}) => {
                 >
                     <Grid item alignSelf="center" textAlign="center" xs={12}>
                         <Typography color="primary" variant="h2" component="h2">
-                            <b>Quebra Cabeça</b>
+                            <b>Quebra-Cabeça</b>
                         </Typography>
                     </Grid>
                     <LayoutPicker

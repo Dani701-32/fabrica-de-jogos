@@ -12,7 +12,7 @@ export default function HomePage({}) {
         { slug: 'group-sort', name: 'Agrupamentos' },
         { slug: 'match-up', name: 'Combinação' },
         // { slug: 'memory-game', name: 'Jogo da Memória' },
-        { slug: 'puzzle', name: 'Quebra Cabeças' },
+        { slug: 'puzzle', name: 'Quebra-Cabeça' },
         { slug: 'quiz', name: 'Quiz' },
         { slug: 'true-or-false', name: 'Verdadeiro ou Falso' },
         { slug: 'word-search', name: 'Caça Palavras' }
