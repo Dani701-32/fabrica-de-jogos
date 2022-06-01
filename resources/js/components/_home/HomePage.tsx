@@ -15,7 +15,7 @@ export default function HomePage({}) {
         { slug: 'puzzle', name: 'Quebra-Cabeça' },
         { slug: 'quiz', name: 'Quiz' },
         { slug: 'true-or-false', name: 'Verdadeiro ou Falso' },
-        { slug: 'word-search', name: 'Caça Palavras' }
+        { slug: 'word-search', name: 'Caça-Palavras' }
     ];
 
     return (

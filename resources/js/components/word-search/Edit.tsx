@@ -193,7 +193,7 @@ const EditWordSearch = () => {
                 >
                     <Grid item alignSelf="center" textAlign="center" xs={12}>
                         <Typography color="primary" variant="h2" component="h2">
-                            <b>Caça Palavras</b>
+                            <b>Caça-Palavras</b>
                         </Typography>
                     </Grid>
                     <LayoutPicker
