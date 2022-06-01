@@ -39,7 +39,7 @@ export default function SeriesSelect({ serie, callback }: Props) {
     return (
         <>
             <FormControl sx={{ minWidth: 140, maxWidth: { sm: 290, xs: 260 } }}>
-                <InputLabel>Ano/Série</InputLabel>
+                <InputLabel>Etapa Letiva</InputLabel>
                 <Select
                     required
                     multiple
