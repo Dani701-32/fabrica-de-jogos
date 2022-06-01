@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setBaseState } from '../../reducers/userReducer';
 import { useSelector } from 'react-redux';
@@ -9,8 +9,7 @@ export default function GamePage() {
     const { slug, category } = useParams();
     const [open, setOpen] = useState(false);
     const { token, origin } = useSelector((state: RootState) => state.user);
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
+    const [searchParams, setSearchParams] = useSearchParams();
     const dispatch = useDispatch();
     let gameAddress = '';
     switch (category) {
@@ -64,6 +63,19 @@ export default function GamePage() {
     }
 
     useEffect(() => {
+        if (searchParams.has('token')) {
+            localStorage.setItem('token', searchParams.get('token') as string);
+            searchParams.delete('token');
+            setSearchParams(searchParams);
+        }
+        if (searchParams.has('origin')) {
+            localStorage.setItem(
+                'origin',
+                searchParams.get('origin') as string
+            );
+            searchParams.delete('origin');
+            setSearchParams(searchParams);
+        }
         dispatch(setBaseState());
         setTimeout(() => {
             window.addEventListener('message', (event) => {
@@ -80,12 +92,8 @@ export default function GamePage() {
                             origin: origin,
                             game_address: game_address,
                             slug: slug,
-                            aula_id: urlParams.has('aula_id')
-                                ? urlParams.get('aula_id')
-                                : 0,
-                            conteudo_id: urlParams.has('conteudo_id')
-                                ? urlParams.get('conteudo_id')
-                                : 0
+                            aula_id: searchParams.get('aula_id') ?? 0,
+                            conteudo_id: searchParams.get('conteudo_id') ?? 0
                         });
                         // @ts-ignore
                         iframe.contentWindow.postMessage(message, '*');

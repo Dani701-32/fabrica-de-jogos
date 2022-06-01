@@ -78,7 +78,6 @@ function App() {
     if (error) dispatch(setBaseState());
 
     useEffect(() => {
-        setBaseState();
         setTimeout(() => {
             if (localStorage.getItem('token') === null) {
                 window.location.href = '/401';
