@@ -67,14 +67,16 @@ class GameCategorySeeder extends Seeder
             'description' => 'Jogo do macaco',
             'creation_rules' => serialize(['options' => 'required|array',
                 'options.title' => 'required|string|max:127',
-                'options.answers' => 'required|array|max:8',
-                'options.answers.*' => 'required|array|max:5',
-                'options.answers.*.*' => 'required|string|max:12']),
+                'options.answers' => 'required|array|max:30',
+                'options.answers.*' => 'required|string|max:12',
+                'options.alternatives' => 'required|array|max:30',
+                'options.alternatives.*' => 'required|string|max:12',]),
             'update_rules' => serialize(['options' => 'array',
                 'options.title' => 'string|max:127',
-                'options.answers' => 'array|max:8',
-                'options.answers.*' => 'array|max:5',
-                'options.answers.*.*' => 'string|max:12'])
+                'options.answers' => 'array|max:30',
+                'options.answers.*' => 'string|max:12',
+                'options.alternatives' => 'array|max:30',
+                'options.alternatives.*' => 'string|max:12',])
         ]);
 
         DB::table('game_categories')->insert([
@@ -84,11 +86,11 @@ class GameCategorySeeder extends Seeder
             'description' => 'Ordenação por Grupos',
             'creation_rules' => serialize(['options' => 'required|array|max:2',
                 'options.*.title' => 'required|string|max:185',
-                'options.*.items' => 'required|array|max:400',
+                'options.*.items' => 'required|array|max:5',
                 'options.*.items.*' => 'required|string|max:20']),
             'update_rules' => serialize(['options' => 'array|max:2',
                 'options.*.title' => 'string|max:185',
-                'options.*.items' => 'array|max:400',
+                'options.*.items' => 'array|max:5',
                 'options.*.items.*' => 'string|max:20'])
         ]);
 
