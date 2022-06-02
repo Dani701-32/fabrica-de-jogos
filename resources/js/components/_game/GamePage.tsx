@@ -72,10 +72,10 @@ export default function GamePage() {
             setSearchParams(searchParams);
         }
         if (searchParams.has('api_address')) {
-            localStorage.setItem(
-                'origin',
-                decodeURI(searchParams.get('api_address') as string)
-            );
+            const uri = decodeURI(
+                searchParams.get('api_address') as string
+            ).replace('/api/', '');
+            localStorage.setItem('origin', uri);
             searchParams.delete('api_address');
             setSearchParams(searchParams);
         }
