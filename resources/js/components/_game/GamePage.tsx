@@ -63,17 +63,20 @@ export default function GamePage() {
     }
 
     useEffect(() => {
-        if (searchParams.has('token')) {
-            localStorage.setItem('token', searchParams.get('token') as string);
-            searchParams.delete('token');
+        if (searchParams.has('user_token')) {
+            localStorage.setItem(
+                'token',
+                searchParams.get('user_token') as string
+            );
+            searchParams.delete('user_token');
             setSearchParams(searchParams);
         }
-        if (searchParams.has('origin')) {
+        if (searchParams.has('api_address')) {
             localStorage.setItem(
                 'origin',
-                searchParams.get('origin') as string
+                decodeURI(searchParams.get('api_address') as string)
             );
-            searchParams.delete('origin');
+            searchParams.delete('api_address');
             setSearchParams(searchParams);
         }
         dispatch(setBaseState());
@@ -111,7 +114,6 @@ export default function GamePage() {
                     src={gameAddress}
                     height="100%"
                     width="100%"
-                    frameBorder="0"
                     allowFullScreen
                     style={{
                         position: 'fixed',
