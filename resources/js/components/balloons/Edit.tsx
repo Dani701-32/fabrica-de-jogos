@@ -86,7 +86,7 @@ export default function EditBalloons({}) {
             let deep_copy = JSON.parse(JSON.stringify(data.options));
             setAnswers(deep_copy.answers);
             setAlternatives(deep_copy.alternatives);
-            setQuestion(textToDraft(deep_copy.title as string));
+            setQuestion(textToDraft(deep_copy.question as string));
             setLayout(data.layout);
         }
         error && setAlert(getError(error));
