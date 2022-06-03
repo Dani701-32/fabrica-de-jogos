@@ -1,23 +1,7 @@
-import React, {
-    ChangeEvent,
-    FormEvent,
-    FormEventHandler,
-    FunctionComponent,
-    useEffect,
-    useState
-} from 'react';
+import React, { ChangeEvent, FormEvent, FormEventHandler, FunctionComponent, useEffect, useState } from 'react';
 import BackFAButton from '../_layout/BackFAButton';
 import SuccessDialog from '../_layout/SuccessDialog';
-import {
-    Alert,
-    Box,
-    Button,
-    CircularProgress,
-    Grid,
-    SelectChangeEvent,
-    TextField,
-    Typography
-} from '@mui/material';
+import { Alert, Box, Button, CircularProgress, Grid, SelectChangeEvent, TextField, Typography } from '@mui/material';
 import SeriesSelect from '../_layout/SeriesSelect';
 import DisciplineSelect from '../_layout/DisciplineSelect';
 import LayoutSelect from '../_layout/LayoutSelect';
@@ -42,28 +26,19 @@ const CreatePuzzle: FunctionComponent = ({}) => {
     const [discipline, setDiscipline] = useState<string>('');
     const [image, setImage] = useState(0);
     const [pieces, setPieces] = useState<number>(2);
-    const handlePieces = (
-        event: ChangeEvent<HTMLInputElement>,
-        newPieces: number
-    ) => {
+    const handlePieces = (event: ChangeEvent<HTMLInputElement>, newPieces: number) => {
         if (newPieces === null) {
             return;
         }
         setPieces(newPieces);
     };
-    const handleImage = (
-        event: ChangeEvent<HTMLInputElement>,
-        newImage: number
-    ) => {
+    const handleImage = (event: ChangeEvent<HTMLInputElement>, newImage: number) => {
         if (newImage === null) {
             return;
         }
         setImage(newImage);
     };
-    const handleLayout = (
-        event: ChangeEvent<HTMLInputElement>,
-        newLayout: number
-    ) => {
+    const handleLayout = (event: ChangeEvent<HTMLInputElement>, newLayout: number) => {
         if (newLayout === null) {
             return;
         }
@@ -86,9 +61,7 @@ const CreatePuzzle: FunctionComponent = ({}) => {
             setDiscipline(value);
         }
     };
-    const handleSubmit: FormEventHandler = (
-        event: FormEvent<HTMLInputElement>
-    ): void => {
+    const handleSubmit: FormEventHandler = (event: FormEvent<HTMLInputElement>): void => {
         event.preventDefault();
         if (serie === ['']) {
             setAlert('Selecione uma série!');
@@ -102,7 +75,7 @@ const CreatePuzzle: FunctionComponent = ({}) => {
         const body = {
             name: name,
             layout: layout,
-            options: [pieces, image]
+            options: [pieces, image],
         };
 
         createPuzzle(body);
@@ -115,7 +88,7 @@ const CreatePuzzle: FunctionComponent = ({}) => {
                 slug: `/puzzle/${response?.data?.slug}`,
                 material: `https://www.fabricadejogos.portaleducacional.tec.br/game/puzzle/${response?.data?.slug}`,
                 disciplina_id: Number(discipline),
-                series: serie
+                series: serie,
             };
             createGameObject({ origin, token, ...obj });
         }
@@ -135,30 +108,17 @@ const CreatePuzzle: FunctionComponent = ({}) => {
                     marginTop: 8,
                     display: 'flex',
                     justifyContent: 'center',
-                    flexDirection: 'row'
+                    flexDirection: 'row',
                 }}
             >
-                <Grid
-                    container
-                    alignSelf="center"
-                    alignItems="center"
-                    justifyContent="center"
-                    component="form"
-                    onSubmit={handleSubmit}
-                    spacing={3}
-                >
+                <Grid container alignSelf="center" alignItems="center" justifyContent="center" component="form" onSubmit={handleSubmit} spacing={3}>
                     <Grid item alignSelf="center" textAlign="center" xs={12}>
                         <Typography color="primary" variant="h2" component="h2">
                             <b>Quebra-Cabeça</b>
                         </Typography>
                     </Grid>
                     <Grid item xs={12}>
-                        <Grid
-                            container
-                            justifyContent="center"
-                            spacing={1}
-                            display="flex"
-                        >
+                        <Grid container justifyContent="center" spacing={1} display="flex">
                             {/* @ts-ignore*/}
                             <Grid
                                 align="center"
@@ -171,10 +131,7 @@ const CreatePuzzle: FunctionComponent = ({}) => {
                                 justifyContent={{ lg: 'flex-end', xs: 'none' }}
                                 display={{ lg: 'flex', xs: '' }}
                             >
-                                <SeriesSelect
-                                    serie={serie}
-                                    callback={seriesChange}
-                                />
+                                <SeriesSelect serie={serie} callback={seriesChange} />
                             </Grid>
                             {/* @ts-ignore*/}
                             <Grid item align="center" xl={4} lg={3}>
@@ -183,9 +140,7 @@ const CreatePuzzle: FunctionComponent = ({}) => {
                                     name="name"
                                     variant="outlined"
                                     value={name}
-                                    onChange={(event) =>
-                                        setName(event.target.value)
-                                    }
+                                    onChange={(event) => setName(event.target.value)}
                                     required
                                     sx={{ minWidth: { sm: 290, xs: 260 } }}
                                     fullWidth
@@ -197,7 +152,7 @@ const CreatePuzzle: FunctionComponent = ({}) => {
                                 item
                                 justifyContent={{
                                     lg: 'flex-start',
-                                    xs: 'none'
+                                    xs: 'none',
                                 }}
                                 display={{ lg: 'flex', xs: '' }}
                                 xl={4}
@@ -206,17 +161,11 @@ const CreatePuzzle: FunctionComponent = ({}) => {
                                 sm={12}
                                 xs={12}
                             >
-                                <DisciplineSelect
-                                    discipline={discipline}
-                                    callback={disciplineChange}
-                                />
+                                <DisciplineSelect discipline={discipline} callback={disciplineChange} />
                             </Grid>
                             {/* @ts-ignore*/}
                             <Grid item align="center" xs={12}>
-                                <LayoutSelect
-                                    callback={handleLayout}
-                                    selectedLayout={layout}
-                                />
+                                <LayoutSelect callback={handleLayout} selectedLayout={layout} />
                             </Grid>
                         </Grid>
                     </Grid>
@@ -234,28 +183,18 @@ const CreatePuzzle: FunctionComponent = ({}) => {
                     )}
                     {/* @ts-ignore */}
                     <Grid item align="center" xs={12}>
-                        <PiecesSelect
-                            pieces={pieces}
-                            handlePieces={handlePieces}
-                        />
+                        <PiecesSelect pieces={pieces} handlePieces={handlePieces} />
                     </Grid>
                     {/* @ts-ignore */}
                     <Grid item align="center" xs={12}>
-                        <ImageSelect
-                            selectedImage={image}
-                            callback={handleImage}
-                        />
+                        <ImageSelect selectedImage={image} callback={handleImage} />
                     </Grid>
                     {/* @ts-ignore */}
                     <Grid item align="center" xs={12}>
                         {response.isLoading || responsePortal.isLoading ? (
                             <CircularProgress />
                         ) : (
-                            <Button
-                                size="large"
-                                type="submit"
-                                variant="outlined"
-                            >
+                            <Button size="large" type="submit" variant="outlined">
                                 Salvar
                             </Button>
                         )}

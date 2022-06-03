@@ -1,23 +1,7 @@
-import React, {
-    ChangeEvent,
-    FormEvent,
-    FormEventHandler,
-    FunctionComponent,
-    useEffect,
-    useState
-} from 'react';
+import React, { ChangeEvent, FormEvent, FormEventHandler, FunctionComponent, useEffect, useState } from 'react';
 import BackFAButton from '../_layout/BackFAButton';
 import SuccessDialog from '../_layout/SuccessDialog';
-import {
-    Alert,
-    Box,
-    Button,
-    CircularProgress,
-    Grid,
-    SelectChangeEvent,
-    TextField,
-    Typography
-} from '@mui/material';
+import { Alert, Box, Button, CircularProgress, Grid, SelectChangeEvent, TextField, Typography } from '@mui/material';
 import SeriesSelect from '../_layout/SeriesSelect';
 import DisciplineSelect from '../_layout/DisciplineSelect';
 import LayoutSelect from '../_layout/LayoutSelect';
@@ -40,19 +24,13 @@ const CreateDragNDrop: FunctionComponent = ({}) => {
     const [serie, setSerie] = useState<string[]>([]);
     const [discipline, setDiscipline] = useState<string>('');
     const [format, setFormat] = useState<number>(0);
-    const handleFormat = (
-        event: ChangeEvent<HTMLInputElement>,
-        newFormat: number
-    ) => {
+    const handleFormat = (event: ChangeEvent<HTMLInputElement>, newFormat: number) => {
         if (newFormat === null) {
             return;
         }
         setFormat(newFormat);
     };
-    const handleLayout = (
-        event: ChangeEvent<HTMLInputElement>,
-        newLayout: number
-    ) => {
+    const handleLayout = (event: ChangeEvent<HTMLInputElement>, newLayout: number) => {
         if (newLayout === null) {
             return;
         }
@@ -75,9 +53,7 @@ const CreateDragNDrop: FunctionComponent = ({}) => {
             setDiscipline(value);
         }
     };
-    const handleSubmit: FormEventHandler = (
-        event: FormEvent<HTMLInputElement>
-    ): void => {
+    const handleSubmit: FormEventHandler = (event: FormEvent<HTMLInputElement>): void => {
         event.preventDefault();
         if (serie === ['']) {
             setAlert('Selecione uma série!');
@@ -91,7 +67,7 @@ const CreateDragNDrop: FunctionComponent = ({}) => {
         const body = {
             name: name,
             layout: layout,
-            options: [format]
+            options: [format],
         };
 
         createDragNDrop(body);
@@ -104,7 +80,7 @@ const CreateDragNDrop: FunctionComponent = ({}) => {
                 slug: `/drag-drop/${response?.data?.slug}`,
                 material: `https://www.fabricadejogos.portaleducacional.tec.br/game/drag-drop/${response?.data?.slug}`,
                 disciplina_id: Number(discipline),
-                series: serie
+                series: serie,
             };
             createGameObject({ origin, token, ...obj });
         }
@@ -124,30 +100,17 @@ const CreateDragNDrop: FunctionComponent = ({}) => {
                     marginTop: 8,
                     display: 'flex',
                     justifyContent: 'center',
-                    flexDirection: 'row'
+                    flexDirection: 'row',
                 }}
             >
-                <Grid
-                    container
-                    alignSelf="center"
-                    alignItems="center"
-                    justifyContent="center"
-                    component="form"
-                    onSubmit={handleSubmit}
-                    spacing={3}
-                >
+                <Grid container alignSelf="center" alignItems="center" justifyContent="center" component="form" onSubmit={handleSubmit} spacing={3}>
                     <Grid item alignSelf="center" textAlign="center" xs={12}>
                         <Typography color="primary" variant="h2" component="h2">
                             <b>Arrastar e Soltar</b>
                         </Typography>
                     </Grid>
                     <Grid item xs={12}>
-                        <Grid
-                            container
-                            justifyContent="center"
-                            spacing={1}
-                            display="flex"
-                        >
+                        <Grid container justifyContent="center" spacing={1} display="flex">
                             {/* @ts-ignore*/}
                             <Grid
                                 align="center"
@@ -160,10 +123,7 @@ const CreateDragNDrop: FunctionComponent = ({}) => {
                                 justifyContent={{ lg: 'flex-end', xs: 'none' }}
                                 display={{ lg: 'flex', xs: '' }}
                             >
-                                <SeriesSelect
-                                    serie={serie}
-                                    callback={seriesChange}
-                                />
+                                <SeriesSelect serie={serie} callback={seriesChange} />
                             </Grid>
                             {/* @ts-ignore*/}
                             <Grid item align="center" xl={4} lg={3}>
@@ -172,9 +132,7 @@ const CreateDragNDrop: FunctionComponent = ({}) => {
                                     name="name"
                                     variant="outlined"
                                     value={name}
-                                    onChange={(event) =>
-                                        setName(event.target.value)
-                                    }
+                                    onChange={(event) => setName(event.target.value)}
                                     required
                                     sx={{ minWidth: { sm: 290, xs: 260 } }}
                                     fullWidth
@@ -186,7 +144,7 @@ const CreateDragNDrop: FunctionComponent = ({}) => {
                                 item
                                 justifyContent={{
                                     lg: 'flex-start',
-                                    xs: 'none'
+                                    xs: 'none',
                                 }}
                                 display={{ lg: 'flex', xs: '' }}
                                 xl={4}
@@ -195,17 +153,11 @@ const CreateDragNDrop: FunctionComponent = ({}) => {
                                 sm={12}
                                 xs={12}
                             >
-                                <DisciplineSelect
-                                    discipline={discipline}
-                                    callback={disciplineChange}
-                                />
+                                <DisciplineSelect discipline={discipline} callback={disciplineChange} />
                             </Grid>
                             {/* @ts-ignore*/}
                             <Grid item align="center" xs={12}>
-                                <LayoutSelect
-                                    callback={handleLayout}
-                                    selectedLayout={layout}
-                                />
+                                <LayoutSelect callback={handleLayout} selectedLayout={layout} />
                             </Grid>
                         </Grid>
                     </Grid>
@@ -221,20 +173,13 @@ const CreateDragNDrop: FunctionComponent = ({}) => {
                             </Alert>
                         </Grid>
                     )}
-                    <FormatSelect
-                        selectedFormat={format}
-                        callback={handleFormat}
-                    />
+                    <FormatSelect selectedFormat={format} callback={handleFormat} />
                     {/* @ts-ignore */}
                     <Grid item align="center" xs={12}>
                         {response.isLoading || responsePortal.isLoading ? (
                             <CircularProgress />
                         ) : (
-                            <Button
-                                size="large"
-                                type="submit"
-                                variant="outlined"
-                            >
+                            <Button size="large" type="submit" variant="outlined">
                                 Salvar
                             </Button>
                         )}

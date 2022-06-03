@@ -1,13 +1,5 @@
 import React from 'react';
-import {
-    AppBar,
-    Avatar,
-    Box,
-    Container,
-    Grid,
-    Toolbar,
-    Typography
-} from '@mui/material';
+import { AppBar, Avatar, Box, Container, Grid, Toolbar, Typography } from '@mui/material';
 import { userInfoData } from '../../types';
 
 type Props = {
@@ -21,11 +13,7 @@ const NavBar = ({ data }: Props) => {
                 <Container maxWidth="xl">
                     <Toolbar disableGutters>
                         <Box sx={{ flexGrow: 0 }}>
-                            <img
-                                src={`https://metech.s3.flexify.io/${data?.data.prefeitura_logo}`}
-                                alt="logo"
-                                height="50px"
-                            />
+                            <img src={`https://metech.s3.flexify.io/${data?.data.prefeitura_logo}`} alt="logo" height="50px" />
                         </Box>
                         <Box sx={{ flexGrow: 1 }}>
                             <Typography
@@ -34,25 +22,21 @@ const NavBar = ({ data }: Props) => {
                                 sx={{
                                     mr: 2,
                                     ml: 2,
-                                    display: { xs: 'none', sm: 'flex' }
+                                    display: { xs: 'none', sm: 'flex' },
                                 }}
                             >
                                 {data?.data.prefeitura_nome}
                             </Typography>
                         </Box>
                         <Box sx={{ flexGrow: 0 }}>
-                            <Grid
-                                container
-                                direction="column"
-                                justifyContent="flex-end"
-                            >
+                            <Grid container direction="column" justifyContent="flex-end">
                                 <Grid item xs={9}>
                                     <Typography
                                         variant="h6"
                                         noWrap
                                         sx={{
                                             mr: 2,
-                                            display: { xs: 'none', sm: 'flex' }
+                                            display: { xs: 'none', sm: 'flex' },
                                         }}
                                     >
                                         {data?.data.name}
@@ -64,7 +48,7 @@ const NavBar = ({ data }: Props) => {
                                         noWrap
                                         sx={{
                                             mr: 2,
-                                            display: { xs: 'none', sm: 'flex' }
+                                            display: { xs: 'none', sm: 'flex' },
                                         }}
                                     >
                                         {data?.data.role}
@@ -80,7 +64,7 @@ const NavBar = ({ data }: Props) => {
                                     p: 0,
                                     margin: 2,
                                     height: 50,
-                                    width: 50
+                                    width: 50,
                                 }}
                             />
                         </Box>

@@ -1,20 +1,5 @@
-import React, {
-    ChangeEvent,
-    FormEvent,
-    FormEventHandler,
-    useEffect,
-    useState
-} from 'react';
-import {
-    Button,
-    TextField,
-    Grid,
-    Alert,
-    Box,
-    SelectChangeEvent,
-    CircularProgress,
-    Typography
-} from '@mui/material';
+import React, { ChangeEvent, FormEvent, FormEventHandler, useEffect, useState } from 'react';
+import { Button, TextField, Grid, Alert, Box, SelectChangeEvent, CircularProgress, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { EditorState, convertToRaw } from 'draft-js';
 import draftToText from '../../utils/draftToText';
@@ -26,13 +11,7 @@ import { RootState } from '../../store';
 import BackFAButton from '../_layout/BackFAButton';
 import { useCreateMatchUpMutation } from '../../services/games';
 import { useCreateGameObjectMutation } from '../../services/portal';
-import {
-    gameObj,
-    matchUpObj,
-    matchUpPage,
-    matchUpOptions,
-    gameState
-} from '../../types';
+import { gameObj, matchUpObj, matchUpPage, matchUpOptions, gameState } from '../../types';
 import SeriesSelect from '../_layout/SeriesSelect';
 import DisciplineSelect from '../_layout/DisciplineSelect';
 import LayoutSelect from '../_layout/LayoutSelect';
@@ -51,8 +30,8 @@ const CreateMatchUp = () => {
             { word: '', meaning: EditorState.createEmpty() },
             { word: '', meaning: EditorState.createEmpty() },
             { word: '', meaning: EditorState.createEmpty() },
-            { word: '', meaning: EditorState.createEmpty() }
-        ]
+            { word: '', meaning: EditorState.createEmpty() },
+        ],
     ];
     const [open, setOpen] = useState(false);
     const [alert, setAlert] = useState('');
@@ -67,21 +46,21 @@ const CreateMatchUp = () => {
             [
                 {
                     word: '',
-                    meaning: EditorState.createEmpty()
+                    meaning: EditorState.createEmpty(),
                 },
                 {
                     word: '',
-                    meaning: EditorState.createEmpty()
+                    meaning: EditorState.createEmpty(),
                 },
                 {
                     word: '',
-                    meaning: EditorState.createEmpty()
+                    meaning: EditorState.createEmpty(),
                 },
                 {
                     word: '',
-                    meaning: EditorState.createEmpty()
-                }
-            ]
+                    meaning: EditorState.createEmpty(),
+                },
+            ],
         ]);
     };
     const handleRemovePage = (index: number) => {
@@ -92,11 +71,7 @@ const CreateMatchUp = () => {
         p.splice(index, 1);
         setPages(p);
     };
-    const handleWordChange = (
-        event: ChangeEvent<HTMLInputElement>,
-        index: number,
-        i: number
-    ) => {
+    const handleWordChange = (event: ChangeEvent<HTMLInputElement>, index: number, i: number) => {
         let p = [...pages];
         let page = p[index];
         let matchUp = page[i];
@@ -105,11 +80,7 @@ const CreateMatchUp = () => {
         p.splice(index, 1, page);
         setPages(p);
     };
-    const handleMeaningChange = (
-        editorState: EditorState,
-        index: number,
-        i: number
-    ) => {
+    const handleMeaningChange = (editorState: EditorState, index: number, i: number) => {
         let p = [...pages];
         let page = p[index];
         let matchUp = page[i];
@@ -118,10 +89,7 @@ const CreateMatchUp = () => {
         p.splice(index, 1, page);
         setPages(p);
     };
-    const handleLayout = (
-        event: ChangeEvent<HTMLInputElement>,
-        newLayout: number
-    ) => {
+    const handleLayout = (event: ChangeEvent<HTMLInputElement>, newLayout: number) => {
         if (newLayout === null) {
             return;
         }
@@ -134,21 +102,21 @@ const CreateMatchUp = () => {
             [
                 {
                     word: '',
-                    meaning: EditorState.createEmpty()
+                    meaning: EditorState.createEmpty(),
                 },
                 {
                     word: '',
-                    meaning: EditorState.createEmpty()
+                    meaning: EditorState.createEmpty(),
                 },
                 {
                     word: '',
-                    meaning: EditorState.createEmpty()
+                    meaning: EditorState.createEmpty(),
                 },
                 {
                     word: '',
-                    meaning: EditorState.createEmpty()
-                }
-            ]
+                    meaning: EditorState.createEmpty(),
+                },
+            ],
         ]);
         setOpen(false);
     };
@@ -164,9 +132,7 @@ const CreateMatchUp = () => {
             setDiscipline(value);
         }
     };
-    const handleSubmit: FormEventHandler = (
-        event: FormEvent<HTMLInputElement>
-    ) => {
+    const handleSubmit: FormEventHandler = (event: FormEvent<HTMLInputElement>) => {
         event.preventDefault();
         if (serie === ['']) {
             setAlert('Selecione uma série!');
@@ -192,7 +158,7 @@ const CreateMatchUp = () => {
                 let markup = draftToText(textJson);
                 matchUps.push({
                     meaning: markup,
-                    word: matchUp.word
+                    word: matchUp.word,
                 });
             });
             matchUpsJSON.push(matchUps);
@@ -203,7 +169,7 @@ const CreateMatchUp = () => {
         let body: Partial<gameState<matchUpOptions>> = {
             name: name,
             layout: layout,
-            options: matchUpsJSON
+            options: matchUpsJSON,
         };
         createMatchUp(body);
     };
@@ -215,7 +181,7 @@ const CreateMatchUp = () => {
                 slug: `/match-up/${response?.data?.slug}`,
                 material: `https://www.fabricadejogos.portaleducacional.tec.br/game/match-up/${response?.data?.slug}`,
                 disciplina_id: Number(discipline),
-                series: serie
+                series: serie,
             };
             createGameObject({ token, origin, ...obj });
         }
@@ -236,7 +202,7 @@ const CreateMatchUp = () => {
                     marginTop: 8,
                     display: 'flex',
                     justifyContent: 'center',
-                    flexDirection: 'row'
+                    flexDirection: 'row',
                 }}
             >
                 <Grid
@@ -256,12 +222,7 @@ const CreateMatchUp = () => {
                     </Grid>
                     {/* @ts-ignore */}
                     <Grid item align="center" xs={12}>
-                        <Grid
-                            container
-                            justifyContent="center"
-                            spacing={1}
-                            display="flex"
-                        >
+                        <Grid container justifyContent="center" spacing={1} display="flex">
                             {/* @ts-ignore*/}
                             <Grid
                                 align="center"
@@ -272,10 +233,7 @@ const CreateMatchUp = () => {
                                 justifyContent={{ lg: 'flex-end', md: 'none' }}
                                 display={{ lg: 'flex', md: 'block' }}
                             >
-                                <SeriesSelect
-                                    serie={serie}
-                                    callback={seriesChange}
-                                />
+                                <SeriesSelect serie={serie} callback={seriesChange} />
                             </Grid>
                             {/* @ts-ignore*/}
                             <Grid item align="center" xl={4} lg={3}>
@@ -284,9 +242,7 @@ const CreateMatchUp = () => {
                                     name="name"
                                     variant="outlined"
                                     value={name}
-                                    onChange={(event) =>
-                                        setName(event.target.value)
-                                    }
+                                    onChange={(event) => setName(event.target.value)}
                                     required
                                     sx={{ minWidth: { sm: 290, xs: 260 } }}
                                     fullWidth
@@ -298,44 +254,29 @@ const CreateMatchUp = () => {
                                 item
                                 justifyContent={{
                                     lg: 'flex-start',
-                                    md: 'none'
+                                    md: 'none',
                                 }}
                                 display={{ lg: 'flex', md: 'block' }}
                                 xl={4}
                                 lg={3}
                                 md={12}
                             >
-                                <DisciplineSelect
-                                    discipline={discipline}
-                                    callback={disciplineChange}
-                                />
+                                <DisciplineSelect discipline={discipline} callback={disciplineChange} />
                             </Grid>
                             {/* @ts-ignore*/}
                             <Grid item align="center" xs={12}>
-                                <LayoutSelect
-                                    callback={handleLayout}
-                                    selectedLayout={layout}
-                                />
+                                <LayoutSelect callback={handleLayout} selectedLayout={layout} />
                             </Grid>
                         </Grid>
                     </Grid>
                     {/* @ts-ignore */}
                     <Grid item align="center" xs={12}>
-                        <Button
-                            onClick={handleCreatePage}
-                            endIcon={<AddIcon fontSize="small" />}
-                            variant="contained"
-                        >
+                        <Button onClick={handleCreatePage} endIcon={<AddIcon fontSize="small" />} variant="contained">
                             Adicionar página
                         </Button>
                     </Grid>
                     <Grid item xs={12}>
-                        <Grid
-                            container
-                            spacing={3}
-                            alignItems="flex-start"
-                            justifyContent="center"
-                        >
+                        <Grid container spacing={3} alignItems="flex-start" justifyContent="center">
                             {alert && (
                                 <Grid item xs={12}>
                                     <Alert
@@ -355,9 +296,7 @@ const CreateMatchUp = () => {
                                         page={page}
                                         index={index}
                                         handleWordChange={handleWordChange}
-                                        handleMeaningChange={
-                                            handleMeaningChange
-                                        }
+                                        handleMeaningChange={handleMeaningChange}
                                         handleDelete={handleRemovePage}
                                     />
                                 );
@@ -369,11 +308,7 @@ const CreateMatchUp = () => {
                         {response.isLoading || responsePortal.isLoading ? (
                             <CircularProgress />
                         ) : (
-                            <Button
-                                size="large"
-                                type="submit"
-                                variant="outlined"
-                            >
+                            <Button size="large" type="submit" variant="outlined">
                                 Salvar
                             </Button>
                         )}

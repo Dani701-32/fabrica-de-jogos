@@ -20,18 +20,12 @@ const FillableSelect = ({ name, items, value, callBack }: Props) => {
                     autoWidth
                     label={name}
                     sx={{
-                        minWidth: 140
+                        minWidth: 140,
                     }}
                 >
-                    {Object.keys(items).map(function (
-                        key: string,
-                        index: number
-                    ) {
+                    {Object.keys(items).map(function (key: string, index: number) {
                         return (
-                            <MenuItem
-                                key={index}
-                                value={items[key as keyof typeof items]}
-                            >
+                            <MenuItem key={index} value={items[key as keyof typeof items]}>
                                 {key}
                             </MenuItem>
                         );

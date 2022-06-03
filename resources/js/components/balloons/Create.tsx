@@ -1,29 +1,11 @@
-import React, {
-    ChangeEvent,
-    FormEvent,
-    FormEventHandler,
-    useEffect,
-    useState
-} from 'react';
+import React, { ChangeEvent, FormEvent, FormEventHandler, useEffect, useState } from 'react';
 import SuccessDialog from '../_layout/SuccessDialog';
 import BackFAButton from '../_layout/BackFAButton';
-import {
-    Alert,
-    Box,
-    Button,
-    CircularProgress,
-    Grid,
-    SelectChangeEvent,
-    TextField,
-    Typography
-} from '@mui/material';
+import { Alert, Box, Button, CircularProgress, Grid, SelectChangeEvent, TextField, Typography } from '@mui/material';
 import SeriesSelect from '../_layout/SeriesSelect';
 import DisciplineSelect from '../_layout/DisciplineSelect';
 import LayoutSelect from '../_layout/LayoutSelect';
-import AddIcon from '@mui/icons-material/Add';
 import { balloonOptions, gameObj, gameState } from '../../types';
-import Page from './layout/Page';
-import Copyright from '../_layout/Copyright';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { convertToRaw, EditorState } from 'draft-js';
@@ -32,6 +14,7 @@ import { useCreateGameObjectMutation } from '../../services/portal';
 import draftToText from '../../utils/draftToText';
 import RichTextField from '../_layout/RichTextField';
 import { getError } from '../../utils/errors';
+import Group from './layout/Group';
 
 export default function CreateBalloons({}) {
     const { token, origin } = useSelector((state: RootState) => state.user);
@@ -41,59 +24,53 @@ export default function CreateBalloons({}) {
     const [layout, setLayout] = useState<number>(1);
     const [serie, setSerie] = useState<string[]>([]);
     const [discipline, setDiscipline] = useState<string>('');
-    const [question, setQuestion] = useState<EditorState>(
-        EditorState.createEmpty()
-    );
-    const [answers, setAnswers] = useState<string[][]>([
-        ['', '', '', '', ''],
-        ['', '', '', '', ''],
-        ['', '', '', '', '']
-    ]);
+    const [question, setQuestion] = useState<EditorState>(EditorState.createEmpty());
+    const [answers, setAnswers] = useState<string[]>(['', '', '', '', '']);
+    const [alternatives, setAlternatives] = useState<string[]>(['', '', '', '', '']);
     const [createBalloons, response] = useCreateBalloonsMutation();
     const [createGameObject, responsePortal] = useCreateGameObjectMutation();
-    const handleAddPage = () => {
-        if (answers.length >= 8) {
-            setAlert('O número máximo de questões para esse jogo é 8!');
-            return;
-        }
-        setAnswers([...answers, ['', '', '', '', '']]);
-    };
-    const handleLayout = (
-        event: ChangeEvent<HTMLInputElement>,
-        newLayout: number
-    ) => {
+    const handleLayout = (event: ChangeEvent<HTMLInputElement>, newLayout: number) => {
         if (newLayout === null) {
             return;
         }
         setLayout(newLayout);
     };
-    const handleRemovePage = (index: number) => {
-        if (answers.length === 1) {
+    const handleAnswerChange = (event: ChangeEvent<HTMLInputElement>, index: number) => {
+        let ans = [...answers];
+        ans[index] = event.target.value;
+        setAnswers(ans);
+    };
+    const handleAddAnswer = () => {
+        if (answers.length > 15) {
             return;
         }
-        let q = [...answers];
-        q.splice(index, 1);
-        setAnswers(q);
+        setAnswers([...answers, '']);
     };
-    const handleAnswerChange = (
-        event: ChangeEvent<HTMLInputElement>,
-        index: number,
-        i: number
-    ) => {
-        let a = [...answers];
-        let answer = a[index];
-        answer[i] = event.target.value;
-        a.splice(index, 1, answer);
-        setAnswers(a);
+    const handleRemoveAnswer = (event: ChangeEvent<HTMLInputElement>, index: number) => {
+        let ans = [...answers];
+        ans.splice(index, 1);
+        setAnswers(ans);
+    };
+    const handleAlternativeChange = (event: ChangeEvent<HTMLInputElement>, index: number) => {
+        let alt = [...alternatives];
+        alt[index] = event.target.value;
+        setAlternatives(alt);
+    };
+    const handleAddAlternative = () => {
+        if (alternatives.length > 15) {
+            return;
+        }
+        setAlternatives([...alternatives, '']);
+    };
+    const handleRemoveAlternative = (event: ChangeEvent<HTMLInputElement>, index: number) => {
+        let alt = [...alternatives];
+        alt.splice(index, 1);
+        setAlternatives(alt);
     };
     const handleClose = () => {
         setName('');
         setQuestion(EditorState.createEmpty());
-        setAnswers([
-            ['', '', '', '', ''],
-            ['', '', '', '', ''],
-            ['', '', '', '', '']
-        ]);
+        setAnswers(['', '', '', '', '']);
         setLayout(1);
         setOpen(false);
     };
@@ -109,9 +86,7 @@ export default function CreateBalloons({}) {
             setDiscipline(value);
         }
     };
-    const handleSubmit: FormEventHandler = (
-        event: FormEvent<HTMLInputElement>
-    ) => {
+    const handleSubmit: FormEventHandler = (event: FormEvent<HTMLInputElement>) => {
         event.preventDefault();
         if (serie === ['']) {
             setAlert('Selecione uma série!');
@@ -121,20 +96,20 @@ export default function CreateBalloons({}) {
             setAlert('Selecione uma disciplina!');
             return;
         }
-        if (answers.length < 3) {
-            setAlert('Selecione um mínimo de 3 páginas!');
-            return;
+        if (answers.length < alternatives.length) {
+            setAlert('É necessário ter mais alternativas erradas do que respostas certas!');
         }
         let textJson = convertToRaw(question.getCurrentContent());
         let markup = draftToText(textJson);
         const questionsJSON: balloonOptions = {
-            title: markup,
-            answers: answers
+            question: markup,
+            answers: answers,
+            alternatives: alternatives,
         };
         let body: gameState<balloonOptions> = {
             name: name,
             layout: layout,
-            options: questionsJSON
+            options: questionsJSON,
         };
         createBalloons(body);
     };
@@ -146,7 +121,7 @@ export default function CreateBalloons({}) {
                 slug: `/bloons/${response?.data?.slug}`,
                 material: `https://www.fabricadejogos.portaleducacional.tec.br/game/bloons/${response?.data?.slug}`,
                 disciplina_id: Number(discipline),
-                series: serie
+                series: serie,
             };
             createGameObject({ token, origin, ...obj });
         }
@@ -166,16 +141,10 @@ export default function CreateBalloons({}) {
                     marginTop: 8,
                     display: 'flex',
                     justifyContent: 'center',
-                    flexDirection: 'row'
+                    flexDirection: 'row',
                 }}
             >
-                <Grid
-                    container
-                    component="form"
-                    justifyContent="center"
-                    onSubmit={handleSubmit}
-                    spacing={3}
-                >
+                <Grid container component="form" justifyContent="center" onSubmit={handleSubmit} spacing={3}>
                     <Grid item alignSelf="center" textAlign="center" xs={12}>
                         <Typography color="primary" variant="h2" component="h2">
                             <b>Estoura Balões</b>
@@ -183,12 +152,7 @@ export default function CreateBalloons({}) {
                     </Grid>
                     {/* @ts-ignore */}
                     <Grid item align="center" xs={12}>
-                        <Grid
-                            container
-                            justifyContent="center"
-                            spacing={1}
-                            display="flex"
-                        >
+                        <Grid container justifyContent="center" spacing={1} display="flex">
                             {/* @ts-ignore*/}
                             <Grid
                                 align="center"
@@ -199,10 +163,7 @@ export default function CreateBalloons({}) {
                                 justifyContent={{ lg: 'flex-end', md: 'none' }}
                                 display={{ lg: 'flex', md: 'block' }}
                             >
-                                <SeriesSelect
-                                    serie={serie}
-                                    callback={seriesChange}
-                                />
+                                <SeriesSelect serie={serie} callback={seriesChange} />
                             </Grid>
                             {/* @ts-ignore*/}
                             <Grid item align="center" xl={4} lg={3}>
@@ -211,9 +172,7 @@ export default function CreateBalloons({}) {
                                     name="name"
                                     variant="outlined"
                                     value={name}
-                                    onChange={(event) =>
-                                        setName(event.target.value)
-                                    }
+                                    onChange={(event) => setName(event.target.value)}
                                     required
                                     sx={{ minWidth: { sm: 290, xs: 260 } }}
                                     fullWidth
@@ -225,24 +184,18 @@ export default function CreateBalloons({}) {
                                 item
                                 justifyContent={{
                                     lg: 'flex-start',
-                                    md: 'none'
+                                    md: 'none',
                                 }}
                                 display={{ lg: 'flex', md: 'block' }}
                                 xl={4}
                                 lg={3}
                                 md={12}
                             >
-                                <DisciplineSelect
-                                    discipline={discipline}
-                                    callback={disciplineChange}
-                                />
+                                <DisciplineSelect discipline={discipline} callback={disciplineChange} />
                             </Grid>
                             {/* @ts-ignore*/}
                             <Grid item align="center" xs={12}>
-                                <LayoutSelect
-                                    callback={handleLayout}
-                                    selectedLayout={layout}
-                                />
+                                <LayoutSelect callback={handleLayout} selectedLayout={layout} />
                             </Grid>
                         </Grid>
                     </Grid>
@@ -250,31 +203,14 @@ export default function CreateBalloons({}) {
                     <Grid item align="left" xs={3}>
                         <RichTextField
                             editorState={question}
-                            onChange={(value: EditorState) =>
-                                setQuestion(value)
-                            }
+                            onChange={(value: EditorState) => setQuestion(value)}
                             label={'Enunciado'}
                             maxLength={160}
                         />
                     </Grid>
                     {/* @ts-ignore */}
-                    <Grid item align="center" xs={12}>
-                        <Button
-                            onClick={handleAddPage}
-                            endIcon={<AddIcon fontSize="small" />}
-                            variant="contained"
-                        >
-                            Adicionar Questão
-                        </Button>
-                    </Grid>
-                    {/* @ts-ignore */}
                     <Grid item align="center" lg={12}>
-                        <Grid
-                            container
-                            alignItems="flex-start"
-                            justifyContent="center"
-                            spacing={3}
-                        >
+                        <Grid container alignItems="flex-start" justifyContent="center" spacing={3}>
                             {alert && (
                                 <Grid item xs={12}>
                                     <Alert
@@ -287,17 +223,24 @@ export default function CreateBalloons({}) {
                                     </Alert>
                                 </Grid>
                             )}
-                            {answers.map((answers: string[], index: number) => {
-                                return (
-                                    <Page
-                                        key={index}
-                                        answers={answers}
-                                        index={index}
-                                        handleAnswerChange={handleAnswerChange}
-                                        handleRemoveQuestion={handleRemovePage}
-                                    />
-                                );
-                            })}
+                            <Grid item xs={12} sm={6}>
+                                <Group
+                                    answers={answers}
+                                    correct={true}
+                                    handleItemChange={handleAnswerChange}
+                                    handleAddItem={handleAddAnswer}
+                                    handleRemoveItem={handleRemoveAnswer}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <Group
+                                    answers={alternatives}
+                                    correct={false}
+                                    handleItemChange={handleAlternativeChange}
+                                    handleAddItem={handleAddAlternative}
+                                    handleRemoveItem={handleRemoveAlternative}
+                                />
+                            </Grid>
                         </Grid>
                     </Grid>
                     {/* @ts-ignore */}
@@ -305,11 +248,7 @@ export default function CreateBalloons({}) {
                         {response.isLoading || responsePortal.isLoading ? (
                             <CircularProgress />
                         ) : (
-                            <Button
-                                size="large"
-                                type="submit"
-                                variant="outlined"
-                            >
+                            <Button size="large" type="submit" variant="outlined">
                                 Salvar
                             </Button>
                         )}

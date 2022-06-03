@@ -85,8 +85,9 @@ export type matchUpOptions = matchUpPage[];
 
 // Balloons
 export type balloonOptions = {
-    title: string | EditorState;
-    answers: string[][];
+    question: string | EditorState;
+    answers: string[];
+    alternatives: string[];
 };
 
 // Cryptogram

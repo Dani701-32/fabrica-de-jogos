@@ -1,17 +1,5 @@
-import React, {
-    ChangeEvent,
-    FormEventHandler,
-    useEffect,
-    useState
-} from 'react';
-import {
-    Button,
-    Grid,
-    Alert,
-    Box,
-    CircularProgress,
-    Typography
-} from '@mui/material';
+import React, { ChangeEvent, FormEventHandler, useEffect, useState } from 'react';
+import { Button, Grid, Alert, Box, CircularProgress, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { EditorState, convertToRaw } from 'draft-js';
 import LayoutPicker from '../_layout/LayoutSelect';
@@ -20,10 +8,7 @@ import SuccessDialog from '../_layout/SuccessDialog';
 import { useParams } from 'react-router-dom';
 import QuestionCard from './layout/QuestionCard';
 import Copyright from '../_layout/Copyright';
-import {
-    useUpdateTrueOrFalseMutation,
-    useGetTrueOrFalseBySlugQuery
-} from '../../services/games';
+import { useUpdateTrueOrFalseMutation, useGetTrueOrFalseBySlugQuery } from '../../services/games';
 import { trueOrFalseQuestion } from '../../types';
 import textToDraft from '../../utils/textToDraft';
 import { getError } from '../../utils/errors';
@@ -33,18 +18,11 @@ const EditTrueOrFalse = () => {
     const [open, setOpen] = useState(false);
     const [alert, setAlert] = useState('');
     const [layout, setLayout] = useState(1);
-    const { data, error, isLoading } = useGetTrueOrFalseBySlugQuery(
-        slug as string
-    );
+    const { data, error, isLoading } = useGetTrueOrFalseBySlugQuery(slug as string);
     const [updateTrueOrFalse, response] = useUpdateTrueOrFalseMutation();
-    const initialState: trueOrFalseQuestion[] = [
-        { title: EditorState.createEmpty(), answer: false }
-    ];
+    const initialState: trueOrFalseQuestion[] = [{ title: EditorState.createEmpty(), answer: false }];
     const [questions, setQuestions] = useState(initialState);
-    const handleLayout = (
-        event: ChangeEvent<HTMLInputElement>,
-        newLayout: number
-    ) => {
+    const handleLayout = (event: ChangeEvent<HTMLInputElement>, newLayout: number) => {
         if (newLayout === null) {
             return;
         }
@@ -55,10 +33,7 @@ const EditTrueOrFalse = () => {
             setAlert('O número máximo de questões para esse jogo é 9!');
             return;
         }
-        setQuestions([
-            ...questions,
-            { title: EditorState.createEmpty(), answer: false }
-        ]);
+        setQuestions([...questions, { title: EditorState.createEmpty(), answer: false }]);
     };
     const handleRemoveQuestion = (index: number) => {
         if (questions.length === 1) {
@@ -75,19 +50,14 @@ const EditTrueOrFalse = () => {
         q.splice(index, 1, question);
         setQuestions(q);
     };
-    const handleAnswerChange = (
-        event: ChangeEvent<HTMLInputElement>,
-        index: number
-    ) => {
+    const handleAnswerChange = (event: ChangeEvent<HTMLInputElement>, index: number) => {
         let q = [...questions];
         let question = q[index];
         question.answer = event.target.checked;
         q.splice(index, 1, question);
         setQuestions(q);
     };
-    const handleSubmit: FormEventHandler = (
-        event: ChangeEvent<HTMLInputElement>
-    ) => {
+    const handleSubmit: FormEventHandler = (event: ChangeEvent<HTMLInputElement>) => {
         event.preventDefault();
         let questionsJSON: trueOrFalseQuestion[] = [];
         let error = false;
@@ -103,7 +73,7 @@ const EditTrueOrFalse = () => {
             let markup = draftToText(textJson);
             questionsJSON.push({
                 answer: item.answer,
-                title: markup
+                title: markup,
             });
         });
         if (error) {
@@ -111,7 +81,7 @@ const EditTrueOrFalse = () => {
         }
         let body = {
             layout: layout,
-            options: questionsJSON
+            options: questionsJSON,
         };
         updateTrueOrFalse({ slug, ...body });
     };
@@ -128,10 +98,7 @@ const EditTrueOrFalse = () => {
 
     useEffect(() => {
         if (data) {
-            data.approved_at &&
-                setAlert(
-                    'Esse jogo já foi aprovado, logo não pode mais ser editado!'
-                );
+            data.approved_at && setAlert('Esse jogo já foi aprovado, logo não pode mais ser editado!');
             let deep_copy = JSON.parse(JSON.stringify(data.options));
             setQuestions(formatQuestions(deep_copy));
             setLayout(data.layout);
@@ -151,7 +118,7 @@ const EditTrueOrFalse = () => {
                     position: 'absolute',
                     left: '50%',
                     top: '50%',
-                    transform: 'translate(-50%, -50%)'
+                    transform: 'translate(-50%, -50%)',
                 }}
             />
         );
@@ -169,43 +136,25 @@ const EditTrueOrFalse = () => {
                     marginTop: 8,
                     display: 'flex',
                     justifyContent: 'center',
-                    flexDirection: 'row'
+                    flexDirection: 'row',
                 }}
             >
-                <Grid
-                    container
-                    component="form"
-                    justifyContent="center"
-                    onSubmit={handleSubmit}
-                    spacing={3}
-                >
+                <Grid container component="form" justifyContent="center" onSubmit={handleSubmit} spacing={3}>
                     <Grid item alignSelf="center" textAlign="center" xs={12}>
                         <Typography color="primary" variant="h2" component="h2">
                             <b>Verdadeiro ou Falso</b>
                         </Typography>
                     </Grid>
-                    <LayoutPicker
-                        callback={handleLayout}
-                        selectedLayout={layout}
-                    />
+                    <LayoutPicker callback={handleLayout} selectedLayout={layout} />
                     {/* @ts-ignore*/}
                     <Grid item align="center" xs={12}>
-                        <Button
-                            onClick={handleCreateQuestion}
-                            endIcon={<AddIcon fontSize="small" />}
-                            variant="contained"
-                        >
+                        <Button onClick={handleCreateQuestion} endIcon={<AddIcon fontSize="small" />} variant="contained">
                             Adicionar Questão
                         </Button>
                     </Grid>
                     {/* @ts-ignore*/}
                     <Grid item align="center" lg={12}>
-                        <Grid
-                            container
-                            alignItems="flex-start"
-                            justifyContent="center"
-                            spacing={3}
-                        >
+                        <Grid container alignItems="flex-start" justifyContent="center" spacing={3}>
                             {alert && (
                                 /* @ts-ignore*/
                                 <Grid item align="center" xs={12}>
@@ -219,29 +168,18 @@ const EditTrueOrFalse = () => {
                                     </Alert>
                                 </Grid>
                             )}
-                            {questions.map(
-                                (
-                                    question: trueOrFalseQuestion,
-                                    index: number
-                                ) => {
-                                    return (
-                                        <QuestionCard
-                                            key={index}
-                                            question={question}
-                                            index={index}
-                                            handleRemoveQuestion={
-                                                handleRemoveQuestion
-                                            }
-                                            handleQuestionTitleChange={
-                                                handleQuestionTitleChange
-                                            }
-                                            handleAnswerChange={
-                                                handleAnswerChange
-                                            }
-                                        />
-                                    );
-                                }
-                            )}
+                            {questions.map((question: trueOrFalseQuestion, index: number) => {
+                                return (
+                                    <QuestionCard
+                                        key={index}
+                                        question={question}
+                                        index={index}
+                                        handleRemoveQuestion={handleRemoveQuestion}
+                                        handleQuestionTitleChange={handleQuestionTitleChange}
+                                        handleAnswerChange={handleAnswerChange}
+                                    />
+                                );
+                            })}
                         </Grid>
                     </Grid>
                     {/* @ts-ignore*/}
@@ -250,12 +188,7 @@ const EditTrueOrFalse = () => {
                             <CircularProgress />
                         ) : (
                             <Grid item xs={12}>
-                                <Button
-                                    size="large"
-                                    type="submit"
-                                    variant="outlined"
-                                    disabled={Boolean(data?.approved_at)}
-                                >
+                                <Button size="large" type="submit" variant="outlined" disabled={Boolean(data?.approved_at)}>
                                     Salvar
                                 </Button>
                             </Grid>

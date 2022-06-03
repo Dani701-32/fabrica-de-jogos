@@ -1,27 +1,10 @@
-import React, {
-    ChangeEvent,
-    FormEvent,
-    FormEventHandler,
-    FunctionComponent,
-    useEffect,
-    useState
-} from 'react';
+import React, { ChangeEvent, FormEvent, FormEventHandler, FunctionComponent, useEffect, useState } from 'react';
 import SuccessDialog from '../_layout/SuccessDialog';
-import {
-    Alert,
-    Box,
-    Button,
-    CircularProgress,
-    Grid,
-    Typography
-} from '@mui/material';
+import { Alert, Box, Button, CircularProgress, Grid, Typography } from '@mui/material';
 import LayoutPicker from '../_layout/LayoutSelect';
 import { getError } from '../../utils/errors';
 import { useParams } from 'react-router-dom';
-import {
-    useGetPuzzleBySlugQuery,
-    useUpdatePuzzleMutation
-} from '../../services/games';
+import { useGetPuzzleBySlugQuery, useUpdatePuzzleMutation } from '../../services/games';
 import PiecesSelect from './layout/PiecesSelect';
 import ImageSelect from './layout/ImageSelect';
 
@@ -34,51 +17,37 @@ const EditPuzzle: FunctionComponent = ({}) => {
     const [layout, setLayout] = useState<number>(1);
     const [image, setImage] = useState(0);
     const [pieces, setPieces] = useState<number>(2);
-    const handlePieces = (
-        event: ChangeEvent<HTMLInputElement>,
-        newPieces: number
-    ) => {
+    const handlePieces = (event: ChangeEvent<HTMLInputElement>, newPieces: number) => {
         if (newPieces === null) {
             return;
         }
         setPieces(newPieces);
     };
-    const handleImage = (
-        event: ChangeEvent<HTMLInputElement>,
-        newImage: number
-    ) => {
+    const handleImage = (event: ChangeEvent<HTMLInputElement>, newImage: number) => {
         if (newImage === null) {
             return;
         }
         setImage(newImage);
     };
-    const handleLayout = (
-        event: ChangeEvent<HTMLInputElement>,
-        newLayout: number
-    ) => {
+    const handleLayout = (event: ChangeEvent<HTMLInputElement>, newLayout: number) => {
         if (newLayout === null) {
             return;
         }
         setLayout(newLayout);
     };
-    const handleSubmit: FormEventHandler = (
-        event: FormEvent<HTMLInputElement>
-    ): void => {
+    const handleSubmit: FormEventHandler = (event: FormEvent<HTMLInputElement>): void => {
         event.preventDefault();
 
         const body = {
             layout: layout,
-            options: [pieces, image]
+            options: [pieces, image],
         };
 
         updatePuzzle({ slug, ...body });
     };
     useEffect(() => {
         if (data) {
-            data.approved_at &&
-                setAlert(
-                    'Esse jogo já foi aprovado, logo não pode mais ser editado!'
-                );
+            data.approved_at && setAlert('Esse jogo já foi aprovado, logo não pode mais ser editado!');
             setPieces(data.options[0]);
             setImage(data.options[1]);
             setLayout(data.layout);
@@ -98,7 +67,7 @@ const EditPuzzle: FunctionComponent = ({}) => {
                     position: 'absolute',
                     left: '50%',
                     top: '50%',
-                    transform: 'translate(-50%, -50%)'
+                    transform: 'translate(-50%, -50%)',
                 }}
             />
         );
@@ -111,32 +80,18 @@ const EditPuzzle: FunctionComponent = ({}) => {
                     marginTop: 8,
                     display: 'flex',
                     justifyContent: 'center',
-                    flexDirection: 'row'
+                    flexDirection: 'row',
                 }}
             >
-                <Grid
-                    container
-                    justifyContent="center"
-                    component="form"
-                    onSubmit={handleSubmit}
-                    spacing={3}
-                >
+                <Grid container justifyContent="center" component="form" onSubmit={handleSubmit} spacing={3}>
                     <Grid item alignSelf="center" textAlign="center" xs={12}>
                         <Typography color="primary" variant="h2" component="h2">
                             <b>Quebra-Cabeça</b>
                         </Typography>
                     </Grid>
-                    <LayoutPicker
-                        callback={handleLayout}
-                        selectedLayout={layout}
-                    />
+                    <LayoutPicker callback={handleLayout} selectedLayout={layout} />
                     <Grid item lg={12}>
-                        <Grid
-                            container
-                            alignItems="flex-start"
-                            justifyContent="center"
-                            spacing={3}
-                        >
+                        <Grid container alignItems="flex-start" justifyContent="center" spacing={3}>
                             {alert && (
                                 <Grid item xs={12}>
                                     <Alert
@@ -151,17 +106,11 @@ const EditPuzzle: FunctionComponent = ({}) => {
                             )}
                             {/* @ts-ignore */}
                             <Grid item align="center" xs={12}>
-                                <PiecesSelect
-                                    pieces={pieces}
-                                    handlePieces={handlePieces}
-                                />
+                                <PiecesSelect pieces={pieces} handlePieces={handlePieces} />
                             </Grid>
                             {/* @ts-ignore */}
                             <Grid item align="center" xs={12}>
-                                <ImageSelect
-                                    selectedImage={image}
-                                    callback={handleImage}
-                                />
+                                <ImageSelect selectedImage={image} callback={handleImage} />
                             </Grid>
                         </Grid>
                     </Grid>
@@ -171,12 +120,7 @@ const EditPuzzle: FunctionComponent = ({}) => {
                             <CircularProgress />
                         ) : (
                             <Grid item xs={12}>
-                                <Button
-                                    size="large"
-                                    type="submit"
-                                    variant="outlined"
-                                    disabled={Boolean(data?.approved_at)}
-                                >
+                                <Button size="large" type="submit" variant="outlined" disabled={Boolean(data?.approved_at)}>
                                     Salvar
                                 </Button>
                             </Grid>

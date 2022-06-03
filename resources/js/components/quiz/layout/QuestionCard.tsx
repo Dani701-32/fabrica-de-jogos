@@ -1,11 +1,4 @@
-import {
-    Button,
-    Grid,
-    IconButton,
-    Paper,
-    TextField,
-    Typography
-} from '@mui/material';
+import { Button, Grid, IconButton, Paper, TextField, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import RichTextField from '../../_layout/RichTextField';
 import AddIcon from '@mui/icons-material/Add';
@@ -30,7 +23,7 @@ const QuestionCard = ({
     handleQuestionTitleChange,
     handleCreateAnswer,
     handleRemoveAnswer,
-    handleAnswerChange
+    handleAnswerChange,
 }: Props) => {
     return (
         /* @ts-ignore */
@@ -38,15 +31,13 @@ const QuestionCard = ({
             <Paper
                 elevation={5}
                 sx={{
-                    padding: '15px'
+                    padding: '15px',
                 }}
             >
                 {/* @ts-ignore */}
                 <Grid container align="center" spacing={2}>
                     <Grid item xs={10}>
-                        <Typography variant="subtitle1">
-                            Questão {(index + 1).toString()}
-                        </Typography>
+                        <Typography variant="subtitle1">Questão {(index + 1).toString()}</Typography>
                     </Grid>
                     {/* @ts-ignore */}
                     <Grid item align="center" xs={2}>
@@ -86,87 +77,63 @@ const QuestionCard = ({
                     {/* @ts-ignore */}
                     <Grid item align="center" xs={12} key={index}>
                         <Grid container alignItems="center" spacing={2}>
-                            {question.answers.map(
-                                (answer: String, i: number) => {
-                                    return (
-                                        <Grid item xs={12} key={i}>
-                                            {i === 0 ? (
-                                                <Grid container spacing={2}>
-                                                    {/* @ts-ignore */}
-                                                    <Grid
-                                                        item
-                                                        align="center"
-                                                        xs={10}
+                            {question.answers.map((answer: String, i: number) => {
+                                return (
+                                    <Grid item xs={12} key={i}>
+                                        {i === 0 ? (
+                                            <Grid container spacing={2}>
+                                                {/* @ts-ignore */}
+                                                <Grid item align="center" xs={10}>
+                                                    <TextField
+                                                        variant="outlined"
+                                                        label="Alternativa correta"
+                                                        size="small"
+                                                        required
+                                                        inputProps={{
+                                                            maxLength: 31,
+                                                        }}
+                                                        focused
+                                                        fullWidth
+                                                        color="success"
+                                                        value={answer}
+                                                        onChange={(event) => handleAnswerChange(event, index, i)}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={2}>
+                                                    <IconButton disabled>
+                                                        <DeleteIcon fontSize="small" />
+                                                    </IconButton>
+                                                </Grid>
+                                            </Grid>
+                                        ) : (
+                                            <Grid container spacing={2}>
+                                                <Grid item xs={10}>
+                                                    <TextField
+                                                        variant="outlined"
+                                                        label={'Alternativa ' + (i + 1)}
+                                                        fullWidth
+                                                        size="small"
+                                                        inputProps={{
+                                                            maxLength: 31,
+                                                        }}
+                                                        value={answer}
+                                                        onChange={(event) => handleAnswerChange(event, index, i)}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={2}>
+                                                    <IconButton
+                                                        onClick={() => {
+                                                            handleRemoveAnswer(index, i);
+                                                        }}
                                                     >
-                                                        <TextField
-                                                            variant="outlined"
-                                                            label="Alternativa correta"
-                                                            size="small"
-                                                            required
-                                                            inputProps={{
-                                                                maxLength: 31
-                                                            }}
-                                                            focused
-                                                            fullWidth
-                                                            color="success"
-                                                            value={answer}
-                                                            onChange={(event) =>
-                                                                handleAnswerChange(
-                                                                    event,
-                                                                    index,
-                                                                    i
-                                                                )
-                                                            }
-                                                        />
-                                                    </Grid>
-                                                    <Grid item xs={2}>
-                                                        <IconButton disabled>
-                                                            <DeleteIcon fontSize="small" />
-                                                        </IconButton>
-                                                    </Grid>
+                                                        <DeleteIcon fontSize="small" />
+                                                    </IconButton>
                                                 </Grid>
-                                            ) : (
-                                                <Grid container spacing={2}>
-                                                    <Grid item xs={10}>
-                                                        <TextField
-                                                            variant="outlined"
-                                                            label={
-                                                                'Alternativa ' +
-                                                                (i + 1)
-                                                            }
-                                                            fullWidth
-                                                            size="small"
-                                                            inputProps={{
-                                                                maxLength: 31
-                                                            }}
-                                                            value={answer}
-                                                            onChange={(event) =>
-                                                                handleAnswerChange(
-                                                                    event,
-                                                                    index,
-                                                                    i
-                                                                )
-                                                            }
-                                                        />
-                                                    </Grid>
-                                                    <Grid item xs={2}>
-                                                        <IconButton
-                                                            onClick={() => {
-                                                                handleRemoveAnswer(
-                                                                    index,
-                                                                    i
-                                                                );
-                                                            }}
-                                                        >
-                                                            <DeleteIcon fontSize="small" />
-                                                        </IconButton>
-                                                    </Grid>
-                                                </Grid>
-                                            )}
-                                        </Grid>
-                                    );
-                                }
-                            )}
+                                            </Grid>
+                                        )}
+                                    </Grid>
+                                );
+                            })}
                         </Grid>
                     </Grid>
                 </Grid>

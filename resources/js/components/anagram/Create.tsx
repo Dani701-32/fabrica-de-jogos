@@ -1,20 +1,5 @@
-import React, {
-    useState,
-    useEffect,
-    ChangeEvent,
-    FormEvent,
-    FormEventHandler
-} from 'react';
-import {
-    Alert,
-    Button,
-    Grid,
-    TextField,
-    Box,
-    SelectChangeEvent,
-    Typography,
-    CircularProgress
-} from '@mui/material';
+import React, { useState, useEffect, ChangeEvent, FormEvent, FormEventHandler } from 'react';
+import { Alert, Button, Grid, TextField, Box, SelectChangeEvent, Typography, CircularProgress } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import SuccessDialog from '../_layout/SuccessDialog';
 import { useSelector } from 'react-redux';
@@ -58,21 +43,14 @@ const Create = () => {
         p.splice(index, 1);
         setPages(p);
     };
-    const handleWordChange = (
-        event: ChangeEvent<HTMLInputElement>,
-        index: number,
-        i: number
-    ) => {
+    const handleWordChange = (event: ChangeEvent<HTMLInputElement>, index: number, i: number) => {
         let p = [...pages];
         let page = p[index];
         page.splice(i, 1, event.target.value);
         p.splice(index, 1, page);
         setPages(p);
     };
-    const handleLayout = (
-        event: ChangeEvent<HTMLInputElement>,
-        newLayout: number
-    ) => {
+    const handleLayout = (event: ChangeEvent<HTMLInputElement>, newLayout: number) => {
         if (newLayout === null) {
             return;
         }
@@ -96,9 +74,7 @@ const Create = () => {
             setDiscipline(value);
         }
     };
-    const handleSubmit: FormEventHandler = (
-        event: FormEvent<HTMLInputElement>
-    ): void => {
+    const handleSubmit: FormEventHandler = (event: FormEvent<HTMLInputElement>): void => {
         event.preventDefault();
         if (pages.length < 1) {
             setAlert('O jogo deve ter no mínimo 1 página!');
@@ -122,7 +98,7 @@ const Create = () => {
         const body = {
             name: name,
             layout: layout,
-            options: wordsJson
+            options: wordsJson,
         };
         createAnagram(body);
     };
@@ -134,7 +110,7 @@ const Create = () => {
                 slug: `/anagram/${response?.data?.slug}`,
                 material: `https://www.fabricadejogos.portaleducacional.tec.br/game/anagram/${response?.data?.slug}`,
                 disciplina_id: Number(discipline),
-                series: serie
+                series: serie,
             };
             createGameObject({ origin, token, ...obj });
         }
@@ -155,30 +131,17 @@ const Create = () => {
                     marginTop: 8,
                     display: 'flex',
                     justifyContent: 'center',
-                    flexDirection: 'row'
+                    flexDirection: 'row',
                 }}
             >
-                <Grid
-                    container
-                    alignSelf="center"
-                    alignItems="center"
-                    justifyContent="center"
-                    component="form"
-                    onSubmit={handleSubmit}
-                    spacing={3}
-                >
+                <Grid container alignSelf="center" alignItems="center" justifyContent="center" component="form" onSubmit={handleSubmit} spacing={3}>
                     <Grid item alignSelf="center" textAlign="center" xs={12}>
                         <Typography color="primary" variant="h2" component="h2">
                             <b>Anagrama</b>
                         </Typography>
                     </Grid>
                     <Grid item xs={12}>
-                        <Grid
-                            container
-                            justifyContent="center"
-                            spacing={1}
-                            display="flex"
-                        >
+                        <Grid container justifyContent="center" spacing={1} display="flex">
                             <Grid
                                 alignSelf="center"
                                 item
@@ -188,10 +151,7 @@ const Create = () => {
                                 justifyContent={{ lg: 'flex-end', md: 'none' }}
                                 display={{ lg: 'flex', md: 'block' }}
                             >
-                                <SeriesSelect
-                                    serie={serie}
-                                    callback={seriesChange}
-                                />
+                                <SeriesSelect serie={serie} callback={seriesChange} />
                             </Grid>
                             <Grid item alignSelf="center" xl={4} lg={3}>
                                 <TextField
@@ -199,9 +159,7 @@ const Create = () => {
                                     name="name"
                                     variant="outlined"
                                     value={name}
-                                    onChange={(event) =>
-                                        setName(event.target.value)
-                                    }
+                                    onChange={(event) => setName(event.target.value)}
                                     required
                                     sx={{ minWidth: { sm: 290, xs: 260 } }}
                                     fullWidth
@@ -212,44 +170,28 @@ const Create = () => {
                                 item
                                 justifyContent={{
                                     lg: 'flex-start',
-                                    md: 'none'
+                                    md: 'none',
                                 }}
                                 display={{ lg: 'flex', md: 'block' }}
                                 xl={4}
                                 lg={3}
                                 md={12}
                             >
-                                <DisciplineSelect
-                                    discipline={discipline}
-                                    callback={disciplineChange}
-                                />
+                                <DisciplineSelect discipline={discipline} callback={disciplineChange} />
                             </Grid>
                             <Grid item alignSelf="center" xs={12}>
-                                <LayoutSelect
-                                    callback={handleLayout}
-                                    selectedLayout={layout}
-                                />
+                                <LayoutSelect callback={handleLayout} selectedLayout={layout} />
                             </Grid>
                         </Grid>
                     </Grid>
                     {/* @ts-ignore*/}
                     <Grid item align="center" xs={12}>
-                        <Button
-                            onClick={handleAddWord}
-                            endIcon={<AddIcon fontSize="small" />}
-                            variant="contained"
-                        >
+                        <Button onClick={handleAddWord} endIcon={<AddIcon fontSize="small" />} variant="contained">
                             Adicionar Pagina
                         </Button>
                     </Grid>
                     <Grid item xs={12}>
-                        <Grid
-                            container
-                            alignSelf="center"
-                            alignItems="flex-start"
-                            justifyContent="center"
-                            spacing={5}
-                        >
+                        <Grid container alignSelf="center" alignItems="flex-start" justifyContent="center" spacing={5}>
                             {alert && (
                                 <Grid item xs={12}>
                                     <Alert
@@ -263,15 +205,7 @@ const Create = () => {
                                 </Grid>
                             )}
                             {pages.map((page: string[], index: number) => {
-                                return (
-                                    <Page
-                                        key={index}
-                                        page={page}
-                                        index={index}
-                                        onChange={handleWordChange}
-                                        handleDelete={handleRemovePage}
-                                    />
-                                );
+                                return <Page key={index} page={page} index={index} onChange={handleWordChange} handleDelete={handleRemovePage} />;
                             })}
                         </Grid>
                     </Grid>
@@ -280,11 +214,7 @@ const Create = () => {
                         {response.isLoading || responsePortal.isLoading ? (
                             <CircularProgress />
                         ) : (
-                            <Button
-                                size="large"
-                                type="submit"
-                                variant="outlined"
-                            >
+                            <Button size="large" type="submit" variant="outlined">
                                 Salvar
                             </Button>
                         )}

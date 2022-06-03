@@ -1,29 +1,8 @@
 import React from 'react';
-import {
-    Box,
-    Chip,
-    FormControl,
-    Grid,
-    InputLabel,
-    MenuItem,
-    OutlinedInput,
-    Select,
-    SelectChangeEvent
-} from '@mui/material';
+import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import { useGetUserInfoQuery } from '../../services/portal';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
-
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-    PaperProps: {
-        style: {
-            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-            width: 250
-        }
-    }
-};
 
 type Props = {
     serie: string[];
@@ -47,7 +26,7 @@ export default function SeriesSelect({ serie, callback }: Props) {
                     onChange={callback}
                     label="Ano/Série"
                     sx={{
-                        minWidth: 140
+                        minWidth: 140,
                     }}
                 >
                     {Object.keys(data.data.series).map((key: string) => {

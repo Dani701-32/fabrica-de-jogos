@@ -42,32 +42,32 @@ const theme = createTheme({
         MuiButton: {
             styleOverrides: {
                 outlined: {
-                    background: 'white'
-                }
-            }
+                    background: 'white',
+                },
+            },
         },
         MuiToggleButton: {
             styleOverrides: {
                 root: {
-                    background: 'white'
-                }
-            }
+                    background: 'white',
+                },
+            },
         },
         MuiTextField: {
             styleOverrides: {
                 root: {
-                    background: 'white'
-                }
-            }
+                    background: 'white',
+                },
+            },
         },
         MuiSelect: {
             styleOverrides: {
                 outlined: {
-                    background: 'white'
-                }
-            }
-        }
-    }
+                    background: 'white',
+                },
+            },
+        },
+    },
 });
 
 function App() {
@@ -93,7 +93,7 @@ function App() {
                     position: 'absolute',
                     left: '50%',
                     top: '50%',
-                    transform: 'translate(-50%, -50%)'
+                    transform: 'translate(-50%, -50%)',
                 }}
             />
         );
@@ -108,95 +108,32 @@ function App() {
                         {/* Home Route */}
                         <Route path="/" element={<HomePage />} />
                         {/* Game Routes */}
-                        <Route
-                            path="/game/:category/:slug"
-                            element={<GamePage />}
-                        />
+                        <Route path="/game/:category/:slug" element={<GamePage />} />
                         {/* Create Routes */}
-                        <Route
-                            path="/create/anagram"
-                            element={<CreateAnagram />}
-                        />
-                        <Route
-                            path="/create/bloons"
-                            element={<CreateBalloons />}
-                        />
-                        <Route
-                            path="/create/cryptogram"
-                            element={<CreateCryptogram />}
-                        />
-                        <Route
-                            path="/create/drag-drop"
-                            element={<CreateDragNDrop />}
-                        />
-                        <Route
-                            path="/create/group-sort"
-                            element={<CreateGroupSort />}
-                        />
-                        <Route
-                            path="/create/match-up"
-                            element={<CreateMatchUp />}
-                        />
-                        <Route
-                            path="/create/memory-game"
-                            element={<CreateMemorygame />}
-                        />
+                        <Route path="/create/anagram" element={<CreateAnagram />} />
+                        <Route path="/create/bloons" element={<CreateBalloons />} />
+                        <Route path="/create/cryptogram" element={<CreateCryptogram />} />
+                        <Route path="/create/drag-drop" element={<CreateDragNDrop />} />
+                        <Route path="/create/group-sort" element={<CreateGroupSort />} />
+                        <Route path="/create/match-up" element={<CreateMatchUp />} />
+                        <Route path="/create/memory-game" element={<CreateMemorygame />} />
                         <Route path="/create/quiz" element={<CreateQuiz />} />
-                        <Route
-                            path="/create/true-or-false"
-                            element={<CreateTrueOrFalse />}
-                        />
-                        <Route
-                            path="/create/word-search"
-                            element={<CreateWordSearch />}
-                        />
-                        <Route
-                            path="/create/puzzle"
-                            element={<CreatePuzzle />}
-                        />
+                        <Route path="/create/true-or-false" element={<CreateTrueOrFalse />} />
+                        <Route path="/create/word-search" element={<CreateWordSearch />} />
+                        <Route path="/create/puzzle" element={<CreatePuzzle />} />
                         {/* Edit Routes */}
-                        <Route
-                            path="/edit/anagram/:slug"
-                            element={<EditAnagram />}
-                        />
-                        <Route
-                            path="/edit/bloons/:slug"
-                            element={<EditBalloons />}
-                        />
-                        <Route
-                            path="/edit/cryptogram/:slug"
-                            element={<EditCryptogram />}
-                        />
-                        <Route
-                            path="/edit/drag-drop/:slug"
-                            element={<EditDragNDrop />}
-                        />
-                        <Route
-                            path="/edit/group-sort/:slug"
-                            element={<EditGroupSort />}
-                        />
-                        <Route
-                            path="/edit/match-up/:slug"
-                            element={<EditMatchUp />}
-                        />
-                        <Route
-                            path="/edit/memory-game/:slug"
-                            element={<EditMemorygame />}
-                        />
+                        <Route path="/edit/anagram/:slug" element={<EditAnagram />} />
+                        <Route path="/edit/bloons/:slug" element={<EditBalloons />} />
+                        <Route path="/edit/cryptogram/:slug" element={<EditCryptogram />} />
+                        <Route path="/edit/drag-drop/:slug" element={<EditDragNDrop />} />
+                        <Route path="/edit/group-sort/:slug" element={<EditGroupSort />} />
+                        <Route path="/edit/match-up/:slug" element={<EditMatchUp />} />
+                        <Route path="/edit/memory-game/:slug" element={<EditMemorygame />} />
                         <Route path="/edit/quiz/:slug" element={<EditQuiz />} />
 
-                        <Route
-                            path="/edit/true-or-false/:slug"
-                            element={<EditTrueOrFalse />}
-                        />
-                        <Route
-                            path="/edit/word-search/:slug"
-                            element={<EditWordSearch />}
-                        />
-                        <Route
-                            path="/edit/puzzle/:slug"
-                            element={<EditPuzzle />}
-                        />
+                        <Route path="/edit/true-or-false/:slug" element={<EditTrueOrFalse />} />
+                        <Route path="/edit/word-search/:slug" element={<EditWordSearch />} />
+                        <Route path="/edit/puzzle/:slug" element={<EditPuzzle />} />
                     </Routes>
                 </Container>
                 <Copyright />

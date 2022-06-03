@@ -12,7 +12,7 @@ const BackFAButton = ({}) => {
             sx={{
                 marginTop: 2,
                 position: 'absolute',
-                display: { xs: 'none', sm: 'block' }
+                display: { xs: 'none', sm: 'block' },
             }}
         >
             <ArrowBackIcon />

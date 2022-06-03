@@ -1,12 +1,4 @@
-import {
-    FormControlLabel,
-    FormGroup,
-    Grid,
-    IconButton,
-    Paper,
-    Switch,
-    Typography
-} from '@mui/material';
+import { FormControlLabel, FormGroup, Grid, IconButton, Paper, Switch, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import RichTextField from '../../_layout/RichTextField';
 import React from 'react';
@@ -21,26 +13,18 @@ type Props = {
     handleAnswerChange: Function;
 };
 
-const QuestionCard = ({
-    question,
-    index,
-    handleRemoveQuestion,
-    handleQuestionTitleChange,
-    handleAnswerChange
-}: Props) => {
+const QuestionCard = ({ question, index, handleRemoveQuestion, handleQuestionTitleChange, handleAnswerChange }: Props) => {
     return (
         <Grid item xs={12} sm={6} md={4} lg={3}>
             <Paper
                 elevation={5}
                 sx={{
-                    padding: '15px'
+                    padding: '15px',
                 }}
             >
                 <Grid container alignItems="center" spacing={3}>
                     <Grid item xs={10}>
-                        <Typography variant="subtitle1">
-                            Questão {(index + 1).toString()}
-                        </Typography>
+                        <Typography variant="subtitle1">Questão {(index + 1).toString()}</Typography>
                     </Grid>
                     <Grid item xs={2}>
                         <IconButton

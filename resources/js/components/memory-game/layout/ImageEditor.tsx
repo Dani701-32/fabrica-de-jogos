@@ -1,10 +1,5 @@
 import React, { useState, useRef, useEffect, FunctionComponent } from 'react';
-import ReactCrop, {
-    centerCrop,
-    makeAspectCrop,
-    Crop,
-    PixelCrop
-} from 'react-image-crop';
+import ReactCrop, { centerCrop, makeAspectCrop, Crop, PixelCrop } from 'react-image-crop';
 import { canvasPreview } from '../utils/canvasPreview';
 import { useDebounceEffect } from '../utils/useDebounceEffect';
 import 'react-image-crop/dist/ReactCrop.css';
@@ -19,19 +14,15 @@ const style = {
     bgcolor: 'background.paper',
     boxShadow: 24,
     p: 1,
-    borderRadius: 2
+    borderRadius: 2,
 };
 
-function centerAspectCrop(
-    mediaWidth: number,
-    mediaHeight: number,
-    aspect: number
-) {
+function centerAspectCrop(mediaWidth: number, mediaHeight: number, aspect: number) {
     return centerCrop(
         makeAspectCrop(
             {
                 unit: '%',
-                width: 90
+                width: 90,
             },
             aspect,
             mediaWidth,
@@ -48,11 +39,7 @@ type Props = {
     callback: Function;
 };
 
-export const ImageEditor: FunctionComponent<Props> = ({
-    image,
-    index,
-    callback
-}) => {
+export const ImageEditor: FunctionComponent<Props> = ({ image, index, callback }) => {
     const [imgSrc, setImgSrc] = useState('');
     const previewCanvasRef = useRef<HTMLCanvasElement>(null);
     const imgRef = useRef<HTMLImageElement>(null);
@@ -66,9 +53,7 @@ export const ImageEditor: FunctionComponent<Props> = ({
             setOpen(true);
             setCrop(undefined); // Makes crop preview update between images.
             const reader = new FileReader();
-            reader.addEventListener('load', () =>
-                setImgSrc(reader?.result?.toString() || '')
-            );
+            reader.addEventListener('load', () => setImgSrc(reader?.result?.toString() || ''));
             reader.readAsDataURL(e.target.files[0]);
         }
     }
@@ -96,17 +81,8 @@ export const ImageEditor: FunctionComponent<Props> = ({
 
     useDebounceEffect(
         async () => {
-            if (
-                completedCrop?.width &&
-                completedCrop?.height &&
-                imgRef.current &&
-                previewCanvasRef.current
-            ) {
-                await canvasPreview(
-                    imgRef.current,
-                    previewCanvasRef.current,
-                    completedCrop
-                );
+            if (completedCrop?.width && completedCrop?.height && imgRef.current && previewCanvasRef.current) {
+                await canvasPreview(imgRef.current, previewCanvasRef.current, completedCrop);
             }
         },
         100,
@@ -121,23 +97,14 @@ export const ImageEditor: FunctionComponent<Props> = ({
             ctx.imageSmoothingQuality = 'high';
             img.src = URL.createObjectURL(image);
             img.onload = () => {
-                ctx.drawImage(
-                    img,
-                    0,
-                    0,
-                    canvas?.width ?? 0,
-                    canvas?.height ?? 0
-                );
+                ctx.drawImage(img, 0, 0, canvas?.width ?? 0, canvas?.height ?? 0);
             };
         }
     }, []);
 
     useEffect(() => {
         if (completedCrop) {
-            generateBlob(
-                completedCrop,
-                previewCanvasRef.current ?? new HTMLCanvasElement()
-            );
+            generateBlob(completedCrop, previewCanvasRef.current ?? new HTMLCanvasElement());
         }
     }, [completedCrop]);
 
@@ -153,7 +120,7 @@ export const ImageEditor: FunctionComponent<Props> = ({
                                 style={{
                                     objectFit: 'contain',
                                     width: 250,
-                                    height: 250
+                                    height: 250,
                                 }}
                             />
                         )}
@@ -165,7 +132,7 @@ export const ImageEditor: FunctionComponent<Props> = ({
                     xs={12}
                     align="center"
                     sx={{
-                        marginTop: 2
+                        marginTop: 2,
                     }}
                 >
                     <label htmlFor={`upload-image${index}`}>
@@ -178,21 +145,12 @@ export const ImageEditor: FunctionComponent<Props> = ({
                             onChange={onSelectFile}
                         />
 
-                        <Button
-                            size="small"
-                            variant="outlined"
-                            component="span"
-                        >
+                        <Button size="small" variant="outlined" component="span">
                             Selecione uma imagem
                         </Button>
                     </label>
                 </Grid>
-                <Modal
-                    open={open}
-                    onClose={() => setOpen(false)}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-                >
+                <Modal open={open} onClose={() => setOpen(false)} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
                     <Box sx={style}>
                         <ReactCrop
                             crop={crop}
@@ -200,12 +158,7 @@ export const ImageEditor: FunctionComponent<Props> = ({
                             onComplete={(c) => setCompletedCrop(c)}
                             aspect={aspect}
                         >
-                            <img
-                                ref={imgRef}
-                                alt="Crop me"
-                                src={imgSrc}
-                                onLoad={onImageLoad}
-                            />
+                            <img ref={imgRef} alt="Crop me" src={imgSrc} onLoad={onImageLoad} />
                         </ReactCrop>
                     </Box>
                 </Modal>

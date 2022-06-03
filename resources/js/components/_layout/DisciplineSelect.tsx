@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-    FormControl,
-    Grid,
-    InputLabel,
-    MenuItem,
-    Select,
-    SelectChangeEvent
-} from '@mui/material';
+import { FormControl, Grid, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { useGetUserInfoQuery } from '../../services/portal';
@@ -33,7 +26,7 @@ export default function DisciplineSelect({ discipline, callback }: Props) {
                     autoWidth
                     label="Componente"
                     sx={{
-                        minWidth: 140
+                        minWidth: 140,
                     }}
                 >
                     {Object.keys(data.data.disciplinas).map((key: string) => {

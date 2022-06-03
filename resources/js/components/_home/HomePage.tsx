@@ -15,44 +15,28 @@ export default function HomePage({}) {
         { slug: 'puzzle', name: 'Quebra-Cabeça' },
         { slug: 'quiz', name: 'Quiz' },
         { slug: 'true-or-false', name: 'Verdadeiro ou Falso' },
-        { slug: 'word-search', name: 'Caça-Palavras' }
+        { slug: 'word-search', name: 'Caça-Palavras' },
     ];
 
     return (
         <>
-            <Grid
-                container
-                alignItems="flex-start"
-                justifyContent="center"
-                spacing={1}
-                sx={{ marginTop: 3 }}
-            >
+            <Grid container alignItems="flex-start" justifyContent="center" spacing={1} sx={{ marginTop: 3 }}>
                 {game_types.map((type, index) => {
                     return (
                         <Grid key={index} item xs={6} md={4} lg={3}>
                             <Grid container alignItems="center" spacing={1}>
                                 {/* @ts-ignore */}
                                 <Grid item align="center" xs={12}>
-                                    <IconButton
-                                        disableRipple={true}
-                                        onClick={() =>
-                                            navigate(`/create/${type.slug}`)
-                                        }
-                                    >
+                                    <IconButton disableRipple={true} onClick={() => navigate(`/create/${type.slug}`)}>
                                         <Card
                                             elevation={5}
                                             sx={{
                                                 width: 310,
                                                 height: 200,
-                                                borderRadius: 4.5
+                                                borderRadius: 4.5,
                                             }}
                                         >
-                                            <img
-                                                src={`/storage/games/${type.slug}.png`}
-                                                alt={type.name}
-                                                width="100%"
-                                                height="100%"
-                                            />
+                                            <img src={`/storage/games/${type.slug}.png`} alt={type.name} width="100%" height="100%" />
                                         </Card>
                                     </IconButton>
                                 </Grid>
@@ -63,15 +47,10 @@ export default function HomePage({}) {
                                     xs={12}
                                     alignItems="center"
                                     sx={{
-                                        marginTop: 2
+                                        marginTop: 2,
                                     }}
                                 >
-                                    <Button
-                                        onClick={() =>
-                                            navigate(`/create/${type.slug}`)
-                                        }
-                                        variant="outlined"
-                                    >
+                                    <Button onClick={() => navigate(`/create/${type.slug}`)} variant="outlined">
                                         {type.name}
                                     </Button>
                                 </Grid>

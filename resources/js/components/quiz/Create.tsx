@@ -1,20 +1,5 @@
-import React, {
-    ChangeEvent,
-    FormEvent,
-    FormEventHandler,
-    useEffect,
-    useState
-} from 'react';
-import {
-    Button,
-    TextField,
-    Grid,
-    Alert,
-    Box,
-    SelectChangeEvent,
-    CircularProgress,
-    Typography
-} from '@mui/material';
+import React, { ChangeEvent, FormEvent, FormEventHandler, useEffect, useState } from 'react';
+import { Button, TextField, Grid, Alert, Box, SelectChangeEvent, CircularProgress, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { EditorState, convertToRaw } from 'draft-js';
 import draftToText from '../../utils/draftToText';
@@ -40,9 +25,7 @@ const CreateQuiz = () => {
     const [layout, setLayout] = useState<number>(1);
     const [serie, setSerie] = useState<string[]>([]);
     const [discipline, setDiscipline] = useState<string>('');
-    const initialState: quizQuestion[] = [
-        { title: EditorState.createEmpty(), answers: ['', ''] }
-    ];
+    const initialState: quizQuestion[] = [{ title: EditorState.createEmpty(), answers: ['', ''] }];
     const [questions, setQuestions] = useState(initialState);
     const [createQuiz, response] = useCreateQuizMutation();
     const [createGameObject, responsePortal] = useCreateGameObjectMutation();
@@ -51,15 +34,9 @@ const CreateQuiz = () => {
             setAlert('O número máximo de questões para esse jogo é 8!');
             return;
         }
-        setQuestions([
-            ...questions,
-            { title: EditorState.createEmpty(), answers: ['', ''] }
-        ]);
+        setQuestions([...questions, { title: EditorState.createEmpty(), answers: ['', ''] }]);
     };
-    const handleLayout = (
-        event: ChangeEvent<HTMLInputElement>,
-        newLayout: number
-    ) => {
+    const handleLayout = (event: ChangeEvent<HTMLInputElement>, newLayout: number) => {
         if (newLayout === null) {
             return;
         }
@@ -100,11 +77,7 @@ const CreateQuiz = () => {
         q.splice(index, 1, question);
         setQuestions(q);
     };
-    const handleAnswerChange = (
-        event: ChangeEvent<HTMLInputElement>,
-        index: number,
-        i: number
-    ) => {
+    const handleAnswerChange = (event: ChangeEvent<HTMLInputElement>, index: number, i: number) => {
         let q = [...questions];
         let question = questions[index];
         question.answers[i] = event.target.value;
@@ -129,9 +102,7 @@ const CreateQuiz = () => {
             setDiscipline(value);
         }
     };
-    const handleSubmit: FormEventHandler = (
-        event: FormEvent<HTMLInputElement>
-    ) => {
+    const handleSubmit: FormEventHandler = (event: FormEvent<HTMLInputElement>) => {
         event.preventDefault();
         if (serie === ['']) {
             setAlert('Selecione uma série!');
@@ -155,7 +126,7 @@ const CreateQuiz = () => {
             let markup = draftToText(textJson);
             questionsJSON.push({
                 answers: item.answers,
-                title: markup
+                title: markup,
             });
         });
         if (error) {
@@ -164,7 +135,7 @@ const CreateQuiz = () => {
         let body: gameState<quizOptions> = {
             name: name,
             layout: layout,
-            options: questionsJSON
+            options: questionsJSON,
         };
         createQuiz(body);
     };
@@ -176,7 +147,7 @@ const CreateQuiz = () => {
                 slug: `/quiz/${response?.data?.slug}`,
                 material: `https://www.fabricadejogos.portaleducacional.tec.br/game/quiz/${response?.data?.slug}`,
                 disciplina_id: Number(discipline),
-                series: serie
+                series: serie,
             };
             createGameObject({ token, origin, ...obj });
         }
@@ -197,16 +168,10 @@ const CreateQuiz = () => {
                     marginTop: 8,
                     display: 'flex',
                     justifyContent: 'center',
-                    flexDirection: 'row'
+                    flexDirection: 'row',
                 }}
             >
-                <Grid
-                    container
-                    component="form"
-                    justifyContent="center"
-                    onSubmit={handleSubmit}
-                    spacing={3}
-                >
+                <Grid container component="form" justifyContent="center" onSubmit={handleSubmit} spacing={3}>
                     <Grid item alignSelf="center" textAlign="center" xs={12}>
                         <Typography color="primary" variant="h2" component="h2">
                             <b>Quiz</b>
@@ -214,12 +179,7 @@ const CreateQuiz = () => {
                     </Grid>
                     {/* @ts-ignore */}
                     <Grid item align="center" xs={12}>
-                        <Grid
-                            container
-                            justifyContent="center"
-                            spacing={1}
-                            display="flex"
-                        >
+                        <Grid container justifyContent="center" spacing={1} display="flex">
                             {/* @ts-ignore*/}
                             <Grid
                                 align="center"
@@ -230,10 +190,7 @@ const CreateQuiz = () => {
                                 justifyContent={{ lg: 'flex-end', md: 'none' }}
                                 display={{ lg: 'flex', md: 'block' }}
                             >
-                                <SeriesSelect
-                                    serie={serie}
-                                    callback={seriesChange}
-                                />
+                                <SeriesSelect serie={serie} callback={seriesChange} />
                             </Grid>
                             {/* @ts-ignore*/}
                             <Grid item align="center" xl={4} lg={3}>
@@ -242,9 +199,7 @@ const CreateQuiz = () => {
                                     name="name"
                                     variant="outlined"
                                     value={name}
-                                    onChange={(event) =>
-                                        setName(event.target.value)
-                                    }
+                                    onChange={(event) => setName(event.target.value)}
                                     required
                                     sx={{ minWidth: { sm: 290, xs: 260 } }}
                                     fullWidth
@@ -256,45 +211,30 @@ const CreateQuiz = () => {
                                 item
                                 justifyContent={{
                                     lg: 'flex-start',
-                                    md: 'none'
+                                    md: 'none',
                                 }}
                                 display={{ lg: 'flex', md: 'block' }}
                                 xl={4}
                                 lg={3}
                                 md={12}
                             >
-                                <DisciplineSelect
-                                    discipline={discipline}
-                                    callback={disciplineChange}
-                                />
+                                <DisciplineSelect discipline={discipline} callback={disciplineChange} />
                             </Grid>
                             {/* @ts-ignore*/}
                             <Grid item align="center" xs={12}>
-                                <LayoutSelect
-                                    callback={handleLayout}
-                                    selectedLayout={layout}
-                                />
+                                <LayoutSelect callback={handleLayout} selectedLayout={layout} />
                             </Grid>
                         </Grid>
                     </Grid>
                     {/* @ts-ignore */}
                     <Grid item align="center" xs={12}>
-                        <Button
-                            onClick={handleCreateQuestion}
-                            endIcon={<AddIcon fontSize="small" />}
-                            variant="contained"
-                        >
+                        <Button onClick={handleCreateQuestion} endIcon={<AddIcon fontSize="small" />} variant="contained">
                             Adicionar Questão
                         </Button>
                     </Grid>
                     {/* @ts-ignore */}
                     <Grid item align="center" lg={12}>
-                        <Grid
-                            container
-                            alignItems="flex-start"
-                            justifyContent="center"
-                            spacing={3}
-                        >
+                        <Grid container alignItems="flex-start" justifyContent="center" spacing={3}>
                             {alert && (
                                 <Grid item xs={12}>
                                     <Alert
@@ -307,32 +247,20 @@ const CreateQuiz = () => {
                                     </Alert>
                                 </Grid>
                             )}
-                            {questions.map(
-                                (question: quizQuestion, index: number) => {
-                                    return (
-                                        <QuestionCard
-                                            key={index}
-                                            question={question}
-                                            index={index}
-                                            handleCreateAnswer={
-                                                handleCreateAnswer
-                                            }
-                                            handleAnswerChange={
-                                                handleAnswerChange
-                                            }
-                                            handleRemoveAnswer={
-                                                handleRemoveAnswer
-                                            }
-                                            handleQuestionTitleChange={
-                                                handleQuestionTitleChange
-                                            }
-                                            handleRemoveQuestion={
-                                                handleRemoveQuestion
-                                            }
-                                        />
-                                    );
-                                }
-                            )}
+                            {questions.map((question: quizQuestion, index: number) => {
+                                return (
+                                    <QuestionCard
+                                        key={index}
+                                        question={question}
+                                        index={index}
+                                        handleCreateAnswer={handleCreateAnswer}
+                                        handleAnswerChange={handleAnswerChange}
+                                        handleRemoveAnswer={handleRemoveAnswer}
+                                        handleQuestionTitleChange={handleQuestionTitleChange}
+                                        handleRemoveQuestion={handleRemoveQuestion}
+                                    />
+                                );
+                            })}
                         </Grid>
                     </Grid>
                     {/* @ts-ignore */}
@@ -340,11 +268,7 @@ const CreateQuiz = () => {
                         {response.isLoading || responsePortal.isLoading ? (
                             <CircularProgress />
                         ) : (
-                            <Button
-                                size="large"
-                                type="submit"
-                                variant="outlined"
-                            >
+                            <Button size="large" type="submit" variant="outlined">
                                 Salvar
                             </Button>
                         )}

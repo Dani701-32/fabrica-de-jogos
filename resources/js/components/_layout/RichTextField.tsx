@@ -8,7 +8,7 @@ import {
     FormatUnderlinedOutlined,
     FormatStrikethroughOutlined,
     UndoOutlined,
-    RedoOutlined
+    RedoOutlined,
 } from '@mui/icons-material';
 
 type Props = {
@@ -20,24 +20,15 @@ type Props = {
     maxLength: number;
 };
 
-const RichTextField = ({
-    editorState,
-    onChange,
-    index,
-    i,
-    label,
-    maxLength
-}: Props) => {
+const RichTextField = ({ editorState, onChange, index, i, label, maxLength }: Props) => {
     const activeStyles = {
         BOLD: false,
         ITALIC: false,
         STRIKETHROUGH: false,
-        UNDERLINE: false
+        UNDERLINE: false,
     };
     Object.keys(activeStyles).map((style: string) => {
-        activeStyles[style as keyof typeof activeStyles] = editorState
-            .getCurrentInlineStyle()
-            .contains(style);
+        activeStyles[style as keyof typeof activeStyles] = editorState.getCurrentInlineStyle().contains(style);
     });
 
     const handleKeyCommand = (command: string, editorState: EditorState) => {
@@ -50,11 +41,7 @@ const RichTextField = ({
     };
 
     const onUnderlineClick = () => {
-        onChange(
-            RichUtils.toggleInlineStyle(editorState, 'UNDERLINE'),
-            index,
-            i
-        );
+        onChange(RichUtils.toggleInlineStyle(editorState, 'UNDERLINE'), index, i);
     };
     const onBoldClick = () => {
         onChange(RichUtils.toggleInlineStyle(editorState, 'BOLD'), index, i);
@@ -63,11 +50,7 @@ const RichTextField = ({
         onChange(RichUtils.toggleInlineStyle(editorState, 'ITALIC'), index, i);
     };
     const onStrikethroughClick = () => {
-        onChange(
-            RichUtils.toggleInlineStyle(editorState, 'STRIKETHROUGH'),
-            index,
-            i
-        );
+        onChange(RichUtils.toggleInlineStyle(editorState, 'STRIKETHROUGH'), index, i);
     };
     const handleUndo = (): void => {
         onChange(EditorState.undo(editorState), index, i);
@@ -89,14 +72,11 @@ const RichTextField = ({
             const startBlock = currentContent.getBlockForKey(startKey);
             const isStartAndEndBlockAreTheSame = startKey === endKey;
             const startBlockTextLength = startBlock.getLength();
-            const startSelectedTextLength =
-                startBlockTextLength - currentSelection.getStartOffset();
+            const startSelectedTextLength = startBlockTextLength - currentSelection.getStartOffset();
             const endSelectedTextLength = currentSelection.getEndOffset();
             const keyAfterEnd = currentContent.getKeyAfter(endKey);
             if (isStartAndEndBlockAreTheSame) {
-                length +=
-                    currentSelection.getEndOffset() -
-                    currentSelection.getStartOffset();
+                length += currentSelection.getEndOffset() - currentSelection.getStartOffset();
             } else {
                 let currentKey = startKey;
 
@@ -106,10 +86,7 @@ const RichTextField = ({
                     } else if (currentKey === endKey) {
                         length += endSelectedTextLength;
                     } else {
-                        length +=
-                            currentContent
-                                .getBlockForKey(currentKey)
-                                .getLength() + 1;
+                        length += currentContent.getBlockForKey(currentKey).getLength() + 1;
                     }
 
                     currentKey = currentContent.getKeyAfter(currentKey);
@@ -121,8 +98,7 @@ const RichTextField = ({
 
     const handleBeforeInput = () => {
         const currentContent = editorState.getCurrentContent();
-        const currentContentLength: number =
-            currentContent.getPlainText('').length;
+        const currentContentLength: number = currentContent.getPlainText('').length;
         const selectedTextLength: number = getSelectedTextLength();
 
         if (currentContentLength - selectedTextLength > maxLength - 1) {
@@ -136,10 +112,7 @@ const RichTextField = ({
         const currentContentLength = currentContent.getPlainText('').length;
         const selectedTextLength = getSelectedTextLength();
 
-        if (
-            currentContentLength + pastedText.length - selectedTextLength >
-            maxLength
-        ) {
+        if (currentContentLength + pastedText.length - selectedTextLength > maxLength) {
             return 'handled';
         }
         return 'not-handled';
@@ -150,116 +123,50 @@ const RichTextField = ({
             <Grid
                 sx={{
                     marginBottom: 1,
-                    marginTop: 1
+                    marginTop: 1,
                 }}
                 container
                 spacing={0}
                 justifyContent="left"
             >
                 <Grid item xs={1} sx={{ marginRight: 1.3 }}>
-                    <Paper
-                        elevation={2}
-                        sx={{ minWidth: '30px', minHeight: '30px' }}
-                    >
-                        <IconButton
-                            sx={{ minWidth: '30px', minHeight: '30px' }}
-                            size="small"
-                            onClick={onUnderlineClick}
-                        >
-                            <FormatUnderlinedOutlined
-                                fontSize="small"
-                                color={
-                                    activeStyles.UNDERLINE
-                                        ? 'primary'
-                                        : 'inherit'
-                                }
-                            />
+                    <Paper elevation={2} sx={{ minWidth: '30px', minHeight: '30px' }}>
+                        <IconButton sx={{ minWidth: '30px', minHeight: '30px' }} size="small" onClick={onUnderlineClick}>
+                            <FormatUnderlinedOutlined fontSize="small" color={activeStyles.UNDERLINE ? 'primary' : 'inherit'} />
                         </IconButton>
                     </Paper>
                 </Grid>
                 <Grid item xs={1} sx={{ marginRight: 1.3 }}>
-                    <Paper
-                        elevation={2}
-                        sx={{ minWidth: '30px', minHeight: '30px' }}
-                    >
-                        <IconButton
-                            sx={{ minWidth: '30px', minHeight: '30px' }}
-                            size="small"
-                            onClick={onBoldClick}
-                        >
-                            <FormatBoldOutlined
-                                fontSize="small"
-                                color={
-                                    activeStyles.BOLD ? 'primary' : 'inherit'
-                                }
-                            />
+                    <Paper elevation={2} sx={{ minWidth: '30px', minHeight: '30px' }}>
+                        <IconButton sx={{ minWidth: '30px', minHeight: '30px' }} size="small" onClick={onBoldClick}>
+                            <FormatBoldOutlined fontSize="small" color={activeStyles.BOLD ? 'primary' : 'inherit'} />
                         </IconButton>
                     </Paper>
                 </Grid>
                 <Grid item xs={1} sx={{ marginRight: 1.3 }}>
-                    <Paper
-                        elevation={2}
-                        sx={{ minWidth: '30px', minHeight: '30px' }}
-                    >
-                        <IconButton
-                            sx={{ minWidth: '30px', minHeight: '30px' }}
-                            size="small"
-                            onClick={onItalicClick}
-                        >
-                            <FormatItalicOutlined
-                                fontSize="small"
-                                color={
-                                    activeStyles.ITALIC ? 'primary' : 'inherit'
-                                }
-                            />
+                    <Paper elevation={2} sx={{ minWidth: '30px', minHeight: '30px' }}>
+                        <IconButton sx={{ minWidth: '30px', minHeight: '30px' }} size="small" onClick={onItalicClick}>
+                            <FormatItalicOutlined fontSize="small" color={activeStyles.ITALIC ? 'primary' : 'inherit'} />
                         </IconButton>
                     </Paper>
                 </Grid>
                 <Grid item xs={1} sx={{ marginRight: 1.3 }}>
-                    <Paper
-                        elevation={2}
-                        sx={{ minWidth: '30px', minHeight: '30px' }}
-                    >
-                        <IconButton
-                            sx={{ minWidth: '30px', minHeight: '30px' }}
-                            size="small"
-                            onClick={onStrikethroughClick}
-                        >
-                            <FormatStrikethroughOutlined
-                                fontSize="small"
-                                color={
-                                    activeStyles.STRIKETHROUGH
-                                        ? 'primary'
-                                        : 'inherit'
-                                }
-                            />
+                    <Paper elevation={2} sx={{ minWidth: '30px', minHeight: '30px' }}>
+                        <IconButton sx={{ minWidth: '30px', minHeight: '30px' }} size="small" onClick={onStrikethroughClick}>
+                            <FormatStrikethroughOutlined fontSize="small" color={activeStyles.STRIKETHROUGH ? 'primary' : 'inherit'} />
                         </IconButton>
                     </Paper>
                 </Grid>
                 <Grid item xs={1} sx={{ marginRight: 1.3 }}>
-                    <Paper
-                        elevation={2}
-                        sx={{ minWidth: '30px', minHeight: '30px' }}
-                    >
-                        <IconButton
-                            sx={{ minWidth: '30px', minHeight: '30px' }}
-                            size="small"
-                            onClick={handleUndo}
-                        >
+                    <Paper elevation={2} sx={{ minWidth: '30px', minHeight: '30px' }}>
+                        <IconButton sx={{ minWidth: '30px', minHeight: '30px' }} size="small" onClick={handleUndo}>
                             <UndoOutlined fontSize="small" />
                         </IconButton>
                     </Paper>
                 </Grid>
                 <Grid item xs={1} sx={{ marginRight: 1.3 }}>
-                    <Paper
-                        elevation={2}
-                        sx={{ minWidth: '30px', minHeight: '30px' }}
-                    >
-                        <IconButton
-                            sx={{ minWidth: '30px', minHeight: '30px' }}
-                            size="small"
-                            onClick={handleRedo}
-                        >
+                    <Paper elevation={2} sx={{ minWidth: '30px', minHeight: '30px' }}>
+                        <IconButton sx={{ minWidth: '30px', minHeight: '30px' }} size="small" onClick={handleRedo}>
                             <RedoOutlined fontSize="small" />
                         </IconButton>
                     </Paper>
@@ -268,7 +175,7 @@ const RichTextField = ({
             <Card
                 elevation={2}
                 sx={{
-                    padding: 1
+                    padding: 1,
                 }}
             >
                 <Editor

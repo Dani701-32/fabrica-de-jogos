@@ -1,55 +1,31 @@
-import React, {
-    ChangeEvent,
-    FormEvent,
-    FormEventHandler,
-    useEffect,
-    useState
-} from 'react';
+import React, { ChangeEvent, FormEvent, FormEventHandler, useEffect, useState } from 'react';
 import SuccessDialog from '../_layout/SuccessDialog';
-import {
-    Alert,
-    Box,
-    Button,
-    CircularProgress,
-    Grid,
-    Typography
-} from '@mui/material';
+import { Alert, Box, Button, CircularProgress, Grid, Typography } from '@mui/material';
 import LayoutSelect from '../_layout/LayoutSelect';
 import Group from './layout/Group';
 import { gameState, groupSortOptions } from '../../types';
 import { useParams } from 'react-router-dom';
-import {
-    useUpdateGroupSortMutation,
-    useGetGroupSortBySlugQuery
-} from '../../services/games';
+import { useUpdateGroupSortMutation, useGetGroupSortBySlugQuery } from '../../services/games';
 import { getError } from '../../utils/errors';
 
 export default function EditGroupSort({}) {
     const { slug } = useParams();
-    const { data, error, isLoading } = useGetGroupSortBySlugQuery(
-        slug as string
-    );
+    const { data, error, isLoading } = useGetGroupSortBySlugQuery(slug as string);
     const [updateGroupSort, response] = useUpdateGroupSortMutation();
     const [layout, setLayout] = useState<number>(1);
     const [open, setOpen] = useState<boolean>(false);
     const [alert, setAlert] = useState<string>('');
     const [groups, setGroups] = useState<groupSortOptions>([
         { title: '', items: ['', ''] },
-        { title: '', items: ['', ''] }
+        { title: '', items: ['', ''] },
     ]);
-    const handleLayout = (
-        event: ChangeEvent<HTMLInputElement>,
-        newLayout: number
-    ) => {
+    const handleLayout = (event: ChangeEvent<HTMLInputElement>, newLayout: number) => {
         if (newLayout === null) {
             return;
         }
         setLayout(newLayout);
     };
-    const handleTitleChange = (
-        event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
-        index: number
-    ) => {
+    const handleTitleChange = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>, index: number) => {
         let g = [...groups];
         g[index].title = event.target.value;
         setGroups(g);
@@ -70,18 +46,12 @@ export default function EditGroupSort({}) {
         setGroups(g);
     };
 
-    const handleItemChange = (
-        event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-        index: number,
-        i: number
-    ) => {
+    const handleItemChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, index: number, i: number) => {
         let g = [...groups];
         g[index].items[i] = event.target.value;
         setGroups(g);
     };
-    const handleSubmit: FormEventHandler = (
-        event: FormEvent<HTMLInputElement>
-    ) => {
+    const handleSubmit: FormEventHandler = (event: FormEvent<HTMLInputElement>) => {
         event.preventDefault();
         if (groups[0].items.length === 0 || groups[1].items.length === 0) {
             setAlert('Adicione ao menos um item em cada grupo!');
@@ -90,7 +60,7 @@ export default function EditGroupSort({}) {
 
         const body: Partial<gameState<groupSortOptions>> = {
             layout: layout,
-            options: groups
+            options: groups,
         };
         console.log(body, slug);
         updateGroupSort({ slug, ...body });
@@ -98,10 +68,7 @@ export default function EditGroupSort({}) {
 
     useEffect(() => {
         if (data) {
-            data.approved_at &&
-                setAlert(
-                    'Esse jogo já foi aprovado, logo não pode mais ser editado!'
-                );
+            data.approved_at && setAlert('Esse jogo já foi aprovado, logo não pode mais ser editado!');
             let deep_copy = JSON.parse(JSON.stringify(data.options));
             setGroups(deep_copy);
             setLayout(data.layout);
@@ -121,7 +88,7 @@ export default function EditGroupSort({}) {
                     position: 'absolute',
                     left: '50%',
                     top: '50%',
-                    transform: 'translate(-50%, -50%)'
+                    transform: 'translate(-50%, -50%)',
                 }}
             />
         );
@@ -134,16 +101,10 @@ export default function EditGroupSort({}) {
                     marginTop: 8,
                     display: 'flex',
                     justifyContent: 'center',
-                    flexDirection: 'row'
+                    flexDirection: 'row',
                 }}
             >
-                <Grid
-                    container
-                    component="form"
-                    alignItems="center"
-                    onSubmit={handleSubmit}
-                    spacing={3}
-                >
+                <Grid container component="form" alignItems="center" onSubmit={handleSubmit} spacing={3}>
                     <Grid item alignSelf="center" textAlign="center" xs={12}>
                         <Typography color="primary" variant="h2" component="h2">
                             <b>Agrupamentos</b>
@@ -151,10 +112,7 @@ export default function EditGroupSort({}) {
                     </Grid>
                     {/* @ts-ignore*/}
                     <Grid item align="center" xs={12}>
-                        <LayoutSelect
-                            callback={handleLayout}
-                            selectedLayout={layout}
-                        />
+                        <LayoutSelect callback={handleLayout} selectedLayout={layout} />
                     </Grid>
                     {/* @ts-ignore*/}
                     <Grid item align="center" xs={12}>
@@ -173,19 +131,11 @@ export default function EditGroupSort({}) {
                             )}
                             {groups.map((group, index) => {
                                 return (
-                                    <Grid
-                                        key={index}
-                                        item
-                                        xs={12}
-                                        md={6}
-                                        lg={4}
-                                    >
+                                    <Grid key={index} item xs={12} md={6} lg={4}>
                                         <Group
                                             group={group}
                                             index={index}
-                                            handleTitleChange={
-                                                handleTitleChange
-                                            }
+                                            handleTitleChange={handleTitleChange}
                                             handleItemChange={handleItemChange}
                                             handleAddItem={handleAddItem}
                                             handleRemoveItem={handleRemoveItem}
@@ -201,12 +151,7 @@ export default function EditGroupSort({}) {
                             <CircularProgress />
                         ) : (
                             <Grid item xs={12}>
-                                <Button
-                                    size="large"
-                                    type="submit"
-                                    variant="outlined"
-                                    disabled={Boolean(data?.approved_at)}
-                                >
+                                <Button size="large" type="submit" variant="outlined" disabled={Boolean(data?.approved_at)}>
                                     Salvar
                                 </Button>
                             </Grid>

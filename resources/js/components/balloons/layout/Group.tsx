@@ -1,43 +1,31 @@
 import React from 'react';
-import { Button, Grid, IconButton, Paper, TextField } from '@mui/material';
+import { Button, Grid, IconButton, Paper, TextField, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { groupObj } from '../../../types';
 
 type Props = {
-    group: groupObj;
-    index: number;
-    handleTitleChange: Function;
+    answers: string[];
+    correct: boolean;
     handleAddItem: Function;
-    handleItemChange: Function;
     handleRemoveItem: Function;
+    handleItemChange: Function;
 };
 
-export default function Group({ group, index, handleTitleChange, handleAddItem, handleItemChange, handleRemoveItem }: Props) {
+export default function Group({ answers, correct, handleAddItem, handleRemoveItem, handleItemChange }: Props) {
     return (
         <>
             <Paper elevation={3} sx={{ p: 2 }}>
                 <Grid container alignSelf="center" alignItems="flex-start" justifyContent="center" spacing={2}>
                     <Grid item xs={12}>
-                        <TextField
-                            label="Título"
-                            variant="filled"
-                            value={group.title}
-                            onChange={(event) => handleTitleChange(event, index)}
-                            inputProps={{
-                                maxLength: 185,
-                            }}
-                            fullWidth
-                            required
-                        />
+                        <Typography color="primary" variant="h5">
+                            <b>{correct ? 'Palavras Corretas' : 'Palavras Erradas'}</b>
+                        </Typography>
                     </Grid>
-                    {group.items.length < 5 && (
-                        <Grid item xs={12}>
-                            <Button onClick={() => handleAddItem(index)} variant="contained" size="small">
-                                Adicionar Item
-                            </Button>
-                        </Grid>
-                    )}
-                    {group.items.map((item, i) => {
+                    <Grid item xs={12}>
+                        <Button onClick={handleAddItem as any} variant="contained" size="small">
+                            Adicionar {correct ? 'Resposta' : 'Alternativa'}
+                        </Button>
+                    </Grid>
+                    {answers.map((item, i) => {
                         return (
                             <Grid key={i} item xs={12} md={6}>
                                 <Grid container alignSelf="center" alignItems="flex-start" justifyContent="center" spacing={0}>
@@ -50,15 +38,16 @@ export default function Group({ group, index, handleTitleChange, handleAddItem, 
                                             inputProps={{
                                                 maxLength: 12,
                                             }}
+                                            color={correct ? 'success' : 'error'}
                                             value={item}
-                                            onChange={(event) => handleItemChange(event, index, i)}
+                                            onChange={(event) => handleItemChange(event, i)}
                                             required
                                         />
                                     </Grid>
                                     <Grid item xs={2}>
                                         <IconButton
                                             onClick={() => {
-                                                handleRemoveItem(index, i);
+                                                handleRemoveItem(i);
                                             }}
                                         >
                                             <DeleteIcon fontSize="small" />

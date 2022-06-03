@@ -7,10 +7,9 @@ export const store = configureStore({
     reducer: {
         user: userReducer,
         [gameApi.reducerPath]: gameApi.reducer,
-        [portalApi.reducerPath]: portalApi.reducer
+        [portalApi.reducerPath]: portalApi.reducer,
     },
-    middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(gameApi.middleware, portalApi.middleware)
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(gameApi.middleware, portalApi.middleware),
 });
 
 export default store;

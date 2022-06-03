@@ -3,7 +3,7 @@ import { userState } from '../types';
 
 const initialState: Partial<userState> = {
     token: localStorage.getItem('token'),
-    origin: localStorage.getItem('origin')
+    origin: localStorage.getItem('origin'),
 };
 
 export const baseSlice = createSlice({
@@ -12,8 +12,8 @@ export const baseSlice = createSlice({
     reducers: {
         setBaseState: (state) => {
             state = initialState;
-        }
-    }
+        },
+    },
 });
 
 export const { setBaseState } = baseSlice.actions;

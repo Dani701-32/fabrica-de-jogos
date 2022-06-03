@@ -10,16 +10,14 @@ const textToDraft = (raw: string): EditorState => {
         '\\[u\\]': '<ins>',
         '\\[/u\\]': '</ins>',
         '\\[s\\]': '<del>',
-        '\\[/s\\]': '</del>'
+        '\\[/s\\]': '</del>',
     };
     for (const [key, value] of Object.entries(collection)) {
         const regex = new RegExp(key, 'g');
         raw = raw.replace(regex, value);
     }
     const { contentBlocks, entityMap } = htmlToDraft(raw);
-    return EditorState.createWithContent(
-        ContentState.createFromBlockArray(contentBlocks, entityMap)
-    );
+    return EditorState.createWithContent(ContentState.createFromBlockArray(contentBlocks, entityMap));
 };
 
 export default textToDraft;

@@ -15,15 +15,13 @@ const Page = ({ page, index, onChange, handleDelete }: Props) => {
             <Paper
                 elevation={5}
                 sx={{
-                    padding: '15px'
+                    padding: '15px',
                 }}
             >
                 <Grid container spacing={3} alignItems="center">
                     {/* @ts-ignore */}
                     <Grid item align="center" xs={9}>
-                        <Typography variant="subtitle1">
-                            Pag {index + 1}
-                        </Typography>
+                        <Typography variant="subtitle1">Pag {index + 1}</Typography>
                     </Grid>
                     <Grid item xs={3}>
                         <IconButton
@@ -44,7 +42,7 @@ const Page = ({ page, index, onChange, handleDelete }: Props) => {
                                     variant="outlined"
                                     value={word}
                                     inputProps={{
-                                        maxLength: 16
+                                        maxLength: 16,
                                     }}
                                     onChange={(event) => {
                                         onChange(event, index, i);

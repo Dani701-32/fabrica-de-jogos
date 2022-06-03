@@ -1,20 +1,5 @@
-import React, {
-    ChangeEvent,
-    FormEvent,
-    FormEventHandler,
-    useEffect,
-    useState
-} from 'react';
-import {
-    Alert,
-    Box,
-    Button,
-    CircularProgress,
-    Grid,
-    SelectChangeEvent,
-    TextField,
-    Typography
-} from '@mui/material';
+import React, { ChangeEvent, FormEvent, FormEventHandler, useEffect, useState } from 'react';
+import { Alert, Box, Button, CircularProgress, Grid, SelectChangeEvent, TextField, Typography } from '@mui/material';
 import SuccessDialog from '../_layout/SuccessDialog';
 import BackFAButton from '../_layout/BackFAButton';
 import SeriesSelect from '../_layout/SeriesSelect';
@@ -38,14 +23,11 @@ export default function CreateGroupSort({}) {
     const [alert, setAlert] = useState<string>('');
     const [groups, setGroups] = useState<groupSortOptions>([
         { title: '', items: ['', ''] },
-        { title: '', items: ['', ''] }
+        { title: '', items: ['', ''] },
     ]);
     const [createGroupSort, response] = useCreateGroupSortMutation();
     const [createGameObject, responsePortal] = useCreateGameObjectMutation();
-    const handleLayout = (
-        event: ChangeEvent<HTMLInputElement>,
-        newLayout: number
-    ) => {
+    const handleLayout = (event: ChangeEvent<HTMLInputElement>, newLayout: number) => {
         if (newLayout === null) {
             return;
         }
@@ -70,14 +52,11 @@ export default function CreateGroupSort({}) {
         setAlert('');
         setGroups([
             { title: '', items: ['', ''] },
-            { title: '', items: ['', ''] }
+            { title: '', items: ['', ''] },
         ]);
     };
 
-    const handleTitleChange = (
-        event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
-        index: number
-    ) => {
+    const handleTitleChange = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>, index: number) => {
         let g = [...groups];
         g[index].title = event.target.value;
         setGroups(g);
@@ -98,19 +77,13 @@ export default function CreateGroupSort({}) {
         setGroups(g);
     };
 
-    const handleItemChange = (
-        event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-        index: number,
-        i: number
-    ) => {
+    const handleItemChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, index: number, i: number) => {
         let g = [...groups];
         g[index].items[i] = event.target.value;
         setGroups(g);
     };
 
-    const handleSubmit: FormEventHandler = (
-        event: FormEvent<HTMLInputElement>
-    ) => {
+    const handleSubmit: FormEventHandler = (event: FormEvent<HTMLInputElement>) => {
         event.preventDefault();
         if (serie === ['']) {
             setAlert('Selecione uma série!');
@@ -128,7 +101,7 @@ export default function CreateGroupSort({}) {
         const body: gameState<groupSortOptions> = {
             name: name,
             layout: layout,
-            options: groups
+            options: groups,
         };
         createGroupSort(body);
     };
@@ -140,7 +113,7 @@ export default function CreateGroupSort({}) {
                 slug: `/group-sort/${response?.data?.slug}`,
                 material: `https://www.fabricadejogos.portaleducacional.tec.br/game/group-sort/${response?.data?.slug}`,
                 disciplina_id: Number(discipline),
-                series: serie
+                series: serie,
             };
             createGameObject({ origin, token, ...obj });
         }
@@ -161,28 +134,17 @@ export default function CreateGroupSort({}) {
                     marginTop: 8,
                     display: 'flex',
                     justifyContent: 'center',
-                    flexDirection: 'row'
+                    flexDirection: 'row',
                 }}
             >
-                <Grid
-                    container
-                    component="form"
-                    alignItems="center"
-                    onSubmit={handleSubmit}
-                    spacing={3}
-                >
+                <Grid container component="form" alignItems="center" onSubmit={handleSubmit} spacing={3}>
                     <Grid item alignSelf="center" textAlign="center" xs={12}>
                         <Typography color="primary" variant="h2" component="h2">
                             <b>Agrupamentos</b>
                         </Typography>
                     </Grid>
                     <Grid item xs={12}>
-                        <Grid
-                            container
-                            justifyContent="center"
-                            spacing={1}
-                            display="flex"
-                        >
+                        <Grid container justifyContent="center" spacing={1} display="flex">
                             <Grid
                                 alignSelf="center"
                                 item
@@ -192,10 +154,7 @@ export default function CreateGroupSort({}) {
                                 justifyContent={{ lg: 'flex-end', md: 'none' }}
                                 display={{ lg: 'flex', md: 'block' }}
                             >
-                                <SeriesSelect
-                                    serie={serie}
-                                    callback={seriesChange}
-                                />
+                                <SeriesSelect serie={serie} callback={seriesChange} />
                             </Grid>
                             <Grid item alignSelf="center" xl={4} lg={3}>
                                 <TextField
@@ -203,9 +162,7 @@ export default function CreateGroupSort({}) {
                                     name="name"
                                     variant="outlined"
                                     value={name}
-                                    onChange={(event) =>
-                                        setName(event.target.value)
-                                    }
+                                    onChange={(event) => setName(event.target.value)}
                                     required
                                     sx={{ minWidth: { sm: 290, xs: 260 } }}
                                     fullWidth
@@ -216,24 +173,18 @@ export default function CreateGroupSort({}) {
                                 item
                                 justifyContent={{
                                     lg: 'flex-start',
-                                    md: 'none'
+                                    md: 'none',
                                 }}
                                 display={{ lg: 'flex', md: 'block' }}
                                 xl={4}
                                 lg={3}
                                 md={12}
                             >
-                                <DisciplineSelect
-                                    discipline={discipline}
-                                    callback={disciplineChange}
-                                />
+                                <DisciplineSelect discipline={discipline} callback={disciplineChange} />
                             </Grid>
                             {/* @ts-ignore*/}
                             <Grid item align="center" xs={12}>
-                                <LayoutSelect
-                                    callback={handleLayout}
-                                    selectedLayout={layout}
-                                />
+                                <LayoutSelect callback={handleLayout} selectedLayout={layout} />
                             </Grid>
                         </Grid>
                     </Grid>
@@ -254,19 +205,11 @@ export default function CreateGroupSort({}) {
                             )}
                             {groups.map((group, index) => {
                                 return (
-                                    <Grid
-                                        key={index}
-                                        item
-                                        xs={12}
-                                        md={6}
-                                        lg={4}
-                                    >
+                                    <Grid key={index} item xs={12} md={6} lg={4}>
                                         <Group
                                             group={group}
                                             index={index}
-                                            handleTitleChange={
-                                                handleTitleChange
-                                            }
+                                            handleTitleChange={handleTitleChange}
                                             handleItemChange={handleItemChange}
                                             handleAddItem={handleAddItem}
                                             handleRemoveItem={handleRemoveItem}
@@ -281,11 +224,7 @@ export default function CreateGroupSort({}) {
                         {response.isLoading || responsePortal.isLoading ? (
                             <CircularProgress />
                         ) : (
-                            <Button
-                                size="large"
-                                type="submit"
-                                variant="outlined"
-                            >
+                            <Button size="large" type="submit" variant="outlined">
                                 Salvar
                             </Button>
                         )}

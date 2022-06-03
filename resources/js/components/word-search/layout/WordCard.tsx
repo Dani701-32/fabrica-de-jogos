@@ -13,19 +13,13 @@ type Props = {
     handleTipChange: Function;
 };
 
-const WordCard = ({
-    item,
-    index,
-    handleWordChange,
-    handleRemoveWord,
-    handleTipChange
-}: Props) => {
+const WordCard = ({ item, index, handleWordChange, handleRemoveWord, handleTipChange }: Props) => {
     return (
         <Grid item xs={12} sm={6} md={4} lg={3}>
             <Paper
                 elevation={5}
                 sx={{
-                    padding: '15px'
+                    padding: '15px',
                 }}
             >
                 <Grid container alignItems="center">
@@ -39,7 +33,7 @@ const WordCard = ({
                                 handleWordChange(event, index);
                             }}
                             inputProps={{
-                                maxLength: 10
+                                maxLength: 10,
                             }}
                             fullWidth
                             required
@@ -55,13 +49,7 @@ const WordCard = ({
                         </IconButton>
                     </Grid>
                     <Grid item xs={10}>
-                        <RichTextField
-                            editorState={item.tip as EditorState}
-                            onChange={handleTipChange}
-                            label={'Dica'}
-                            index={index}
-                            maxLength={45}
-                        />
+                        <RichTextField editorState={item.tip as EditorState} onChange={handleTipChange} label={'Dica'} index={index} maxLength={45} />
                     </Grid>
                 </Grid>
             </Paper>

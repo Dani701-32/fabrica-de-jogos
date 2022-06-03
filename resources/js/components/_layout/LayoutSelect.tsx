@@ -6,27 +6,27 @@ import { styled } from '@mui/system';
 
 const ImageToggleButton = styled(ToggleButton)({
     '&.Mui-selected': {
-        border: '5px solid rgba(0, 134, 248, 0.7)'
-    }
+        border: '5px solid rgba(0, 134, 248, 0.7)',
+    },
 });
 
 const responsive = {
     superLargeDesktop: {
         breakpoint: { max: 3000, min: 1440 },
-        items: 4
+        items: 4,
     },
     desktop: {
         breakpoint: { max: 1440, min: 1100 },
-        items: 3
+        items: 3,
     },
     tablet: {
         breakpoint: { max: 1100, min: 600 },
-        items: 2
+        items: 2,
     },
     mobile: {
         breakpoint: { max: 600, min: 0 },
-        items: 1
-    }
+        items: 1,
+    },
 };
 const layouts = [1, 2, 3, 4, 5, 6, 7];
 
@@ -46,17 +46,13 @@ const LayoutSelect = ({ callback, selectedLayout }: Props) => {
                     </Grid>
                     {/* @ts-ignore*/}
                     <Grid item align="center" margin="auto" xs={12} md={9}>
-                        <Carousel
-                            responsive={responsive}
-                            infinite={true}
-                            shouldResetAutoplay={false}
-                        >
+                        <Carousel responsive={responsive} infinite={true} shouldResetAutoplay={false}>
                             {layouts.map((layout, i) => {
                                 return (
                                     <Box
                                         sx={{
                                             width: { sx: 180, sm: 250 },
-                                            height: 145
+                                            height: 145,
                                         }}
                                         key={i}
                                     >
@@ -66,7 +62,7 @@ const LayoutSelect = ({ callback, selectedLayout }: Props) => {
                                             color="primary"
                                             size="small"
                                             sx={{
-                                                padding: 0
+                                                padding: 0,
                                             }}
                                             onChange={(event, value) => {
                                                 callback(event, value);
@@ -77,12 +73,12 @@ const LayoutSelect = ({ callback, selectedLayout }: Props) => {
                                                     selectedLayout === i
                                                         ? {
                                                               width: 250,
-                                                              height: 125
+                                                              height: 125,
                                                           }
                                                         : {
                                                               width: 250,
                                                               height: 125,
-                                                              borderRadius: 0
+                                                              borderRadius: 0,
                                                           }
                                                 }
                                                 elevation={5}

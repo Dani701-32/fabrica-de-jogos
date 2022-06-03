@@ -2,20 +2,10 @@ import React, { FormEventHandler, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { wordObj } from '../../types';
 import { convertToRaw, EditorState } from 'draft-js';
-import {
-    useGetCryptogramBySlugQuery,
-    useUpdateCryptogramMutation
-} from '../../services/games';
+import { useGetCryptogramBySlugQuery, useUpdateCryptogramMutation } from '../../services/games';
 import draftToText from '../../utils/draftToText';
 import textToDraft from '../../utils/textToDraft';
-import {
-    Alert,
-    Box,
-    Button,
-    CircularProgress,
-    Grid,
-    Typography
-} from '@mui/material';
+import { Alert, Box, Button, CircularProgress, Grid, Typography } from '@mui/material';
 import SuccessDialog from '../_layout/SuccessDialog';
 import LayoutPicker from '../_layout/LayoutSelect';
 import AddIcon from '@mui/icons-material/Add';
@@ -28,24 +18,22 @@ export default function EditCryptogram({}) {
     const initialState: wordObj[] = [
         {
             word: '',
-            tip: EditorState.createEmpty()
+            tip: EditorState.createEmpty(),
         },
         {
             word: '',
-            tip: EditorState.createEmpty()
+            tip: EditorState.createEmpty(),
         },
         {
             word: '',
-            tip: EditorState.createEmpty()
-        }
+            tip: EditorState.createEmpty(),
+        },
     ];
     const [open, setOpen] = useState(false);
     const [alert, setAlert] = useState('');
     const [words, setWords] = useState(initialState);
     const [layout, setLayout] = useState(1);
-    const { data, error, isLoading } = useGetCryptogramBySlugQuery(
-        slug as string
-    );
+    const { data, error, isLoading } = useGetCryptogramBySlugQuery(slug as string);
     const [updateCryptogram, response] = useUpdateCryptogramMutation();
     const handleAddWord = () => {
         if (words.length >= 8) {
@@ -55,7 +43,7 @@ export default function EditCryptogram({}) {
         let p = [...words];
         p.push({
             word: '',
-            tip: EditorState.createEmpty()
+            tip: EditorState.createEmpty(),
         });
         setWords(p);
     };
@@ -67,10 +55,7 @@ export default function EditCryptogram({}) {
         p.splice(index, 1);
         setWords(p);
     };
-    const handleWordChange = (
-        event: React.ChangeEvent<HTMLInputElement>,
-        index: number
-    ) => {
+    const handleWordChange = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
         let p = [...words];
         let word = p[index];
         word.word = event.target.value;
@@ -84,18 +69,13 @@ export default function EditCryptogram({}) {
         p.splice(index, 1, word);
         setWords(p);
     };
-    const handleLayout = (
-        event: React.ChangeEvent<HTMLInputElement>,
-        newLayout: number
-    ) => {
+    const handleLayout = (event: React.ChangeEvent<HTMLInputElement>, newLayout: number) => {
         if (newLayout === null) {
             return;
         }
         setLayout(newLayout);
     };
-    const handleSubmit: FormEventHandler = (
-        e: React.ChangeEvent<HTMLInputElement>
-    ) => {
+    const handleSubmit: FormEventHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
         if (words.length < 3) {
             setAlert('O jogo deve ter no mínimo 3 palavras!');
@@ -115,7 +95,7 @@ export default function EditCryptogram({}) {
             let markup = draftToText(textJson);
             wordsJSON.push({
                 tip: markup,
-                word: word.word
+                word: word.word,
             });
         });
         if (error) {
@@ -123,7 +103,7 @@ export default function EditCryptogram({}) {
         }
         let body = {
             layout: layout,
-            options: wordsJSON
+            options: wordsJSON,
         };
         updateCryptogram({ slug, ...body });
     };
@@ -140,10 +120,7 @@ export default function EditCryptogram({}) {
 
     useEffect(() => {
         if (data) {
-            data.approved_at &&
-                setAlert(
-                    'Esse jogo já foi aprovado, logo não pode mais ser editado!'
-                );
+            data.approved_at && setAlert('Esse jogo já foi aprovado, logo não pode mais ser editado!');
             let deep_copy = JSON.parse(JSON.stringify(data.options));
             setWords(formatTips(deep_copy));
             setLayout(data.layout);
@@ -163,7 +140,7 @@ export default function EditCryptogram({}) {
                     position: 'absolute',
                     left: '50%',
                     top: '50%',
-                    transform: 'translate(-50%, -50%)'
+                    transform: 'translate(-50%, -50%)',
                 }}
             />
         );
@@ -181,43 +158,25 @@ export default function EditCryptogram({}) {
                     marginTop: 8,
                     display: 'flex',
                     justifyContent: 'center',
-                    flexDirection: 'row'
+                    flexDirection: 'row',
                 }}
             >
-                <Grid
-                    container
-                    component="form"
-                    justifyContent="center"
-                    onSubmit={handleSubmit}
-                    spacing={3}
-                >
+                <Grid container component="form" justifyContent="center" onSubmit={handleSubmit} spacing={3}>
                     <Grid item alignSelf="center" textAlign="center" xs={12}>
                         <Typography color="primary" variant="h2" component="h2">
                             <b>Criptograma</b>
                         </Typography>
                     </Grid>
-                    <LayoutPicker
-                        callback={handleLayout}
-                        selectedLayout={layout}
-                    />
+                    <LayoutPicker callback={handleLayout} selectedLayout={layout} />
                     {/* @ts-ignore*/}
                     <Grid item align="center" xs={12}>
-                        <Button
-                            onClick={handleAddWord}
-                            endIcon={<AddIcon fontSize="small" />}
-                            variant="contained"
-                        >
+                        <Button onClick={handleAddWord} endIcon={<AddIcon fontSize="small" />} variant="contained">
                             Adicionar Palavra
                         </Button>
                     </Grid>
                     {/* @ts-ignore*/}
                     <Grid item align="center" lg={12}>
-                        <Grid
-                            container
-                            alignItems="flex-start"
-                            justifyContent="center"
-                            spacing={3}
-                        >
+                        <Grid container alignItems="flex-start" justifyContent="center" spacing={3}>
                             {alert && (
                                 /* @ts-ignore*/
                                 <Grid item align="center" xs={12}>
@@ -251,12 +210,7 @@ export default function EditCryptogram({}) {
                             <CircularProgress />
                         ) : (
                             <Grid item xs={12}>
-                                <Button
-                                    size="large"
-                                    type="submit"
-                                    variant="outlined"
-                                    disabled={Boolean(data?.approved_at)}
-                                >
+                                <Button size="large" type="submit" variant="outlined" disabled={Boolean(data?.approved_at)}>
                                     Salvar
                                 </Button>
                             </Grid>

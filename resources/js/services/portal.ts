@@ -15,13 +15,10 @@ export const portalApi = createApi({
             headers.set('content-type', 'application/json');
             headers.set('accept', 'application/json');
             return headers;
-        }
+        },
     }),
     endpoints: (builder) => ({
-        createGameObject: builder.mutation<
-            gameObj,
-            Partial<gameObj & userState>
-        >({
+        createGameObject: builder.mutation<gameObj, Partial<gameObj & userState>>({
             query: ({ origin, token, ...object }) => ({
                 url: `${origin}/api/conteudo/create-from-game`,
                 method: 'POST',
@@ -29,40 +26,33 @@ export const portalApi = createApi({
                 headers: {
                     'Content-Type': 'application/json',
                     Accept: 'application/json',
-                    Authorization: `Bearer ${token}`
-                }
-            })
+                    Authorization: `Bearer ${token}`,
+                },
+            }),
         }),
-        editGameObject: builder.mutation<gameObj, Partial<gameObj & userState>>(
-            {
-                query: ({ origin, token, ...object }) => ({
-                    url: `${origin}/api/conteudo/edit-from-game`,
-                    method: 'PUT',
-                    body: object,
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Accept: 'application/json',
-                        Authorization: `Bearer ${token}`
-                    }
-                })
-            }
-        ),
+        editGameObject: builder.mutation<gameObj, Partial<gameObj & userState>>({
+            query: ({ origin, token, ...object }) => ({
+                url: `${origin}/api/conteudo/edit-from-game`,
+                method: 'PUT',
+                body: object,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+            }),
+        }),
         getUserInfo: builder.query<userInfoData, Partial<userState>>({
             query: ({ origin }) => ({
-                url: `${origin}/api/validate`
-            })
+                url: `${origin}/api/validate`,
+            }),
         }),
         getGameObjectById: builder.query<gameObj, string>({
-            query: (id) => `/api/conteudo/${id}`
-        })
-    })
+            query: (id) => `/api/conteudo/${id}`,
+        }),
+    }),
 });
 
-export const {
-    useCreateGameObjectMutation,
-    useEditGameObjectMutation,
-    useGetUserInfoQuery,
-    useGetGameObjectByIdQuery
-} = portalApi;
+export const { useCreateGameObjectMutation, useEditGameObjectMutation, useGetUserInfoQuery, useGetGameObjectByIdQuery } = portalApi;
 
 export default portalApi;

@@ -1,12 +1,5 @@
 import React, { FormEventHandler, useEffect, useState } from 'react';
-import {
-    Button,
-    Grid,
-    Alert,
-    Box,
-    CircularProgress,
-    Typography
-} from '@mui/material';
+import { Button, Grid, Alert, Box, CircularProgress, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import LayoutPicker from '../_layout/LayoutSelect';
 import { convertToRaw, EditorState } from 'draft-js';
@@ -15,10 +8,7 @@ import SuccessDialog from '../_layout/SuccessDialog';
 import { useParams } from 'react-router-dom';
 import WordCard from './layout/WordCard';
 import Copyright from '../_layout/Copyright';
-import {
-    useUpdateWordSearchMutation,
-    useGetWordSearchBySlugQuery
-} from '../../services/games';
+import { useUpdateWordSearchMutation, useGetWordSearchBySlugQuery } from '../../services/games';
 import { wordObj } from '../../types';
 import textToDraft from '../../utils/textToDraft';
 import { getError } from '../../utils/errors';
@@ -28,24 +18,22 @@ const EditWordSearch = () => {
     const initialState: wordObj[] = [
         {
             word: '',
-            tip: EditorState.createEmpty()
+            tip: EditorState.createEmpty(),
         },
         {
             word: '',
-            tip: EditorState.createEmpty()
+            tip: EditorState.createEmpty(),
         },
         {
             word: '',
-            tip: EditorState.createEmpty()
-        }
+            tip: EditorState.createEmpty(),
+        },
     ];
     const [open, setOpen] = useState(false);
     const [alert, setAlert] = useState('');
     const [words, setWords] = useState(initialState);
     const [layout, setLayout] = useState(1);
-    const { data, error, isLoading } = useGetWordSearchBySlugQuery(
-        slug as string
-    );
+    const { data, error, isLoading } = useGetWordSearchBySlugQuery(slug as string);
     const [updateWordSearch, response] = useUpdateWordSearchMutation();
     const handleAddWord = () => {
         if (words.length >= 8) {
@@ -55,7 +43,7 @@ const EditWordSearch = () => {
         let p = [...words];
         p.push({
             word: '',
-            tip: EditorState.createEmpty()
+            tip: EditorState.createEmpty(),
         });
         setWords(p);
     };
@@ -67,10 +55,7 @@ const EditWordSearch = () => {
         p.splice(index, 1);
         setWords(p);
     };
-    const handleWordChange = (
-        event: React.ChangeEvent<HTMLInputElement>,
-        index: number
-    ) => {
+    const handleWordChange = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
         let p = [...words];
         let word = p[index];
         word.word = event.target.value;
@@ -84,18 +69,13 @@ const EditWordSearch = () => {
         p.splice(index, 1, word);
         setWords(p);
     };
-    const handleLayout = (
-        event: React.ChangeEvent<HTMLInputElement>,
-        newLayout: number
-    ) => {
+    const handleLayout = (event: React.ChangeEvent<HTMLInputElement>, newLayout: number) => {
         if (newLayout === null) {
             return;
         }
         setLayout(newLayout);
     };
-    const handleSubmit: FormEventHandler = (
-        e: React.ChangeEvent<HTMLInputElement>
-    ) => {
+    const handleSubmit: FormEventHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
         if (words.length < 3) {
             setAlert('O jogo deve ter no mínimo 3 palavras!');
@@ -115,7 +95,7 @@ const EditWordSearch = () => {
             let markup = draftToText(textJson);
             wordsJSON.push({
                 tip: markup,
-                word: word.word
+                word: word.word,
             });
         });
         if (error) {
@@ -123,7 +103,7 @@ const EditWordSearch = () => {
         }
         let body = {
             layout: layout,
-            options: wordsJSON
+            options: wordsJSON,
         };
         updateWordSearch({ slug, ...body });
     };
@@ -140,10 +120,7 @@ const EditWordSearch = () => {
 
     useEffect(() => {
         if (data) {
-            data.approved_at &&
-                setAlert(
-                    'Esse jogo já foi aprovado, logo não pode mais ser editado!'
-                );
+            data.approved_at && setAlert('Esse jogo já foi aprovado, logo não pode mais ser editado!');
             let deep_copy = JSON.parse(JSON.stringify(data.options));
             setWords(formatTips(deep_copy));
             setLayout(data.layout);
@@ -163,7 +140,7 @@ const EditWordSearch = () => {
                     position: 'absolute',
                     left: '50%',
                     top: '50%',
-                    transform: 'translate(-50%, -50%)'
+                    transform: 'translate(-50%, -50%)',
                 }}
             />
         );
@@ -181,43 +158,25 @@ const EditWordSearch = () => {
                     marginTop: 8,
                     display: 'flex',
                     justifyContent: 'center',
-                    flexDirection: 'row'
+                    flexDirection: 'row',
                 }}
             >
-                <Grid
-                    container
-                    component="form"
-                    justifyContent="center"
-                    onSubmit={handleSubmit}
-                    spacing={3}
-                >
+                <Grid container component="form" justifyContent="center" onSubmit={handleSubmit} spacing={3}>
                     <Grid item alignSelf="center" textAlign="center" xs={12}>
                         <Typography color="primary" variant="h2" component="h2">
                             <b>Caça-Palavras</b>
                         </Typography>
                     </Grid>
-                    <LayoutPicker
-                        callback={handleLayout}
-                        selectedLayout={layout}
-                    />
+                    <LayoutPicker callback={handleLayout} selectedLayout={layout} />
                     {/* @ts-ignore*/}
                     <Grid item align="center" xs={12}>
-                        <Button
-                            onClick={handleAddWord}
-                            endIcon={<AddIcon fontSize="small" />}
-                            variant="contained"
-                        >
+                        <Button onClick={handleAddWord} endIcon={<AddIcon fontSize="small" />} variant="contained">
                             Adicionar Palavra
                         </Button>
                     </Grid>
                     {/* @ts-ignore*/}
                     <Grid item align="center" lg={12}>
-                        <Grid
-                            container
-                            alignItems="flex-start"
-                            justifyContent="center"
-                            spacing={3}
-                        >
+                        <Grid container alignItems="flex-start" justifyContent="center" spacing={3}>
                             {alert && (
                                 /* @ts-ignore*/
                                 <Grid item align="center" xs={12}>
@@ -251,12 +210,7 @@ const EditWordSearch = () => {
                             <CircularProgress />
                         ) : (
                             <Grid item xs={12}>
-                                <Button
-                                    size="large"
-                                    type="submit"
-                                    variant="outlined"
-                                    disabled={Boolean(data?.approved_at)}
-                                >
+                                <Button size="large" type="submit" variant="outlined" disabled={Boolean(data?.approved_at)}>
                                     Salvar
                                 </Button>
                             </Grid>

@@ -1,12 +1,5 @@
 import React, { FormEventHandler, useEffect, useState } from 'react';
-import {
-    Button,
-    Grid,
-    Alert,
-    Box,
-    CircularProgress,
-    Typography
-} from '@mui/material';
+import { Button, Grid, Alert, Box, CircularProgress, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { EditorState, convertToRaw } from 'draft-js';
 import LayoutPicker from '../_layout/LayoutSelect';
@@ -15,10 +8,7 @@ import SuccessDialog from '../_layout/SuccessDialog';
 import { useParams } from 'react-router-dom';
 import Page from './layout/Page';
 import Copyright from '../_layout/Copyright';
-import {
-    useUpdateMatchUpMutation,
-    useGetMatchUpBySlugQuery
-} from '../../services/games';
+import { useUpdateMatchUpMutation, useGetMatchUpBySlugQuery } from '../../services/games';
 import { matchUpPage } from '../../types';
 import textToDraft from '../../utils/textToDraft';
 import { getError } from '../../utils/errors';
@@ -32,21 +22,21 @@ const EditMatchUp = () => {
         [
             {
                 word: '',
-                meaning: EditorState.createEmpty()
+                meaning: EditorState.createEmpty(),
             },
             {
                 word: '',
-                meaning: EditorState.createEmpty()
+                meaning: EditorState.createEmpty(),
             },
             {
                 word: '',
-                meaning: EditorState.createEmpty()
+                meaning: EditorState.createEmpty(),
             },
             {
                 word: '',
-                meaning: EditorState.createEmpty()
-            }
-        ]
+                meaning: EditorState.createEmpty(),
+            },
+        ],
     ];
     const [pages, setPages] = useState(initialState);
     const { data, error, isLoading } = useGetMatchUpBySlugQuery(slug as string);
@@ -72,21 +62,21 @@ const EditMatchUp = () => {
             [
                 {
                     word: '',
-                    meaning: EditorState.createEmpty()
+                    meaning: EditorState.createEmpty(),
                 },
                 {
                     word: '',
-                    meaning: EditorState.createEmpty()
+                    meaning: EditorState.createEmpty(),
                 },
                 {
                     word: '',
-                    meaning: EditorState.createEmpty()
+                    meaning: EditorState.createEmpty(),
                 },
                 {
                     word: '',
-                    meaning: EditorState.createEmpty()
-                }
-            ]
+                    meaning: EditorState.createEmpty(),
+                },
+            ],
         ]);
     };
     const handleRemovePage = (index: number) => {
@@ -94,11 +84,7 @@ const EditMatchUp = () => {
         p.splice(index, 1);
         setPages(p);
     };
-    const handleWordChange = (
-        event: React.ChangeEvent<HTMLInputElement>,
-        index: number,
-        i: number
-    ) => {
+    const handleWordChange = (event: React.ChangeEvent<HTMLInputElement>, index: number, i: number) => {
         let p = [...pages];
         let page = p[index];
         let matchUp = page[i];
@@ -107,11 +93,7 @@ const EditMatchUp = () => {
         p.splice(index, 1, page);
         setPages(p);
     };
-    const handleMeaningChange = (
-        editorState: EditorState,
-        index: number,
-        i: number
-    ) => {
+    const handleMeaningChange = (editorState: EditorState, index: number, i: number) => {
         let p = [...pages];
         let page = p[index];
         let matchUp = page[i];
@@ -120,18 +102,13 @@ const EditMatchUp = () => {
         p.splice(index, 1, page);
         setPages(p);
     };
-    const handleLayout = (
-        event: React.ChangeEvent<HTMLInputElement>,
-        newLayout: number
-    ) => {
+    const handleLayout = (event: React.ChangeEvent<HTMLInputElement>, newLayout: number) => {
         if (newLayout === null) {
             return;
         }
         setLayout(newLayout);
     };
-    const handleSubmit: FormEventHandler = (
-        event: React.FormEvent<HTMLInputElement>
-    ) => {
+    const handleSubmit: FormEventHandler = (event: React.FormEvent<HTMLInputElement>) => {
         event.preventDefault();
         let matchUpsJSON: matchUpPage[] = [];
         let error = false;
@@ -149,7 +126,7 @@ const EditMatchUp = () => {
                 let markup = draftToText(textJson);
                 matchUps.push({
                     meaning: markup,
-                    word: matchUp.word
+                    word: matchUp.word,
                 });
             });
             matchUpsJSON.push(matchUps);
@@ -159,17 +136,14 @@ const EditMatchUp = () => {
         }
         let body = {
             layout: layout,
-            options: matchUpsJSON
+            options: matchUpsJSON,
         };
         updateMatchUp({ ...body, slug });
     };
 
     useEffect(() => {
         if (data) {
-            data.approved_at &&
-                setAlert(
-                    'Esse jogo já foi aprovado, logo não pode mais ser editado!'
-                );
+            data.approved_at && setAlert('Esse jogo já foi aprovado, logo não pode mais ser editado!');
             let deep_copy = JSON.parse(JSON.stringify(data.options));
             setPages(formatPages(deep_copy));
             setLayout(data.layout);
@@ -189,7 +163,7 @@ const EditMatchUp = () => {
                     position: 'absolute',
                     left: '50%',
                     top: '50%',
-                    transform: 'translate(-50%, -50%)'
+                    transform: 'translate(-50%, -50%)',
                 }}
             />
         );
@@ -207,7 +181,7 @@ const EditMatchUp = () => {
                     marginTop: 8,
                     display: 'flex',
                     justifyContent: 'center',
-                    flexDirection: 'row'
+                    flexDirection: 'row',
                 }}
             >
                 <Grid item alignSelf="center" textAlign="center" xs={12}>
@@ -215,35 +189,17 @@ const EditMatchUp = () => {
                         <b>Combinação</b>
                     </Typography>
                 </Grid>
-                <Grid
-                    container
-                    component="form"
-                    justifyContent="center"
-                    onSubmit={handleSubmit}
-                    spacing={3}
-                >
-                    <LayoutPicker
-                        callback={handleLayout}
-                        selectedLayout={layout}
-                    />
+                <Grid container component="form" justifyContent="center" onSubmit={handleSubmit} spacing={3}>
+                    <LayoutPicker callback={handleLayout} selectedLayout={layout} />
                     {/* @ts-ignore*/}
                     <Grid item align="center" xs={12}>
-                        <Button
-                            onClick={handleCreatePage}
-                            endIcon={<AddIcon fontSize="small" />}
-                            variant="contained"
-                        >
+                        <Button onClick={handleCreatePage} endIcon={<AddIcon fontSize="small" />} variant="contained">
                             Adicionar página
                         </Button>
                     </Grid>
                     {/* @ts-ignore*/}
                     <Grid item align="center" xs={12}>
-                        <Grid
-                            container
-                            spacing={3}
-                            alignItems="flex-start"
-                            justifyContent="center"
-                        >
+                        <Grid container spacing={3} alignItems="flex-start" justifyContent="center">
                             {alert && (
                                 <Grid item xs={12}>
                                     <Alert
@@ -263,9 +219,7 @@ const EditMatchUp = () => {
                                         page={page}
                                         index={index}
                                         handleWordChange={handleWordChange}
-                                        handleMeaningChange={
-                                            handleMeaningChange
-                                        }
+                                        handleMeaningChange={handleMeaningChange}
                                         handleDelete={handleRemovePage}
                                     />
                                 );
@@ -278,12 +232,7 @@ const EditMatchUp = () => {
                             <CircularProgress />
                         ) : (
                             <Grid item xs={12}>
-                                <Button
-                                    size="large"
-                                    type="submit"
-                                    variant="outlined"
-                                    disabled={Boolean(data?.approved_at)}
-                                >
+                                <Button size="large" type="submit" variant="outlined" disabled={Boolean(data?.approved_at)}>
                                     Salvar
                                 </Button>
                             </Grid>

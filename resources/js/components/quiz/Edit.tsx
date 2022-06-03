@@ -1,16 +1,5 @@
-import React, {
-    ChangeEvent,
-    FormEventHandler,
-    useEffect,
-    useState
-} from 'react';
-import {
-    Button,
-    Grid,
-    Alert,
-    CircularProgress,
-    Typography
-} from '@mui/material';
+import React, { ChangeEvent, FormEventHandler, useEffect, useState } from 'react';
+import { Button, Grid, Alert, CircularProgress, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { EditorState, convertToRaw } from 'draft-js';
 import LayoutPicker from '../_layout/LayoutSelect';
@@ -20,10 +9,7 @@ import { useParams } from 'react-router-dom';
 import QuestionCard from './layout/QuestionCard';
 import Copyright from '../_layout/Copyright';
 import { Box } from '@mui/system';
-import {
-    useUpdateQuizMutation,
-    useGetQuizBySlugQuery
-} from '../../services/games';
+import { useUpdateQuizMutation, useGetQuizBySlugQuery } from '../../services/games';
 import { quizQuestion as questionObj, quizQuestion } from '../../types';
 import textToDraft from '../../utils/textToDraft';
 import { getError } from '../../utils/errors';
@@ -36,8 +22,8 @@ const EditQuiz = () => {
     const initialState: quizQuestion[] = [
         {
             title: EditorState.createEmpty(),
-            answers: ['', '']
-        }
+            answers: ['', ''],
+        },
     ];
     const [questions, setQuestions] = useState(initialState);
     const [updateQuiz, response] = useUpdateQuizMutation();
@@ -51,14 +37,11 @@ const EditQuiz = () => {
             ...questions,
             {
                 title: EditorState.createEmpty(),
-                answers: ['', '']
-            }
+                answers: ['', ''],
+            },
         ]);
     };
-    const handleLayout = (
-        event: ChangeEvent<HTMLInputElement>,
-        newLayout: number
-    ) => {
+    const handleLayout = (event: ChangeEvent<HTMLInputElement>, newLayout: number) => {
         if (newLayout === null) {
             return;
         }
@@ -99,20 +82,14 @@ const EditQuiz = () => {
         q.splice(index, 1, question);
         setQuestions(q);
     };
-    const handleAnswerChange = (
-        event: ChangeEvent<HTMLInputElement>,
-        index: number,
-        i: number
-    ) => {
+    const handleAnswerChange = (event: ChangeEvent<HTMLInputElement>, index: number, i: number) => {
         let q = [...questions];
         let question = questions[index];
         question.answers[i] = event.target.value;
         q.splice(index, 1, question);
         setQuestions(q);
     };
-    const handleSubmit: FormEventHandler = (
-        event: ChangeEvent<HTMLInputElement>
-    ) => {
+    const handleSubmit: FormEventHandler = (event: ChangeEvent<HTMLInputElement>) => {
         event.preventDefault();
         let questionsJSON: quizQuestion[] = [];
         let error = false;
@@ -128,7 +105,7 @@ const EditQuiz = () => {
             let markup = draftToText(textJson);
             questionsJSON.push({
                 answers: item.answers,
-                title: markup
+                title: markup,
             });
         });
         if (error) {
@@ -136,7 +113,7 @@ const EditQuiz = () => {
         }
         let body = {
             layout: layout,
-            options: questionsJSON
+            options: questionsJSON,
         };
         updateQuiz({ slug, ...body });
     };
@@ -153,10 +130,7 @@ const EditQuiz = () => {
 
     useEffect(() => {
         if (data) {
-            data.approved_at &&
-                setAlert(
-                    'Esse jogo já foi aprovado, logo não pode mais ser editado!'
-                );
+            data.approved_at && setAlert('Esse jogo já foi aprovado, logo não pode mais ser editado!');
             let deep_copy = JSON.parse(JSON.stringify(data.options));
             setQuestions(formatQuestions(deep_copy));
             setLayout(data.layout);
@@ -176,7 +150,7 @@ const EditQuiz = () => {
                     position: 'absolute',
                     left: '50%',
                     top: '50%',
-                    transform: 'translate(-50%, -50%)'
+                    transform: 'translate(-50%, -50%)',
                 }}
             />
         );
@@ -194,7 +168,7 @@ const EditQuiz = () => {
                     marginTop: 8,
                     display: 'flex',
                     justifyContent: 'center',
-                    flexDirection: 'row'
+                    flexDirection: 'row',
                 }}
             >
                 <Grid item alignSelf="center" textAlign="center" xs={12}>
@@ -202,35 +176,17 @@ const EditQuiz = () => {
                         <b>Quiz</b>
                     </Typography>
                 </Grid>
-                <Grid
-                    container
-                    component="form"
-                    justifyContent="center"
-                    onSubmit={handleSubmit}
-                    spacing={3}
-                >
-                    <LayoutPicker
-                        callback={handleLayout}
-                        selectedLayout={layout}
-                    />
+                <Grid container component="form" justifyContent="center" onSubmit={handleSubmit} spacing={3}>
+                    <LayoutPicker callback={handleLayout} selectedLayout={layout} />
                     {/* @ts-ignore*/}
                     <Grid item align="center" xs={12}>
-                        <Button
-                            onClick={handleCreateQuestion}
-                            endIcon={<AddIcon fontSize="small" />}
-                            variant="contained"
-                        >
+                        <Button onClick={handleCreateQuestion} endIcon={<AddIcon fontSize="small" />} variant="contained">
                             Adicionar Questão
                         </Button>
                     </Grid>
                     {/* @ts-ignore*/}
                     <Grid item align="center" xs={12}>
-                        <Grid
-                            container
-                            alignItems="flex-start"
-                            justifyContent="center"
-                            spacing={3}
-                        >
+                        <Grid container alignItems="flex-start" justifyContent="center" spacing={3}>
                             {alert && (
                                 <Grid item xs={12}>
                                     <Alert
@@ -243,32 +199,20 @@ const EditQuiz = () => {
                                     </Alert>
                                 </Grid>
                             )}
-                            {questions.map(
-                                (question: quizQuestion, index: number) => {
-                                    return (
-                                        <QuestionCard
-                                            key={index}
-                                            question={question}
-                                            index={index}
-                                            handleCreateAnswer={
-                                                handleCreateAnswer
-                                            }
-                                            handleAnswerChange={
-                                                handleAnswerChange
-                                            }
-                                            handleRemoveAnswer={
-                                                handleRemoveAnswer
-                                            }
-                                            handleQuestionTitleChange={
-                                                handleQuestionTitleChange
-                                            }
-                                            handleRemoveQuestion={
-                                                handleRemoveQuestion
-                                            }
-                                        />
-                                    );
-                                }
-                            )}
+                            {questions.map((question: quizQuestion, index: number) => {
+                                return (
+                                    <QuestionCard
+                                        key={index}
+                                        question={question}
+                                        index={index}
+                                        handleCreateAnswer={handleCreateAnswer}
+                                        handleAnswerChange={handleAnswerChange}
+                                        handleRemoveAnswer={handleRemoveAnswer}
+                                        handleQuestionTitleChange={handleQuestionTitleChange}
+                                        handleRemoveQuestion={handleRemoveQuestion}
+                                    />
+                                );
+                            })}
                         </Grid>
                     </Grid>
                     {/* @ts-ignore*/}
@@ -277,12 +221,7 @@ const EditQuiz = () => {
                             <CircularProgress />
                         ) : (
                             <Grid item xs={12}>
-                                <Button
-                                    size="large"
-                                    type="submit"
-                                    variant="outlined"
-                                    disabled={Boolean(data?.approved_at)}
-                                >
+                                <Button size="large" type="submit" variant="outlined" disabled={Boolean(data?.approved_at)}>
                                     Salvar
                                 </Button>
                             </Grid>

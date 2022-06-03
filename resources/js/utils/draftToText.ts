@@ -1,5 +1,5 @@
 import draftToHtml from 'draftjs-to-html';
-import {RawDraftContentState} from 'draft-js'
+import { RawDraftContentState } from 'draft-js';
 
 export default function draftToText(textJson: RawDraftContentState): string {
     let collection = {
@@ -13,7 +13,7 @@ export default function draftToText(textJson: RawDraftContentState): string {
         '</ins>': '[/u]',
         '<del>': '[s]',
         '</del>': '[/s]',
-        '&nbsp': ''
+        '&nbsp': '',
     };
     let markup = draftToHtml(textJson);
     for (const [key, value] of Object.entries(collection)) {

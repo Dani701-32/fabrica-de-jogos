@@ -1,22 +1,6 @@
-import React, {
-    ChangeEvent,
-    FormEvent,
-    FormEventHandler,
-    useEffect,
-    useState
-} from 'react';
+import React, { ChangeEvent, FormEvent, FormEventHandler, useEffect, useState } from 'react';
 import 'react-image-crop/dist/ReactCrop.css';
-import {
-    Grid,
-    Button,
-    ToggleButton,
-    ToggleButtonGroup,
-    CircularProgress,
-    Alert,
-    SelectChangeEvent,
-    TextField,
-    Typography
-} from '@mui/material';
+import { Grid, Button, ToggleButton, ToggleButtonGroup, CircularProgress, Alert, SelectChangeEvent, TextField, Typography } from '@mui/material';
 import ImageEditor from './layout/ImageEditor';
 import SuccessDialog from '../_layout/SuccessDialog';
 import { useSelector } from 'react-redux';
@@ -46,10 +30,7 @@ const CreateMemorygame = () => {
     const [serie, setSerie] = useState<string[]>([]);
     const [discipline, setDiscipline] = useState<string>('');
 
-    const handleSize = (
-        event: ChangeEvent<HTMLInputElement>,
-        newSize: number
-    ) => {
+    const handleSize = (event: ChangeEvent<HTMLInputElement>, newSize: number) => {
         if (newSize === null) {
             return;
         }
@@ -64,10 +45,7 @@ const CreateMemorygame = () => {
             setImages(img);
         }
     };
-    const handleLayout = (
-        event: ChangeEvent<HTMLInputElement>,
-        newLayout: number
-    ) => {
+    const handleLayout = (event: ChangeEvent<HTMLInputElement>, newLayout: number) => {
         if (newLayout === null) {
             return;
         }
@@ -99,9 +77,7 @@ const CreateMemorygame = () => {
             setDiscipline(value);
         }
     };
-    const handleSubmit: FormEventHandler = (
-        event: FormEvent<HTMLInputElement>
-    ) => {
+    const handleSubmit: FormEventHandler = (event: FormEvent<HTMLInputElement>) => {
         event.preventDefault();
         if (serie === ['']) {
             setAlert('Selecione uma série!');
@@ -128,7 +104,7 @@ const CreateMemorygame = () => {
                 slug: `/memory-game/${response?.data?.slug}`,
                 material: `https://www.fabricadejogos.portaleducacional.tec.br/game/memory-game/${response?.data?.slug}`,
                 disciplina_id: Number(discipline),
-                series: serie
+                series: serie,
             };
             createGameObject({ origin, token, ...obj });
         }
@@ -149,27 +125,17 @@ const CreateMemorygame = () => {
                     marginTop: 8,
                     display: 'flex',
                     justifyContent: 'center',
-                    flexDirection: 'row'
+                    flexDirection: 'row',
                 }}
             >
-                <Grid
-                    container
-                    component="form"
-                    onSubmit={handleSubmit}
-                    spacing={3}
-                >
+                <Grid container component="form" onSubmit={handleSubmit} spacing={3}>
                     <Grid item alignSelf="center" textAlign="center" xs={12}>
                         <Typography color="primary" variant="h2" component="h2">
                             <b>Jogo da Memória</b>
                         </Typography>
                     </Grid>
                     <Grid item xs={12}>
-                        <Grid
-                            container
-                            justifyContent="center"
-                            spacing={1}
-                            display="flex"
-                        >
+                        <Grid container justifyContent="center" spacing={1} display="flex">
                             {/* @ts-ignore*/}
                             <Grid
                                 align="center"
@@ -182,10 +148,7 @@ const CreateMemorygame = () => {
                                 justifyContent={{ lg: 'flex-end', xs: 'none' }}
                                 display={{ lg: 'flex', xs: '' }}
                             >
-                                <SeriesSelect
-                                    serie={serie}
-                                    callback={seriesChange}
-                                />
+                                <SeriesSelect serie={serie} callback={seriesChange} />
                             </Grid>
                             {/* @ts-ignore*/}
                             <Grid item align="center" xl={4} lg={3}>
@@ -194,9 +157,7 @@ const CreateMemorygame = () => {
                                     name="name"
                                     variant="outlined"
                                     value={name}
-                                    onChange={(event) =>
-                                        setName(event.target.value)
-                                    }
+                                    onChange={(event) => setName(event.target.value)}
                                     required
                                     sx={{ minWidth: { sm: 290, xs: 260 } }}
                                     fullWidth
@@ -208,7 +169,7 @@ const CreateMemorygame = () => {
                                 item
                                 justifyContent={{
                                     lg: 'flex-start',
-                                    xs: 'none'
+                                    xs: 'none',
                                 }}
                                 display={{ lg: 'flex', xs: '' }}
                                 xl={4}
@@ -217,17 +178,11 @@ const CreateMemorygame = () => {
                                 sm={12}
                                 xs={12}
                             >
-                                <DisciplineSelect
-                                    discipline={discipline}
-                                    callback={disciplineChange}
-                                />
+                                <DisciplineSelect discipline={discipline} callback={disciplineChange} />
                             </Grid>
                             {/* @ts-ignore*/}
                             <Grid item align="center" xs={12}>
-                                <LayoutSelect
-                                    callback={handleLayout}
-                                    selectedLayout={layout}
-                                />
+                                <LayoutSelect callback={handleLayout} selectedLayout={layout} />
                             </Grid>
                         </Grid>
                     </Grid>
@@ -236,12 +191,7 @@ const CreateMemorygame = () => {
                         <GridSelect size={size} handleSize={handleSize} />
                     </Grid>
                     <Grid item xs={12}>
-                        <Grid
-                            container
-                            alignItems="flex-start"
-                            justifyContent="center"
-                            spacing={2}
-                        >
+                        <Grid container alignItems="flex-start" justifyContent="center" spacing={2}>
                             {alert && (
                                 <Grid item xs={12}>
                                     <Alert
@@ -255,14 +205,7 @@ const CreateMemorygame = () => {
                                 </Grid>
                             )}
                             {images.map((image: Blob, index: number) => {
-                                return (
-                                    <ImageEditor
-                                        key={index}
-                                        image={image}
-                                        index={index}
-                                        callback={updateImage}
-                                    />
-                                );
+                                return <ImageEditor key={index} image={image} index={index} callback={updateImage} />;
                             })}
                         </Grid>
                     </Grid>
@@ -271,11 +214,7 @@ const CreateMemorygame = () => {
                         {response.isLoading || responsePortal.isLoading ? (
                             <CircularProgress />
                         ) : (
-                            <Button
-                                size="large"
-                                type="submit"
-                                variant="outlined"
-                            >
+                            <Button size="large" type="submit" variant="outlined">
                                 Criar
                             </Button>
                         )}

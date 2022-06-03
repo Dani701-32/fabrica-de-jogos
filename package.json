@@ -6,6 +6,7 @@
         "watch": "mix watch",
         "watch-poll": "mix watch -- --watch-options-poll=1000",
         "hot": "mix watch --hot",
+        "prettier": "prettier --write .",
         "prod": "npm run production",
         "production": "mix --production"
     },
@@ -58,9 +59,10 @@
         "webpack": "^5.72.1"
     },
     "prettier": {
-        "trailingComma": "none",
+        "trailingComma": "es5",
         "tabWidth": 4,
         "semi": true,
-        "singleQuote": true
+        "singleQuote": true,
+        "printWidth": 150
     }
 }

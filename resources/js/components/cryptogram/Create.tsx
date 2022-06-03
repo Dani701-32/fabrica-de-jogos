@@ -1,24 +1,11 @@
-import React, {
-    ChangeEvent,
-    FormEventHandler,
-    useEffect,
-    useState
-} from 'react';
+import React, { ChangeEvent, FormEventHandler, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { cryptogramObj, gameObj, wordObj } from '../../types';
 import { convertToRaw, EditorState } from 'draft-js';
 import { useCreateCryptogramMutation } from '../../services/games';
 import { useCreateGameObjectMutation } from '../../services/portal';
-import {
-    Alert,
-    Button,
-    CircularProgress,
-    Grid,
-    SelectChangeEvent,
-    TextField,
-    Typography
-} from '@mui/material';
+import { Alert, Button, CircularProgress, Grid, SelectChangeEvent, TextField, Typography } from '@mui/material';
 import draftToText from '../../utils/draftToText';
 import SuccessDialog from '../_layout/SuccessDialog';
 import BackFAButton from '../_layout/BackFAButton';
@@ -36,16 +23,16 @@ export default function CreateCryptogram({}) {
     const initialState: cryptogramObj[] = [
         {
             word: '',
-            tip: EditorState.createEmpty()
+            tip: EditorState.createEmpty(),
         },
         {
             word: '',
-            tip: EditorState.createEmpty()
+            tip: EditorState.createEmpty(),
         },
         {
             word: '',
-            tip: EditorState.createEmpty()
-        }
+            tip: EditorState.createEmpty(),
+        },
     ];
     const [open, setOpen] = useState(false);
     const [alert, setAlert] = useState('');
@@ -64,7 +51,7 @@ export default function CreateCryptogram({}) {
         let p = [...words];
         p.push({
             word: '',
-            tip: EditorState.createEmpty()
+            tip: EditorState.createEmpty(),
         });
         setWords(p);
     };
@@ -76,10 +63,7 @@ export default function CreateCryptogram({}) {
         p.splice(index, 1);
         setWords(p);
     };
-    const handleWordChange = (
-        event: ChangeEvent<HTMLInputElement>,
-        index: number
-    ) => {
+    const handleWordChange = (event: ChangeEvent<HTMLInputElement>, index: number) => {
         let p = [...words];
         let word = p[index];
         word.word = event.target.value;
@@ -93,10 +77,7 @@ export default function CreateCryptogram({}) {
         p.splice(index, 1, word);
         setWords(p);
     };
-    const handleLayout = (
-        event: ChangeEvent<HTMLInputElement>,
-        newLayout: number
-    ) => {
+    const handleLayout = (event: ChangeEvent<HTMLInputElement>, newLayout: number) => {
         if (newLayout === null) {
             return;
         }
@@ -107,16 +88,16 @@ export default function CreateCryptogram({}) {
         setWords([
             {
                 word: '',
-                tip: EditorState.createEmpty()
+                tip: EditorState.createEmpty(),
             },
             {
                 word: '',
-                tip: EditorState.createEmpty()
+                tip: EditorState.createEmpty(),
             },
             {
                 word: '',
-                tip: EditorState.createEmpty()
-            }
+                tip: EditorState.createEmpty(),
+            },
         ]);
         setLayout(1);
         setOpen(false);
@@ -133,9 +114,7 @@ export default function CreateCryptogram({}) {
             setDiscipline(value);
         }
     };
-    const handleSubmit: FormEventHandler = (
-        event: ChangeEvent<HTMLInputElement>
-    ) => {
+    const handleSubmit: FormEventHandler = (event: ChangeEvent<HTMLInputElement>) => {
         event.preventDefault();
         if (words.length < 3) {
             setAlert('O jogo deve ter no mínimo 3 palavras!');
@@ -163,7 +142,7 @@ export default function CreateCryptogram({}) {
             let markup = draftToText(textJson);
             wordsJSON.push({
                 tip: markup,
-                word: word.word
+                word: word.word,
             });
         });
         if (error) {
@@ -172,7 +151,7 @@ export default function CreateCryptogram({}) {
         let body = {
             name: name,
             layout: layout,
-            options: wordsJSON
+            options: wordsJSON,
         };
         createCryptogram(body);
     };
@@ -184,7 +163,7 @@ export default function CreateCryptogram({}) {
                 slug: `/cryptogram/${response?.data?.slug}`,
                 material: `https://www.fabricadejogos.portaleducacional.tec.br/game/cryptogram/${response?.data?.slug}`,
                 disciplina_id: Number(discipline),
-                series: serie
+                series: serie,
             };
             createGameObject({ token, origin, ...obj });
         }
@@ -205,28 +184,17 @@ export default function CreateCryptogram({}) {
                     marginTop: 8,
                     display: 'flex',
                     justifyContent: 'center',
-                    flexDirection: 'row'
+                    flexDirection: 'row',
                 }}
             >
-                <Grid
-                    container
-                    component="form"
-                    justifyContent="center"
-                    onSubmit={handleSubmit}
-                    spacing={3}
-                >
+                <Grid container component="form" justifyContent="center" onSubmit={handleSubmit} spacing={3}>
                     <Grid item alignSelf="center" textAlign="center" xs={12}>
                         <Typography color="primary" variant="h2" component="h2">
                             <b>Criptograma</b>
                         </Typography>
                     </Grid>
                     <Grid item xs={12}>
-                        <Grid
-                            container
-                            justifyContent="center"
-                            spacing={1}
-                            display="flex"
-                        >
+                        <Grid container justifyContent="center" spacing={1} display="flex">
                             {/* @ts-ignore*/}
                             <Grid
                                 align="center"
@@ -237,10 +205,7 @@ export default function CreateCryptogram({}) {
                                 justifyContent={{ lg: 'flex-end', md: 'none' }}
                                 display={{ lg: 'flex', md: 'block' }}
                             >
-                                <SeriesSelect
-                                    serie={serie}
-                                    callback={seriesChange}
-                                />
+                                <SeriesSelect serie={serie} callback={seriesChange} />
                             </Grid>
                             {/* @ts-ignore*/}
                             <Grid item align="center" xl={4} lg={3}>
@@ -249,9 +214,7 @@ export default function CreateCryptogram({}) {
                                     name="name"
                                     variant="outlined"
                                     value={name}
-                                    onChange={(event) =>
-                                        setName(event.target.value)
-                                    }
+                                    onChange={(event) => setName(event.target.value)}
                                     required
                                     sx={{ minWidth: { sm: 290, xs: 260 } }}
                                     fullWidth
@@ -263,45 +226,30 @@ export default function CreateCryptogram({}) {
                                 item
                                 justifyContent={{
                                     lg: 'flex-start',
-                                    md: 'none'
+                                    md: 'none',
                                 }}
                                 display={{ lg: 'flex', md: 'block' }}
                                 xl={4}
                                 lg={3}
                                 md={12}
                             >
-                                <DisciplineSelect
-                                    discipline={discipline}
-                                    callback={disciplineChange}
-                                />
+                                <DisciplineSelect discipline={discipline} callback={disciplineChange} />
                             </Grid>
                             {/* @ts-ignore*/}
                             <Grid item align="center" xs={12}>
-                                <LayoutSelect
-                                    callback={handleLayout}
-                                    selectedLayout={layout}
-                                />
+                                <LayoutSelect callback={handleLayout} selectedLayout={layout} />
                             </Grid>
                         </Grid>
                     </Grid>
                     {/* @ts-ignore */}
                     <Grid item align="center" xs={12}>
-                        <Button
-                            onClick={handleAddWord}
-                            endIcon={<AddIcon fontSize="small" />}
-                            variant="contained"
-                        >
+                        <Button onClick={handleAddWord} endIcon={<AddIcon fontSize="small" />} variant="contained">
                             Adicionar Palavra
                         </Button>
                     </Grid>
                     {/* @ts-ignore */}
                     <Grid item align="center" lg={12}>
-                        <Grid
-                            container
-                            alignItems="flex-start"
-                            justifyContent="center"
-                            spacing={3}
-                        >
+                        <Grid container alignItems="flex-start" justifyContent="center" spacing={3}>
                             {alert && (
                                 /* @ts-ignore */
                                 <Grid item align="center" xs={12}>
@@ -334,11 +282,7 @@ export default function CreateCryptogram({}) {
                         {response.isLoading || responsePortal.isLoading ? (
                             <CircularProgress />
                         ) : (
-                            <Button
-                                size="large"
-                                type="submit"
-                                variant="outlined"
-                            >
+                            <Button size="large" type="submit" variant="outlined">
                                 Salvar
                             </Button>
                         )}

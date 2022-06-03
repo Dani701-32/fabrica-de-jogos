@@ -1,17 +1,5 @@
-import React, {
-    ChangeEvent,
-    FormEventHandler,
-    useEffect,
-    useState
-} from 'react';
-import {
-    Button,
-    Grid,
-    TextField,
-    Alert,
-    SelectChangeEvent,
-    Typography
-} from '@mui/material';
+import React, { ChangeEvent, FormEventHandler, useEffect, useState } from 'react';
+import { Button, Grid, TextField, Alert, SelectChangeEvent, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { convertToRaw, EditorState } from 'draft-js';
 import draftToText from '../../utils/draftToText';
@@ -35,16 +23,16 @@ const CreateWordSearch = () => {
     const initialState: wordObj[] = [
         {
             word: '',
-            tip: EditorState.createEmpty()
+            tip: EditorState.createEmpty(),
         },
         {
             word: '',
-            tip: EditorState.createEmpty()
+            tip: EditorState.createEmpty(),
         },
         {
             word: '',
-            tip: EditorState.createEmpty()
-        }
+            tip: EditorState.createEmpty(),
+        },
     ];
     const [open, setOpen] = useState(false);
     const [alert, setAlert] = useState('');
@@ -63,7 +51,7 @@ const CreateWordSearch = () => {
         let p = [...words];
         p.push({
             word: '',
-            tip: EditorState.createEmpty()
+            tip: EditorState.createEmpty(),
         });
         setWords(p);
     };
@@ -75,10 +63,7 @@ const CreateWordSearch = () => {
         p.splice(index, 1);
         setWords(p);
     };
-    const handleWordChange = (
-        event: ChangeEvent<HTMLInputElement>,
-        index: number
-    ) => {
+    const handleWordChange = (event: ChangeEvent<HTMLInputElement>, index: number) => {
         let p = [...words];
         let word = p[index];
         word.word = event.target.value;
@@ -92,10 +77,7 @@ const CreateWordSearch = () => {
         p.splice(index, 1, word);
         setWords(p);
     };
-    const handleLayout = (
-        event: ChangeEvent<HTMLInputElement>,
-        newLayout: number
-    ) => {
+    const handleLayout = (event: ChangeEvent<HTMLInputElement>, newLayout: number) => {
         if (newLayout === null) {
             return;
         }
@@ -106,16 +88,16 @@ const CreateWordSearch = () => {
         setWords([
             {
                 word: '',
-                tip: EditorState.createEmpty()
+                tip: EditorState.createEmpty(),
             },
             {
                 word: '',
-                tip: EditorState.createEmpty()
+                tip: EditorState.createEmpty(),
             },
             {
                 word: '',
-                tip: EditorState.createEmpty()
-            }
+                tip: EditorState.createEmpty(),
+            },
         ]);
         setLayout(1);
         setOpen(false);
@@ -132,9 +114,7 @@ const CreateWordSearch = () => {
             setDiscipline(value);
         }
     };
-    const handleSubmit: FormEventHandler = (
-        event: ChangeEvent<HTMLInputElement>
-    ) => {
+    const handleSubmit: FormEventHandler = (event: ChangeEvent<HTMLInputElement>) => {
         event.preventDefault();
         if (words.length < 3) {
             setAlert('O jogo deve ter no mínimo 3 palavras!');
@@ -162,7 +142,7 @@ const CreateWordSearch = () => {
             let markup = draftToText(textJson);
             wordsJSON.push({
                 tip: markup,
-                word: word.word
+                word: word.word,
             });
         });
         if (error) {
@@ -171,7 +151,7 @@ const CreateWordSearch = () => {
         let body = {
             name: name,
             layout: layout,
-            options: wordsJSON
+            options: wordsJSON,
         };
         createWordSearch(body);
     };
@@ -183,7 +163,7 @@ const CreateWordSearch = () => {
                 slug: `/word-search/${response?.data?.slug}`,
                 material: `https://www.fabricadejogos.portaleducacional.tec.br/game/word-search/${response?.data?.slug}`,
                 disciplina_id: Number(discipline),
-                series: serie
+                series: serie,
             };
             createGameObject({ token, origin, ...obj });
         }
@@ -204,28 +184,17 @@ const CreateWordSearch = () => {
                     marginTop: 8,
                     display: 'flex',
                     justifyContent: 'center',
-                    flexDirection: 'row'
+                    flexDirection: 'row',
                 }}
             >
-                <Grid
-                    container
-                    component="form"
-                    justifyContent="center"
-                    onSubmit={handleSubmit}
-                    spacing={3}
-                >
+                <Grid container component="form" justifyContent="center" onSubmit={handleSubmit} spacing={3}>
                     <Grid item alignSelf="center" textAlign="center" xs={12}>
                         <Typography color="primary" variant="h2" component="h2">
                             <b>Caça-Palavras</b>
                         </Typography>
                     </Grid>
                     <Grid item xs={12}>
-                        <Grid
-                            container
-                            justifyContent="center"
-                            spacing={1}
-                            display="flex"
-                        >
+                        <Grid container justifyContent="center" spacing={1} display="flex">
                             {/* @ts-ignore*/}
                             <Grid
                                 align="center"
@@ -236,10 +205,7 @@ const CreateWordSearch = () => {
                                 justifyContent={{ lg: 'flex-end', md: 'none' }}
                                 display={{ lg: 'flex', md: 'block' }}
                             >
-                                <SeriesSelect
-                                    serie={serie}
-                                    callback={seriesChange}
-                                />
+                                <SeriesSelect serie={serie} callback={seriesChange} />
                             </Grid>
                             {/* @ts-ignore*/}
                             <Grid item align="center" xl={4} lg={3}>
@@ -248,9 +214,7 @@ const CreateWordSearch = () => {
                                     name="name"
                                     variant="outlined"
                                     value={name}
-                                    onChange={(event) =>
-                                        setName(event.target.value)
-                                    }
+                                    onChange={(event) => setName(event.target.value)}
                                     required
                                     sx={{ minWidth: { sm: 290, xs: 260 } }}
                                     fullWidth
@@ -262,45 +226,30 @@ const CreateWordSearch = () => {
                                 item
                                 justifyContent={{
                                     lg: 'flex-start',
-                                    md: 'none'
+                                    md: 'none',
                                 }}
                                 display={{ lg: 'flex', md: 'block' }}
                                 xl={4}
                                 lg={3}
                                 md={12}
                             >
-                                <DisciplineSelect
-                                    discipline={discipline}
-                                    callback={disciplineChange}
-                                />
+                                <DisciplineSelect discipline={discipline} callback={disciplineChange} />
                             </Grid>
                             {/* @ts-ignore*/}
                             <Grid item align="center" xs={12}>
-                                <LayoutSelect
-                                    callback={handleLayout}
-                                    selectedLayout={layout}
-                                />
+                                <LayoutSelect callback={handleLayout} selectedLayout={layout} />
                             </Grid>
                         </Grid>
                     </Grid>
                     {/* @ts-ignore */}
                     <Grid item align="center" xs={12}>
-                        <Button
-                            onClick={handleAddWord}
-                            endIcon={<AddIcon fontSize="small" />}
-                            variant="contained"
-                        >
+                        <Button onClick={handleAddWord} endIcon={<AddIcon fontSize="small" />} variant="contained">
                             Adicionar Palavra
                         </Button>
                     </Grid>
                     {/* @ts-ignore */}
                     <Grid item align="center" lg={12}>
-                        <Grid
-                            container
-                            alignItems="flex-start"
-                            justifyContent="center"
-                            spacing={3}
-                        >
+                        <Grid container alignItems="flex-start" justifyContent="center" spacing={3}>
                             {alert && (
                                 /* @ts-ignore */
                                 <Grid item align="center" xs={12}>

@@ -15,28 +15,20 @@ type Props = {
     handleDelete: Function;
 };
 
-const Page = ({
-    page,
-    index,
-    handleWordChange,
-    handleMeaningChange,
-    handleDelete
-}: Props) => {
+const Page = ({ page, index, handleWordChange, handleMeaningChange, handleDelete }: Props) => {
     return (
         // @ts-ignore
         <Grid item align="center" xs={12} md={6} lg={4}>
             <Paper
                 elevation={5}
                 sx={{
-                    padding: '15px'
+                    padding: '15px',
                 }}
             >
                 {/* @ts-ignore */}
                 <Grid container align="center" spacing={2}>
                     <Grid item xs={10}>
-                        <Typography variant="subtitle1">
-                            Pag {(index + 1).toString()}
-                        </Typography>
+                        <Typography variant="subtitle1">Pag {(index + 1).toString()}</Typography>
                     </Grid>
                     <Grid item xs={2}>
                         <IconButton
@@ -57,17 +49,11 @@ const Page = ({
                                             label="Palavra"
                                             required
                                             inputProps={{
-                                                maxLength: 12
+                                                maxLength: 12,
                                             }}
                                             fullWidth
                                             value={matchUp.word}
-                                            onChange={(event) =>
-                                                handleWordChange(
-                                                    event,
-                                                    index,
-                                                    i
-                                                )
-                                            }
+                                            onChange={(event) => handleWordChange(event, index, i)}
                                         />
                                     </Grid>
                                     <Grid item xs={1}>
@@ -75,14 +61,7 @@ const Page = ({
                                     </Grid>
                                     <Grid item xs={7}>
                                         <RichTextField
-                                            editorState={
-                                                typeof matchUp.meaning ===
-                                                'string'
-                                                    ? textToDraft(
-                                                          matchUp.meaning
-                                                      )
-                                                    : matchUp.meaning
-                                            }
+                                            editorState={typeof matchUp.meaning === 'string' ? textToDraft(matchUp.meaning) : matchUp.meaning}
                                             onChange={handleMeaningChange}
                                             index={index}
                                             i={i}
