@@ -70,7 +70,10 @@ export default function CreateBalloons({}) {
     const handleClose = () => {
         setName('');
         setQuestion(EditorState.createEmpty());
-        setAnswers(['', '', '', '', '']);
+        setAnswers(['', '', '', '']);
+        setAlternatives(['', '', '', '']);
+        setSerie(['']);
+        setDiscipline('');
         setLayout(1);
         setOpen(false);
     };

@@ -3,8 +3,6 @@ import SuccessDialog from '../_layout/SuccessDialog';
 import BackFAButton from '../_layout/BackFAButton';
 import { Alert, Box, Button, CircularProgress, Grid, Typography } from '@mui/material';
 import LayoutSelect from '../_layout/LayoutSelect';
-import AddIcon from '@mui/icons-material/Add';
-import { balloonOptions, gameState } from '../../types';
 import Group from './layout/Group';
 import { convertToRaw, EditorState } from 'draft-js';
 import { useUpdateBalloonsMutation, useGetBalloonsBySlugQuery } from '../../services/games';
@@ -13,6 +11,7 @@ import RichTextField from '../_layout/RichTextField';
 import { useParams } from 'react-router-dom';
 import textToDraft from '../../utils/textToDraft';
 import { getError } from '../../utils/errors';
+import { balloonOptions, gameState } from '../../types';
 
 export default function EditBalloons({}) {
     const { slug } = useParams();
@@ -20,41 +19,62 @@ export default function EditBalloons({}) {
     const [alert, setAlert] = useState('');
     const [layout, setLayout] = useState<number>(1);
     const [question, setQuestion] = useState<EditorState>(EditorState.createEmpty());
-    const [answers, setAnswers] = useState<string[][]>([['', '', '', '', '']]);
+    const [answers, setAnswers] = useState<string[]>(['', '', '', '', '']);
+    const [alternatives, setAlternatives] = useState<string[]>(['', '', '', '', '']);
     const [updateBalloons, response] = useUpdateBalloonsMutation();
     const { data, error, isLoading } = useGetBalloonsBySlugQuery(slug as string);
-    const handleAddPage = () => {
-        if (answers.length >= 8) {
-            setAlert('O número máximo de questões para esse jogo é 8!');
-            return;
-        }
-        setAnswers([...answers, ['', '', '', '', '']]);
-    };
     const handleLayout = (event: ChangeEvent<HTMLInputElement>, newLayout: number) => {
         if (newLayout === null) {
             return;
         }
         setLayout(newLayout);
     };
-    const handleRemovePage = (index: number) => {
-        if (answers.length === 1) {
+    const handleAnswerChange = (event: ChangeEvent<HTMLInputElement>, index: number) => {
+        let ans = [...answers];
+        ans[index] = event.target.value;
+        setAnswers(ans);
+    };
+    const handleAddAnswer = () => {
+        if (answers.length > 15) {
             return;
         }
-        let q = [...answers];
-        q.splice(index, 1);
-        setAnswers(q);
+        setAnswers([...answers, '']);
     };
-    const handleAnswerChange = (event: ChangeEvent<HTMLInputElement>, index: number, i: number) => {
-        let a = [...answers];
-        let answer = a[index];
-        answer[i] = event.target.value;
-        a.splice(index, 1, answer);
-        setAnswers(a);
+    const handleRemoveAnswer = (event: ChangeEvent<HTMLInputElement>, index: number) => {
+        let ans = [...answers];
+        ans.splice(index, 1);
+        setAnswers(ans);
+    };
+    const handleAlternativeChange = (event: ChangeEvent<HTMLInputElement>, index: number) => {
+        let alt = [...alternatives];
+        alt[index] = event.target.value;
+        setAlternatives(alt);
+    };
+    const handleAddAlternative = () => {
+        if (alternatives.length > 15) {
+            return;
+        }
+        setAlternatives([...alternatives, '']);
+    };
+    const handleRemoveAlternative = (event: ChangeEvent<HTMLInputElement>, index: number) => {
+        let alt = [...alternatives];
+        alt.splice(index, 1);
+        setAlternatives(alt);
     };
     const handleSubmit: FormEventHandler = (event: FormEvent<HTMLInputElement>) => {
         event.preventDefault();
         let textJson = convertToRaw(question.getCurrentContent());
         let markup = draftToText(textJson);
+        const questionsJSON: balloonOptions = {
+            question: markup,
+            answers: answers,
+            alternatives: alternatives,
+        };
+        let body: Partial<gameState<balloonOptions>> = {
+            layout: layout,
+            options: questionsJSON,
+        };
+        updateBalloons({ slug, ...body });
     };
 
     useEffect(() => {
@@ -62,6 +82,7 @@ export default function EditBalloons({}) {
             data.approved_at && setAlert('Esse jogo já foi aprovado, logo não pode mais ser editado!');
             let deep_copy = JSON.parse(JSON.stringify(data.options));
             setAnswers(deep_copy.answers);
+            setAlternatives(deep_copy.alternatives);
             setQuestion(textToDraft(deep_copy.title as string));
             setLayout(data.layout);
         }
@@ -117,12 +138,6 @@ export default function EditBalloons({}) {
                         />
                     </Grid>
                     {/* @ts-ignore */}
-                    <Grid item align="center" xs={12}>
-                        <Button onClick={handleAddPage} endIcon={<AddIcon fontSize="small" />} variant="contained">
-                            Adicionar Questão
-                        </Button>
-                    </Grid>
-                    {/* @ts-ignore */}
                     <Grid item align="center" lg={12}>
                         <Grid container alignItems="flex-start" justifyContent="center" spacing={3}>
                             {alert && (
@@ -137,6 +152,24 @@ export default function EditBalloons({}) {
                                     </Alert>
                                 </Grid>
                             )}
+                            <Grid item xs={12} sm={6}>
+                                <Group
+                                    answers={answers}
+                                    correct={true}
+                                    handleItemChange={handleAnswerChange}
+                                    handleAddItem={handleAddAnswer}
+                                    handleRemoveItem={handleRemoveAnswer}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <Group
+                                    answers={alternatives}
+                                    correct={false}
+                                    handleItemChange={handleAlternativeChange}
+                                    handleAddItem={handleAddAlternative}
+                                    handleRemoveItem={handleRemoveAlternative}
+                                />
+                            </Grid>
                         </Grid>
                     </Grid>
                     {/* @ts-ignore */}
