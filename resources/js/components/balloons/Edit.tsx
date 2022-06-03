@@ -63,6 +63,9 @@ export default function EditBalloons({}) {
     };
     const handleSubmit: FormEventHandler = (event: FormEvent<HTMLInputElement>) => {
         event.preventDefault();
+        if (answers.length > alternatives.length) {
+            setAlert('É necessário ter mais alternativas erradas do que respostas certas!');
+        }
         let textJson = convertToRaw(question.getCurrentContent());
         let markup = draftToText(textJson);
         const questionsJSON: balloonOptions = {

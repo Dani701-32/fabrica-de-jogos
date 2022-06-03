@@ -99,7 +99,7 @@ export default function CreateBalloons({}) {
             setAlert('Selecione uma disciplina!');
             return;
         }
-        if (answers.length < alternatives.length) {
+        if (answers.length > alternatives.length) {
             setAlert('É necessário ter mais alternativas erradas do que respostas certas!');
         }
         let textJson = convertToRaw(question.getCurrentContent());
