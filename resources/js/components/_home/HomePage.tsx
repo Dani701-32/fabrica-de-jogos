@@ -23,7 +23,7 @@ export default function HomePage({}) {
             <Grid container alignItems="flex-start" justifyContent="center" spacing={1} sx={{ marginTop: 3 }}>
                 {game_types.map((type, index) => {
                     return (
-                        <Grid key={index} item xs={6} md={4} lg={3}>
+                        <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
                             <Grid container alignItems="center" spacing={1}>
                                 {/* @ts-ignore */}
                                 <Grid item align="center" xs={12}>
@@ -31,8 +31,8 @@ export default function HomePage({}) {
                                         <Card
                                             elevation={5}
                                             sx={{
-                                                width: 310,
-                                                height: 200,
+                                                width: { sm: 250, md: 310 },
+                                                height: { sm: 160, md: 200 },
                                                 borderRadius: 4.5,
                                             }}
                                         >

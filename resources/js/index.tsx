@@ -2,7 +2,7 @@ require('./bootstrap');
 import '../css/app.css';
 import React from 'react';
 import { createRoot, Root } from 'react-dom/client';
-import Index from './components';
+import App from './components/App';
 import { Provider } from 'react-redux';
 import store from './store';
 
@@ -11,7 +11,7 @@ const root: Root = createRoot(container ?? new HTMLDivElement());
 root.render(
     <React.StrictMode>
         <Provider store={store}>
-            <Index />
+            <App />
         </Provider>
     </React.StrictMode>
 );
