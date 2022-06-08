@@ -13,7 +13,11 @@ const NavBar = ({ data }: Props) => {
                 <Container maxWidth="xl">
                     <Toolbar disableGutters>
                         <Box sx={{ flexGrow: 0 }}>
-                            <img src={`https://metech.s3.flexify.io/${data?.data.prefeitura_logo}`} alt="logo" height="50px" />
+                            <img
+                                src={`https://metech.s3.flexify.io/${data?.data.prefeitura_logo}`}
+                                alt="logo"
+                                height="50px"
+                            />
                         </Box>
                         <Box sx={{ flexGrow: 1 }}>
                             <Typography

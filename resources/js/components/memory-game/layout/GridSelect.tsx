@@ -9,7 +9,13 @@ type Props = {
 const GridSelect = ({ size, handleSize }: Props) => {
     return (
         <Grid item xs={12}>
-            <ToggleButtonGroup value={size} exclusive onChange={handleSize as any} aria-label="text alignment" color="primary">
+            <ToggleButtonGroup
+                value={size}
+                exclusive
+                onChange={handleSize as any}
+                aria-label="text alignment"
+                color="primary"
+            >
                 <ToggleButton value={2}>2x2</ToggleButton>
                 <ToggleButton value={3}>2x3</ToggleButton>
                 <ToggleButton value={4}>2x4</ToggleButton>

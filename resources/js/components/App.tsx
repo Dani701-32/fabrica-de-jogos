@@ -31,6 +31,8 @@ import CreateDragNDrop from './drag-drop/Create';
 import EditDragNDrop from './drag-drop/Edit';
 import CreatePuzzle from './puzzle/Create';
 import EditPuzzle from './puzzle/Edit';
+import CreatePaint from './paint/Create';
+import EditPaint from './paint/Edit';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
@@ -120,6 +122,7 @@ function App() {
                         <Route path="/create/quiz" element={<CreateQuiz />} />
                         <Route path="/create/true-or-false" element={<CreateTrueOrFalse />} />
                         <Route path="/create/word-search" element={<CreateWordSearch />} />
+                        <Route path="/create/paint" element={<CreatePaint />} />
                         <Route path="/create/puzzle" element={<CreatePuzzle />} />
                         {/* Edit Routes */}
                         <Route path="/edit/anagram/:slug" element={<EditAnagram />} />
@@ -130,9 +133,9 @@ function App() {
                         <Route path="/edit/match-up/:slug" element={<EditMatchUp />} />
                         <Route path="/edit/memory-game/:slug" element={<EditMemorygame />} />
                         <Route path="/edit/quiz/:slug" element={<EditQuiz />} />
-
                         <Route path="/edit/true-or-false/:slug" element={<EditTrueOrFalse />} />
                         <Route path="/edit/word-search/:slug" element={<EditWordSearch />} />
+                        <Route path="/edit/paint/:slug" element={<EditPaint />} />
                         <Route path="/edit/puzzle/:slug" element={<EditPuzzle />} />
                     </Routes>
                 </Container>

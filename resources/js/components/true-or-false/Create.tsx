@@ -207,7 +207,11 @@ const CreateTrueOrFalse = () => {
                     </Grid>
                     {/* @ts-ignore */}
                     <Grid item align="center" xs={12}>
-                        <Button onClick={handleCreateQuestion} endIcon={<AddIcon fontSize="small" />} variant="contained">
+                        <Button
+                            onClick={handleCreateQuestion}
+                            endIcon={<AddIcon fontSize="small" />}
+                            variant="contained"
+                        >
                             Adicionar Questão
                         </Button>
                     </Grid>

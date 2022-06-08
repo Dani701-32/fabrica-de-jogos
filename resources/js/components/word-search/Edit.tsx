@@ -210,7 +210,12 @@ const EditWordSearch = () => {
                             <CircularProgress />
                         ) : (
                             <Grid item xs={12}>
-                                <Button size="large" type="submit" variant="outlined" disabled={Boolean(data?.approved_at)}>
+                                <Button
+                                    size="large"
+                                    type="submit"
+                                    variant="outlined"
+                                    disabled={Boolean(data?.approved_at)}
+                                >
                                     Salvar
                                 </Button>
                             </Grid>

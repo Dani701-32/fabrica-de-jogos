@@ -150,7 +150,12 @@ export const ImageEditor: FunctionComponent<Props> = ({ image, index, callback }
                         </Button>
                     </label>
                 </Grid>
-                <Modal open={open} onClose={() => setOpen(false)} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
+                <Modal
+                    open={open}
+                    onClose={() => setOpen(false)}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                >
                     <Box sx={style}>
                         <ReactCrop
                             crop={crop}

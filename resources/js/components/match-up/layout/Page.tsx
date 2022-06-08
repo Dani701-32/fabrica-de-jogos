@@ -61,7 +61,11 @@ const Page = ({ page, index, handleWordChange, handleMeaningChange, handleDelete
                                     </Grid>
                                     <Grid item xs={7}>
                                         <RichTextField
-                                            editorState={typeof matchUp.meaning === 'string' ? textToDraft(matchUp.meaning) : matchUp.meaning}
+                                            editorState={
+                                                typeof matchUp.meaning === 'string'
+                                                    ? textToDraft(matchUp.meaning)
+                                                    : matchUp.meaning
+                                            }
                                             onChange={handleMeaningChange}
                                             index={index}
                                             i={i}

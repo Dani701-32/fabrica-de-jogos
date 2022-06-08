@@ -67,7 +67,12 @@ const FormatSelect = ({ callback, selectedFormat }: Props) => {
                                         }}
                                         elevation={5}
                                     >
-                                        <img src={`/storage/drag-drop/${format}.png`} alt={`Formato ${format}`} width="100%" height="100%" />
+                                        <img
+                                            src={`/storage/drag-drop/${format}.png`}
+                                            alt={`Formato ${format}`}
+                                            width="100%"
+                                            height="100%"
+                                        />
                                     </Card>
                                 </ImageToggleButton>
                             </Grid>

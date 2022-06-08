@@ -28,7 +28,13 @@ export default function Group({ answers, correct, handleAddItem, handleRemoveIte
                     {answers.map((item, i) => {
                         return (
                             <Grid key={i} item xs={12} md={6}>
-                                <Grid container alignSelf="center" alignItems="flex-start" justifyContent="center" spacing={0}>
+                                <Grid
+                                    container
+                                    alignSelf="center"
+                                    alignItems="flex-start"
+                                    justifyContent="center"
+                                    spacing={0}
+                                >
                                     <Grid item xs={10}>
                                         <TextField
                                             variant="outlined"

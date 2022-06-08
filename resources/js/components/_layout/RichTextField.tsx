@@ -131,8 +131,15 @@ const RichTextField = ({ editorState, onChange, index, i, label, maxLength }: Pr
             >
                 <Grid item xs={1} sx={{ marginRight: 1.3 }}>
                     <Paper elevation={2} sx={{ minWidth: '30px', minHeight: '30px' }}>
-                        <IconButton sx={{ minWidth: '30px', minHeight: '30px' }} size="small" onClick={onUnderlineClick}>
-                            <FormatUnderlinedOutlined fontSize="small" color={activeStyles.UNDERLINE ? 'primary' : 'inherit'} />
+                        <IconButton
+                            sx={{ minWidth: '30px', minHeight: '30px' }}
+                            size="small"
+                            onClick={onUnderlineClick}
+                        >
+                            <FormatUnderlinedOutlined
+                                fontSize="small"
+                                color={activeStyles.UNDERLINE ? 'primary' : 'inherit'}
+                            />
                         </IconButton>
                     </Paper>
                 </Grid>
@@ -146,14 +153,24 @@ const RichTextField = ({ editorState, onChange, index, i, label, maxLength }: Pr
                 <Grid item xs={1} sx={{ marginRight: 1.3 }}>
                     <Paper elevation={2} sx={{ minWidth: '30px', minHeight: '30px' }}>
                         <IconButton sx={{ minWidth: '30px', minHeight: '30px' }} size="small" onClick={onItalicClick}>
-                            <FormatItalicOutlined fontSize="small" color={activeStyles.ITALIC ? 'primary' : 'inherit'} />
+                            <FormatItalicOutlined
+                                fontSize="small"
+                                color={activeStyles.ITALIC ? 'primary' : 'inherit'}
+                            />
                         </IconButton>
                     </Paper>
                 </Grid>
                 <Grid item xs={1} sx={{ marginRight: 1.3 }}>
                     <Paper elevation={2} sx={{ minWidth: '30px', minHeight: '30px' }}>
-                        <IconButton sx={{ minWidth: '30px', minHeight: '30px' }} size="small" onClick={onStrikethroughClick}>
-                            <FormatStrikethroughOutlined fontSize="small" color={activeStyles.STRIKETHROUGH ? 'primary' : 'inherit'} />
+                        <IconButton
+                            sx={{ minWidth: '30px', minHeight: '30px' }}
+                            size="small"
+                            onClick={onStrikethroughClick}
+                        >
+                            <FormatStrikethroughOutlined
+                                fontSize="small"
+                                color={activeStyles.STRIKETHROUGH ? 'primary' : 'inherit'}
+                            />
                         </IconButton>
                     </Paper>
                 </Grid>

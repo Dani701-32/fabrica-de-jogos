@@ -139,7 +139,15 @@ export default function Edit() {
                                 </Grid>
                             )}
                             {pages.map((page, index) => {
-                                return <Page key={index} page={page} index={index} onChange={handleWordChange} handleDelete={handleRemoveWord} />;
+                                return (
+                                    <Page
+                                        key={index}
+                                        page={page}
+                                        index={index}
+                                        onChange={handleWordChange}
+                                        handleDelete={handleRemoveWord}
+                                    />
+                                );
                             })}
                         </Grid>
                     </Grid>
@@ -149,7 +157,12 @@ export default function Edit() {
                             <CircularProgress />
                         ) : (
                             <Grid item xs={12}>
-                                <Button size="large" type="submit" variant="outlined" disabled={Boolean(data?.approved_at)}>
+                                <Button
+                                    size="large"
+                                    type="submit"
+                                    variant="outlined"
+                                    disabled={Boolean(data?.approved_at)}
+                                >
                                     Salvar
                                 </Button>
                             </Grid>

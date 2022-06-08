@@ -111,7 +111,15 @@ const CreatePuzzle: FunctionComponent = ({}) => {
                     flexDirection: 'row',
                 }}
             >
-                <Grid container alignSelf="center" alignItems="center" justifyContent="center" component="form" onSubmit={handleSubmit} spacing={3}>
+                <Grid
+                    container
+                    alignSelf="center"
+                    alignItems="center"
+                    justifyContent="center"
+                    component="form"
+                    onSubmit={handleSubmit}
+                    spacing={3}
+                >
                     <Grid item alignSelf="center" textAlign="center" xs={12}>
                         <Typography color="primary" variant="h2" component="h2">
                             <b>Quebra-Cabeça</b>

@@ -53,6 +53,11 @@ export const portalApi = createApi({
     }),
 });
 
-export const { useCreateGameObjectMutation, useEditGameObjectMutation, useGetUserInfoQuery, useGetGameObjectByIdQuery } = portalApi;
+export const {
+    useCreateGameObjectMutation,
+    useEditGameObjectMutation,
+    useGetUserInfoQuery,
+    useGetGameObjectByIdQuery,
+} = portalApi;
 
 export default portalApi;

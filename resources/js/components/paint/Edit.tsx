@@ -4,25 +4,17 @@ import { Alert, Box, Button, CircularProgress, Grid, Typography } from '@mui/mat
 import LayoutPicker from '../_layout/LayoutSelect';
 import { getError } from '../../utils/errors';
 import { useParams } from 'react-router-dom';
-import { useGetPuzzleBySlugQuery, useUpdatePuzzleMutation } from '../../services/games';
-import PiecesSelect from './layout/PiecesSelect';
+import { useGetPaintBySlugQuery, useUpdatePaintMutation } from '../../services/games';
 import ImageSelect from './layout/ImageSelect';
 
 const EditPuzzle: FunctionComponent = ({}) => {
     const { slug } = useParams();
-    const { data, error, isLoading } = useGetPuzzleBySlugQuery(slug as string);
-    const [updatePuzzle, response] = useUpdatePuzzleMutation();
+    const { data, error, isLoading } = useGetPaintBySlugQuery(slug as string);
+    const [updatePuzzle, response] = useUpdatePaintMutation();
     const [open, setOpen] = useState(false);
     const [alert, setAlert] = useState('');
     const [layout, setLayout] = useState<number>(1);
     const [image, setImage] = useState(0);
-    const [pieces, setPieces] = useState<number>(2);
-    const handlePieces = (event: ChangeEvent<HTMLInputElement>, newPieces: number) => {
-        if (newPieces === null) {
-            return;
-        }
-        setPieces(newPieces);
-    };
     const handleImage = (event: ChangeEvent<HTMLInputElement>, newImage: number) => {
         if (newImage === null) {
             return;
@@ -40,7 +32,7 @@ const EditPuzzle: FunctionComponent = ({}) => {
 
         const body = {
             layout: layout,
-            options: [pieces, image],
+            options: [image],
         };
 
         updatePuzzle({ slug, ...body });
@@ -48,8 +40,7 @@ const EditPuzzle: FunctionComponent = ({}) => {
     useEffect(() => {
         if (data) {
             data.approved_at && setAlert('Esse jogo já foi aprovado, logo não pode mais ser editado!');
-            setPieces(data.options[0]);
-            setImage(data.options[1]);
+            setImage(data.options[0]);
             setLayout(data.layout);
         }
         error && setAlert(getError(error));
@@ -86,7 +77,7 @@ const EditPuzzle: FunctionComponent = ({}) => {
                 <Grid container justifyContent="center" component="form" onSubmit={handleSubmit} spacing={3}>
                     <Grid item alignSelf="center" textAlign="center" xs={12}>
                         <Typography color="primary" variant="h2" component="h2">
-                            <b>Quebra-Cabeça</b>
+                            <b>Ateliê Criativo</b>
                         </Typography>
                     </Grid>
                     <LayoutPicker callback={handleLayout} selectedLayout={layout} />
@@ -104,10 +95,6 @@ const EditPuzzle: FunctionComponent = ({}) => {
                                     </Alert>
                                 </Grid>
                             )}
-                            {/* @ts-ignore */}
-                            <Grid item align="center" xs={12}>
-                                <PiecesSelect pieces={pieces} handlePieces={handlePieces} />
-                            </Grid>
                             {/* @ts-ignore */}
                             <Grid item align="center" xs={12}>
                                 <ImageSelect selectedImage={image} callback={handleImage} />

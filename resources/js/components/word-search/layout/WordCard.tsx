@@ -49,7 +49,13 @@ const WordCard = ({ item, index, handleWordChange, handleRemoveWord, handleTipCh
                         </IconButton>
                     </Grid>
                     <Grid item xs={10}>
-                        <RichTextField editorState={item.tip as EditorState} onChange={handleTipChange} label={'Dica'} index={index} maxLength={45} />
+                        <RichTextField
+                            editorState={item.tip as EditorState}
+                            onChange={handleTipChange}
+                            label={'Dica'}
+                            index={index}
+                            maxLength={45}
+                        />
                     </Grid>
                 </Grid>
             </Paper>

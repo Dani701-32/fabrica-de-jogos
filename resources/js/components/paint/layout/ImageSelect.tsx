@@ -69,23 +69,16 @@ const ImageSelect = ({ callback, selectedImage }: Props) => {
                                             }}
                                         >
                                             <Card
-                                                sx={
-                                                    selectedImage === image
-                                                        ? {
-                                                              width: 280,
-                                                              height: 289,
-                                                          }
-                                                        : {
-                                                              width: 280,
-                                                              height: 289,
-                                                              borderRadius: 0,
-                                                          }
-                                                }
+                                                sx={{
+                                                    width: 280,
+                                                    height: 289,
+                                                    borderRadius: selectedImage === image ? 0 : null,
+                                                }}
                                                 elevation={5}
                                             >
                                                 <img
-                                                    src={`/storage/puzzle/${image}.png`}
-                                                    alt={`Puzzle ${image}`}
+                                                    src={`/storage/paint/${image}.png`}
+                                                    alt={`Imagem ${image}`}
                                                     width="100%"
                                                     height="100%"
                                                 />

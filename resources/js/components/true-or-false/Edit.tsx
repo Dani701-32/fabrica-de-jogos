@@ -148,7 +148,11 @@ const EditTrueOrFalse = () => {
                     <LayoutPicker callback={handleLayout} selectedLayout={layout} />
                     {/* @ts-ignore*/}
                     <Grid item align="center" xs={12}>
-                        <Button onClick={handleCreateQuestion} endIcon={<AddIcon fontSize="small" />} variant="contained">
+                        <Button
+                            onClick={handleCreateQuestion}
+                            endIcon={<AddIcon fontSize="small" />}
+                            variant="contained"
+                        >
                             Adicionar Questão
                         </Button>
                     </Grid>
@@ -188,7 +192,12 @@ const EditTrueOrFalse = () => {
                             <CircularProgress />
                         ) : (
                             <Grid item xs={12}>
-                                <Button size="large" type="submit" variant="outlined" disabled={Boolean(data?.approved_at)}>
+                                <Button
+                                    size="large"
+                                    type="submit"
+                                    variant="outlined"
+                                    disabled={Boolean(data?.approved_at)}
+                                >
                                     Salvar
                                 </Button>
                             </Grid>

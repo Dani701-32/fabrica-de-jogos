@@ -46,6 +46,9 @@ export default function GamePage() {
         case 'puzzle':
             gameAddress = 'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/PuzzelFDJ/index.html';
             break;
+        case 'paint':
+            gameAddress = 'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/PaintFDJ/index.html';
+            break;
         default:
             window.location.href = '/404';
             break;

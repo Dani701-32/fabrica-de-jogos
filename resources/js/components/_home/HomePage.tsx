@@ -12,6 +12,7 @@ export default function HomePage({}) {
         { slug: 'group-sort', name: 'Agrupamentos' },
         { slug: 'match-up', name: 'Combinação' },
         // { slug: 'memory-game', name: 'Jogo da Memória' },
+        { slug: 'paint', name: 'Ateliê Criativo' },
         { slug: 'puzzle', name: 'Quebra-Cabeça' },
         { slug: 'quiz', name: 'Quiz' },
         { slug: 'true-or-false', name: 'Verdadeiro ou Falso' },
@@ -36,7 +37,12 @@ export default function HomePage({}) {
                                                 borderRadius: 4.5,
                                             }}
                                         >
-                                            <img src={`/storage/games/${type.slug}.png`} alt={type.name} width="100%" height="100%" />
+                                            <img
+                                                src={`/storage/games/${type.slug}.png`}
+                                                alt={type.name}
+                                                width="100%"
+                                                height="100%"
+                                            />
                                         </Card>
                                     </IconButton>
                                 </Grid>

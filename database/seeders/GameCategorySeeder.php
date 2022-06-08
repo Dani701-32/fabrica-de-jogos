@@ -15,6 +15,17 @@ class GameCategorySeeder extends Seeder
     public function run(): void
     {
         DB::table('game_categories')->insert([
+            'id' => 12,
+            'name' => 'Paint',
+            'slug' => 'paint',
+            'description' => 'Pinte as Figuras',
+            'creation_rules' => serialize(['options' => 'required|array|max:1',
+                'options.*' => 'required|int|max:18']),
+            'update_rules' => serialize(['options' => 'array|max:1',
+                'options.*' => 'int|max:18'])
+        ]);
+
+        DB::table('game_categories')->insert([
             'id' => 11,
             'name' => 'Puzzle',
             'slug' => 'puzzle',

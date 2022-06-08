@@ -12,7 +12,14 @@ type Props = {
     handleRemoveItem: Function;
 };
 
-export default function Group({ group, index, handleTitleChange, handleAddItem, handleItemChange, handleRemoveItem }: Props) {
+export default function Group({
+    group,
+    index,
+    handleTitleChange,
+    handleAddItem,
+    handleItemChange,
+    handleRemoveItem,
+}: Props) {
     return (
         <>
             <Paper elevation={3} sx={{ p: 2 }}>
@@ -40,7 +47,13 @@ export default function Group({ group, index, handleTitleChange, handleAddItem, 
                     {group.items.map((item, i) => {
                         return (
                             <Grid key={i} item xs={12} md={6}>
-                                <Grid container alignSelf="center" alignItems="flex-start" justifyContent="center" spacing={0}>
+                                <Grid
+                                    container
+                                    alignSelf="center"
+                                    alignItems="flex-start"
+                                    justifyContent="center"
+                                    spacing={0}
+                                >
                                     <Grid item xs={10}>
                                         <TextField
                                             variant="outlined"

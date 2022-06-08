@@ -43,7 +43,10 @@ export const gameApi = createApi({
                 body: body,
             }),
         }),
-        updateAnagram: builder.mutation<gameState<anagramOptions>, Partial<gameState<anagramOptions> & Pick<gameState<anagramOptions>, 'slug'>>>({
+        updateAnagram: builder.mutation<
+            gameState<anagramOptions>,
+            Partial<gameState<anagramOptions> & Pick<gameState<anagramOptions>, 'slug'>>
+        >({
             query: ({ slug, ...body }) => ({
                 url: `/anagram/${slug}`,
                 method: 'PUT',
@@ -61,7 +64,10 @@ export const gameApi = createApi({
                 body: body,
             }),
         }),
-        updateMatchUp: builder.mutation<gameState<matchUpOptions>, Partial<gameState<matchUpOptions>> & Pick<gameState<matchUpOptions>, 'slug'>>({
+        updateMatchUp: builder.mutation<
+            gameState<matchUpOptions>,
+            Partial<gameState<matchUpOptions>> & Pick<gameState<matchUpOptions>, 'slug'>
+        >({
             query: ({ slug, ...body }) => ({
                 url: `/match-up/${slug}`,
                 method: 'PUT',
@@ -79,7 +85,10 @@ export const gameApi = createApi({
                 body: body,
             }),
         }),
-        updateQuiz: builder.mutation<gameState<quizOptions>, Partial<gameState<quizOptions>> & Pick<gameState<quizOptions>, 'slug'>>({
+        updateQuiz: builder.mutation<
+            gameState<quizOptions>,
+            Partial<gameState<quizOptions>> & Pick<gameState<quizOptions>, 'slug'>
+        >({
             query: ({ slug, ...body }) => ({
                 url: `/quiz/${slug}`,
                 method: 'PUT',
@@ -178,7 +187,10 @@ export const gameApi = createApi({
                 body: body,
             }),
         }),
-        updateBalloons: builder.mutation<gameState<balloonOptions>, Partial<balloonOptions> & Pick<gameState<balloonOptions>, 'slug'>>({
+        updateBalloons: builder.mutation<
+            gameState<balloonOptions>,
+            Partial<balloonOptions> & Pick<gameState<balloonOptions>, 'slug'>
+        >({
             query: ({ slug, ...body }) => ({
                 url: `bloons/${slug}`,
                 method: 'PUT',
@@ -216,7 +228,10 @@ export const gameApi = createApi({
                 body: body,
             }),
         }),
-        updateDragNDrop: builder.mutation<gameState<number>, Partial<gameState<number[]>> & Pick<gameState<number[]>, 'slug'>>({
+        updateDragNDrop: builder.mutation<
+            gameState<number>,
+            Partial<gameState<number[]>> & Pick<gameState<number[]>, 'slug'>
+        >({
             query: ({ slug, ...body }) => ({
                 url: `drag-drop/${slug}`,
                 method: 'PUT',
@@ -233,9 +248,32 @@ export const gameApi = createApi({
                 body: body,
             }),
         }),
-        updatePuzzle: builder.mutation<gameState<number[]>, Partial<gameState<number[]>> & Pick<gameState<number[]>, 'slug'>>({
+        updatePuzzle: builder.mutation<
+            gameState<number[]>,
+            Partial<gameState<number[]>> & Pick<gameState<number[]>, 'slug'>
+        >({
             query: ({ slug, ...body }) => ({
                 url: `puzzle/${slug}`,
+                method: 'PUT',
+                body: body,
+            }),
+        }),
+        getPaintBySlug: builder.query<gameState<number[]>, string>({
+            query: (slug) => `paint/${slug}`,
+        }),
+        createPaint: builder.mutation<gameState<number[]>, Partial<gameState<number[]>>>({
+            query: (body) => ({
+                url: 'paint/',
+                method: 'POST',
+                body: body,
+            }),
+        }),
+        updatePaint: builder.mutation<
+            gameState<number[]>,
+            Partial<gameState<number[]>> & Pick<gameState<number[]>, 'slug'>
+        >({
+            query: ({ slug, ...body }) => ({
+                url: `paint/${slug}`,
                 method: 'PUT',
                 body: body,
             }),
@@ -277,6 +315,9 @@ export const {
     useGetPuzzleBySlugQuery,
     useCreatePuzzleMutation,
     useUpdatePuzzleMutation,
+    useGetPaintBySlugQuery,
+    useCreatePaintMutation,
+    useUpdatePaintMutation,
 } = gameApi;
 
 export default gameApi;
