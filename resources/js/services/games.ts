@@ -263,7 +263,7 @@ export const gameApi = createApi({
         }),
         createPaint: builder.mutation<gameState<number[]>, Partial<gameState<number[]>>>({
             query: (body) => ({
-                url: 'paint/',
+                url: '/paint',
                 method: 'POST',
                 body: body,
             }),
