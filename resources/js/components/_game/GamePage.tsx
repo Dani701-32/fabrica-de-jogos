@@ -14,7 +14,7 @@ export default function GamePage() {
     let gameAddress = '';
     switch (category) {
         case 'quiz':
-            gameAddress = 'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/QuizFDJ--/index.html';
+            gameAddress = 'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/QuizFDJ/index.html';
             break;
         case 'word-search':
             gameAddress = 'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/WordSearchFDJ/index.html';
