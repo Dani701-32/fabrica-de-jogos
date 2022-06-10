@@ -29,8 +29,8 @@
                 window.addEventListener('message', (event) => {
                     if (event.origin === event.data.origin) {
                         const data = event.data;
-                        data.user_token && localStorage.setItem('token', data.user_token);
-                        data.origin && localStorage.setItem('origin', data.origin);
+                        data.user_token && window.localStorage.setItem('token', data.user_token);
+                        data.origin && window.localStorage.setItem('origin', data.origin);
                     }
                 });
             </script>

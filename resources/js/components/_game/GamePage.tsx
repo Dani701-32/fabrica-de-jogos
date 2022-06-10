@@ -56,13 +56,13 @@ export default function GamePage() {
 
     useEffect(() => {
         if (searchParams.has('user_token')) {
-            localStorage.setItem('token', searchParams.get('user_token') as string);
+            window.localStorage.setItem('token', searchParams.get('user_token') as string);
             searchParams.delete('user_token');
             setSearchParams(searchParams);
         }
         if (searchParams.has('api_address')) {
             const uri = decodeURI(searchParams.get('api_address') as string).replace('/api/', '');
-            localStorage.setItem('origin', uri);
+            window.localStorage.setItem('origin', uri);
             searchParams.delete('api_address');
             setSearchParams(searchParams);
         }
@@ -89,7 +89,7 @@ export default function GamePage() {
             });
             setOpen(true);
         }, 500);
-    }, [localStorage.getItem('token')]);
+    }, [window.localStorage.getItem('token')]);
     return (
         <div>
             {open && (
