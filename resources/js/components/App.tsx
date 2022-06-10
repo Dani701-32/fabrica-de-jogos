@@ -14,6 +14,8 @@ import EditMatchUp from './match-up/Edit';
 import CreateMemorygame from './memory-game/Create';
 import EditMemorygame from './memory-game/Edit';
 import HomePage from './_home/HomePage';
+import CreateWordle from './wordle/Create';
+import EditWordle from './wordle/Edit';
 import { CircularProgress, Container, CssBaseline } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import NavBar from './_layout/NavBar';
@@ -124,6 +126,7 @@ function App() {
                         <Route path="/create/word-search" element={<CreateWordSearch />} />
                         <Route path="/create/paint" element={<CreatePaint />} />
                         <Route path="/create/puzzle" element={<CreatePuzzle />} />
+                        <Route path="/create/wordle" element={<CreateWordle />} />
                         {/* Edit Routes */}
                         <Route path="/edit/anagram/:slug" element={<EditAnagram />} />
                         <Route path="/edit/bloons/:slug" element={<EditBalloons />} />
@@ -137,6 +140,7 @@ function App() {
                         <Route path="/edit/word-search/:slug" element={<EditWordSearch />} />
                         <Route path="/edit/paint/:slug" element={<EditPaint />} />
                         <Route path="/edit/puzzle/:slug" element={<EditPuzzle />} />
+                        <Route path="/edit/wordle/:slug" element={<EditWordle />} />
                     </Routes>
                 </Container>
                 <Copyright />

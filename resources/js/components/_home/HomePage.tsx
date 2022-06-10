@@ -17,6 +17,7 @@ export default function HomePage({}) {
         { slug: 'quiz', name: 'Quiz' },
         { slug: 'true-or-false', name: 'Verdadeiro ou Falso' },
         { slug: 'word-search', name: 'Caça-Palavras' },
+        { slug: 'wordle', name: 'Organize as Letras' },
     ];
 
     return (

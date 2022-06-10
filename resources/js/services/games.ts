@@ -278,6 +278,23 @@ export const gameApi = createApi({
                 body: body,
             }),
         }),
+        getWordleBySlug: builder.query<gameState<string[]>, string> ({
+            query: (slug) => `wordle/${slug}`,
+        }),
+        createWordle: builder.mutation<gameState<string[]>, Partial<gameState<string[]>>>({
+            query: (body: gameState<string[]>) => ({
+                url: '/wordle',
+                method: 'POST',
+                body: body,
+            }),
+        }),
+        updateWordle: builder.mutation<gameState<string[]>, Partial<gameState<string[]>> & Pick<gameState<number[]>, 'slug'>>({
+            query: ({slug, ...body}) => ({
+                url: `wordle/${slug}`,
+                method: 'PUT',
+                body: body,
+            }),
+        }),
     }),
 });
 
@@ -318,6 +335,9 @@ export const {
     useGetPaintBySlugQuery,
     useCreatePaintMutation,
     useUpdatePaintMutation,
+    useGetWordleBySlugQuery,
+    useCreateWordleMutation,
+    useUpdateWordleMutation,
 } = gameApi;
 
 export default gameApi;
