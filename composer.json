@@ -11,7 +11,7 @@
         "php": "^8.0",
         "cviebrock/eloquent-sluggable": "^9.0",
         "fruitcake/laravel-cors": "^2.0",
-        "guzzlehttp/guzzle": "^7.4.3",
+        "guzzlehttp/guzzle": "^7.4.4",
         "laravel/framework": "^9.0",
         "laravel/passport": "^10.2",
         "laravel/sanctum": "^2.11",
