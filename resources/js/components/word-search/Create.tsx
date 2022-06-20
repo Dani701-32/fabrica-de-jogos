@@ -161,7 +161,7 @@ const CreateWordSearch = () => {
             const obj: gameObj = {
                 name: response?.data?.name as string,
                 slug: `/word-search/${response?.data?.slug}`,
-                material: `https://www.fabricadejogos.portaleducacional.tec.br/game/word-search/${response?.data?.slug}`,
+                material: `https://fabricadejogos.portaleducacional.tec.br/game/word-search/${response?.data?.slug}`,
                 disciplina_id: Number(discipline),
                 series: serie,
             };

@@ -145,7 +145,7 @@ const CreateQuiz = () => {
             const obj: gameObj = {
                 name: response?.data?.name as string,
                 slug: `/quiz/${response?.data?.slug}`,
-                material: `https://www.fabricadejogos.portaleducacional.tec.br/game/quiz/${response?.data?.slug}`,
+                material: `https://fabricadejogos.portaleducacional.tec.br/game/quiz/${response?.data?.slug}`,
                 disciplina_id: Number(discipline),
                 series: serie,
             };

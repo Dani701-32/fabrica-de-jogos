@@ -86,7 +86,7 @@ const CreatePuzzle: FunctionComponent = ({}) => {
             const obj: gameObj = {
                 name: response?.data?.name as string,
                 slug: `/puzzle/${response?.data?.slug}`,
-                material: `https://www.fabricadejogos.portaleducacional.tec.br/game/puzzle/${response?.data?.slug}`,
+                material: `https://fabricadejogos.portaleducacional.tec.br/game/puzzle/${response?.data?.slug}`,
                 disciplina_id: Number(discipline),
                 series: serie,
             };

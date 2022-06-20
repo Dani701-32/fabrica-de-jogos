@@ -122,7 +122,7 @@ export default function CreateBalloons({}) {
             const obj: gameObj = {
                 name: response?.data?.name as string,
                 slug: `/bloons/${response?.data?.slug}`,
-                material: `https://www.fabricadejogos.portaleducacional.tec.br/game/bloons/${response?.data?.slug}`,
+                material: `https://fabricadejogos.portaleducacional.tec.br/game/bloons/${response?.data?.slug}`,
                 disciplina_id: Number(discipline),
                 series: serie,
             };

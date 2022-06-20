@@ -4,7 +4,7 @@ import SuccessDialog from '../_layout/SuccessDialog';
 import { useSelector } from 'react-redux';
 import BackFAButton from '../_layout/BackFAButton';
 import { RootState } from '../../store';
-import {useCreateWordleMutation} from '../../services/games';
+import { useCreateWordleMutation } from '../../services/games';
 import { useCreateGameObjectMutation } from '../../services/portal';
 import { gameObj } from '../../types';
 import SeriesSelect from '../_layout/SeriesSelect';
@@ -23,7 +23,6 @@ const Create = () => {
     const [serie, setSerie] = useState<string[]>([]);
     const [discipline, setDiscipline] = useState<string>('');
     const [word, setWord] = useState<string>('');
-
 
     const handleLayout = (event: ChangeEvent<HTMLInputElement>, newLayout: number) => {
         if (newLayout === null) {
@@ -72,7 +71,7 @@ const Create = () => {
             const obj: gameObj = {
                 name: response?.data?.name as string,
                 slug: `/wordle/${response?.data?.slug}`,
-                material: `https://www.fabricadejogos.portaleducacional.tec.br/game/wordle/${response?.data?.slug}`,
+                material: `https://fabricadejogos.portaleducacional.tec.br/game/wordle/${response?.data?.slug}`,
                 disciplina_id: Number(discipline),
                 series: serie,
             };
