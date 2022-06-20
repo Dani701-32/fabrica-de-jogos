@@ -2,8 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 import { userState } from '../types';
 
 const initialState: Partial<userState> = {
-    token: window.localStorage.getItem('token'),
-    origin: window.localStorage.getItem('origin'),
+    token: localStorage.getItem('token'),
+    origin: localStorage.getItem('origin'),
 };
 
 export const baseSlice = createSlice({
