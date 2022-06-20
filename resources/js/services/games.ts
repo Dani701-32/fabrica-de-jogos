@@ -21,7 +21,7 @@ type updateMemoryGameInput = {
 export const gameApi = createApi({
     reducerPath: 'gameApi',
     baseQuery: fetchBaseQuery({
-        baseUrl: 'https://www.fabricadejogos.portaleducacional.tec.br/api/',
+        baseUrl: 'https://fabricadejogos.portaleducacional.tec.br/api/',
         prepareHeaders: (headers, { getState }) => {
             const token = (getState() as RootState).user.token;
             if (token) {
@@ -278,7 +278,7 @@ export const gameApi = createApi({
                 body: body,
             }),
         }),
-        getWordleBySlug: builder.query<gameState<string[]>, string> ({
+        getWordleBySlug: builder.query<gameState<string[]>, string>({
             query: (slug) => `wordle/${slug}`,
         }),
         createWordle: builder.mutation<gameState<string[]>, Partial<gameState<string[]>>>({
@@ -288,8 +288,11 @@ export const gameApi = createApi({
                 body: body,
             }),
         }),
-        updateWordle: builder.mutation<gameState<string[]>, Partial<gameState<string[]>> & Pick<gameState<number[]>, 'slug'>>({
-            query: ({slug, ...body}) => ({
+        updateWordle: builder.mutation<
+            gameState<string[]>,
+            Partial<gameState<string[]>> & Pick<gameState<number[]>, 'slug'>
+        >({
+            query: ({ slug, ...body }) => ({
                 url: `wordle/${slug}`,
                 method: 'PUT',
                 body: body,
