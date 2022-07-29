@@ -20,7 +20,7 @@ export default function GamePage() {
             gameAddress = 'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/WordSearchFDJ/index.html';
             break;
         case 'anagram':
-            gameAddress = 'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/Anagrama%20%281%29/index.html';
+            gameAddress = 'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/AnagramFDJ/index.html';
             break;
         case 'true-or-false':
             gameAddress = 'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/TrueFalseFDJ/index.html';
