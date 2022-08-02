@@ -14,43 +14,43 @@ export default function GamePage() {
     let gameAddress = '';
     switch (category) {
         case 'quiz':
-            gameAddress = 'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/QuizFDJ/index.html';
+            gameAddress = 'https://fabrica-de-jogos-quiz.netlify.app';
             break;
         case 'word-search':
-            gameAddress = 'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/WordSearchFDJ/index.html';
+            gameAddress = 'https://fabrica-de-jogos-caca-palavras.netlify.app';
             break;
         case 'anagram':
-            gameAddress = 'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/AnagramFDJ/index.html';
+            gameAddress = 'https://fabrica-de-jogos-anagrama.netlify.app';
             break;
         case 'true-or-false':
-            gameAddress = 'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/TrueFalseFDJ/index.html';
+            gameAddress = 'https://fabrica-de-jogos-verdadeiro-ou-falso.netlify.app';
             break;
         case 'match-up':
-            gameAddress = 'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/MatchUpFDJ/index.html';
+            gameAddress = 'https://fabrica-de-jogos-significado-das-palavras.netlify.app';
             break;
         case 'memory-game':
-            gameAddress = 'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/MemoryGameFDJ/index.html';
+            gameAddress = 'https://fabrica-de-jogos-jogo-da-memoria.netlify.app';
             break;
         case 'group-sort':
-            gameAddress = 'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/GroupSortFDJ/index.html';
+            gameAddress = 'https://fabrica-de-jogos-relacionar-grupos.netlify.app';
             break;
         case 'bloons':
-            gameAddress = 'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/BaloonsFDJ/index.html';
+            gameAddress = 'https://fabrica-de-jogos-baloes.netlify.app';
             break;
         case 'cryptogram':
-            gameAddress = 'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/CryptogramFDJ/index.html';
+            gameAddress = 'https://fabrica-de-jogos-criptograma.netlify.app';
             break;
         case 'drag-drop':
-            gameAddress = 'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/DragInDropFDJ/index.html';
+            gameAddress = 'https://fabrica-de-jogos-arraste-e-solte.netlify.app';
             break;
         case 'puzzle':
-            gameAddress = 'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/PuzzelFDJ/index.html';
+            gameAddress = 'https://fabrica-de-jogos-quebra-cabeca.netlify.app';
             break;
         case 'paint':
-            gameAddress = 'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/PaintFDJ/index.html';
+            gameAddress = 'https://fabrica-de-jogos-atelie-criativo.netlify.app';
             break;
         case 'wordle':
-            gameAddress = 'https://nyc3.digitaloceanspaces.com/metech/API-ATUALIZADA/WordleFDJ/index.html';
+            gameAddress = 'https://fabrica-de-jogos-organize-as-letras.netlify.app';
             break;
         default:
             window.location.href = '/404';
